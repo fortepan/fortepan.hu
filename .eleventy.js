@@ -1,4 +1,4 @@
-const inlineSVG = require("./plugins/inlineSvg")
+const inlineSVG = require("./plugins/inlineSVG")
 
 module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/images")
