@@ -18,7 +18,8 @@
     "serve": "light-server -c .lightserverrc",
     "dev": "npm-run-all -l --silent clean styles:dev scripts:dev eleventy:default --parallel eleventy:watch serve lambda:serve",
     "dev:debug": "DEBUG=* npm run dev",
-    "build": "run-s clean lambda:prod styles:prod scripts:prod eleventy:prod"
+    "build:install": "npm install",
+    "build": "run-s clean build:install lambda:prod styles:prod scripts:prod eleventy:prod"
   },
   "repository": {
     "type": "git",
