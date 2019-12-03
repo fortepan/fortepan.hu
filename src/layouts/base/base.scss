@@ -1,0 +1,38 @@
+body {
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  transition: color 0.4s $ease-out-expo, background-color 0.4s $ease-out-expo;
+
+  &.theme--light {
+    color: $dark-base;
+    background-color: $light-base;
+  }
+
+  &.theme--dark {
+    color: $light-base;
+    background-color: $dark-primary;
+  }
+}
+
+.content {
+  position: absolute;
+  z-index: 10;
+  left: 0;
+  top: rem(104px);
+  right: rem(240px);
+  bottom: 0;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+
+  @media screen and (max-width: ($breakpoint-desktop - 1px)) {
+    right: 0;
+  }
+}
+
+.background {
+  z-index: 1;
+  position: absolute;
+  left: rem(-280px);
+  bottom: rem(64px);
+}

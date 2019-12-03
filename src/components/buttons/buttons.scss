@@ -1,0 +1,146 @@
+.button__circular {
+  display: flex;
+  width: rem(48px);
+  height: rem(48px);
+  border-radius: 50%;
+  border: 0;
+  padding: 0;
+  transition: background-color 0.4s $ease-out-expo;
+  cursor: pointer;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+
+  .theme--light & {
+    color: $dark-base;
+    background-color: $light-primary;
+  }
+
+  .theme--light &:hover {
+    background-color: darken($light-primary, 5%);
+  }
+
+  .theme--light &--red {
+    color: $light-base;
+    background-color: $red;
+  }
+
+  .theme--light &--red:hover {
+    background-color: darken($red, 5%);
+  }
+
+  .theme--dark & {
+    color: $light-base;
+    background-color: $dark-secondary;
+  }
+
+  .theme--dark &:hover {
+    background-color: lighten($dark-secondary, 5%);
+  }
+
+  .theme--dark &--red {
+    color: $light-base;
+    background-color: $red;
+  }
+
+  .theme--dark &--red:hover {
+    background-color: darken($red, 10%);
+  }
+
+  &--separator-before {
+    &::before {
+      content: "";
+      width: 1px;
+      height: 100%;
+      position: absolute;
+      left: rem(-16px);
+
+      .theme--light & {
+        background-color: $light-primary;
+      }
+
+      .theme--dark & {
+        background-color: $dark-secondary;
+      }
+    }
+  }
+
+  & + & {
+    margin-left: rem(8px);
+  }
+
+  & + &--separator-before {
+    margin-left: rem(32px);
+  }
+
+  &__icon {
+    path,
+    circle {
+      stroke-width: 2px;
+
+      @media (min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+        stroke-width: 1.5px;
+      }
+    }
+  }
+
+  &__label {
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    font-size: rem(11px);
+    font-weight: 600;
+    padding: rem(2px) rem(8px);
+    border-radius: rem(2px);
+    visibility: hidden;
+    opacity: 0;
+    transform: translate(-50%, rem(4px));
+    transition: transform 0.2s $ease-out-expo, opacity 0.2s $ease-out-expo, visibility 0s linear 0.2s;
+    white-space: nowrap;
+    pointer-events: none;
+
+    &::before {
+      content: "";
+      position: relative;
+      margin: rem(-6px) auto 0 auto;
+      display: block;
+      width: 0;
+      height: 0;
+      border-left: rem(8px) solid transparent;
+      border-right: rem(8px) solid transparent;
+      border-bottom: rem(6px) solid transparent;
+      transition: opacity 0.2s $ease-out-expo;
+      opacity: 0;
+    }
+
+    .theme--light & {
+      background-color: $dark-base;
+      color: $light-base;
+
+      &::before {
+        border-bottom-color: $dark-base;
+      }
+    }
+
+    .theme--dark & {
+      background-color: $light-base;
+      color: $dark-base;
+
+      &::before {
+        border-bottom-color: $light-base;
+      }
+    }
+  }
+
+  &:hover &__label {
+    visibility: visible;
+    opacity: 1;
+    transform: translate(-50%, 0px);
+    transition: transform 0.4s $ease-out-expo, opacity 0.4s $ease-out-expo, visibility 0s linear 0s;
+
+    &::before {
+      transition: opacity 0.4s $ease-out-expo;
+      opacity: 1;
+    }
+  }
+}

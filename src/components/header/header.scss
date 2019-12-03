@@ -1,0 +1,38 @@
+.header {
+  position: absolute;
+  z-index: 100;
+  left: 0;
+  top: 0;
+  right: rem(240px);
+  padding: rem(28px) rem(32px);
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  @media screen and (max-width: ($breakpoint-desktop - 1px)) {
+    right: 0;
+  }
+
+  &__actions {
+    display: flex;
+  }
+
+  .theme--light & {
+    background-color: $light-base;
+  }
+
+  .theme--light & #LightThemeSwitcher {
+    display: none;
+  }
+
+  .theme--dark & #DarkThemeSwitcher {
+    display: none;
+  }
+
+  #HeaderNavigationToggle {
+    @media screen and (min-width: $breakpoint-desktop) {
+      display: none;
+    }
+  }
+}

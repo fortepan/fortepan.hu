@@ -1,0 +1,18 @@
+/* --- Font Families --- */
+$font-heading: "futura-pt", sans-serif;
+$font-body: system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+/* --- Font Smoothing --- */
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font: 400 16px/1.5 $font-body;
+  text-rendering: optimizeLegibility;
+}
+
+h1 {
+  font-size: rem(56px);
+  text-transform: uppercase;
+  font-family: $font-heading;
+  font-weight: 700;
+}

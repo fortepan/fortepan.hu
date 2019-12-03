@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.5"/>
+    <line x1="12" x2="12" y1="2" y2="4" stroke="currentColor" stroke-width="1.5"/>
+    <line x1="12" x2="12" y1="20" y2="22" stroke="currentColor" stroke-width="1.5"/>
+    <line x1="21" x2="21" y1="11" y2="13" stroke="currentColor" stroke-width="1.5" transform="rotate(90 21 12)"/>
+    <line x1="3" x2="3" y1="11" y2="13" stroke="currentColor" stroke-width="1.5" transform="rotate(90 3 12)"/>
+    <line x1="18.364" x2="18.364" y1="17.364" y2="19.364" stroke="currentColor" stroke-width="1.5" transform="rotate(135 18.364 18.364)"/>
+    <line x1="5.636" x2="5.636" y1="4.636" y2="6.636" stroke="currentColor" stroke-width="1.5" transform="rotate(135 5.636 5.636)"/>
+    <line x1="18.364" x2="18.364" y1="4.636" y2="6.636" stroke="currentColor" stroke-width="1.5" transform="rotate(45 18.364 5.636)"/>
+    <line x1="5.636" x2="5.636" y1="17.364" y2="19.364" stroke="currentColor" stroke-width="1.5" transform="rotate(45 5.636 18.364)"/>
+  </g>
+</svg>

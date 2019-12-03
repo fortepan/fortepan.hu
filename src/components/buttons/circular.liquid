@@ -1,0 +1,5 @@
+<a id="{{ id }}" href="{{ href || '#' }}" class="button__circular {{ class }}">
+    {% capture icon_src %}src/static/images/icons/24/icon-{{ icon }}.svg{% endcapture %}
+    {% inlineSVG src:icon_src class:"button__circular__icon" %}
+    <div class="button__circular__label">{{ label }}</div>
+</a>

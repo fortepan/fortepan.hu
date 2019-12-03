@@ -1,0 +1,16 @@
+{
+  "hu": {
+    "search": "Keresés",
+    "darkmode": "Sötét mód",
+    "lightmode": "Világos mód",
+    "menu": "Menü",
+    "login": "Belépés"
+  },
+  "en": {
+    "search": "Search",
+    "darkmode": "Dark mode",
+    "lightmode": "Light mode",
+    "menu": "Menu",
+    "login": "Login"
+  }
+}
