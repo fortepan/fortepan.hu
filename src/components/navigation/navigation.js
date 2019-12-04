@@ -7,7 +7,6 @@ const Navigation = function(el) {
 }
 
 ready(() => {
-  Array.from(document.querySelectorAll(".navigation")).forEach(el => {
-    new Navigation(el).init()
-  })
+  const navigationNode = document.querySelector(".navigation")
+  if (navigationNode) new Navigation(navigationNode).init()
 })

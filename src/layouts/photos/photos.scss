@@ -1,4 +1,8 @@
 .photos {
+  position: relative;
+  padding: 0 rem(20px);
+  box-sizing: border-box;
+
   &__title {
     box-sizing: border-box;
     padding: 0 rem(12px);
@@ -6,27 +10,16 @@
     margin: 0 auto;
   }
 
-  &__photo {
-    box-sizing: border-box;
-    width: 100%;
-    padding: 0 rem(12px);
-  }
-
-  &__thumbnails {
-    position: relative;
-    padding: 0 rem(20px);
-    box-sizing: border-box;
-
-    &__wrapper {
-      max-width: rem(984px);
-      margin: 0 auto;
-      display: flex;
-      flex-wrap: wrap;
-    }
+  &__wrapper {
+    max-width: rem(984px);
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
   }
 
   &__thumbnail {
     width: 33.33%;
+    cursor: pointer;
 
     &__wrapper {
       box-sizing: border-box;
@@ -34,21 +27,66 @@
     }
 
     &__image-wrapper {
-      padding-top: 56.25%;
+      padding-top: 66.66%;
       border-radius: rem(4px);
-      margin-bottom: rem(16px);
+      margin-bottom: rem(8px);
+      position: relative;
+      overflow: hidden;
+
+      &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        border-radius: rem(4px) rem(4px) 0 0;
+        height: 0;
+        background-color: transparent;
+        z-index: 1;
+        transition: background-color 0.3s $ease-out-expo, height 0.6s $ease-out-expo;
+      }
 
       .theme--light & {
         background-color: $light-primary;
       }
+
+      .theme--dark & {
+        background-color: $dark-secondary;
+      }
+    }
+
+    &__image {
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      background-size: cover;
+      background-position: center center;
     }
 
     &__meta {
       font-size: rem(12px);
       font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      &::first-letter {
+        text-transform: uppercase;
+      }
 
       &--location {
         font-weight: 700;
+      }
+    }
+
+    &:hover {
+      .photos__thumbnail__image-wrapper {
+        &::before {
+          background-color: $red;
+          height: rem(4px);
+        }
       }
     }
   }

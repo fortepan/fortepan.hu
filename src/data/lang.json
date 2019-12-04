@@ -4,13 +4,35 @@
     "darkmode": "Sötét mód",
     "lightmode": "Világos mód",
     "menu": "Menü",
-    "login": "Belépés"
+    "login": "Belépés",
+    "prev": "Előző",
+    "next": "Következő",
+    "bookmark": "Listához",
+    "download": "Letöltés",
+    "share": "Megosztás",
+    "fullscreen": "Diavetítés",
+    "picture_id": "Képszám",
+    "year": "Év",
+    "donor": "Adományozó",
+    "tags": "Kulcsszavak",
+    "add_tag": "Kulcsszó hozzáadása"
   },
   "en": {
     "search": "Search",
     "darkmode": "Dark mode",
     "lightmode": "Light mode",
     "menu": "Menu",
-    "login": "Login"
+    "login": "Login",
+    "prev": "Previous",
+    "next": "Next",
+    "bookmark": "Bookmark",
+    "download": "Download",
+    "share": "Share",
+    "fullscreen": "Fullscreen",
+    "picture_id": "Photo ID",
+    "year": "Year",
+    "donor": "Donor",
+    "tags": "Tags",
+    "add_tag": "Add new tag"
   }
 }

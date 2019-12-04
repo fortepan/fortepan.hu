@@ -12,7 +12,6 @@ const Header = function(el) {
 }
 
 ready(() => {
-  Array.from(document.querySelectorAll(".header")).forEach(el => {
-    new Header(el).init()
-  })
+  const headerNode = document.querySelector(".header")
+  if (headerNode) new Header(headerNode).init()
 })

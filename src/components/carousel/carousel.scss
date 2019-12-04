@@ -1,0 +1,92 @@
+.carousel {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 rem(12px);
+  display: flex;
+  margin-bottom: rem(48px);
+
+  &__photo-wrapper {
+    padding-top: 66%;
+    border-radius: rem(10px);
+    margin-bottom: rem(24px);
+
+    .theme--light & {
+      background-color: $light-primary;
+    }
+
+    .theme--dark & {
+      background-color: $dark-secondary;
+    }
+  }
+
+  &__meta-wrapper {
+    display: flex;
+  }
+
+  &__actions {
+    padding-left: rem(32px);
+    display: flex;
+  }
+
+  &__col {
+    &--left {
+      width: 100%;
+    }
+
+    &--right {
+      width: rem(240px);
+      padding: 0 rem(32px);
+      display: flex;
+      flex-wrap: wrap;
+      align-content: flex-start;
+
+      h5,
+      h6 {
+        margin: 0;
+        padding: 0;
+      }
+
+      a:not(.carousel__pager__button) {
+        text-decoration: none;
+        color: inherit;
+        border-bottom: 1px solid transparent;
+        transition: color 0.2s $ease-out-expo, border-color 0.2s $ease-out-expo;
+
+        &:hover {
+          color: $red;
+          border-bottom-color: $red;
+        }
+      }
+    }
+  }
+
+  &__meta {
+    font-size: rem(14px);
+
+    b {
+      display: block;
+    }
+
+    &__id,
+    &__year {
+      width: 50%;
+      margin-top: rem(24px);
+    }
+
+    &__donor,
+    &__tags {
+      width: 100%;
+      margin-top: rem(24px);
+    }
+
+    &__tags {
+      font-size: rem(12px);
+      line-height: rem(20px);
+    }
+  }
+
+  &__pager {
+    display: flex;
+    width: 100%;
+  }
+}

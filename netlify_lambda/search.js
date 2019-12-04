@@ -1,8 +1,10 @@
 const axios = require("axios")
 
 exports.handler = (event, context, callback) => {
+  const params = JSON.parse(event.body)
+
   axios
-    .get("http://fortepan.hu/m/m.php?action=search_view&limit=5&lang=hu&q=")
+    .get(`http://fortepan.hu/m/m.php?action=search_view&limit=${params.limit}&lang=${params.lang}&q=${params.query}`)
     .then(res => {
       callback(null, {
         statusCode: 200,

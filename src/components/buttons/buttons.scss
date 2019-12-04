@@ -75,7 +75,9 @@
 
   &__icon {
     path,
-    circle {
+    circle,
+    polyline,
+    line {
       stroke-width: 2px;
 
       @media (min-device-pixel-ratio: 2), (min-resolution: 192dpi) {

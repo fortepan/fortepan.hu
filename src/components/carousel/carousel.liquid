@@ -1,0 +1,42 @@
+<div class="carousel">
+    <div class="carousel__col carousel__col--left">
+        <div class="carousel__photo-wrapper">
+            <div class="carousel__photo" data-image=""></div>
+        </div>
+        <div class="carousel__meta-wrapper">
+            <div class="carousel__meta">
+                Unter den Linden, Omnibusz társaság nyitott városnéző autóbusza a húszas években.
+                <b>Németország, Berlin</b>
+            </div>
+            <div class="carousel__actions">
+                {% include buttons/circular.liquid icon:"bookmark" id:"PhotoBookmark" href:"#" label: lang[locale].bookmark %}
+                {% include buttons/circular.liquid icon:"download" id:"PhotoDownload" href:"#" label: lang[locale].download %}
+                {% include buttons/circular.liquid icon:"fullscreen" id:"PhotoFullscreen" href:"#" label: lang[locale].fullscreen %}
+                {% include buttons/circular.liquid icon:"share" id:"PhotoShare" href:"#" label: lang[locale].share %}
+            </div>
+        </div>
+    </div>
+    <div class="carousel__col carousel__col--right">
+        <div class="carousel__pager">
+            {% include buttons/circular.liquid icon:"back" id:"PhotoPrev" href:"#" label: lang[locale].prev class:"carousel__pager__button" %}
+            {% include buttons/circular.liquid icon:"forward" id:"PhotoNext" href:"#" label: lang[locale].next class:"carousel__pager__button" %}
+        </div>
+        <div class="carousel__meta__id">
+            <h6>{{ lang[locale].picture_id }}</h6>
+            <h5>23796</h5>
+        </div>
+        <div class="carousel__meta__year">
+            <h6>{{ lang[locale].year }}</h6>
+            <h5>1923</h5>
+        </div>
+        <div class="carousel__meta__donor">
+            <h6>{{ lang[locale].donor }}</h6>
+            <h5><a href="#">Nagy Sándor</a></h5>
+        </div>
+        <div class="carousel__meta__tags">
+            <h6>{{ lang[locale].tags }}</h6>
+            <a href="#">autóbusz</a>, <a href="#">csoportkép</a>, <a href="#">felirat</a>, <a href="#">kürt</a>, <a href="#">kirándulás</a>, <a href="#">városnézés</a>
+            <a class="carousel__meta__add-tag">{{ lang[locale].add_tag }}</a>
+        </div>
+    </div>
+</div>
