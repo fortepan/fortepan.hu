@@ -78,6 +78,7 @@
     "animated-scroll-to": "^2.0.5",
     "axios": "^0.19.0",
     "custom-event-polyfill": "^1.0.7",
+    "es6-promise": "^4.2.8",
     "whatwg-fetch": "^3.0.0"
   }
 }
