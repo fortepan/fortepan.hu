@@ -76,31 +76,39 @@ const Carousel = function(el) {
   })
 }
 
-const loadPhotos = async function(el) {
-  const wrapperNode = el.querySelector(".photos__wrapper")
-  const resp = await fetch("/.netlify/functions/search", {
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    method: "POST",
-    body: JSON.stringify({
-      action: "search_view",
-      q: "Busz",
-      limit: THUMBNAILS_QUERY_LIMIT,
-      lang: "hu",
-      offset: thumbnailsCount,
-    }),
+const loadPhotos = function(el) {
+  return new Promise((resolve, reject) => {
+    const wrapperNode = el.querySelector(".photos__wrapper")
+    fetch("/.netlify/functions/search", {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify({
+        action: "search_view",
+        q: "Busz",
+        limit: THUMBNAILS_QUERY_LIMIT,
+        lang: "hu",
+        offset: thumbnailsCount,
+      }),
+    }).then(response => {
+      response
+        .json()
+        .then(function(data) {
+          data.data.forEach(itemData => {
+            thumbnailsCount += 1
+            const thumbnailFragment = new Thumbnail(itemData)
+            wrapperNode.appendChild(thumbnailFragment)
+          })
+          thumbnailsLoading = false
+          resolve()
+        })
+        .catch(err => {
+          reject(err)
+        })
+    })
   })
-  const data = await resp.json()
-
-  data.data.forEach(itemData => {
-    thumbnailsCount += 1
-    const thumbnailFragment = new Thumbnail(itemData)
-    wrapperNode.appendChild(thumbnailFragment)
-  })
-
-  thumbnailsLoading = false
 }
 
 // Photos page custom events
@@ -145,28 +153,28 @@ const initPhotos = async function(el) {
   wrapperNode.appendChild(carouselFragment)
 
   // Load photos
-  await loadPhotos(el)
+  loadPhotos(el).then(() => {
+    // Trigger click on first thumbnail
+    el.querySelector(".photos__thumbnail").click()
 
-  // Trigger click on first thumbnail
-  el.querySelector(".photos__thumbnail").click()
+    // bind Photos Events
+    el.parentNode.addEventListener("scroll", function(e) {
+      const view = e.currentTarget
+      if (view.scrollTop > 0) {
+        trigger("header:addShadow")
+      } else {
+        trigger("header:removeShadow")
+      }
 
-  // bind Photos Events
-  el.parentNode.addEventListener("scroll", function(e) {
-    const view = e.currentTarget
-    if (view.scrollTop > 0) {
-      trigger("header:addShadow")
-    } else {
-      trigger("header:removeShadow")
-    }
-
-    if (
-      view.scrollTop + view.offsetHeight >= view.scrollHeight &&
-      !thumbnailsLoading &&
-      thumbnailsCount % THUMBNAILS_QUERY_LIMIT === 0
-    ) {
-      thumbnailsLoading = true
-      loadPhotos(el)
-    }
+      if (
+        view.scrollTop + view.offsetHeight >= view.scrollHeight &&
+        !thumbnailsLoading &&
+        thumbnailsCount % THUMBNAILS_QUERY_LIMIT === 0
+      ) {
+        thumbnailsLoading = true
+        loadPhotos(el)
+      }
+    })
   })
 }
 

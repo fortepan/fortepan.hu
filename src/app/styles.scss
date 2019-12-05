@@ -1,5 +1,16 @@
 @import "sass-functions.scss";
-@import-glob "./../theme/**/*.scss";
-@import-glob "./../components/**/*.scss";
-@import-glob "./../layouts/**/*.scss";
-@import-glob "./../pages/**/*.scss";
+
+/* theme */
+@import "../theme/animation.scss";
+@import "../theme/breakpoints.scss";
+@import "../theme/colors.scss";
+@import "../theme/typography.scss";
+
+/* components */
+@import "../components/buttons/buttons.scss";
+@import "../components/header/header.scss";
+@import "../components/navigation/navigation.scss";
+
+/* layouts */
+@import "../layouts/base/base.scss";
+@import "../layouts/photos/photos.scss";

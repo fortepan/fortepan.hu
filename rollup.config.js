@@ -1,4 +1,3 @@
-import globImport from "rollup-plugin-glob-import"
 import resolve from "rollup-plugin-node-resolve"
 import { terser } from "rollup-plugin-terser"
 import hash from "rollup-plugin-hash"
@@ -8,7 +7,6 @@ import commonjs from "rollup-plugin-commonjs"
 export default {
   input: "src/app/scripts.js",
   plugins: [
-    globImport({}),
     resolve(),
     commonjs(),
     babel({

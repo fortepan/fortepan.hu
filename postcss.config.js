@@ -2,7 +2,6 @@ module.exports = {
   map: false,
   plugins: {
     "postcss-devtools": {},
-    "postcss-import-ext-glob": {},
     "postcss-import": {},
     "@csstools/postcss-sass": {
       syntax: "postcss-scss",
