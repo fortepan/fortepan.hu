@@ -3,11 +3,12 @@ import { ready, trigger } from "../../app/app"
 
 const THUMBNAILS_QUERY_LIMIT = 30
 
+let photosNode = null
 let selectedThumbnail = null
 let thumbnailsCount = 0
 let thumbnailsLoading = false
 
-const Thumbnail = function(data) {
+const Thumbnail = data => {
   const t = document.importNode(document.getElementById("Thumbnail").content, true)
   const [, filename, year, country, city, place, title, , , ,] = data
   t.querySelector(".photos__thumbnail__meta--description").textContent = (year || "") + (title ? ` · ${title}` : "")
@@ -35,7 +36,7 @@ const Thumbnail = function(data) {
 }
 
 const Carousel = function(el) {
-  this.init = function() {
+  this.init = () => {
     el.querySelector("#PhotoNext").addEventListener("click", e => {
       e.preventDefault()
       trigger("photos:showNextPhoto")
@@ -51,20 +52,22 @@ const Carousel = function(el) {
     const [imageId, filename, year, country, city, place, title, donor, tags, width, height] = e.detail
 
     const metaArray = []
-    if (country) metaArray.push(`<a href="#">${country}</a>`)
-    if (city) metaArray.push(`<a href="#">${city}</a>`)
-    if (place) metaArray.push(`<a href="#">${place}</a>`)
+    if (country) metaArray.push(`<a href="?country=${encodeURIComponent(country)}">${country}</a>`)
+    if (city) metaArray.push(`<a href="?city=${encodeURIComponent(city)}">${city}</a>`)
+    if (place) metaArray.push(`<a href="?place=${encodeURIComponent(place)}">${place}</a>`)
 
     c.querySelector(".photos__carousel__meta").innerHTML = `${title ? `${title}<br/>` : ""}<b>${metaArray.join(
       " · "
     )}</b>`
     c.querySelector(".photos__carousel__meta__id h5").textContent = imageId
-    c.querySelector(".photos__carousel__meta__year h5").textContent = year
-    c.querySelector(".photos__carousel__meta__donor h5").textContent = donor
+    c.querySelector(".photos__carousel__meta__year h5").innerHTML = `<a href="#">${year}</a>`
+    c.querySelector(".photos__carousel__meta__donor h5").innerHTML = `<a href="#">${donor}</a>`
     c.querySelector(".photos__carousel__meta__tags p").innerHTML = tags
-      .split("| ")
-      .map(tag => `<a href="#">${tag}</a>`)
-      .join(", ")
+      ? tags
+          .split("| ")
+          .map(tag => `<a href="#">${tag}</a>`)
+          .join(", ")
+      : ""
     c.querySelector(
       ".photos__carousel__photo"
     ).style.backgroundImage = `url(http://fortepan.hu/_photo/display/${filename}.jpg)`
@@ -76,26 +79,32 @@ const Carousel = function(el) {
   })
 }
 
-const loadPhotos = function(el) {
+const loadPhotos = function() {
   return new Promise((resolve, reject) => {
-    const wrapperNode = el.querySelector(".photos__wrapper")
+    const wrapperNode = photosNode.querySelector(".photos__wrapper")
+
+    const defaultParams = {
+      action: "search_view",
+      q: "",
+      limit: THUMBNAILS_QUERY_LIMIT,
+      lang: "hu",
+      offset: thumbnailsCount,
+    }
+
+    const urlParams = Object.fromEntries(new URLSearchParams(window.location.search.substring(1)))
+    Object.assign(defaultParams, urlParams)
+
     fetch("/.netlify/functions/search", {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
       method: "POST",
-      body: JSON.stringify({
-        action: "search_view",
-        q: "Busz",
-        limit: THUMBNAILS_QUERY_LIMIT,
-        lang: "hu",
-        offset: thumbnailsCount,
-      }),
+      body: JSON.stringify(defaultParams),
     }).then(response => {
       response
         .json()
-        .then(function(data) {
+        .then(data => {
           data.data.forEach(itemData => {
             thumbnailsCount += 1
             const thumbnailFragment = new Thumbnail(itemData)
@@ -113,9 +122,19 @@ const loadPhotos = function(el) {
 
 // Photos page custom events
 document.addEventListener("photos:showNextPhoto", () => {
-  const next = selectedThumbnail.nextElementSibling
+  const wrapperNode = document.querySelector(".photos__wrapper")
+  let next = selectedThumbnail.nextElementSibling
+  const thumbIdx = Array.from(wrapperNode.children).indexOf(selectedThumbnail)
   if (next) {
     next.click()
+  } else if (thumbIdx % THUMBNAILS_QUERY_LIMIT === 0) {
+    thumbnailsLoading = true
+    loadPhotos().then(() => {
+      next = selectedThumbnail.nextElementSibling
+      if (next) {
+        next.click()
+      }
+    })
   }
 })
 
@@ -146,19 +165,19 @@ document.addEventListener("carousel:loadPhoto", () => {
 })
 
 // Photos page init
-const initPhotos = async function(el) {
-  const wrapperNode = el.querySelector(".photos__wrapper")
+const initPhotos = () => {
+  const wrapperNode = photosNode.querySelector(".photos__wrapper")
   const carouselFragment = document.importNode(document.getElementById("Carousel").content, true)
   new Carousel(carouselFragment.querySelector(".photos__carousel")).init()
   wrapperNode.appendChild(carouselFragment)
 
   // Load photos
-  loadPhotos(el).then(() => {
+  loadPhotos().then(() => {
     // Trigger click on first thumbnail
-    el.querySelector(".photos__thumbnail").click()
+    photosNode.querySelector(".photos__thumbnail").click()
 
     // bind Photos Events
-    el.parentNode.addEventListener("scroll", function(e) {
+    photosNode.parentNode.addEventListener("scroll", e => {
       const view = e.currentTarget
       if (view.scrollTop > 0) {
         trigger("header:addShadow")
@@ -172,13 +191,13 @@ const initPhotos = async function(el) {
         thumbnailsCount % THUMBNAILS_QUERY_LIMIT === 0
       ) {
         thumbnailsLoading = true
-        loadPhotos(el)
+        loadPhotos()
       }
     })
   })
 }
 
 ready(() => {
-  const photosNode = document.querySelector(".photos")
-  if (photosNode) initPhotos(photosNode)
+  photosNode = document.querySelector(".photos")
+  if (photosNode) initPhotos()
 })

@@ -19,6 +19,18 @@
     margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
+
+    a:not(.button__circular) {
+      text-decoration: none;
+      color: inherit;
+      border-bottom: 1px solid transparent;
+      transition: color 0.2s $ease-out-expo, border-color 0.2s $ease-out-expo;
+
+      &:hover {
+        color: $red;
+        border-bottom-color: $red;
+      }
+    }
   }
 
   &__carousel {
@@ -89,18 +101,6 @@
         h6 {
           margin: 0;
           padding: 0;
-        }
-
-        a:not(.photos__carousel__pager__button) {
-          text-decoration: none;
-          color: inherit;
-          border-bottom: 1px solid transparent;
-          transition: color 0.2s $ease-out-expo, border-color 0.2s $ease-out-expo;
-
-          &:hover {
-            color: $red;
-            border-bottom-color: $red;
-          }
         }
       }
     }
