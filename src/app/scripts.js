@@ -1,5 +1,5 @@
 // load polyfills
-import "custom-event-polyfill"
+import "promise-polyfill"
 import "whatwg-fetch"
 import "es6-promise"
 
