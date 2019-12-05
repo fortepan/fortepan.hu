@@ -1,7 +1,11 @@
 .photos {
   position: relative;
-  padding: 0 rem(20px);
+  padding: rem(24px) rem(20px) rem(48px);
   box-sizing: border-box;
+
+  h1 {
+    margin-bottom: rem(16px);
+  }
 
   &__title {
     box-sizing: border-box;
@@ -15,6 +19,132 @@
     margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
+  }
+
+  &__carousel {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0 rem(12px);
+    display: flex;
+    margin-bottom: rem(48px);
+    visibility: hidden;
+
+    .photos__thumbnail + & {
+      margin-top: rem(48px);
+    }
+
+    &--show {
+      visibility: visible;
+    }
+
+    &__photo-wrapper {
+      padding-top: 66%;
+      border-radius: rem(10px);
+      margin-bottom: rem(24px);
+      position: relative;
+      transition: padding-top 0.6s $ease-out-expo;
+      overflow: hidden;
+
+      .theme--light & {
+        background-color: $light-primary;
+      }
+
+      .theme--dark & {
+        background-color: $dark-secondary;
+      }
+    }
+
+    &__photo {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      background-size: cover;
+      background-position: center center;
+    }
+
+    &__meta-wrapper {
+      display: flex;
+    }
+
+    &__actions {
+      padding-left: rem(32px);
+      display: flex;
+    }
+
+    &__col {
+      &--left {
+        width: 100%;
+      }
+
+      &--right {
+        width: rem(240px);
+        padding: 0 rem(32px);
+        display: flex;
+        flex-wrap: wrap;
+        align-content: flex-start;
+
+        h5,
+        h6 {
+          margin: 0;
+          padding: 0;
+        }
+
+        a:not(.photos__carousel__pager__button) {
+          text-decoration: none;
+          color: inherit;
+          border-bottom: 1px solid transparent;
+          transition: color 0.2s $ease-out-expo, border-color 0.2s $ease-out-expo;
+
+          &:hover {
+            color: $red;
+            border-bottom-color: $red;
+          }
+        }
+      }
+    }
+
+    &__meta {
+      font-size: rem(14px);
+      width: 100%;
+
+      b {
+        display: block;
+      }
+
+      &__id,
+      &__year {
+        width: 50%;
+        margin-top: rem(24px);
+      }
+
+      &__donor,
+      &__tags {
+        width: 100%;
+        margin-top: rem(24px);
+      }
+
+      &__tags {
+        font-size: rem(12px);
+        line-height: rem(20px);
+
+        > p {
+          margin: 0;
+        }
+
+        &__add-tag {
+          font-weight: bold;
+          &::before {
+          }
+        }
+      }
+    }
+
+    &__pager {
+      display: flex;
+      width: 100%;
+    }
   }
 
   &__thumbnail {
@@ -81,7 +211,8 @@
       }
     }
 
-    &:hover {
+    &:hover,
+    &--selected {
       .photos__thumbnail__image-wrapper {
         &::before {
           background-color: $red;

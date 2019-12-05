@@ -1,9 +1,7 @@
 import { ready } from "../../app/app"
 
 const Navigation = function(el) {
-  this.init = () => {
-    console.log(el)
-  }
+  this.init = () => {}
 }
 
 ready(() => {

@@ -1,17 +1,25 @@
 import { ready, trigger } from "../../app/app"
 
-const Header = function(el) {
-  this.init = () => {
-    el.querySelector("#DarkThemeSwitcher").addEventListener("click", () => {
-      trigger("toggleTheme")
-    })
-    el.querySelector("#LightThemeSwitcher").addEventListener("click", () => {
-      trigger("toggleTheme")
-    })
-  }
+let headerNode = null
+
+const initHeader = function(el) {
+  el.querySelector("#DarkThemeSwitcher").addEventListener("click", () => {
+    trigger("toggleTheme")
+  })
+  el.querySelector("#LightThemeSwitcher").addEventListener("click", () => {
+    trigger("toggleTheme")
+  })
 }
 
+document.addEventListener("header:addShadow", () => {
+  headerNode.classList.add("header--shadow-bottom")
+})
+
+document.addEventListener("header:removeShadow", () => {
+  headerNode.classList.remove("header--shadow-bottom")
+})
+
 ready(() => {
-  const headerNode = document.querySelector(".header")
-  if (headerNode) new Header(headerNode).init()
+  headerNode = document.querySelector(".header")
+  if (headerNode) initHeader(headerNode)
 })
