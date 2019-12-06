@@ -14,3 +14,8 @@
 /* layouts */
 @import "../layouts/base/base.scss";
 @import "../layouts/photos/photos.scss";
+
+/* polyfills */
+template {
+  display: none;
+}

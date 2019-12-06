@@ -1,6 +1,6 @@
 // load polyfills
-import "promise-polyfill/src/polyfill"
 import "whatwg-fetch"
+import "custom-event-polyfill"
 
 // app
 import "./app"

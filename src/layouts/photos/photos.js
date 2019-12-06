@@ -9,7 +9,8 @@ let thumbnailsCount = 0
 let thumbnailsLoading = false
 
 const Thumbnail = data => {
-  const t = document.importNode(document.getElementById("Thumbnail").content, true)
+  const t = document.createRange().createContextualFragment(document.getElementById("Thumbnail").innerHTML)
+
   const [, filename, year, country, city, place, title, , , ,] = data
   t.querySelector(".photos__thumbnail__meta--description").textContent = (year || "") + (title ? ` · ${title}` : "")
   const locationArray = []
@@ -167,7 +168,9 @@ document.addEventListener("carousel:loadPhoto", () => {
 // Photos page init
 const initPhotos = () => {
   const wrapperNode = photosNode.querySelector(".photos__wrapper")
-  const carouselFragment = document.importNode(document.getElementById("Carousel").content, true)
+  const carouselFragment = document
+    .createRange()
+    .createContextualFragment(document.getElementById("Carousel").innerHTML)
   new Carousel(carouselFragment.querySelector(".photos__carousel")).init()
   wrapperNode.appendChild(carouselFragment)
 
