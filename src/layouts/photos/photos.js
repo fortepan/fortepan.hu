@@ -9,18 +9,20 @@ let thumbnailsCount = 0
 let thumbnailsLoading = false
 
 const Thumbnail = data => {
+  // eslint-disable-next-line no-underscore-dangle
+  const d = data._source
   const t = document.createRange().createContextualFragment(document.getElementById("Thumbnail").innerHTML)
 
-  const [, filename, year, country, city, place, title, , , ,] = data
-  t.querySelector(".photos__thumbnail__meta--description").textContent = (year || "") + (title ? ` · ${title}` : "")
+  t.querySelector(".photos__thumbnail__meta--description").textContent =
+    (d.year || "") + (d.description ? ` · ${d.description}` : "")
   const locationArray = []
-  if (country) locationArray.push(country)
-  if (city) locationArray.push(city)
-  if (place) locationArray.push(place)
+  if (d.orszag_name) locationArray.push(d.orszag_name)
+  if (d.varos_name) locationArray.push(d.varos_name)
+  if (d.helyszin_name) locationArray.push(d.heszin_name)
   t.querySelector(".photos__thumbnail__meta--location").textContent = locationArray.join(" · ")
   t.querySelector(
     ".photos__thumbnail__image"
-  ).style.backgroundImage = `url("http://fortepan.hu/_photo/display/${filename}.jpg")`
+  ).style.backgroundImage = `url("http://fortepan.hu/_photo/display/${d.mid}.jpg")`
 
   // Thumbnail events
   t.querySelector(".photos__thumbnail").addEventListener("click", e => {
@@ -30,7 +32,7 @@ const Thumbnail = data => {
     selectedThumbnail.classList.add("photos__thumbnail--selected")
 
     // Load photo in Carousel
-    trigger("carousel:loadPhoto", data)
+    trigger("carousel:loadPhoto", d)
   })
 
   return t
@@ -50,29 +52,29 @@ const Carousel = function(el) {
 
   document.addEventListener("carousel:loadPhoto", e => {
     const c = el
-    const [imageId, filename, year, country, city, place, title, donor, tags, width, height] = e.detail
+    const d = e.detail
+
+    console.log(d)
 
     const metaArray = []
-    if (country) metaArray.push(`<a href="?country=${encodeURIComponent(country)}">${country}</a>`)
-    if (city) metaArray.push(`<a href="?city=${encodeURIComponent(city)}">${city}</a>`)
-    if (place) metaArray.push(`<a href="?place=${encodeURIComponent(place)}">${place}</a>`)
+    if (d.orszag_name) metaArray.push(`<a href="?country=${encodeURIComponent(d.orszag_name)}">${d.orszag_name}</a>`)
+    if (d.varos_name) metaArray.push(`<a href="?city=${encodeURIComponent(d.varos_name)}">${d.varos_name}</a>`)
+    if (d.helyszin_name)
+      metaArray.push(`<a href="?place=${encodeURIComponent(d.helyszin_name)}">${d.helyszin_name}</a>`)
 
-    c.querySelector(".photos__carousel__meta").innerHTML = `${title ? `${title}<br/>` : ""}<b>${metaArray.join(
-      " · "
-    )}</b>`
-    c.querySelector(".photos__carousel__meta__id h5").textContent = imageId
-    c.querySelector(".photos__carousel__meta__year h5").innerHTML = `<a href="#">${year}</a>`
-    c.querySelector(".photos__carousel__meta__donor h5").innerHTML = `<a href="#">${donor}</a>`
-    c.querySelector(".photos__carousel__meta__tags p").innerHTML = tags
-      ? tags
-          .split("| ")
-          .map(tag => `<a href="#">${tag}</a>`)
-          .join(", ")
+    c.querySelector(".photos__carousel__meta").innerHTML = `${
+      d.description ? `${d.description}<br/>` : ""
+    }<b>${metaArray.join(" · ")}</b>`
+    c.querySelector(".photos__carousel__meta__id h5").textContent = d.mid
+    c.querySelector(".photos__carousel__meta__year h5").innerHTML = `<a href="#">${d.year}</a>`
+    c.querySelector(".photos__carousel__meta__donor h5").innerHTML = `<a href="#">${d.adomanyozo_name}</a>`
+    c.querySelector(".photos__carousel__meta__tags p").innerHTML = d.cimke_name
+      ? d.cimke_name.map(tag => `<a href="#">${tag}</a>`).join(", ")
       : ""
     c.querySelector(
       ".photos__carousel__photo"
-    ).style.backgroundImage = `url(http://fortepan.hu/_photo/display/${filename}.jpg)`
-    c.querySelector(".photos__carousel__photo-wrapper").style.paddingTop = `${(height / width) * 100}%`
+    ).style.backgroundImage = `url(http://fortepan.hu/_photo/display/${d.mid}.jpg)`
+    c.querySelector(".photos__carousel__photo-wrapper").style.paddingTop = `${100}%`
 
     c.classList.add("photos__carousel--show")
 
@@ -85,28 +87,30 @@ const loadPhotos = function() {
     const wrapperNode = photosNode.querySelector(".photos__wrapper")
 
     const defaultParams = {
-      action: "search_view",
-      q: "",
-      limit: THUMBNAILS_QUERY_LIMIT,
-      lang: "hu",
-      offset: thumbnailsCount,
+      size: THUMBNAILS_QUERY_LIMIT,
+      from: thumbnailsCount,
+      track_total_hits: 100000,
     }
 
     const urlParams = Object.fromEntries(new URLSearchParams(window.location.search.substring(1)))
     Object.assign(defaultParams, urlParams)
 
-    fetch("/.netlify/functions/search", {
+    const qs = Object.keys(defaultParams)
+      .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(defaultParams[k])}`)
+      .join("&")
+
+    fetch(`http://v39241.php-friends.de:9200/elasticsearch_index_fortepan_media/_search?${qs}`, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: `Basic ${btoa("fortepan:fortepan")}`,
       },
-      method: "POST",
-      body: JSON.stringify(defaultParams),
+      method: "GET",
     }).then(response => {
       response
         .json()
         .then(data => {
-          data.data.forEach(itemData => {
+          data.hits.hits.forEach(itemData => {
             thumbnailsCount += 1
             const thumbnailFragment = new Thumbnail(itemData)
             wrapperNode.appendChild(thumbnailFragment)
