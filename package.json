@@ -13,10 +13,12 @@
     "scripts:dev": "rollup --config rollup.config.js --environment ENV:development",
     "styles:prod": "POSTCSS_ENV=production postcss src/app/styles.scss -o _dist/app.css",
     "styles:dev": "POSTCSS_ENV=development postcss src/app/styles.scss -o _dist/app.css",
+    "lambda:serve": "netlify-lambda serve netlify_lambda",
+    "lambda:prod": "netlify-lambda build netlify_lambda",
     "serve": "light-server -c .lightserverrc",
-    "dev": "npm-run-all -l --silent clean styles:dev scripts:dev eleventy:default --parallel eleventy:watch serve",
+    "dev": "npm-run-all -l --silent clean styles:dev scripts:dev eleventy:default --parallel eleventy:watch serve lambda:serve",
     "dev:debug": "DEBUG=* npm run dev",
-    "build": "run-s clean styles:prod scripts:prod eleventy:prod"
+    "build": "run-s clean lambda:prod styles:prod scripts:prod eleventy:prod"
   },
   "repository": {
     "type": "git",
@@ -73,6 +75,7 @@
     "@elastic/elasticsearch": "^7.5.0",
     "animated-scroll-to": "^2.0.5",
     "axios": "^0.19.0",
+    "btoa": "^1.2.1",
     "buffer": "^5.4.3",
     "custom-event-polyfill": "^1.0.7",
     "request": "^2.88.0",

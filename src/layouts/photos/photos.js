@@ -89,7 +89,6 @@ const loadPhotos = function() {
     const defaultParams = {
       size: THUMBNAILS_QUERY_LIMIT,
       from: thumbnailsCount,
-      track_total_hits: 100000,
     }
 
     const urlParams = Object.fromEntries(new URLSearchParams(window.location.search.substring(1)))
@@ -99,12 +98,7 @@ const loadPhotos = function() {
       .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(defaultParams[k])}`)
       .join("&")
 
-    fetch(`http://v39241.php-friends.de:9200/elasticsearch_index_fortepan_media/_search?${qs}`, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Basic ${btoa("fortepan:fortepan")}`,
-      },
+    fetch(`.netlify/functions/search?${qs}`, {
       method: "GET",
     }).then(response => {
       response

@@ -1,3 +1,4 @@
 [build]
   Command = "npm run build"
+  Functions = "_netlify_lambda/"
   Publish = "_dist/"
