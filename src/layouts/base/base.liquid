@@ -12,13 +12,15 @@
     />
   </head>
   <body class="theme--light" itemscope itemtype="http://schema.org/WebPage">
-    <main class="content">
-      {{ content }}
-    </main>
-    {% include header/header.liquid %}
-    {% include navigation/navigation.html %}
     <div class="background">
       {% inlineSVG src:"src/static/images/background-logo.svg" class:"background__svg" %}
+    </div>
+    <div class="base__main">
+    {{ content }}
+    </div>
+    <div class="base__sidebar">
+      {% include navigation/navigation.html %}
+      {% include carousel/carousel__meta.liquid %}
     </div>
     <script src="/{% if siteData.environment == 'production' %}{{ manifestJS['_dist/app.js'] | replace: '_dist/','' }}{% else %}app.js{% endif %}"></script>
   </body>

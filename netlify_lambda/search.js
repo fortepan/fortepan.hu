@@ -10,6 +10,8 @@ exports.handler = (event, context, callback) => {
   const requestBody = {
     from: params.from || 0,
     size: params.size || 30,
+    sort: "year",
+    track_total_hits: true,
   }
 
   if (params.q) {

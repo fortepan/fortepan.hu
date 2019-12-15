@@ -2,62 +2,20 @@
 layout: base/base.liquid
 ---
 
-<section class="photos">
+<div class="photos scrollview">
   <h1 class="photos__title">{{ title }}</h1>
   <div class="photos__wrapper">
   </div>
-</section>
+</div>
+{% include carousel/carousel.liquid %}
+{% include header/header.liquid %}
 
-<template id="Carousel">
-  <div class="photos__carousel">
-      <div class="photos__carousel__col photos__carousel__col--left">
-          <div class="photos__carousel__photo-wrapper">
-              <div class="photos__carousel__photo" data-image=""></div>
-          </div>
-          <div class="photos__carousel__meta-wrapper">
-              <div class="photos__carousel__meta"></div>
-              <div class="photos__carousel__actions">
-                  {% include buttons/circular.liquid icon:"bookmark" id:"PhotoBookmark" href:"#" label: lang[locale].bookmark %}
-                  {% include buttons/circular.liquid icon:"download" id:"PhotoDownload" href:"#" label: lang[locale].download %}
-                  {% include buttons/circular.liquid icon:"fullscreen" id:"PhotoFullscreen" href:"#" label: lang[locale].fullscreen %}
-                  {% include buttons/circular.liquid icon:"share" id:"PhotoShare" href:"#" label: lang[locale].share %}
-              </div>
-          </div>
-      </div>
-      <div class="photos__carousel__col photos__carousel__col--right">
-          <div class="photos__carousel__pager">
-              {% include buttons/circular.liquid icon:"back" id:"PhotoPrev" href:"#" label: lang[locale].prev class:"photos__carousel__pager__button" %}
-              {% include buttons/circular.liquid icon:"forward" id:"PhotoNext" href:"#" label: lang[locale].next class:"photos__carousel__pager__button" %}
-          </div>
-          <div class="photos__carousel__meta__id">
-              <h6>{{ lang[locale].picture_id }}</h6>
-              <h5></h5>
-          </div>
-          <div class="photos__carousel__meta__year">
-              <h6>{{ lang[locale].year }}</h6>
-              <h5></h5>
-          </div>
-          <div class="photos__carousel__meta__donor">
-              <h6>{{ lang[locale].donor }}</h6>
-              <h5><a href="#"></a></h5>
-          </div>
-          <div class="photos__carousel__meta__tags">
-              <h6>{{ lang[locale].tags }}</h6>
-              <p></p>
-              <a class="photos__carousel__meta__tags__add-tag">{{ lang[locale].add_tag }}</a>
-          </div>
-      </div>
-  </div>
-</template>
 
 <template id="Thumbnail">
   <div class="photos__thumbnail">
-    <div class="photos__thumbnail__wrapper">
-      <div class="photos__thumbnail__image-wrapper">
-        <div class="photos__thumbnail__image"></div>
-      </div>
-      <div class="photos__thumbnail__meta photos__thumbnail__meta--description"></div>
+      <div class="photos__thumbnail__image"></div>
       <div class="photos__thumbnail__meta photos__thumbnail__meta--location"></div>
+      <div class="photos__thumbnail__meta photos__thumbnail__meta--description"></div>
     </div>
   </div>
 </template>

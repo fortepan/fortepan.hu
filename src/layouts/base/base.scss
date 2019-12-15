@@ -15,23 +15,56 @@ body {
   }
 }
 
-.content {
-  position: absolute;
-  z-index: 10;
-  left: 0;
-  top: rem(80px);
-  right: rem(240px);
-  bottom: 0;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
+.base {
+  &__main {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: rem(280px);
+    bottom: 0;
+    overflow: hidden;
+    transition: transform .4s $ease-out-expo;
+    transform: translateX(0);
 
-  @media screen and (max-width: ($breakpoint-desktop - 1px)) {
+    @media screen and (max-width: ($breakpoint-desktop - 1px)) {
+      right: 0;
+
+      .sidebar--show & {
+        transform: translateX(rem(-280px));
+      }
+    }
+
+
+  }
+
+  &__sidebar {
+    position: absolute;
     right: 0;
+    top: 0;
+    bottom: 0;
+    width: rem(280px);
+    overflow: hidden;
+    transition: transform .4s $ease-out-expo;
+
+    @media screen and (max-width: ($breakpoint-desktop - 1px)) {
+      right: rem(-280px);
+
+      .sidebar--show & {
+        transform: translateX(-280px);
+      }
+    }
+
+    .theme--light & {
+      background-color: $light-primary;
+    }
+
+    .theme--dark & {
+      background-color: $dark-secondary;
+    }
   }
 }
 
 .background {
-  z-index: 1;
   position: absolute;
   left: rem(-280px);
   bottom: rem(64px);
@@ -41,4 +74,9 @@ body {
     transform-origin: 33% center;
     transition: transform 0.1s $ease-out-expo;
   }
+}
+
+.scrollview {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
 }

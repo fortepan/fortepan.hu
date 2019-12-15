@@ -15,7 +15,10 @@
     "year": "Év",
     "donor": "Adományozó",
     "tags": "Kulcsszavak",
-    "add_tag": "Kulcsszó hozzáadása"
+    "add_tag": "Kulcsszó hozzáadása",
+    "location": "Helyszín",
+    "back": "Vissza",
+    "close": "Bezárás"
   },
   "en": {
     "search": "Search",
@@ -33,6 +36,9 @@
     "year": "Year",
     "donor": "Donor",
     "tags": "Tags",
-    "add_tag": "Add new tag"
+    "add_tag": "Add new tag",
+    "location": "Loction",
+    "back": "Back",
+    "close": "Close"
   }
 }

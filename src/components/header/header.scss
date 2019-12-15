@@ -3,8 +3,8 @@
   z-index: 100;
   left: 0;
   top: 0;
-  right: rem(240px);
-  padding: rem(16px) rem(32px);
+  width: 100%;
+  padding: rem(16px) rem(16px) rem(16px) rem(32px);
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
@@ -19,8 +19,63 @@
     right: 0;
   }
 
-  &__actions {
+  &__close {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s $ease-out-expo;
+
+    .header--show-actions-carousel & {
+      opacity:1;
+      pointer-events: initial;
+      transition: opacity .4s $ease-out-expo .2s;
+    }
+
+    & ~ * {
+      transition: transform .6s $ease-out-expo;
+    }
+
+    .header--show-actions-carousel & ~ * {
+      transform: translateX(rem(72px));
+    }
+
+  }
+
+  &__logo {
     display: flex;
+    height: rem(48px);
+    align-items: center;
+
+    span {
+      @include font-heading-bold();
+      margin-left: rem(16px);
+      font-size: rem(20px);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+  }
+
+  &__actions {
+    height: rem(48px);
+    position: relative;
+  }
+
+  &__actions__group {
+    position: absolute;
+    right: 0;
+    display: flex;
+    transform: translateY(-100%);
+    opacity: 0;
+    transition: opacity .2s $ease-out-expo, transform .2s $ease-out-expo;
+    pointer-events: none;
+
+    &--active {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity .4s $ease-out-expo, transform .4s $ease-out-expo;
+      transition-delay: .1s;
+      pointer-events: initial;
+    }
   }
 
   .theme--light & {

@@ -5,7 +5,7 @@ import babel from "rollup-plugin-babel"
 import commonjs from "rollup-plugin-commonjs"
 
 export default {
-  input: "src/app/scripts.js",
+  input: "src/scripts.js",
   plugins: [
     resolve(),
     commonjs(),

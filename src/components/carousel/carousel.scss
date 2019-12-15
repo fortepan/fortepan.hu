@@ -1,0 +1,130 @@
+.carousel {
+  position: absolute;
+  width: 100%;
+  visibility: hidden;
+  left: 0;
+  top: 80px;
+  bottom: 0;
+  z-index: 20;
+  backdrop-filter: blur(10px);
+
+  .theme--light & {
+    background-color: rgba($light-base, 0.9);
+  }
+
+  .theme--dark & {
+    background-color: rgba($dark-primary, 0.9);
+  }
+
+  &--show {
+    visibility: visible;
+  }
+
+  &__pager {
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    transform: translateY(-50%);
+    padding: 0 rem(16px);
+    box-sizing: border-box;
+  }
+
+  &__photo {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+  }
+
+  &__actions {
+    display: flex;
+  }
+
+  &__meta {
+    position: absolute;
+    padding: rem(80px) rem(32px);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    transform: translateX(50%);
+    opacity: 0;
+    transition: transform 0.4s $ease-out-expo, opacity 0.2s ease-out;
+    pointer-events: none;
+
+    &--show {
+      transform: translateX(0);
+      pointer-events: initial;
+      opacity: 1;
+    }
+
+    &__content {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    h5,
+    h6 {
+      margin: 0;
+      padding: 0;
+    }
+
+    b {
+      display: block;
+    }
+
+    a:not(.button__circular) {
+      text-decoration: none;
+      color: inherit;
+      border-bottom: 1px solid transparent;
+      transition: color 0.2s $ease-out-expo, border-color 0.2s $ease-out-expo;
+
+      &:hover {
+        color: $red;
+        border-bottom-color: $red;
+      }
+    }
+
+    &__id,
+    &__year {
+      width: 50%;
+      margin-top: rem(24px);
+    }
+
+    &__donor,
+    &__tags,
+    &__location,
+    &__description {
+      width: 100%;
+      margin-top: rem(24px);
+    }
+
+    &__description {
+      font-size: rem(14px);
+      line-height: rem(20px);
+    }
+
+    &__tags {
+      font-size: rem(12px);
+      line-height: rem(20px);
+
+      > p {
+        margin: 0;
+      }
+
+      &__add-tag {
+        font-weight: bold;
+        &::before {
+        }
+      }
+    }
+  }
+}

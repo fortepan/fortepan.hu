@@ -1,10 +1,20 @@
-import { ready } from "../../app/app"
+import { ready } from "../../utils"
 
-const Navigation = function(el) {
+let navigationNode = null
+
+const Navigation = function() {
   this.init = () => {}
 }
 
+document.addEventListener("navigation:show", () => {
+  navigationNode.classList.add("navigation--show")
+})
+
+document.addEventListener("navigation:hide", () => {
+  navigationNode.classList.remove("navigation--show")
+})
+
 ready(() => {
-  const navigationNode = document.querySelector(".navigation")
+  navigationNode = document.querySelector(".navigation")
   if (navigationNode) new Navigation(navigationNode).init()
 })
