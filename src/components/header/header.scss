@@ -64,14 +64,14 @@
     position: absolute;
     right: 0;
     display: flex;
-    transform: translateY(-100%);
+    transform: translateX(-40px);
     opacity: 0;
     transition: opacity .2s $ease-out-expo, transform .2s $ease-out-expo;
     pointer-events: none;
 
     &--active {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateX(0);
       transition: opacity .4s $ease-out-expo, transform .4s $ease-out-expo;
       transition-delay: .1s;
       pointer-events: initial;
