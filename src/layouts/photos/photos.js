@@ -1,3 +1,4 @@
+import throttle from "lodash/throttle"
 import config from "../../config"
 import { ready, trigger } from "../../utils"
 
@@ -7,6 +8,17 @@ let photosNode = null
 let selectedThumbnail = null
 let thumbnailsCount = 0
 let thumbnailsLoading = false
+
+const resizeThumbnail = thumbnail => {
+  const t = thumbnail
+  const i = t.querySelector(".photos__thumbnail__image")
+  const h = window.innerWidth < 640 ? (THUMBNAIL_HEIGHT * 2) / 3 : THUMBNAIL_HEIGHT
+  if (!i.dataset.naturalWidth) return
+  i.style.height = `${h}px`
+  const w = (i.dataset.naturalWidth / i.dataset.naturalHeight) * h
+  t.style.flex = `${w}`
+  t.style.minWidth = `${w}px`
+}
 
 const Thumbnail = data => {
   // eslint-disable-next-line no-underscore-dangle
@@ -26,13 +38,11 @@ const Thumbnail = data => {
 
   img.addEventListener("load", e => {
     const i = e.target
-    const w = (i.naturalWidth / i.naturalHeight) * THUMBNAIL_HEIGHT
-    imgContainer.style.height = `${THUMBNAIL_HEIGHT}px`
     imgContainer.style.backgroundImage = `url("${e.target.currentSrc}")`
+    imgContainer.dataset.naturalWidth = i.naturalWidth
+    imgContainer.dataset.naturalHeight = i.naturalHeight
 
-    const p = imgContainer.parentNode
-    p.style.flex = `${w}`
-    p.style.minWidth = `${w}px`
+    resizeThumbnail(imgContainer.parentNode)
   })
   img.src = `${config.PHOTO_SOURCE}${d.mid}.jpg`
 
@@ -87,9 +97,19 @@ const loadPhotos = () => {
   })
 }
 
+const resizeThumbnails = () => {
+  const thumbnails = photosNode.querySelectorAll(".photos__thumbnail")
+  Array.from(thumbnails).forEach(el => {
+    resizeThumbnail(el)
+  })
+}
+
 ready(() => {
   photosNode = document.querySelector(".photos")
   if (!photosNode) return
+
+  // Bind window events
+  window.addEventListener("resize", throttle(resizeThumbnails, 1000))
 
   // Bind custom events
   document.addEventListener("photos:showNextPhoto", () => {

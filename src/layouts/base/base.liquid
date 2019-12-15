@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
     <meta name="description" content="{{ renderData.description or description or metadata.description }}" />
     <title>{{ renderData.title or title or metadata.title }}</title>
     <link rel="stylesheet" href="https://use.typekit.net/shi7abw.css" />
@@ -12,9 +12,7 @@
     />
   </head>
   <body class="theme--light" itemscope itemtype="http://schema.org/WebPage">
-    <div class="background">
-      {% inlineSVG src:"src/static/images/background-logo.svg" class:"background__svg" %}
-    </div>
+    {% include background-icon/background-icon.liquid %}
     <div class="base__main">
     {{ content }}
     </div>

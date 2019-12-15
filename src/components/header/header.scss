@@ -4,7 +4,7 @@
   left: 0;
   top: 0;
   width: 100%;
-  padding: rem(16px) rem(16px) rem(16px) rem(32px);
+  padding: rem(16px) rem(8px) rem(16px) rem(32px);
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
@@ -24,6 +24,7 @@
     opacity: 0;
     pointer-events: none;
     transition: opacity .2s $ease-out-expo;
+    left: rem(8px);
 
     .header--show-actions-carousel & {
       opacity:1;
@@ -36,7 +37,7 @@
     }
 
     .header--show-actions-carousel & ~ * {
-      transform: translateX(rem(72px));
+      transform: translateX(rem(56px));
     }
 
   }
@@ -52,6 +53,14 @@
       font-size: rem(20px);
       text-transform: uppercase;
       letter-spacing: 2px;
+
+      transition: opacity .4s $ease-out-expo;
+
+      @media screen and (max-width: ($breakpoint-phone - 1px)) {
+        opacity: 0;
+        pointer-events: none;
+      }
+
     }
   }
 
