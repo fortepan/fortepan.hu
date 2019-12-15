@@ -8,6 +8,10 @@
   z-index: 20;
   backdrop-filter: blur(10px);
 
+  @media screen and (max-width: ($breakpoint-desktop - 1px)) {
+    top: 64px;
+  }
+
   .theme--light & {
     background-color: rgba($light-base, 0.9);
   }
