@@ -16,7 +16,7 @@
   }
 
   @media screen and (max-width: ($breakpoint-desktop - 1px)) {
-    right: 0;
+    padding: rem(8px) rem(8px) rem(8px) rem(16px);
   }
 
   &__close {
@@ -32,12 +32,12 @@
       transition: opacity .4s $ease-out-expo .2s;
     }
 
-    & ~ * {
-      transition: transform .6s $ease-out-expo;
-    }
-
     .header--show-actions-carousel & ~ * {
       transform: translateX(rem(56px));
+
+      @media screen and (max-width: ($breakpoint-desktop - 1px)) {
+        transform: translateX(rem(72px));
+      }
     }
 
   }
@@ -47,6 +47,10 @@
     height: rem(48px);
     align-items: center;
 
+    svg {
+      transition: transform .6s $ease-out-expo;
+    }
+
     span {
       @include font-heading-bold();
       margin-left: rem(16px);
@@ -54,7 +58,7 @@
       text-transform: uppercase;
       letter-spacing: 2px;
 
-      transition: opacity .4s $ease-out-expo;
+      transition: opacity .4s $ease-out-expo, transform .6s $ease-out-expo;
 
       @media screen and (max-width: ($breakpoint-phone - 1px)) {
         opacity: 0;

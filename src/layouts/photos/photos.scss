@@ -4,8 +4,13 @@
   left: 0;
   top: rem(80px);
   bottom: 0;
-  padding: rem(24px) rem(20px) rem(48px);
+  padding: rem(24px) rem(24px) rem(48px);
   box-sizing: border-box;
+
+  @media screen and (max-width: ($breakpoint-desktop - 1px)) {
+    top: rem(64px);
+    padding: rem(24px) rem(8px) rem(48px);
+  }
 
   h1 {
     margin-bottom: rem(16px);
@@ -13,7 +18,7 @@
 
   &__title {
     box-sizing: border-box;
-    padding: 0 rem(12px);
+    padding: 0 rem(8px);
     max-width: rem(984px);
     margin: 0 auto;
   }

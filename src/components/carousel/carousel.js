@@ -57,6 +57,23 @@ const initCarousel = el => {
     e.preventDefault()
     trigger("photos:showPrevPhoto")
   })
+
+  document.onkeydown = e => {
+    if (!carouselNode.classList.contains("carousel--show")) return
+
+    switch (e.key) {
+      case "Escape":
+        trigger("carousel:hide")
+        break
+      case "ArrowLeft":
+        trigger("photos:showPrevPhoto")
+        break
+      case "ArrowRight":
+        trigger("photos:showNextPhoto")
+        break
+      default:
+    }
+  }
 }
 
 ready(() => {

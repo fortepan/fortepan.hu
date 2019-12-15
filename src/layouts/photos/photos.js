@@ -1,4 +1,5 @@
 import throttle from "lodash/throttle"
+import animateScrollTo from "animated-scroll-to"
 import config from "../../config"
 import { ready, trigger } from "../../utils"
 
@@ -8,6 +9,14 @@ let photosNode = null
 let selectedThumbnail = null
 let thumbnailsCount = 0
 let thumbnailsLoading = false
+
+const isThumbnailInViewport = el => {
+  if (el) {
+    const bounds = el.getBoundingClientRect()
+    return bounds.top >= document.querySelector(".header").offsetHeight && bounds.bottom <= window.innerHeight
+  }
+  return false
+}
 
 const resizeThumbnail = thumbnail => {
   const t = thumbnail
@@ -55,6 +64,13 @@ const Thumbnail = data => {
 
     // Load photo in Carousel
     trigger("carousel:loadPhoto", d)
+
+    // Scroll to thumbnail if it's not in the viewport
+    if (!isThumbnailInViewport(selectedThumbnail.querySelector(".photos__thumbnail__image"))) {
+      animateScrollTo(selectedThumbnail.offsetTop - 16, {
+        elementToScroll: photosNode,
+      })
+    }
   })
 
   return t
@@ -138,7 +154,7 @@ ready(() => {
   loadPhotos().then(() => {
     // bind scroll event to photos container
     photosNode.addEventListener("scroll", e => {
-      const view = e.currentTarget
+      const view = e.target
       if (view.scrollTop > 0) {
         trigger("header:addShadow")
       } else {

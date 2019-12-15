@@ -18,7 +18,7 @@ export const trigger = (eventId, obj = {}, scope = document) => {
 }
 
 export const removeClassByPrefix = (el, prefix) => {
-  const regx = new RegExp(`\\b${prefix}(.*)?\\b`, "g")
+  const regx = new RegExp(`\\b${prefix}(.[^\\s]*)?\\b`, "g")
   // eslint-disable-next-line no-param-reassign
   el.className = el.className.replace(regx, "")
   return el
