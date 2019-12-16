@@ -131,13 +131,13 @@ ready(() => {
   document.addEventListener("photos:showNextPhoto", () => {
     let next = selectedThumbnail.nextElementSibling
     if (next) {
-      next.call("click")
+      next.click()
     } else if (thumbnailsCount % config.THUMBNAILS_QUERY_LIMIT === 0) {
       thumbnailsLoading = true
       loadPhotos().then(() => {
         next = selectedThumbnail.nextElementSibling
         if (next) {
-          next.call("click")
+          next.click()
         }
       })
     }
@@ -146,7 +146,7 @@ ready(() => {
   document.addEventListener("photos:showPrevPhoto", () => {
     const prev = selectedThumbnail.previousElementSibling
     if (prev) {
-      prev.call("click")
+      prev.click()
     }
   })
 
