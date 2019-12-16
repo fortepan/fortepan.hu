@@ -9,6 +9,7 @@ let photosNode = null
 let selectedThumbnail = null
 let thumbnailsCount = 0
 let thumbnailsLoading = false
+let totalHits = 0
 
 const isThumbnailInViewport = el => {
   if (el) {
@@ -16,6 +17,12 @@ const isThumbnailInViewport = el => {
     return bounds.top >= document.querySelector(".header").offsetHeight && bounds.bottom <= window.innerHeight
   }
   return false
+}
+
+const setTotalHits = t => {
+  totalHits = t
+  document.querySelector(".photos__subtitle span").textContent = totalHits
+  document.querySelector(".photos__subtitle").classList.add("photos__subtitle--show")
 }
 
 const resizeThumbnail = thumbnail => {
@@ -50,6 +57,12 @@ const Thumbnail = data => {
     imgContainer.style.backgroundImage = `url("${e.target.currentSrc}")`
     imgContainer.dataset.naturalWidth = i.naturalWidth
     imgContainer.dataset.naturalHeight = i.naturalHeight
+
+    imgContainer.parentNode.classList.add("photos__thumbnail--display")
+
+    setTimeout(() => {
+      imgContainer.parentNode.classList.add("photos__thumbnail--show")
+    }, 100)
 
     resizeThumbnail(imgContainer.parentNode)
   })
@@ -98,6 +111,7 @@ const loadPhotos = () => {
       response
         .json()
         .then(data => {
+          setTotalHits(data.hits.total.value)
           data.hits.hits.forEach(itemData => {
             thumbnailsCount += 1
             const thumbnailFragment = new Thumbnail(itemData)

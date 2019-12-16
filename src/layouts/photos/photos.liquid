@@ -3,7 +3,10 @@ layout: base/base.liquid
 ---
 
 <div class="photos scrollview">
-  <h1 class="photos__title">{{ title }}</h1>
+  <div class="photos__title__wrapper">
+    <h1 class="photos__title">{{ title }}</h1>
+    <h5 class="photos__subtitle"><span></span> {{ lang[locale].photos }}</h5>
+  </div>
   <div class="photos__wrapper">
   </div>
 </div>

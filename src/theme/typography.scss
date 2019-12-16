@@ -19,11 +19,17 @@ html {
   -moz-osx-font-smoothing: grayscale;
   @include font-body();
   text-rendering: optimizeLegibility;
-  text-size-adjust:100%;
+  text-size-adjust: 100%;
 }
 
 h1 {
   font-size: rem(56px);
+  text-transform: uppercase;
+  @include font-heading-bold();
+}
+
+h3 {
+  font-size: rem(28px);
   text-transform: uppercase;
   @include font-heading-bold();
 }

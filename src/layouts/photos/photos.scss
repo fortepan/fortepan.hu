@@ -12,15 +12,28 @@
     padding: rem(24px) rem(8px) rem(48px);
   }
 
-  h1 {
-    margin-bottom: rem(16px);
+  &__title {
+    &__wrapper {
+      max-width: rem(984px);
+      margin: 0 auto rem(16px);
+      padding: 0 rem(8px);
+      box-sizing: border-box;
+
+      > * {
+        margin: 0;
+      }
+    }
   }
 
-  &__title {
-    box-sizing: border-box;
-    padding: 0 rem(8px);
-    max-width: rem(984px);
-    margin: 0 auto;
+  &__subtitle {
+    margin-top: rem(-20px);
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity 0.4s ease-out;
+
+    &--show {
+      opacity: 0.4;
+    }
   }
 
   &__wrapper {
@@ -39,6 +52,17 @@
     cursor: pointer;
     margin: rem(16px) rem(8px);
     box-sizing: border-box;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.8s $ease-out-expo;
+
+    &--display {
+      display: block;
+    }
+
+    &--show {
+      opacity: 1;
+    }
 
     &__image {
       border-radius: rem(4px);
@@ -48,19 +72,7 @@
       background-size: cover;
       background-position: center center;
       position: relative;
-
-      &::before {
-        content: "";
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        border-radius: rem(4px) rem(4px) 0 0;
-        height: 0;
-        background-color: transparent;
-        z-index: 1;
-        transition: background-color 0.3s $ease-out-expo, height 0.6s $ease-out-expo;
-      }
+      transition: filter 0.3s ease-out;
 
       .theme--light & {
         background-color: $light-primary;
@@ -96,10 +108,7 @@
     &:hover,
     &--selected {
       .photos__thumbnail__image {
-        &::before {
-          background-color: $red;
-          height: rem(4px);
-        }
+        filter: brightness(0.7);
       }
     }
   }

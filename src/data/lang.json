@@ -18,7 +18,8 @@
     "add_tag": "Kulcsszó hozzáadása",
     "location": "Helyszín",
     "back": "Vissza",
-    "close": "Bezárás"
+    "close": "Bezárás",
+    "photos": "Kép"
   },
   "en": {
     "search": "Search",
@@ -39,6 +40,7 @@
     "add_tag": "Add new tag",
     "location": "Loction",
     "back": "Back",
-    "close": "Close"
+    "close": "Close",
+    "photos": "Photos"
   }
 }
