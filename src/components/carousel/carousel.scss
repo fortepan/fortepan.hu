@@ -38,10 +38,10 @@
 
   &__photo {
     position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
+    left: rem(16px);
+    top: rem(16px);
+    right: rem(16px);
+    bottom: rem(16px);
     background-size: contain;
     background-position: center center;
     background-repeat: no-repeat;
@@ -105,13 +105,14 @@
 
     &__donor,
     &__tags,
-    &__location,
-    &__description {
+    &__location {
       width: 100%;
       margin-top: rem(24px);
     }
 
     &__description {
+      margin-top: rem(4px);
+      width: 100%;
       font-size: rem(14px);
       line-height: rem(20px);
     }

@@ -1,16 +1,16 @@
-import { ready, trigger, removeClassByPrefix } from "../../utils"
+import { ready, trigger, removeClassByPrefix, click } from "../../utils"
 
 let headerNode = null
 
 const initHeader = el => {
-  el.querySelector("#DarkThemeSwitcher").addEventListener("click", () => {
+  el.querySelector("#DarkThemeSwitcher").addEventListener(click(), () => {
     trigger("toggleTheme")
   })
-  el.querySelector("#LightThemeSwitcher").addEventListener("click", () => {
+  el.querySelector("#LightThemeSwitcher").addEventListener(click(), () => {
     trigger("toggleTheme")
   })
 
-  el.querySelector("#CarouselClose").addEventListener("click", () => {
+  el.querySelector("#CarouselClose").addEventListener(click(), () => {
     trigger("carousel:hide")
   })
 }

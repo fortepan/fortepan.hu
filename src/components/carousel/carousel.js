@@ -1,5 +1,5 @@
 import config from "../../config"
-import { ready, trigger } from "../../utils"
+import { ready, trigger, click } from "../../utils"
 
 let carouselNode = null
 let carouselMeta = null
@@ -49,11 +49,11 @@ document.addEventListener("carousel:hide", () => {
 
 const initCarousel = el => {
   // bind events
-  el.querySelector("#PhotoNext").addEventListener("click", e => {
+  el.querySelector("#PhotoNext").addEventListener(click(), e => {
     e.preventDefault()
     trigger("photos:showNextPhoto")
   })
-  el.querySelector("#PhotoPrev").addEventListener("click", e => {
+  el.querySelector("#PhotoPrev").addEventListener(click(), e => {
     e.preventDefault()
     trigger("photos:showPrevPhoto")
   })

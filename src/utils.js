@@ -17,6 +17,10 @@ export const trigger = (eventId, obj = {}, scope = document) => {
   scope.dispatchEvent(event)
 }
 
+export const click = () => {
+  return isTouchDevice() ? "touchstart" : "click"
+}
+
 export const removeClassByPrefix = (el, prefix) => {
   const regx = new RegExp(`\\b${prefix}(.[^\\s]*)?\\b`, "g")
   // eslint-disable-next-line no-param-reassign

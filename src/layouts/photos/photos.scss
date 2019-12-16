@@ -30,7 +30,7 @@
     flex-wrap: wrap;
 
     &::after {
-      content: '';
+      content: "";
       flex-grow: 999999999;
     }
   }
@@ -73,7 +73,8 @@
 
     &__meta {
       font-size: rem(12px);
-      font-weight: 500;
+      line-height: rem(16px);
+      font-weight: 400;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -84,7 +85,11 @@
       }
 
       &--location {
-        font-weight: 700;
+        font-weight: 600;
+      }
+
+      &--description {
+        opacity: 0.64;
       }
     }
 
