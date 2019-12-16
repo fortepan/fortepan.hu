@@ -1,7 +1,7 @@
 import throttle from "lodash/throttle"
 import animateScrollTo from "animated-scroll-to"
 import config from "../../config"
-import { ready, trigger, click } from "../../utils"
+import { ready, trigger } from "../../utils"
 
 const THUMBNAIL_HEIGHT = 160
 
@@ -56,7 +56,7 @@ const Thumbnail = data => {
   img.src = `${config.PHOTO_SOURCE}${d.mid}.jpg`
 
   // Bind events
-  t.querySelector(".photos__thumbnail").addEventListener(click(), e => {
+  t.querySelector(".photos__thumbnail").addEventListener("click", e => {
     // Highlight selected thumbnail
     if (selectedThumbnail) selectedThumbnail.classList.remove("photos__thumbnail--selected")
     selectedThumbnail = e.currentTarget
@@ -131,13 +131,13 @@ ready(() => {
   document.addEventListener("photos:showNextPhoto", () => {
     let next = selectedThumbnail.nextElementSibling
     if (next) {
-      next.call(click())
+      next.call("click")
     } else if (thumbnailsCount % config.THUMBNAILS_QUERY_LIMIT === 0) {
       thumbnailsLoading = true
       loadPhotos().then(() => {
         next = selectedThumbnail.nextElementSibling
         if (next) {
-          next.call(click())
+          next.call("click")
         }
       })
     }
@@ -146,7 +146,7 @@ ready(() => {
   document.addEventListener("photos:showPrevPhoto", () => {
     const prev = selectedThumbnail.previousElementSibling
     if (prev) {
-      prev.call(click())
+      prev.call("click")
     }
   })
 

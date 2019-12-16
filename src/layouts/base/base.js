@@ -1,4 +1,4 @@
-import { ready, click } from "../../utils"
+import { ready } from "../../utils"
 
 let bodyNode = null
 
@@ -9,7 +9,7 @@ const initBase = () => {
     bodyNode.classList.toggle("theme--dark")
   })
 
-  document.querySelector("#HeaderNavigationToggle").addEventListener(click(), () => {
+  document.querySelector("#HeaderNavigationToggle").addEventListener("click", () => {
     document.querySelector("body").classList.toggle("sidebar--show")
   })
 }
@@ -17,6 +17,4 @@ const initBase = () => {
 ready(() => {
   bodyNode = document.querySelector("body")
   initBase()
-
-  console.log(click())
 })
