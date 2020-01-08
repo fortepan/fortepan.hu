@@ -11,3 +11,5 @@ _dist
 _netlify_lambda
 
 src/data/manifest*
+
+.DS_Store

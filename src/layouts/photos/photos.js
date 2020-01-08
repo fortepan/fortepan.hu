@@ -105,7 +105,7 @@ const loadPhotos = () => {
       .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(defaultParams[k])}`)
       .join("&")
 
-    fetch(`.netlify/functions/search?${qs}`, {
+    fetch(`/.netlify/functions/search?${qs}`, {
       method: "GET",
     }).then(response => {
       response
