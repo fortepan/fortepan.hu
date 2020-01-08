@@ -21,6 +21,10 @@ export const click = () => {
   return isTouchDevice() ? "touchstart" : "click"
 }
 
+export const getURLParams = () => {
+  return Object.fromEntries(new URLSearchParams(window.location.search.substring(1)))
+}
+
 export const removeClassByPrefix = (el, prefix) => {
   const regx = new RegExp(`\\b${prefix}(.[^\\s]*)?\\b`, "g")
   // eslint-disable-next-line no-param-reassign

@@ -2,16 +2,24 @@ import { ready, trigger, removeClassByPrefix } from "../../utils"
 
 let headerNode = null
 
-const initHeader = el => {
-  el.querySelector("#DarkThemeSwitcher").addEventListener("click", () => {
+const initHeader = () => {
+  headerNode.querySelector("#DarkThemeSwitcher").addEventListener("click", e => {
+    e.preventDefault()
     trigger("toggleTheme")
   })
-  el.querySelector("#LightThemeSwitcher").addEventListener("click", () => {
+  headerNode.querySelector("#LightThemeSwitcher").addEventListener("click", e => {
+    e.preventDefault()
     trigger("toggleTheme")
   })
 
-  el.querySelector("#CarouselClose").addEventListener("click", () => {
+  headerNode.querySelector("#CarouselClose").addEventListener("click", e => {
+    e.preventDefault()
     trigger("carousel:hide")
+  })
+
+  headerNode.querySelector("#HeaderSearch").addEventListener("click", e => {
+    e.preventDefault()
+    trigger("search:toggle")
   })
 }
 
@@ -37,5 +45,5 @@ document.addEventListener("header:showAction", e => {
 
 ready(() => {
   headerNode = document.querySelector(".header")
-  if (headerNode) initHeader(headerNode)
+  if (headerNode) initHeader()
 })

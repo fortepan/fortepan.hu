@@ -1,7 +1,7 @@
 import throttle from "lodash/throttle"
 import animateScrollTo from "animated-scroll-to"
 import config from "../../config"
-import { ready, trigger } from "../../utils"
+import { ready, trigger, getURLParams } from "../../utils"
 
 const THUMBNAIL_HEIGHT = 160
 
@@ -93,16 +93,17 @@ const loadPhotos = () => {
   return new Promise((resolve, reject) => {
     const wrapperNode = photosNode.querySelector(".photos__wrapper")
 
+    const params = {}
     const defaultParams = {
       size: config.THUMBNAILS_QUERY_LIMIT,
       from: thumbnailsCount,
     }
 
-    const urlParams = Object.fromEntries(new URLSearchParams(window.location.search.substring(1)))
-    Object.assign(defaultParams, urlParams)
+    const urlParams = getURLParams()
+    Object.assign(params, defaultParams, urlParams)
 
-    const qs = Object.keys(defaultParams)
-      .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(defaultParams[k])}`)
+    const qs = Object.keys(params)
+      .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)
       .join("&")
 
     fetch(`/.netlify/functions/search?${qs}`, {
@@ -164,25 +165,49 @@ ready(() => {
     }
   })
 
-  // Load photos
-  loadPhotos().then(() => {
-    // bind scroll event to photos container
-    photosNode.addEventListener("scroll", e => {
-      const view = e.target
-      if (view.scrollTop > 0) {
-        trigger("header:addShadow")
-      } else {
-        trigger("header:removeShadow")
-      }
+  // bind scroll event to photos container
+  photosNode.addEventListener("scroll", e => {
+    const view = e.target
+    if (view.scrollTop > 0) {
+      trigger("header:addShadow")
+    } else {
+      trigger("header:removeShadow")
+    }
 
-      if (
-        view.scrollTop + view.offsetHeight >= view.scrollHeight &&
-        !thumbnailsLoading &&
-        thumbnailsCount % config.THUMBNAILS_QUERY_LIMIT === 0
-      ) {
-        thumbnailsLoading = true
-        loadPhotos()
+    if (
+      view.scrollTop + view.offsetHeight >= view.scrollHeight &&
+      !thumbnailsLoading &&
+      thumbnailsCount % config.THUMBNAILS_QUERY_LIMIT === 0
+    ) {
+      thumbnailsLoading = true
+      loadPhotos()
+    }
+  })
+
+  // load photos when address bar url changes
+  const onPopState = e => {
+    // reset photosNode when needed
+    if ((e && e.detail && e.detail.resetPhotosWrapper === true) || (e && e.type)) {
+      const wrapperNode = photosNode.querySelector(".photos__wrapper")
+      while (wrapperNode.firstChild) {
+        wrapperNode.firstChild.remove()
+      }
+      photosNode.scrollTop = 0
+      thumbnailsCount = 0
+    }
+    loadPhotos().then(() => {
+      if (getURLParams().id > 0) {
+        // show carousel with an image
+        console.log("show carousel")
+      } else {
+        trigger("carousel:hide")
       }
     })
+  }
+  document.addEventListener("photos:historyPushState", e => {
+    window.history.pushState(null, "Keresés", e.detail.url)
+    onPopState(e)
   })
+  window.onpopstate = onPopState
+  onPopState()
 })

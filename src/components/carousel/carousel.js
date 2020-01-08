@@ -21,12 +21,21 @@ document.addEventListener("carousel:loadPhoto", e => {
   }
   document.querySelector(".carousel__meta__description").innerHTML = d.description ? d.description : ""
   document.querySelector(".carousel__meta__id h5").textContent = d.mid
-  document.querySelector(".carousel__meta__year h5").innerHTML = `<a href="#">${d.year}</a>`
-  document.querySelector(".carousel__meta__donor h5").innerHTML = `<a href="#">${d.name}</a>`
+  document.querySelector(".carousel__meta__year h5").innerHTML = `<a href="?year=${d.year}">${d.year}</a>`
+  document.querySelector(".carousel__meta__donor h5").innerHTML = `<a href="?donor=${encodeURIComponent(d.name)}">${
+    d.name
+  }</a>`
   document.querySelector(".carousel__meta__tags p").innerHTML = d.cimke_name
-    ? d.cimke_name.map(tag => `<a href="#">${tag}</a>`).join(", ")
+    ? d.cimke_name.map(tag => `<a href="?tag=${encodeURIComponent(tag)}">${tag}</a>`).join(", ")
     : ""
   document.querySelector(".carousel__photo").style.backgroundImage = `url(${config.PHOTO_SOURCE}${d.mid}.jpg)`
+
+  Array.from(document.querySelectorAll(".carousel__meta a")).forEach(anchorNode => {
+    anchorNode.addEventListener("click", event => {
+      event.preventDefault()
+      trigger("photos:historyPushState", { url: event.currentTarget.href, resetPhotosWrapper: true })
+    })
+  })
 
   trigger("carousel:show")
 })
@@ -58,7 +67,7 @@ const initCarousel = el => {
     trigger("photos:showPrevPhoto")
   })
 
-  document.onkeydown = e => {
+  document.addEventListener("keydown", e => {
     if (!carouselNode.classList.contains("carousel--show")) return
 
     switch (e.key) {
@@ -73,7 +82,7 @@ const initCarousel = el => {
         break
       default:
     }
-  }
+  })
 }
 
 ready(() => {
