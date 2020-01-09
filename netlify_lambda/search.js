@@ -7,23 +7,77 @@ const client = new Client({
 exports.handler = (event, context, callback) => {
   const params = event.queryStringParameters
 
-  const requestBody = {
-    from: params.from || 0,
-    size: params.size || 30,
-    sort: "year",
-    track_total_hits: true,
-  }
+  let query = { match_all: {} }
 
   if (params.q) {
-    requestBody.query = {
+    query = {
       multi_match: {
-        query: params.q || "",
-        fields: ["description", "cimke_name", "varos_name"],
+        query: params.q,
+        fields: ["description^5", "*_name", "name"],
         fuzziness: "AUTO",
       },
     }
   }
 
+  if (params.tag) {
+    if (!params.q)
+      query = {
+        simple_query_string: {
+          fields: ["cimke_name"],
+          query: `"${params.tag}"`,
+        },
+      }
+  }
+
+  if (params.year) {
+    if (!params.q)
+      query = {
+        simple_query_string: {
+          fields: ["year"],
+          query: params.year,
+        },
+      }
+  }
+
+  if (params.city) {
+    if (!params.q)
+      query = {
+        simple_query_string: {
+          fields: ["varos_name"],
+          query: `"${params.city}"`,
+        },
+      }
+  }
+
+  if (params.country) {
+    if (!params.q)
+      query = {
+        simple_query_string: {
+          fields: ["orszag_name"],
+          query: `"${params.country}"`,
+        },
+      }
+  }
+
+  if (params.donor) {
+    if (!params.q)
+      query = {
+        simple_query_string: {
+          fields: ["name"],
+          query: `"${params.donor}"`,
+        },
+      }
+  }
+
+  const requestBody = {
+    from: params.from || 0,
+    size: params.size || 30,
+    sort: "year",
+    track_total_hits: true,
+    query,
+  }
+
+  console.log(JSON.stringify(requestBody))
   client.search(
     {
       index: "elasticsearch_index_fortepan_media",
