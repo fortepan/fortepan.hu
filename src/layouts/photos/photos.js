@@ -9,7 +9,6 @@ let photosNode = null
 let selectedThumbnail = null
 let thumbnailsCount = 0
 let thumbnailsLoading = false
-let totalHits = 0
 
 const isThumbnailInViewport = el => {
   if (el) {
@@ -19,9 +18,22 @@ const isThumbnailInViewport = el => {
   return false
 }
 
-const setTotalHits = t => {
-  totalHits = t
-  document.querySelector(".photos__subtitle span").textContent = totalHits
+const setTitle = photosCount => {
+  const q = getURLParams()
+  const titleNode = document.querySelector(".photos__title")
+  titleNode.textContent =
+    Object.keys(q).length === 0 || q.q === "" ? titleNode.dataset.photosLabel : titleNode.dataset.searchLabel
+
+  const searchExpressionNode = document.querySelector("#PhotosSearchExpression")
+  if (Object.keys(q).length === 0 || q.q === "") {
+    searchExpressionNode.classList.remove("photos__subtitle__expression--show")
+  } else {
+    searchExpressionNode.classList.add("photos__subtitle__expression--show")
+    searchExpressionNode.textContent = `${searchExpressionNode.parentNode.dataset[`${Object.keys(q)[0]}Label`]}: ${
+      q[Object.keys(q)[0]]
+    }`
+  }
+  document.querySelector("#PhotosCount").textContent = photosCount
   document.querySelector(".photos__subtitle").classList.add("photos__subtitle--show")
 }
 
@@ -112,7 +124,7 @@ const loadPhotos = () => {
       response
         .json()
         .then(data => {
-          setTotalHits(data.hits.total.value)
+          setTitle(data.hits.total.value)
           data.hits.hits.forEach(itemData => {
             thumbnailsCount += 1
             const thumbnailFragment = new Thumbnail(itemData)

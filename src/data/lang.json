@@ -15,11 +15,16 @@
     "year": "Év",
     "donor": "Adományozó",
     "tags": "Kulcsszavak",
+    "tag": "Kulcsszó",
+    "city": "Város",
+    "country": "Ország",
     "add_tag": "Kulcsszó hozzáadása",
     "location": "Helyszín",
     "back": "Vissza",
     "close": "Bezárás",
-    "photos": "Kép"
+    "photos": "Fotók",
+    "photoResults": "Kép",
+    "searchPhrase": "Keresőszó"
   },
   "en": {
     "search": "Search",
@@ -37,10 +42,15 @@
     "year": "Year",
     "donor": "Donor",
     "tags": "Tags",
+    "tag": "Tag",
+    "city": "City",
+    "country": "Country",
     "add_tag": "Add new tag",
     "location": "Loction",
     "back": "Back",
     "close": "Close",
-    "photos": "Photos"
+    "photos": "Photos",
+    "photoResults": "Photos",
+    "searchPhrase": "Search phrase"
   }
 }

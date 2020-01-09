@@ -26,13 +26,25 @@
   }
 
   &__subtitle {
-    margin-top: rem(-20px);
+    margin-top: rem(-16px);
     text-transform: uppercase;
     opacity: 0;
     transition: opacity 0.4s ease-out;
 
     &--show {
       opacity: 0.4;
+    }
+
+    &__expression {
+      display: none;
+      &--show {
+        display: inline;
+      }
+
+      &::after {
+        content: "·";
+        padding: 0 0.5rem;
+      }
     }
   }
 

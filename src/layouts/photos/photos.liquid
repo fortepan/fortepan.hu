@@ -4,8 +4,8 @@ layout: base/base.liquid
 
 <div class="photos scrollview">
   <div class="photos__title__wrapper">
-    <h1 class="photos__title">{{ title }}</h1>
-    <h5 class="photos__subtitle"><span></span> {{ lang[locale].photos }}</h5>
+    <h1 class="photos__title" data-search-label="{{ lang[locale].search }}" data-photos-label="{{ lang[locale].photos }}">{{ title }}</h1>
+    <h5 class="photos__subtitle" data-q-label="{{ lang[locale].searchPhrase }}" data-tag-label="{{ lang[locale].tag }}" data-donor-label="{{ lang[locale].donor }}" data-city-label="{{ lang[locale].city }}" data-country-label="{{ lang[locale].country }}" data-location-label="{{ lang[locale].loation }}" data-year-label="{{ lang[locale].year }}"><span id="PhotosSearchExpression" class="photos__subtitle__expression"></span><span id="PhotosCount" class="photos__subtitle__count"></span> {{ lang[locale].photoResults }}</h5>
   </div>
   <div class="photos__wrapper">
   </div>

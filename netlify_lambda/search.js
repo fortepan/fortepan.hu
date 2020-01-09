@@ -11,10 +11,9 @@ exports.handler = (event, context, callback) => {
 
   if (params.q) {
     query = {
-      multi_match: {
-        query: params.q,
+      simple_query_string: {
+        query: `${params.q}*`,
         fields: ["description^5", "*_name", "name"],
-        fuzziness: "AUTO",
       },
     }
   }
