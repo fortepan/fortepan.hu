@@ -5,16 +5,17 @@
     <span>Fortepan</span>
   </div>
   <div class="header__actions">
-    <div class="header__actions__group header__actions__group--photos header__actions__group--active">
+    <div class="header__actions__group header__actions__group--search">
       {% include buttons/circular.liquid icon:"search" class:"button__circular--red" id:"HeaderSearch" href:"#" label: lang[locale].search %}
+    </div>
+    <div class="header__actions__group header__actions__group--nav">
       {% include buttons/circular.liquid icon:"darkmode" id:"DarkThemeSwitcher" href:"#" label: lang[locale].darkmode %}
       {% include buttons/circular.liquid icon:"lightmode" id:"LightThemeSwitcher" href:"#" label: lang[locale].lightmode %}
-      {% include buttons/circular.liquid icon:"menu" class:"button__circular--separator-before" id:"HeaderNavigationToggle" href:"#" label: lang[locale].menu %}
+      {% include buttons/circular.liquid icon:"menu" id:"HeaderNavigationToggle" href:"#" label: lang[locale].menu %}
     </div>
-    <div class="header__actions__group header__actions__group--carousel">
-        {% include buttons/circular.liquid icon:"bookmark" id:"PhotoBookmark" href:"#" label: lang[locale].bookmark %}
-        {% include buttons/circular.liquid icon:"download" id:"PhotoDownload" href:"#" label: lang[locale].download %}
-        {% include buttons/circular.liquid icon:"share" id:"PhotoShare" href:"#" label: lang[locale].share %}
+    <div class="header__actions__group header__actions__group--login">
+      <a href="#" class="header__link header__link--top header__link--top-action" id="HeaderLogin">{{ lang[locale].login }}</a>
+      <a href="#" class="header__link header__link--top header__link--top-action" id="HeaderLang">EN</a>
     </div>
   </div>
 </header>

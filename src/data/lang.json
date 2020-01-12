@@ -23,7 +23,7 @@
     "back": "Vissza",
     "close": "Bezárás",
     "photos": "Fotók",
-    "photoResults": "Kép",
+    "photoResults": "kép",
     "searchPhrase": "Keresőszó"
   },
   "en": {
@@ -50,7 +50,7 @@
     "back": "Back",
     "close": "Close",
     "photos": "Photos",
-    "photoResults": "Photos",
+    "photoResults": "photos",
     "searchPhrase": "Search phrase"
   }
 }

@@ -17,7 +17,7 @@
   }
 
   .theme--light &:hover {
-    background-color: $light-primary;
+    background-color: rgba($dark-base, 0.06);
   }
 
   .theme--light &--red {
@@ -36,7 +36,7 @@
   }
 
   .theme--dark &:hover {
-    background-color: $dark-secondary;
+    background-color: rgba($light-base, 0.06);
   }
 
   .theme--dark &--red {
@@ -58,11 +58,11 @@
       left: rem(-12px);
 
       .theme--light & {
-        background-color: $light-primary;
+        background-color: rgba($dark-base, 0.06);
       }
 
       .theme--dark & {
-        background-color: $dark-secondary;
+        background-color: rgba($light-base, 0.06);
       }
     }
   }
@@ -76,11 +76,11 @@
       right: rem(-12px);
 
       .theme--light & {
-        background-color: $light-primary;
+        background-color: rgba($dark-base, 0.06);
       }
 
       .theme--dark & {
-        background-color: $dark-secondary;
+        background-color: rgba($light-base, 0.06);
       }
     }
   }

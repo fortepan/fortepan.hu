@@ -1,4 +1,4 @@
-import { ready, trigger, removeClassByPrefix } from "../../utils"
+import { ready, trigger } from "../../utils"
 
 let headerNode = null
 
@@ -31,16 +31,16 @@ document.addEventListener("header:removeShadow", () => {
   headerNode.classList.remove("header--shadow-bottom")
 })
 
-document.addEventListener("header:showAction", e => {
-  removeClassByPrefix(headerNode, "header--show-actions-")
-  headerNode.classList.add(`header--show-actions-${e.detail.actions}`)
+document.addEventListener("header:removeShadow", () => {
+  headerNode.classList.remove("header--shadow-bottom")
+})
 
-  const activeActions = headerNode.querySelector(".header__actions__group--active")
-  if (activeActions) activeActions.classList.remove("header__actions__group--active")
+document.addEventListener("carousel:show", () => {
+  headerNode.classList.add("header--carousel-show")
+})
 
-  headerNode
-    .querySelector(`.header__actions__group--${e.detail.actions}`)
-    .classList.add("header__actions__group--active")
+document.addEventListener("carousel:hide", () => {
+  headerNode.classList.remove("header--carousel-show")
 })
 
 ready(() => {

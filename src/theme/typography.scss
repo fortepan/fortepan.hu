@@ -23,9 +23,10 @@ html {
 }
 
 h1 {
-  font-size: rem(56px);
-  text-transform: uppercase;
+  font-size: rem(64px);
+  line-height: rem(72px);
   @include font-heading-bold();
+  letter-spacing: -2px;
 }
 
 h3 {

@@ -11,7 +11,8 @@
   align-items: center;
   transition: box-shadow 0.6s $ease-out-expo;
 
-  &--shadow-bottom {
+  &--shadow-bottom,
+  &--carousel-show {
     box-shadow: 0px 0px 20px rgba($dark-base, 0.16), 0px 0px 1px rgba($dark-base, 0.16);
   }
 
@@ -23,23 +24,22 @@
     position: absolute;
     opacity: 0;
     pointer-events: none;
-    transition: opacity .2s $ease-out-expo;
+    transition: opacity 0.2s $ease-out-expo;
     left: rem(8px);
 
-    .header--show-actions-carousel & {
-      opacity:1;
+    .header--carousel-show & {
+      opacity: 1;
       pointer-events: initial;
-      transition: opacity .4s $ease-out-expo .2s;
+      transition: opacity 0.4s $ease-out-expo 0.2s;
     }
 
-    .header--show-actions-carousel & ~ * {
+    .header--carousel-show & ~ * {
       transform: translateX(rem(56px));
 
       @media screen and (max-width: ($breakpoint-desktop - 1px)) {
         transform: translateX(rem(72px));
       }
     }
-
   }
 
   &__logo {
@@ -48,7 +48,7 @@
     align-items: center;
 
     svg {
-      transition: transform .6s $ease-out-expo;
+      transition: transform 0.6s $ease-out-expo;
     }
 
     span {
@@ -58,41 +58,122 @@
       text-transform: uppercase;
       letter-spacing: 2px;
 
-      transition: opacity .4s $ease-out-expo, transform .6s $ease-out-expo;
+      transition: opacity 0.4s $ease-out-expo, transform 0.6s $ease-out-expo;
 
       @media screen and (max-width: ($breakpoint-phone - 1px)) {
         opacity: 0;
         pointer-events: none;
       }
-
     }
   }
 
   &__actions {
     height: rem(48px);
     position: relative;
+    display: flex;
+    justify-content: flex-end;
   }
 
   &__actions__group {
-    position: absolute;
-    right: 0;
     display: flex;
-    transform: translateX(-40px);
-    opacity: 0;
-    transition: opacity .2s $ease-out-expo, transform .2s $ease-out-expo;
-    pointer-events: none;
+    position: relative;
 
-    &--active {
-      opacity: 1;
-      transform: translateX(0);
-      transition: opacity .4s $ease-out-expo, transform .4s $ease-out-expo;
-      transition-delay: .1s;
-      pointer-events: initial;
+    & + & {
+      margin-left: rem(24px);
+      &::before {
+        content: "";
+        width: 1px;
+        height: 100%;
+        position: absolute;
+        left: rem(-12px);
+
+        .theme--light & {
+          background-color: rgba($dark-base, 0.06);
+        }
+
+        .theme--dark & {
+          background-color: rgba($light-base, 0.06);
+        }
+      }
+    }
+  }
+
+  &__link {
+    text-decoration: none;
+    transition: color 0.3s $ease-out-expo;
+
+    &--separator-after:after {
+      content: "";
+      display: block;
+      height: 1px;
+      margin: rem(16px) 0;
+
+      .theme--light & {
+        background-color: $light-secondary;
+      }
+
+      .theme--dark & {
+        background-color: $dark-tertiary;
+      }
+    }
+
+    &--top {
+      @include font-heading-demi();
+      display: block;
+      font-weight: 600;
+      text-transform: uppercase;
+      margin: rem(8px) 0;
+      letter-spacing: 1px;
+      line-height: rem(20px);
+    }
+
+    &--top {
+      margin: rem(14px) rem(10px);
+    }
+
+    &--bottom {
+      display: block;
+      font-weight: 600;
+      font-size: rem(12px);
+      line-height: rem(16px);
+      margin: rem(8px) 0;
+      letter-spacing: 0;
+      line-height: rem(20px);
+    }
+
+    .theme--light & {
+      color: $grey;
+    }
+
+    .theme--dark & {
+      color: $grey;
+    }
+
+    .theme--light &--selected {
+      color: $dark-base;
+    }
+
+    .theme--dark &--selected {
+      color: $light-base;
+    }
+
+    .theme--light &:hover {
+      color: $dark-base;
+    }
+
+    .theme--dark &:hover {
+      color: $light-base;
     }
   }
 
   .theme--light & {
-    background-color: $light-base;
+    backdrop-filter: blur(20px);
+    background-color: rgba($light-base, 0.9);
+  }
+
+  .theme--dark & {
+    backdrop-filter: blur(20px);
+    background-color: rgba($dark-primary, 0.9);
   }
 
   .theme--light & #LightThemeSwitcher {
@@ -101,11 +182,5 @@
 
   .theme--dark & #DarkThemeSwitcher {
     display: none;
-  }
-
-  #HeaderNavigationToggle {
-    @media screen and (min-width: $breakpoint-desktop) {
-      display: none;
-    }
   }
 }

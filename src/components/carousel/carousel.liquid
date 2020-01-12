@@ -1,8 +1,48 @@
 
 <div class="carousel">
     <div class="carousel__photo"></div>
-    <div class="carousel__pager">
-        {% include buttons/circular.liquid icon:"back" id:"PhotoPrev" href:"#" label:lang[locale].prev class:"carousel__pager__button" %}
-        {% include buttons/circular.liquid icon:"forward" id:"PhotoNext" href:"#" label:lang[locale].next class:"carousel__pager__button" %}
+    <div class="carousel__control">
+        <div class="carousel__control__top">
+            <div class="carousel__control__pager">
+                {% include buttons/circular.liquid icon:"back" id:"PhotoPrev" href:"#" label:lang[locale].prev %}
+                {% include buttons/circular.liquid icon:"forward" id:"PhotoNext" href:"#" label:lang[locale].next %}
+            </div>
+            <div class="carousel__control__actions">
+                {% include buttons/circular.liquid icon:"bookmark" id:"PhotoBookmark" href:"#" label: lang[locale].bookmark %}
+                {% include buttons/circular.liquid icon:"download" id:"PhotoDownload" href:"#" label: lang[locale].download %}
+                {% include buttons/circular.liquid icon:"share" id:"PhotoShare" href:"#" label: lang[locale].share %}
+            </div>
+        </div>
+        <div class="carousel__control__bottom">
+            <div class="carousel__control__search">Kulcsszó: "busz"</div>
+            <div class="carousel__control__counter">22 / 14,345</div>
+        </div>
+    </div>
+
+    <div class="carousel__meta scrollview">
+        <div class="carousel__meta__content">
+            <div class="carousel__meta__location">
+                <h6>{{ lang[locale].location }}</h6>
+                <h5></h5>
+            </div>
+            <div class="carousel__meta__description"></div>
+            <div class="carousel__meta__year">
+                <h6>{{ lang[locale].year }}</h6>
+                <h5></h5>
+            </div>
+            <div class="carousel__meta__id">
+                <h6>{{ lang[locale].picture_id }}</h6>
+                <h5></h5>
+            </div>
+            <div class="carousel__meta__donor">
+                <h6>{{ lang[locale].donor }}</h6>
+                <h5><a href="#"></a></h5>
+            </div>
+            <div class="carousel__meta__tags">
+                <h6>{{ lang[locale].tags }}</h6>
+                <p></p>
+                <a class="carousel__meta__tags__add-tag">{{ lang[locale].add_tag }}</a>
+            </div>
+        </div>
     </div>
 </div>

@@ -20,21 +20,11 @@ body {
     position: absolute;
     left: 0;
     top: 0;
-    right: rem(280px);
     bottom: 0;
+    right: 0;
     overflow: hidden;
-    transition: transform .4s $ease-out-expo;
+    transition: transform 0.4s $ease-out-expo;
     transform: translateX(0);
-
-    @media screen and (max-width: ($breakpoint-desktop - 1px)) {
-      right: 0;
-
-      .sidebar--show & {
-        transform: translateX(rem(-280px));
-      }
-    }
-
-
   }
 
   &__sidebar {
@@ -44,7 +34,7 @@ body {
     bottom: 0;
     width: rem(280px);
     overflow: hidden;
-    transition: transform .4s $ease-out-expo;
+    transition: transform 0.4s $ease-out-expo;
 
     @media screen and (max-width: ($breakpoint-desktop - 1px)) {
       right: rem(-280px);

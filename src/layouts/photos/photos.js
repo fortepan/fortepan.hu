@@ -1,7 +1,7 @@
 import throttle from "lodash/throttle"
 import animateScrollTo from "animated-scroll-to"
 import config from "../../config"
-import { ready, trigger, getURLParams } from "../../utils"
+import { ready, trigger, getURLParams, numberWithCommas } from "../../utils"
 
 const THUMBNAIL_HEIGHT = 160
 
@@ -29,11 +29,11 @@ const setTitle = photosCount => {
     searchExpressionNode.classList.remove("photos__subtitle__expression--show")
   } else {
     searchExpressionNode.classList.add("photos__subtitle__expression--show")
-    searchExpressionNode.textContent = `${searchExpressionNode.parentNode.dataset[`${Object.keys(q)[0]}Label`]}: ${
+    searchExpressionNode.innerHTML = `${searchExpressionNode.parentNode.dataset[`${Object.keys(q)[0]}Label`]}: <em>${
       q[Object.keys(q)[0]]
-    }`
+    }</em>`
   }
-  document.querySelector("#PhotosCount").textContent = photosCount
+  document.querySelector("#PhotosCount").textContent = numberWithCommas(photosCount)
   document.querySelector(".photos__subtitle").classList.add("photos__subtitle--show")
 }
 

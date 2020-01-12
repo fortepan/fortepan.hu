@@ -2,20 +2,19 @@
   position: absolute;
   width: 100%;
   left: 0;
-  top: rem(80px);
+  top: 0;
   bottom: 0;
-  padding: rem(24px) rem(24px) rem(48px);
+  padding: rem(104px) rem(24px) rem(48px);
   box-sizing: border-box;
 
   @media screen and (max-width: ($breakpoint-desktop - 1px)) {
-    top: rem(64px);
-    padding: rem(24px) rem(8px) rem(48px);
+    padding: rem(88px) rem(8px) rem(48px);
   }
 
   &__title {
     &__wrapper {
-      max-width: rem(984px);
-      margin: 0 auto rem(16px);
+      max-width: rem(1080px);
+      margin: 0 auto rem(32px);
       padding: 0 rem(8px);
       box-sizing: border-box;
 
@@ -26,19 +25,47 @@
   }
 
   &__subtitle {
-    margin-top: rem(-16px);
-    text-transform: uppercase;
     opacity: 0;
     transition: opacity 0.4s ease-out;
 
     &--show {
-      opacity: 0.4;
+      opacity: 1;
+    }
+
+    .theme--light & {
+      color: $grey;
+    }
+
+    .theme--dark & {
+      color: $grey;
+    }
+
+    &__count {
+      .theme--light & {
+        color: $dark-base;
+      }
+
+      .theme--dark & {
+        color: $light-base;
+      }
     }
 
     &__expression {
       display: none;
       &--show {
         display: inline;
+      }
+
+      em {
+        font-style: normal;
+
+        .theme--light & {
+          color: $dark-base;
+        }
+
+        .theme--dark & {
+          color: $light-base;
+        }
       }
 
       &::after {
@@ -49,7 +76,7 @@
   }
 
   &__wrapper {
-    max-width: rem(984px);
+    max-width: rem(1080px);
     margin: 0 auto;
     display: flex;
     flex-wrap: wrap;

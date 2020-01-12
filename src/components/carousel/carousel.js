@@ -1,8 +1,10 @@
+import throttle from "lodash/throttle"
 import config from "../../config"
 import { ready, trigger } from "../../utils"
 
 let carouselNode = null
-let carouselMeta = null
+let carouselControl = null
+let carouselControlTimer
 
 document.addEventListener("carousel:loadPhoto", e => {
   const d = e.detail
@@ -42,17 +44,12 @@ document.addEventListener("carousel:loadPhoto", e => {
 
 document.addEventListener("carousel:show", () => {
   carouselNode.classList.add("carousel--show")
-  carouselMeta.classList.add("carousel__meta--show")
-
-  trigger("navigation:hide")
+  carouselControl.classList.add("carousel__control--show")
   trigger("header:showAction", { actions: "carousel" })
 })
 
 document.addEventListener("carousel:hide", () => {
   carouselNode.classList.remove("carousel--show")
-  carouselMeta.classList.remove("carousel__meta--show")
-
-  trigger("navigation:show")
   trigger("header:showAction", { actions: "photos" })
 })
 
@@ -66,6 +63,30 @@ const initCarousel = el => {
     e.preventDefault()
     trigger("photos:showPrevPhoto")
   })
+
+  carouselNode.addEventListener(
+    "mousemove",
+    throttle(e => {
+      if (!carouselControl.classList.contains("carousel__control--show")) {
+        carouselControl.classList.add("carousel__control--show")
+      }
+
+      if (carouselControlTimer) clearTimeout(carouselControlTimer)
+      carouselControlTimer = setTimeout(() => {
+        const bounds = carouselControl.getBoundingClientRect()
+        if (
+          !(
+            e.clientX >= bounds.left &&
+            e.clientX <= bounds.right &&
+            e.clientY >= bounds.top &&
+            e.clientY <= bounds.bottom
+          )
+        ) {
+          carouselControl.classList.remove("carousel__control--show")
+        }
+      }, 1000)
+    }, 400)
+  )
 
   document.addEventListener("keydown", e => {
     if (!carouselNode.classList.contains("carousel--show")) return
@@ -86,7 +107,7 @@ const initCarousel = el => {
 }
 
 ready(() => {
-  carouselMeta = document.querySelector(".carousel__meta")
   carouselNode = document.querySelector(".carousel")
+  carouselControl = document.querySelector(".carousel__control")
   if (carouselNode) initCarousel(carouselNode)
 })
