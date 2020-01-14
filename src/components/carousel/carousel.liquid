@@ -5,12 +5,14 @@
         <div class="carousel__control__top">
             <div class="carousel__control__pager">
                 {% include buttons/circular.liquid icon:"back" id:"PhotoPrev" href:"#" label:lang[locale].prev %}
+                {% include buttons/circular.liquid icon:"play" id:"PhotoSlideshow" href:"#" label:lang[locale].slideshow %}
                 {% include buttons/circular.liquid icon:"forward" id:"PhotoNext" href:"#" label:lang[locale].next %}
             </div>
             <div class="carousel__control__actions">
                 {% include buttons/circular.liquid icon:"bookmark" id:"PhotoBookmark" href:"#" label: lang[locale].bookmark %}
                 {% include buttons/circular.liquid icon:"download" id:"PhotoDownload" href:"#" label: lang[locale].download %}
                 {% include buttons/circular.liquid icon:"share" id:"PhotoShare" href:"#" label: lang[locale].share %}
+                {% include buttons/circular.liquid icon:"sidebar" id:"PhotoDetails" href:"#" label: lang[locale].details %}
             </div>
         </div>
         <div class="carousel__control__bottom">

@@ -24,7 +24,9 @@
     "close": "Bezárás",
     "photos": "Fotók",
     "photoResults": "kép",
-    "searchPhrase": "Keresőszó"
+    "searchPhrase": "Keresőszó",
+    "slideshow": "Diavetítés",
+    "details": "Fotó részletek"
   },
   "en": {
     "search": "Search",
@@ -51,6 +53,8 @@
     "close": "Close",
     "photos": "Photos",
     "photoResults": "photos",
-    "searchPhrase": "Search phrase"
+    "searchPhrase": "Search phrase",
+    "slideshow": "Slideshow",
+    "details": "Photo details"
   }
 }

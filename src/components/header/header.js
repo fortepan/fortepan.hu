@@ -1,6 +1,9 @@
+import throttle from "lodash/throttle"
 import { ready, trigger } from "../../utils"
 
 let headerNode = null
+let navNode = null
+let navTimer = null
 
 const initHeader = () => {
   headerNode.querySelector("#DarkThemeSwitcher").addEventListener("click", e => {
@@ -21,6 +24,34 @@ const initHeader = () => {
     e.preventDefault()
     trigger("search:toggle")
   })
+
+  headerNode.querySelector("#HeaderNavigationToggle").addEventListener("click", e => {
+    e.preventDefault()
+    if (navTimer) clearTimeout(navTimer)
+    const navToggleRect = e.currentTarget.getBoundingClientRect()
+    navNode.style.left = `${navToggleRect.x + navToggleRect.width / 2}px`
+    navNode.classList.toggle("header__nav--show")
+  })
+
+  document.addEventListener(
+    "mousemove",
+    throttle(e => {
+      if (navTimer) clearTimeout(navTimer)
+      navTimer = setTimeout(() => {
+        const navBounds = navNode.getBoundingClientRect()
+        if (
+          !(
+            e.clientX >= navBounds.left &&
+            e.clientX <= navBounds.right &&
+            e.clientY >= navBounds.top &&
+            e.clientY <= navBounds.bottom
+          )
+        ) {
+          navNode.classList.remove("header__nav--show")
+        }
+      }, 200)
+    }, 100)
+  )
 }
 
 document.addEventListener("header:addShadow", () => {
@@ -45,5 +76,6 @@ document.addEventListener("carousel:hide", () => {
 
 ready(() => {
   headerNode = document.querySelector(".header")
-  if (headerNode) initHeader()
+  navNode = document.querySelector(".header__nav")
+  if (headerNode && navNode) initHeader()
 })

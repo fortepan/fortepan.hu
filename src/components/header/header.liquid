@@ -11,11 +11,25 @@
     <div class="header__actions__group header__actions__group--nav">
       {% include buttons/circular.liquid icon:"darkmode" id:"DarkThemeSwitcher" href:"#" label: lang[locale].darkmode %}
       {% include buttons/circular.liquid icon:"lightmode" id:"LightThemeSwitcher" href:"#" label: lang[locale].lightmode %}
-      {% include buttons/circular.liquid icon:"menu" id:"HeaderNavigationToggle" href:"#" label: lang[locale].menu %}
+      {% include buttons/circular.liquid icon:"menu" id:"HeaderNavigationToggle" href:"#" label: lang[locale].menu class:"button__circular--no-label" %}
     </div>
     <div class="header__actions__group header__actions__group--login">
       <a href="#" class="header__link header__link--top header__link--top-action" id="HeaderLogin">{{ lang[locale].login }}</a>
-      <a href="#" class="header__link header__link--top header__link--top-action" id="HeaderLang">EN</a>
+      {% if locale == "hu" %}
+      <a class="header__link header__link--top header__link--top-action" href="/en/photos/">EN</a>
+      {% else %}
+      <a class="header__link header__link--top header__link--top-action" href="/">HU</a>
+      {% endif %}
     </div>
+  </div>
+  <div class="header__nav">
+    <a class="header__link header__link--top" href="/{{ locale }}/about-us/">Rólunk</a>
+    <a class="header__link header__link--top" href="/{{ locale }}/donors/">Adományozók</a>
+    <a class="header__link header__link--top" href="/{{ locale }}/donations/">Támogatás</a>
+    <a class="header__link header__link--top" href="/{{ locale }}/apps/">Alkalmazások</a>
+    <a class="header__link header__link--top" href="/forum/">Index Nagykép</a>
+    <a class="header__link header__link--top header__link--separator-after" href="/forum/">Fórum</a>
+    <a class="header__link header__link--top" href="/{{ locale }}/contact/">Kapcsolat</a>
+    <a class="header__link header__link--top" href="/{{ locale }}/privacy">Adatvédelem</a>
   </div>
 </header>

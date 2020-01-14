@@ -169,4 +169,8 @@
       opacity: 1;
     }
   }
+
+  &--no-label &__label {
+    display: none;
+  }
 }
