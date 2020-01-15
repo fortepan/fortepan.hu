@@ -43,14 +43,29 @@ document.addEventListener("carousel:loadPhoto", e => {
 })
 
 document.addEventListener("carousel:show", () => {
-  carouselNode.classList.add("carousel--show")
-  carouselControl.classList.add("carousel__control--show")
-  trigger("header:showAction", { actions: "carousel" })
+  if (!carouselNode.classList.contains("carousel--show")) {
+    carouselNode.classList.add("carousel--show")
+    carouselControl.classList.add("carousel__control--show")
+  }
 })
 
 document.addEventListener("carousel:hide", () => {
   carouselNode.classList.remove("carousel--show")
-  trigger("header:showAction", { actions: "photos" })
+})
+
+document.addEventListener("carousel:toggleMeta", () => {
+  document.querySelector("body").classList.toggle("base--hide-carousel-meta")
+  document.querySelector("#PhotoDetails").classList.toggle("button__circular--disabled")
+})
+
+document.addEventListener("carousel:hideMeta", () => {
+  document.querySelector("body").classList.add("base--hide-carousel-meta")
+  document.querySelector("#PhotoDetails").classList.add("button__circular--disabled")
+})
+
+document.addEventListener("carousel:playSlideshow", () => {
+  document.querySelector("body").classList.add("base--carousel-slideshow")
+  trigger("carousel:hideMeta")
 })
 
 const initCarousel = el => {
@@ -62,6 +77,16 @@ const initCarousel = el => {
   el.querySelector("#PhotoPrev").addEventListener("click", e => {
     e.preventDefault()
     trigger("photos:showPrevPhoto")
+  })
+
+  el.querySelector("#PhotoDetails").addEventListener("click", e => {
+    e.preventDefault()
+    trigger("carousel:toggleMeta")
+  })
+
+  el.querySelector("#PhotoSlideshow").addEventListener("click", e => {
+    e.preventDefault()
+    trigger("carousel:playSlideshow")
   })
 
   carouselNode.addEventListener(

@@ -10,6 +10,11 @@
   position: relative;
   align-items: center;
   justify-content: center;
+  user-select: none;
+
+  * {
+    pointer-events: none;
+  }
 
   .theme--light & {
     color: $dark-base;
@@ -47,6 +52,14 @@
   .theme--dark &--red:hover {
     color: $light-base;
     background-color: $red;
+  }
+
+  .theme--light &--disabled {
+    color: rgba($dark-base, 0.4);
+  }
+
+  .theme--dark &--disabled {
+    color: rgba($light-base, 0.4);
   }
 
   &--separator-before {

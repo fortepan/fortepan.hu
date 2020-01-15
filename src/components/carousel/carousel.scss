@@ -6,6 +6,7 @@
   top: 0;
   bottom: 0;
   z-index: 20;
+  transition: background-color 0.2s $ease-out-expo, color 0.2s $ease-out-expo;
 
   .theme--light & {
     background-color: $light-base;
@@ -28,9 +29,18 @@
     background-size: contain;
     background-position: center center;
     background-repeat: no-repeat;
+    transition: top 0.4s $ease-out-expo, right 0.4s $ease-out-expo;
 
     @media screen and (max-width: ($breakpoint-desktop - 1px)) {
       top: rem(80px);
+    }
+
+    .base--hide-carousel-meta & {
+      right: rem(16px);
+    }
+
+    .base--carousel-slideshow & {
+      top: rem(16px);
     }
   }
 
@@ -38,7 +48,7 @@
     position: absolute;
     left: calc(50% - 140px);
     bottom: rem(40px);
-    width: 100%;
+    width: calc(100% - 48px);
     max-width: rem(480px);
     z-index: 1;
     backdrop-filter: blur(20px);
@@ -49,11 +59,15 @@
     user-select: none;
     transition: transform 0.8s $ease-out-expo, opacity 0.8s $ease-out-expo;
 
+    .base--hide-carousel-meta & {
+      left: 50%;
+    }
+
     &--show {
       opacity: 1;
       transform: translateX(-50%) scale(1);
       pointer-events: initial;
-      transition: transform 0.3s $ease-out-expo, opacity 0.3s $ease-out-expo;
+      transition: transform 0.3s $ease-out-expo, opacity 0.3s $ease-out-expo, left 0.5s $ease-out-expo;
     }
 
     &__top {
@@ -170,6 +184,12 @@
         &::before {
         }
       }
+    }
+
+    .base--hide-carousel-meta & {
+      pointer-events: none;
+      transform: translateX(100%);
+      opacity: 0;
     }
 
     .theme--light & {

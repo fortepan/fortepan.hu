@@ -89,13 +89,6 @@ const Thumbnail = data => {
 
     // Load photo in Carousel
     trigger("carousel:loadPhoto", d)
-
-    // Scroll to thumbnail if it's not in the viewport
-    if (!isThumbnailInViewport(selectedThumbnail.querySelector(".photos__thumbnail__image"))) {
-      animateScrollTo(selectedThumbnail.offsetTop - 16, {
-        elementToScroll: photosNode,
-      })
-    }
   })
 
   return t
@@ -174,6 +167,15 @@ ready(() => {
     const prev = selectedThumbnail.previousElementSibling
     if (prev) {
       prev.click()
+    }
+  })
+
+  document.addEventListener("carousel:hide", () => {
+    // Scroll to thumbnail if it's not in the viewport
+    if (selectedThumbnail) {
+      if (!isThumbnailInViewport(selectedThumbnail.querySelector(".photos__thumbnail__image"))) {
+        photosNode.scrollTop = selectedThumbnail.offsetTop - 16 - document.querySelector(".header").offsetHeight
+      }
     }
   })
 
