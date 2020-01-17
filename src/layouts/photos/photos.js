@@ -1,5 +1,4 @@
 import throttle from "lodash/throttle"
-import animateScrollTo from "animated-scroll-to"
 import config from "../../config"
 import { ready, trigger, getURLParams, numberWithCommas } from "../../utils"
 

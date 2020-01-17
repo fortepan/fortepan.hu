@@ -13,6 +13,10 @@ body {
     color: $light-base;
     background-color: $dark-primary;
   }
+
+  &.disable--selection {
+    user-select: none;
+  }
 }
 
 .base {

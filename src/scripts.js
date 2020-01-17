@@ -9,6 +9,7 @@ import "./config"
 import "./components/header/header"
 import "./components/carousel/carousel"
 import "./components/search/search"
+import "./components/timeline/timeline"
 
 // layouts
 import "./layouts/base/base"
