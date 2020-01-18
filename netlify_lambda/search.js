@@ -7,65 +7,78 @@ const client = new Client({
 exports.handler = (event, context, callback) => {
   const params = event.queryStringParameters
 
-  let query = { match_all: {} }
+  const query = {
+    bool: {
+      must: {
+        match_all: {},
+      },
+    },
+  }
 
   if (params.q) {
-    query = {
-      simple_query_string: {
-        query: `${params.q}*`,
-        fields: ["description^5", "*_name", "name"],
-      },
+    if (!query.bool.should) {
+      query.bool.should = []
+      query.bool.minimum_should_match = 1
     }
+    query.bool.should.push({ term: { description: `${params.q}*` } })
+    query.bool.should.push({ term: { name: `${params.q}*` } })
+    query.bool.should.push({ term: { varos_name: `${params.q}*` } })
+    query.bool.should.push({ term: { orszag_name: `${params.q}*` } })
+    query.bool.should.push({ term: { cimke_name: `${params.q}*` } })
   }
 
   if (params.tag) {
-    if (!params.q)
-      query = {
-        simple_query_string: {
-          fields: ["cimke_name"],
-          query: `"${params.tag}"`,
-        },
-      }
+    if (!query.bool.should) {
+      query.bool.should = []
+      query.bool.minimum_should_match = 1
+    }
+    query.bool.should.push({ term: { cimke_name: `${params.tag}` } })
   }
 
   if (params.year) {
-    if (!params.q)
-      query = {
-        simple_query_string: {
-          fields: ["year"],
-          query: params.year,
-        },
-      }
+    if (!query.bool.should) {
+      query.bool.should = []
+      query.bool.minimum_should_match = 1
+    }
+    query.bool.should.push({ term: { year: `${params.year}` } })
   }
 
   if (params.city) {
-    if (!params.q)
-      query = {
-        simple_query_string: {
-          fields: ["varos_name"],
-          query: `"${params.city}"`,
-        },
-      }
+    if (!query.bool.should) {
+      query.bool.should = []
+      query.bool.minimum_should_match = 1
+    }
+    query.bool.should.push({ term: { varos_name: `${params.city}` } })
   }
 
   if (params.country) {
-    if (!params.q)
-      query = {
-        simple_query_string: {
-          fields: ["orszag_name"],
-          query: `"${params.country}"`,
-        },
-      }
+    if (!query.bool.should) {
+      query.bool.should = []
+      query.bool.minimum_should_match = 1
+    }
+    query.bool.should.push({ term: { orszag_name: `${params.country}` } })
   }
 
   if (params.donor) {
-    if (!params.q)
-      query = {
-        simple_query_string: {
-          fields: ["name"],
-          query: `"${params.donor}"`,
-        },
-      }
+    if (!query.bool.should) {
+      query.bool.should = []
+      query.bool.minimum_should_match = 1
+    }
+    query.bool.should.push({ term: { donor: `${params.name}` } })
+  }
+
+  if (params.year_from || params.year_to) {
+    const y = {}
+    if (params.year_from) y.gte = params.year_from
+    if (params.year_from) y.lte = params.year_to
+
+    const filter = {
+      range: {
+        year: y,
+      },
+    }
+
+    query.bool.filter = filter
   }
 
   const requestBody = {
@@ -77,6 +90,7 @@ exports.handler = (event, context, callback) => {
   }
 
   console.log(JSON.stringify(requestBody))
+
   client.search(
     {
       index: "elasticsearch_index_fortepan_media",

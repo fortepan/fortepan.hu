@@ -23,6 +23,8 @@ const setRange = () => {
 
 const setTimelineRange = () => {
   timelineRange.textContent = `${yearStart} — ${yearEnd}`
+  sliderLeft.textContent = yearStart
+  sliderRight.textContent = yearEnd
 }
 
 const fixSlider = () => {

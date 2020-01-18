@@ -4,7 +4,7 @@
   left: 50%;
   width: calc(100% - 48px);
   max-width: rem(480px);
-  height: 56px;
+  height: 64px;
   padding: 1rem;
   border-radius: rem(8px);
   box-sizing: border-box;
@@ -18,7 +18,7 @@
   .theme--light & {
     color: $dark-base;
     background-color: $light-base;
-    box-shadow: 0px 0px 0px 1px rgba($dark-base, 0.06) inset, 0px 8px 24px 0px rgba($dark-base, 0.08);
+    box-shadow: 0px 0px 0px 1px rgba($dark-base, 0.06), 0px 8px 24px 0px rgba($dark-base, 0.08);
 
     &::before {
       background-color: rgba($dark-base, 0.08);
@@ -38,14 +38,14 @@
   &::before {
     content: "";
     position: absolute;
-    left: rem(40px);
-    right: rem(40px);
-    bottom: rem(27px);
+    left: rem(56px);
+    right: rem(56px);
+    bottom: rem(31px);
     height: 2px;
   }
 
   &:hover {
-    height: 120px;
+    height: 128px;
     transition: transform 0.3s $ease-out-expo, opacity 0.3s $ease-out-expo, left 0.5s $ease-out-expo,
       height 0.6s $ease-out-expo;
   }
@@ -84,31 +84,40 @@
   }
 
   &__slider__container {
-    height: rem(24px);
+    height: rem(40px);
     position: absolute;
     width: calc(100% - 32px);
-    left: 1rem;
-    bottom: 1rem;
+    left: rem(16px);
+    bottom: rem(12px);
   }
 
   &__slider {
     position: absolute;
-    width: rem(20px);
-    height: rem(20px);
+    width: rem(40px);
+    height: rem(40px);
     border-radius: 50%;
     transition: left 0.4s $ease-out-expo, background-color 0.3s $ease-out-expo;
     cursor: pointer;
+    @include font-heading-bold();
+    font-size: rem(11px);
+    line-height: 16px;
+    text-align: center;
+    overflow: hidden;
+    box-sizing: border-box;
+    padding-top: rem(10px);
 
     .timeline--drag & {
       transition: none;
     }
 
     .theme--light & {
+      color: $red;
       border: 2px solid $red;
       background-color: $light-base;
     }
 
     .theme--dark & {
+      color: $red;
       border: 2px solid $red;
       background-color: $dark-secondary;
     }
@@ -116,10 +125,12 @@
     &:hover,
     &--active {
       .theme--light & {
+        color: $light-base;
         background-color: $red;
       }
 
       .theme--dark & {
+        color: $light-base;
         background-color: $red;
       }
     }
@@ -127,7 +138,7 @@
 
   &__slider-selected-range {
     position: absolute;
-    bottom: rem(11px);
+    bottom: rem(19px);
     height: 2px;
     width: 0;
     transition: left 0.4s $ease-out-expo, width 0.4s $ease-out-expo;
