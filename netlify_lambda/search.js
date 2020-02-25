@@ -4,9 +4,32 @@ const client = new Client({
   node: "http://fortepan:fortepan@v39241.php-friends.de:9200",
 })
 
+const slugify = str => {
+  let s = str.toString()
+
+  const map = {
+    a: "á|à|ã|â|À|Á|Ã|Â",
+    e: "é|è|ê|É|È|Ê",
+    i: "í|ì|î|Í|Ì|Î",
+    o: "ó|ò|ö|ô|õ|ő|Ó|Ò|Ö|Ô|Õ|Ő",
+    u: "ú|ù|û|ü|ű|Ú|Ù|Û|Ü|Ű",
+    c: "ç|Ç",
+    n: "ñ|Ñ",
+  }
+
+  s = s.toLowerCase()
+
+  Object.keys(map).forEach(pattern => {
+    s = s.replace(new RegExp(map[pattern], "g"), pattern)
+  })
+
+  return s
+}
+
 exports.handler = (event, context, callback) => {
   const params = event.queryStringParameters
 
+  // returns all records
   const query = {
     bool: {
       must: {
@@ -15,26 +38,34 @@ exports.handler = (event, context, callback) => {
     },
   }
 
+  // if query (search term) exists
+  // then it'll search matches in name, description, orszag_name, cimke_name, and varos_name fields
+  // SHOULD means "OR" in elastic
   if (params.q) {
     if (!query.bool.should) {
       query.bool.should = []
       query.bool.minimum_should_match = 1
     }
-    query.bool.should.push({ term: { description: `${params.q}*` } })
-    query.bool.should.push({ term: { name: `${params.q}*` } })
-    query.bool.should.push({ term: { varos_name: `${params.q}*` } })
-    query.bool.should.push({ term: { orszag_name: `${params.q}*` } })
-    query.bool.should.push({ term: { cimke_name: `${params.q}*` } })
+
+    const q = slugify(params.q)
+    query.bool.should.push({ term: { description: `${q}` } })
+    query.bool.should.push({ term: { name_transliterated: `${q}` } })
+    query.bool.should.push({ term: { varos_transliterated: `${q}` } })
+    query.bool.should.push({ term: { orszag_transliterated: `${q}` } })
+    query.bool.should.push({ term: { cimke_transliterated: `${q}` } })
   }
 
+  // if there's a tag search attribute defined (advanced search)
   if (params.tag) {
     if (!query.bool.should) {
       query.bool.should = []
       query.bool.minimum_should_match = 1
     }
-    query.bool.should.push({ term: { cimke_name: `${params.tag}` } })
+    const tag = slugify(params.tag)
+    query.bool.should.push({ term: { cimke_transliterated: `${tag}` } })
   }
 
+  // if there's a year search attribute defined (advanced search)
   if (params.year) {
     if (!query.bool.should) {
       query.bool.should = []
@@ -43,30 +74,37 @@ exports.handler = (event, context, callback) => {
     query.bool.should.push({ term: { year: `${params.year}` } })
   }
 
+  // if there's a city search attribute defined (advanced search)
   if (params.city) {
     if (!query.bool.should) {
       query.bool.should = []
       query.bool.minimum_should_match = 1
     }
-    query.bool.should.push({ term: { varos_name: `${params.city}` } })
+    const city = slugify(params.city)
+    query.bool.should.push({ term: { varos_transliterated: `${city}` } })
   }
 
+  // if there's a country search attribute defined (advanced search)
   if (params.country) {
     if (!query.bool.should) {
       query.bool.should = []
       query.bool.minimum_should_match = 1
     }
-    query.bool.should.push({ term: { orszag_name: `${params.country}` } })
+    const country = slugify(params.country)
+    query.bool.should.push({ term: { orszag_transliterated: `${country}` } })
   }
 
+  // if there's a donor search attribute defined (advanced search)
   if (params.donor) {
     if (!query.bool.should) {
       query.bool.should = []
       query.bool.minimum_should_match = 1
     }
-    query.bool.should.push({ term: { donor: `${params.name}` } })
+    const donor = slugify(params.donor)
+    query.bool.should.push({ term: { donor_transliterated: `${donor}` } })
   }
 
+  // if there's a year range defined (advanced search / range filter)
   if (params.year_from || params.year_to) {
     const y = {}
     if (params.year_from) y.gte = params.year_from
@@ -88,8 +126,6 @@ exports.handler = (event, context, callback) => {
     track_total_hits: true,
     query,
   }
-
-  console.log(JSON.stringify(requestBody))
 
   client.search(
     {

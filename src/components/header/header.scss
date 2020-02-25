@@ -103,7 +103,7 @@
     position: absolute;
     padding: rem(24px);
     top: rem(64px);
-    transform: translate(-50%, 8px);
+    transform: translate(-90%, 8px);
     opacity: 0;
     user-select: none;
     pointer-events: none;
@@ -113,7 +113,7 @@
     &--show {
       opacity: 1;
       pointer-events: initial;
-      transform: translate(-50%, 0px);
+      transform: translate(-90%, 0px);
       transition: transform 0.6s $ease-out-expo, opacity 0.6s $ease-out-expo;
     }
 
@@ -130,7 +130,7 @@
         transform: rotate(45deg);
         background-color: $light-base;
         position: absolute;
-        left: calc(50% - 6px);
+        left: calc(90% - 6px);
         top: rem(-6px);
         box-shadow: -1px -1px 0px 0px rgba($dark-base, 0.04);
       }

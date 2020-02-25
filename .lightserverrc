@@ -11,7 +11,7 @@
     "_dist/**/*.{png,svg,jpg,jpeg,gif,mp4}"
  ],
  "http2": false,
- "open": false,
+ "open": true,
  "proxy": "http://localhost:9000",
  "proxypaths": [ "/.netlify" ]
 }

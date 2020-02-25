@@ -9,7 +9,9 @@
                 {% include buttons/circular.liquid icon:"forward" id:"PhotoNext" href:"#" label:lang[locale].next %}
             </div>
             <div class="carousel__control__actions">
+                {% comment %}
                 {% include buttons/circular.liquid icon:"bookmark" id:"PhotoBookmark" href:"#" label: lang[locale].bookmark %}
+                {% endcomment %}
                 {% include buttons/circular.liquid icon:"download" id:"PhotoDownload" href:"#" label: lang[locale].download %}
                 {% include buttons/circular.liquid icon:"share" id:"PhotoShare" href:"#" label: lang[locale].share %}
                 {% include buttons/circular.liquid icon:"sidebar" id:"PhotoDetails" href:"#" label: lang[locale].details %}
@@ -43,7 +45,9 @@
             <div class="carousel__meta__tags">
                 <h6>{{ lang[locale].tags }}</h6>
                 <p></p>
+                {% comment %}
                 <a class="carousel__meta__tags__add-tag">{{ lang[locale].add_tag }}</a>
+                {% endcomment %}
             </div>
         </div>
     </div>

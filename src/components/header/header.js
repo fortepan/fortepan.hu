@@ -25,7 +25,7 @@ const initHeader = () => {
     trigger("search:toggle")
   })
 
-  headerNode.querySelector("#HeaderNavigationToggle").addEventListener("mouseover", e => {
+  headerNode.querySelector("#HeaderNavigationToggle").addEventListener("click", e => {
     e.preventDefault()
     if (navTimer) clearTimeout(navTimer)
     const navToggleRect = e.currentTarget.getBoundingClientRect()
