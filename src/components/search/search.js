@@ -37,11 +37,16 @@ const initSearch = () => {
 
   searchInput.addEventListener("keydown", e => {
     if (e.key === "Enter") {
-      trigger("photos:historyPushState", {
-        url: `?q=${encodeURIComponent(searchInput.value)}`,
-        resetPhotosWrapper: true,
-      })
-      trigger("search:hide")
+      const q = `?q=${encodeURIComponent(searchInput.value)}`
+      if (window.location.pathname.indexOf("/photos") === -1) {
+        window.location = `/${searchNode.dataset.lang}/photos/${q}`
+      } else {
+        trigger("photos:historyPushState", {
+          url: q,
+          resetPhotosWrapper: true,
+        })
+        trigger("search:hide")
+      }
     }
   })
 

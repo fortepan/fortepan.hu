@@ -1,13 +1,17 @@
-<header class="header">
+<header class="header {{ class }}">
   <div class="header__logo">
     {% include buttons/circular.liquid icon:"close" id:"CarouselClose" href:"#" label:lang[locale].close class:"header__close button__circular--separator-after" %}
-    {% inlineSVG src:"src/static/images/header-logo.svg" class:"header__logo" %}
-    <span>Fortepan</span>
+    <a href="/" class="header__logo__link">
+      {% inlineSVG src:"src/static/images/header-logo.svg" class:"header__logo" %}
+      <span>Fortepan</span>
+    </a>
   </div>
   <div class="header__actions">
+    {% unless hide_search %}
     <div class="header__actions__group header__actions__group--search">
       {% include buttons/circular.liquid icon:"search" class:"button__circular--red" id:"HeaderSearch" href:"#" label: lang[locale].search %}
     </div>
+    {% endunless %}
     <div class="header__actions__group header__actions__group--nav">
       {% include buttons/circular.liquid icon:"darkmode" id:"DarkThemeSwitcher" href:"#" label: lang[locale].darkmode %}
       {% include buttons/circular.liquid icon:"lightmode" id:"LightThemeSwitcher" href:"#" label: lang[locale].lightmode %}
@@ -25,6 +29,7 @@
     {% endcomment %}
   </div>
   <div class="header__nav">
+    <a class="header__link header__link--top" href="/{{ locale }}/photos/">Fotók</a>
     <a class="header__link header__link--top" href="/{{ locale }}/about-us/">Rólunk</a>
     <a class="header__link header__link--top" href="/{{ locale }}/donors/">Adományozók</a>
     <a class="header__link header__link--top" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=fortepan%40fortepan.hu&currency_code=HUF&source=url">Támogatás</a>

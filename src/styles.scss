@@ -12,9 +12,11 @@
 @import "./components/carousel/carousel.scss";
 @import "./components/search/search.scss";
 @import "./components/timeline/timeline.scss";
+@import "./components/footer/footer.scss";
 
 /* layouts */
 @import "./layouts/base/base.scss";
+@import "./layouts/home/home.scss";
 @import "./layouts/photos/photos.scss";
 
 /* polyfills */

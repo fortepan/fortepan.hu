@@ -1,19 +1,23 @@
 .search {
-  position: absolute;
+  position: relative;
   z-index: 10000;
   box-shadow: 0 rem(12px) rem(24px) 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
   border-radius: rem(8px);
-  width: calc(100% - 40px);
   max-width: rem(640px);
   height: rem(64px);
-  left: 50%;
-  top: rem(112px);
   box-sizing: border-box;
   padding: rem(16px) rem(16px) rem(16px) rem(48px);
-  opacity: 0;
-  pointer-events: none;
-  transform: translateX(-50%) translateY(-16px);
   transition: transform 0.6s $ease-out-expo, opacity 0.3s $ease-out-expo;
+
+  &--floating {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    top: rem(112px);
+    left: 50%;
+    width: calc(100% - 40px);
+    transform: translateX(-50%) translateY(-16px);
+  }
 
   &--show {
     opacity: 1;

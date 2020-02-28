@@ -1,0 +1,66 @@
+.footer {
+  padding: rem(120px) 2rem 3rem;
+  overflow: hidden;
+  text-align: center;
+
+  @media screen and (max-width: ($breakpoint-tablet - 1px)) {
+    padding: rem(64px) 2rem 3rem;
+  }
+
+  &__link {
+    text-decoration: none;
+    transition: color 0.3s $ease-out-expo;
+    color: inherit;
+
+    @include font-heading-demi();
+    font-weight: 600;
+    text-transform: uppercase;
+    margin: 0 rem(16px);
+    letter-spacing: 1px;
+    line-height: rem(32px);
+
+    .theme--dark & {
+      color: $grey;
+
+      &:hover {
+        color: $light-base;
+      }
+    }
+
+    .theme--light & {
+      color: $grey;
+
+      &:hover {
+        color: $dark-base;
+      }
+    }
+  }
+
+  &__small {
+    display: block;
+    margin-top: 1.5rem;
+    font-size: rem(12px);
+    line-height: rem(20px);
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .theme--dark & {
+      color: $grey;
+
+      a:hover {
+        color: $light-base;
+      }
+    }
+
+    .theme--light & {
+      color: $grey;
+
+      a:hover {
+        color: $dark-base;
+      }
+    }
+  }
+}

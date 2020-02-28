@@ -58,18 +58,6 @@ body {
   }
 }
 
-.background {
-  position: absolute;
-  left: rem(-280px);
-  bottom: rem(64px);
-  perspective: 800;
-
-  svg {
-    transform-origin: 33% center;
-    transition: transform 0.1s $ease-out-expo;
-  }
-}
-
 .scrollview {
   overflow: auto;
   -webkit-overflow-scrolling: touch;

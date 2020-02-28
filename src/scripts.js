@@ -13,4 +13,5 @@ import "./components/timeline/timeline"
 
 // layouts
 import "./layouts/base/base"
+import "./layouts/home/home"
 import "./layouts/photos/photos"

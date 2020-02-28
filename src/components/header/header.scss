@@ -48,6 +48,13 @@
     height: rem(48px);
     align-items: center;
 
+    &__link {
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      align-items: center;
+    }
+
     svg {
       transition: transform 0.6s $ease-out-expo;
     }
@@ -140,6 +147,19 @@
       background-color: $dark-secondary;
       border-radius: rem(8px);
       box-shadow: 0px 0px 0px 1px rgba($light-base, 0.04) inset, 0px 8px 24px rgba($dark-base, 0.12);
+
+      &::before {
+        content: "";
+        width: rem(12px);
+        height: rem(12px);
+        border-radius: rem(4px) 0 0 0;
+        transform: rotate(45deg);
+        background-color: $dark-secondary;
+        position: absolute;
+        left: calc(90% - 6px);
+        top: rem(-6px);
+        box-shadow: -1px -1px 0px 0px rgba($light-base, 0.04);
+      }
     }
   }
 
@@ -190,7 +210,8 @@
       color: $grey;
     }
 
-    .theme--dark & {
+    .theme--dark &,
+    .header--transparent-dark & {
       color: $grey;
     }
 
@@ -198,7 +219,8 @@
       color: $dark-base;
     }
 
-    .theme--dark &--selected {
+    .theme--dark &--selected,
+    .header--transparent-dark & &--selected {
       color: $light-base;
     }
 
@@ -206,7 +228,8 @@
       color: $dark-base;
     }
 
-    .theme--dark &:hover {
+    .theme--dark &:hover,
+    .header--transparent-dark &:hover {
       color: $light-base;
     }
   }
@@ -219,6 +242,13 @@
   .theme--dark & {
     backdrop-filter: blur(20px);
     background-color: rgba($dark-primary, 0.9);
+  }
+
+  .theme--light &--transparent-dark,
+  .theme--dark &--transparent-dark {
+    background-color: transparent;
+    backdrop-filter: none;
+    color: $light-base;
   }
 
   .theme--light & #LightThemeSwitcher {

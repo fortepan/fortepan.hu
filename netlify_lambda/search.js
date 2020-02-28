@@ -53,6 +53,9 @@ exports.handler = (event, context, callback) => {
     query.bool.should.push({ term: { varos_transliterated: `${q}` } })
     query.bool.should.push({ term: { orszag_transliterated: `${q}` } })
     query.bool.should.push({ term: { cimke_transliterated: `${q}` } })
+    if (Number(q) > 0) {
+      query.bool.should.push({ term: { mid: `${q}` } })
+    }
   }
 
   // if there's a tag search attribute defined (advanced search)

@@ -177,6 +177,13 @@
 
       > p {
         margin: 0;
+        font-size: rem(12px);
+        font-weight: normal;
+        line-height: rem(20px);
+
+        a {
+          font-weight: normal;
+        }
       }
 
       &__add-tag {

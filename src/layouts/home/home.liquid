@@ -1,0 +1,17 @@
+---
+layout: base/base.liquid
+---
+
+<div class="home scrollview">
+  <section class="home__hero">
+    <div class="home__hero__background"></div>
+    {% include search/search.liquid class:"home__hero__search" %}
+    <div class="home__hero__content">
+      <h3 class="home__hero__headline">{{ headline}}</h3>
+      <div class="home__hero__text">{{ content }}</div>
+    </div>
+  </section>
+  {% include footer/footer.liquid %}
+</div>
+
+{% include header/header.liquid hide_search:true class:"theme--dark header--transparent-dark" %}

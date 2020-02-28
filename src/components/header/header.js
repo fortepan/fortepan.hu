@@ -20,10 +20,12 @@ const initHeader = () => {
     trigger("carousel:hide")
   })
 
-  headerNode.querySelector("#HeaderSearch").addEventListener("click", e => {
-    e.preventDefault()
-    trigger("search:toggle")
-  })
+  if (headerNode.querySelector("#HeaderSearch")) {
+    headerNode.querySelector("#HeaderSearch").addEventListener("click", e => {
+      e.preventDefault()
+      trigger("search:toggle")
+    })
+  }
 
   headerNode.querySelector("#HeaderNavigationToggle").addEventListener("click", e => {
     e.preventDefault()
