@@ -207,4 +207,18 @@
       background-color: $dark-secondary;
     }
   }
+
+  #PhotoSlideshowPause {
+    display: none;
+
+    .base--carousel-slideshow & {
+      display: flex;
+    }
+  }
+
+  #PhotoSlideshowPlay {
+    .base--carousel-slideshow & {
+      display: none;
+    }
+  }
 }

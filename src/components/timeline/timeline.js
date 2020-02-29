@@ -1,11 +1,11 @@
 import throttle from "lodash/throttle"
-import { ready, trigger } from "../../utils"
+import { ready } from "../../utils"
 
 const YEAR_MIN = 1900
 const YEAR_MAX = 1990
 
-let yearStart = YEAR_MIN + Math.round(Math.random() * 80)
-let yearEnd = yearStart + 10
+let yearStart
+let yearEnd
 
 let timelineNode
 let timelineTimer
@@ -120,12 +120,15 @@ const initSliderRight = () => {
   })
 }
 
-const initTimeline = () => {
+const initTimeline = (start, end, random) => {
   timelineRange = document.querySelector("#TimelineRange")
   timelineSlider = document.querySelector("#TimelineSlider")
   sliderSelectedRange = document.querySelector("#TimelineSliderSelectedRange")
   sliderLeft = document.querySelector("#TimelineSliderLeft")
   sliderRight = document.querySelector("#TimelineSliderRight")
+
+  yearStart = random ? YEAR_MIN + Math.round(Math.random() * 80) : start
+  yearEnd = random ? yearStart + 10 : end
 
   setRange()
   setTimelineRange()
@@ -160,7 +163,11 @@ const initTimeline = () => {
   )
 }
 
+document.addEventListener("initTimeline", e => {
+  const opts = e.detail
+  initTimeline(opts.yearStart || YEAR_MIN, opts.yearEnd || YEAR_MAX, opts.random)
+})
+
 ready(() => {
   timelineNode = document.querySelector(".timeline")
-  if (timelineNode) initTimeline()
 })

@@ -5,6 +5,14 @@ import { ready, trigger } from "../../utils"
 let carouselNode = null
 let carouselControl = null
 let carouselControlTimer
+let metaHiddenBeforeSlideshow = false
+
+const downloadImage = (name, uri) => {
+  const link = document.createElement("a")
+  link.download = name
+  link.href = uri
+  link.click()
+}
 
 document.addEventListener("carousel:loadPhoto", e => {
   const d = e.detail
@@ -39,6 +47,10 @@ document.addEventListener("carousel:loadPhoto", e => {
     })
   })
 
+  // set download button
+  carouselControl.querySelector("#PhotoDownload").setAttribute("data-name", `${d.mid}.jpg`)
+  carouselControl.querySelector("#PhotoDownload").setAttribute("data-uri", `${config.PHOTO_SOURCE}${d.mid}.jpg`)
+
   trigger("carousel:show")
 })
 
@@ -65,7 +77,13 @@ document.addEventListener("carousel:hideMeta", () => {
 
 document.addEventListener("carousel:playSlideshow", () => {
   document.querySelector("body").classList.add("base--carousel-slideshow")
+  metaHiddenBeforeSlideshow = document.querySelector("body").classList.contains("base--hide-carousel-meta")
   trigger("carousel:hideMeta")
+})
+
+document.addEventListener("carousel:pauseSlideshow", () => {
+  document.querySelector("body").classList.remove("base--carousel-slideshow")
+  if (!metaHiddenBeforeSlideshow) trigger("carousel:toggleMeta")
 })
 
 const initCarousel = el => {
@@ -84,9 +102,24 @@ const initCarousel = el => {
     trigger("carousel:toggleMeta")
   })
 
-  el.querySelector("#PhotoSlideshow").addEventListener("click", e => {
+  el.querySelector("#PhotoSlideshowPlay").addEventListener("click", e => {
     e.preventDefault()
     trigger("carousel:playSlideshow")
+  })
+
+  el.querySelector("#PhotoSlideshowPause").addEventListener("click", e => {
+    e.preventDefault()
+    trigger("carousel:pauseSlideshow")
+  })
+
+  el.querySelector("#PhotoSlideshowPause").addEventListener("click", e => {
+    e.preventDefault()
+    trigger("carousel:pauseSlideshow")
+  })
+
+  el.querySelector("#PhotoDownload").addEventListener("click", e => {
+    e.preventDefault()
+    downloadImage(e.currentTarget.dataset.name, e.currentTarget.dataset.uri)
   })
 
   carouselNode.addEventListener(

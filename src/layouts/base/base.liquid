@@ -15,7 +15,7 @@
       href="/{% if siteData.environment == 'production' %}{{ manifestCSS['app.css'] }}{% else %}app.css{% endif %}"
     />
   </head>
-  <body class="theme--light" itemscope itemtype="http://schema.org/WebPage">
+  <body itemscope itemtype="http://schema.org/WebPage">
     <div class="base__main">
     {{ content }}
     </div>
