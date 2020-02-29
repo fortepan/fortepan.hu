@@ -78,6 +78,7 @@
     "btoa": "^1.2.1",
     "buffer": "^5.4.3",
     "custom-event-polyfill": "^1.0.7",
+    "downloadjs": "^1.4.7",
     "lodash": "^4.17.15",
     "request": "^2.88.0",
     "whatwg-fetch": "^3.0.0"

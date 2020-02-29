@@ -1,4 +1,5 @@
 import throttle from "lodash/throttle"
+import downloadFile from "downloadjs"
 import config from "../../config"
 import { ready, trigger } from "../../utils"
 
@@ -6,13 +7,6 @@ let carouselNode = null
 let carouselControl = null
 let carouselControlTimer
 let metaHiddenBeforeSlideshow = false
-
-const downloadImage = (name, uri) => {
-  const link = document.createElement("a")
-  link.download = name
-  link.href = uri
-  link.click()
-}
 
 document.addEventListener("carousel:loadPhoto", e => {
   const d = e.detail
@@ -119,7 +113,7 @@ const initCarousel = el => {
 
   el.querySelector("#PhotoDownload").addEventListener("click", e => {
     e.preventDefault()
-    downloadImage(e.currentTarget.dataset.name, e.currentTarget.dataset.uri)
+    downloadFile(e.currentTarget.dataset.uri)
   })
 
   carouselNode.addEventListener(
