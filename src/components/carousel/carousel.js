@@ -3,10 +3,13 @@ import downloadFile from "downloadjs"
 import config from "../../config"
 import { ready, trigger } from "../../utils"
 
+const CAROUSEL_SLIDESHOW_DELAY = 4000
+
 let carouselNode = null
 let carouselControl = null
 let carouselControlTimer
 let metaHiddenBeforeSlideshow = false
+let carouselSlideshowInterval = null
 
 document.addEventListener("carousel:loadPhoto", e => {
   const d = e.detail
@@ -26,9 +29,9 @@ document.addEventListener("carousel:loadPhoto", e => {
   document.querySelector(".carousel__meta__description").innerHTML = d.description ? d.description : ""
   document.querySelector(".carousel__meta__id h5").textContent = d.mid
   document.querySelector(".carousel__meta__year h5").innerHTML = `<a href="?year=${d.year}">${d.year}</a>`
-  document.querySelector(".carousel__meta__donor h5").innerHTML = `<a href="?donor=${encodeURIComponent(d.name)}">${
-    d.name
-  }</a>`
+  document.querySelector(".carousel__meta__donor h5").innerHTML = `<a href="?donor=${encodeURIComponent(
+    d.adomanyozo_name
+  )}">${d.adomanyozo_name}</a>`
   document.querySelector(".carousel__meta__tags p").innerHTML = d.cimke_name
     ? d.cimke_name.map(tag => `<a href="?tag=${encodeURIComponent(tag)}">${tag}</a>`).join(", ")
     : ""
@@ -56,6 +59,9 @@ document.addEventListener("carousel:show", () => {
 })
 
 document.addEventListener("carousel:hide", () => {
+  // pause slideshow when carousel gets closed
+  if (document.querySelector("body").classList.contains("base--carousel-slideshow")) trigger("carousel:pauseSlideshow")
+
   carouselNode.classList.remove("carousel--show")
 })
 
@@ -73,11 +79,24 @@ document.addEventListener("carousel:playSlideshow", () => {
   document.querySelector("body").classList.add("base--carousel-slideshow")
   metaHiddenBeforeSlideshow = document.querySelector("body").classList.contains("base--hide-carousel-meta")
   trigger("carousel:hideMeta")
+
+  carouselSlideshowInterval = setInterval(() => {
+    trigger("photos:showNextPhoto")
+  }, CAROUSEL_SLIDESHOW_DELAY)
 })
 
 document.addEventListener("carousel:pauseSlideshow", () => {
   document.querySelector("body").classList.remove("base--carousel-slideshow")
   if (!metaHiddenBeforeSlideshow) trigger("carousel:toggleMeta")
+  clearInterval(carouselSlideshowInterval)
+})
+
+document.addEventListener("carousel:toggleSlideshow", () => {
+  if (document.querySelector("body").classList.contains("base--carousel-slideshow")) {
+    trigger("carousel:pauseSlideshow")
+  } else {
+    trigger("carousel:playSlideshow")
+  }
 })
 
 const initCarousel = el => {
@@ -99,11 +118,6 @@ const initCarousel = el => {
   el.querySelector("#PhotoSlideshowPlay").addEventListener("click", e => {
     e.preventDefault()
     trigger("carousel:playSlideshow")
-  })
-
-  el.querySelector("#PhotoSlideshowPause").addEventListener("click", e => {
-    e.preventDefault()
-    trigger("carousel:pauseSlideshow")
   })
 
   el.querySelector("#PhotoSlideshowPause").addEventListener("click", e => {
@@ -143,9 +157,13 @@ const initCarousel = el => {
   document.addEventListener("keydown", e => {
     if (!carouselNode.classList.contains("carousel--show")) return
 
+    console.log(e.key)
     switch (e.key) {
       case "Escape":
         trigger("carousel:hide")
+        break
+      case " ":
+        trigger("carousel:toggleSlideshow")
         break
       case "ArrowLeft":
         trigger("photos:showPrevPhoto")

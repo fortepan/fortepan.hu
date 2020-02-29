@@ -9,7 +9,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: box-shadow 0.6s $ease-out-expo, background-color 0.2s $ease-out-expo, color 0.2s $ease-out-expo;
+  transition: box-shadow 0.6s $ease-out-expo, background-color 0.2s $ease-out-expo, color 0.2s $ease-out-expo,
+    transform 0.6s $ease-out-expo;
   user-select: none;
 
   &--shadow-bottom,
@@ -257,5 +258,9 @@
 
   .theme--dark & #DarkThemeSwitcher {
     display: none;
+  }
+
+  .base--carousel-slideshow & {
+    transform: translateY(-100%);
   }
 }

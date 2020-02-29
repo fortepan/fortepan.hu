@@ -21,7 +21,6 @@ const init = () => {
 }
 
 ready(() => {
-  console.log("x")
   if (document.querySelector(".home")) {
     init()
   }

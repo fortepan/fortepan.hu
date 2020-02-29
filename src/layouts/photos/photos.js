@@ -52,6 +52,8 @@ const Thumbnail = data => {
   const d = data._source
   const t = document.createRange().createContextualFragment(document.getElementById("Thumbnail").innerHTML)
 
+  console.log(d)
+
   // Fill template with data
   const locationArray = []
   if (d.year) locationArray.push(d.year)

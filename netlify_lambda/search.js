@@ -48,11 +48,12 @@ exports.handler = (event, context, callback) => {
     }
 
     const q = slugify(params.q)
-    query.bool.should.push({ term: { description: `${q}` } })
-    query.bool.should.push({ term: { name_transliterated: `${q}` } })
+    query.bool.should.push({ term: { description_transliterated: `${q}` } })
+    query.bool.should.push({ term: { adomanyozo_name: `${params.q}` } })
     query.bool.should.push({ term: { varos_transliterated: `${q}` } })
     query.bool.should.push({ term: { orszag_transliterated: `${q}` } })
     query.bool.should.push({ term: { cimke_transliterated: `${q}` } })
+    query.bool.should.push({ term: { cimke_syn_transliterated: `${q}` } })
     if (Number(q) > 0) {
       query.bool.should.push({ term: { mid: `${q}` } })
     }
@@ -66,6 +67,7 @@ exports.handler = (event, context, callback) => {
     }
     const tag = slugify(params.tag)
     query.bool.should.push({ term: { cimke_transliterated: `${tag}` } })
+    query.bool.should.push({ term: { cimke_syn_transliterated: `${tag}` } })
   }
 
   // if there's a year search attribute defined (advanced search)
@@ -103,8 +105,8 @@ exports.handler = (event, context, callback) => {
       query.bool.should = []
       query.bool.minimum_should_match = 1
     }
-    const donor = slugify(params.donor)
-    query.bool.should.push({ term: { donor_transliterated: `${donor}` } })
+    const { donor } = params
+    query.bool.should.push({ term: { adomanyozo_name: `${donor}` } })
   }
 
   // if there's a year range defined (advanced search / range filter)
