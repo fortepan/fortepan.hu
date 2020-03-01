@@ -47,7 +47,7 @@ exports.handler = (event, context, callback) => {
       query.bool.minimum_should_match = 1
     }
 
-    const queryArray = slugify(params.q)
+    const q = slugify(params.q)
     query.bool.should.push({ term: { description_search: `${q}` } })
     query.bool.should.push({ term: { adomanyozo_search: `${q}` } })
     query.bool.should.push({ term: { varos_search: `${q}` } })
