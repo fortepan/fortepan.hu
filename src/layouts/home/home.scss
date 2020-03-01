@@ -72,12 +72,18 @@
     }
 
     &__headline {
+      font-size: rem(24px);
       flex: 0 0 50%;
       padding: 0 rem(20px);
     }
 
     &__text {
       padding: rem(12px) rem(20px);
+
+      p {
+        font-size: rem(14px);
+        line-height: rem(24px);
+      }
     }
   }
 }

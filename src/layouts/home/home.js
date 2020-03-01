@@ -1,4 +1,4 @@
-import { ready } from "../../utils"
+import { ready, trigger } from "../../utils"
 import config from "../../config"
 
 let heroBg = null
@@ -18,6 +18,15 @@ const init = () => {
   // add event listeners
   heroBg = document.querySelector(".home__hero__background")
   loadBackgroundImage()
+
+  document.querySelector(".home").addEventListener("scroll", e => {
+    const view = e.target
+    if (view.scrollTop > 0) {
+      trigger("header:addShadow")
+    } else {
+      trigger("header:removeShadow")
+    }
+  })
 }
 
 ready(() => {

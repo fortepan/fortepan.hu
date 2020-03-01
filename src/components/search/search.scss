@@ -1,6 +1,5 @@
 .search {
   position: relative;
-  z-index: 10000;
   box-shadow: 0 rem(12px) rem(24px) 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
   border-radius: rem(8px);
   max-width: rem(640px);
@@ -11,6 +10,7 @@
 
   &--floating {
     position: absolute;
+    z-index: 10000;
     opacity: 0;
     pointer-events: none;
     top: rem(112px);

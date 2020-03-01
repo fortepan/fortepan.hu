@@ -9,7 +9,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: box-shadow 0.6s $ease-out-expo, background-color 0.2s $ease-out-expo, color 0.2s $ease-out-expo,
+  transition: box-shadow 0.6s $ease-out-expo, background-color 0.4s $ease-out-expo, color 0.2s $ease-out-expo,
     transform 0.6s $ease-out-expo;
   user-select: none;
 
@@ -229,8 +229,7 @@
       color: $dark-base;
     }
 
-    .theme--dark &:hover,
-    .header--transparent-dark &:hover {
+    .theme--dark &:hover {
       color: $light-base;
     }
   }
@@ -245,8 +244,14 @@
 
   .theme--light &--transparent-dark,
   .theme--dark &--transparent-dark {
-    background-color: transparent;
-    color: $light-base;
+    .button__circular {
+      color: inherit;
+    }
+
+    &:not(.header--shadow-bottom) {
+      color: $light-base;
+      background-color: transparent;
+    }
   }
 
   .theme--light & #LightThemeSwitcher {
