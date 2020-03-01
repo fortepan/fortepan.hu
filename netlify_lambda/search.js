@@ -8,7 +8,6 @@ const slugify = str => {
   let s = str.toString()
 
   const map = {
-    "-": " |_|—",
     a: "á|à|ã|â|À|Á|Ã|Â",
     e: "é|è|ê|É|È|Ê",
     i: "í|ì|î|Í|Ì|Î",
@@ -18,7 +17,7 @@ const slugify = str => {
     n: "ñ|Ñ",
   }
 
-  // s = s.toLowerCase()
+  s = s.toLowerCase()
 
   Object.keys(map).forEach(pattern => {
     s = s.replace(new RegExp(map[pattern], "g"), pattern)
@@ -48,18 +47,16 @@ exports.handler = (event, context, callback) => {
       query.bool.minimum_should_match = 1
     }
 
-    const queryArray = slugify(params.q).split("-")
-    queryArray.forEach(q => {
-      query.bool.should.push({ term: { description_transliterated: `${q}` } })
-      query.bool.should.push({ term: { adomanyozo_transliterated: `${q}` } })
-      query.bool.should.push({ term: { varos_transliterated: `${q}` } })
-      query.bool.should.push({ term: { orszag_transliterated: `${q}` } })
-      query.bool.should.push({ term: { cimke_transliterated: `${q}` } })
-      query.bool.should.push({ term: { cimke_syn_transliterated: `${q}` } })
-      if (Number(q) > 0) {
-        query.bool.should.push({ term: { mid: `${q}` } })
-      }
-    })
+    const queryArray = slugify(params.q)
+    query.bool.should.push({ term: { description_search: `${q}` } })
+    query.bool.should.push({ term: { adomanyozo_search: `${q}` } })
+    query.bool.should.push({ term: { varos_search: `${q}` } })
+    query.bool.should.push({ term: { helyszin_search: `${q}` } })
+    query.bool.should.push({ term: { orszag_search: `${q}` } })
+    query.bool.should.push({ term: { cimke_search: `${q}` } })
+    if (Number(q) > 0) {
+      query.bool.should.push({ term: { mid: `${q}` } })
+    }
   }
 
   // if there's a tag search attribute defined (advanced search)
@@ -69,8 +66,7 @@ exports.handler = (event, context, callback) => {
       query.bool.minimum_should_match = 1
     }
     const tag = slugify(params.tag)
-    query.bool.should.push({ term: { cimke_transliterated: `${tag}` } })
-    query.bool.should.push({ term: { cimke_syn_transliterated: `${tag}` } })
+    query.bool.should.push({ term: { cimke_search: `${tag}` } })
   }
 
   // if there's a year search attribute defined (advanced search)
@@ -89,7 +85,7 @@ exports.handler = (event, context, callback) => {
       query.bool.minimum_should_match = 1
     }
     const city = slugify(params.city)
-    query.bool.should.push({ term: { varos_transliterated: `${city}` } })
+    query.bool.should.push({ term: { varos_search: `${city}` } })
   }
 
   // if there's a country search attribute defined (advanced search)
@@ -99,7 +95,7 @@ exports.handler = (event, context, callback) => {
       query.bool.minimum_should_match = 1
     }
     const country = slugify(params.country)
-    query.bool.should.push({ term: { orszag_transliterated: `${country}` } })
+    query.bool.should.push({ term: { orszag_search: `${country}` } })
   }
 
   // if there's a donor search attribute defined (advanced search)
@@ -109,7 +105,7 @@ exports.handler = (event, context, callback) => {
       query.bool.minimum_should_match = 1
     }
     const { donor } = params
-    query.bool.should.push({ term: { adomanyozo_name: `${donor}` } })
+    query.bool.should.push({ term: { adomanyozo_search: `${donor}` } })
   }
 
   // if there's a year range defined (advanced search / range filter)
@@ -130,7 +126,7 @@ exports.handler = (event, context, callback) => {
   const requestBody = {
     from: params.from || 0,
     size: params.size || 30,
-    sort: [{ year: { order: "asc" } }, { old_id: { order: "asc" } }],
+    sort: [{ year: { order: "asc" } }, { mid: { order: "asc" } }],
     track_total_hits: true,
     query,
   }

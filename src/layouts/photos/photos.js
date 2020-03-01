@@ -88,6 +88,8 @@ const Thumbnail = data => {
 
     d.elIndex = Array.prototype.indexOf.call(e.currentTarget.parentElement.children, e.currentTarget) + 1
 
+    console.log(d)
+
     // Load photo in Carousel
     trigger("carousel:loadPhoto", d)
   })
