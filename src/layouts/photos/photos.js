@@ -52,8 +52,6 @@ const Thumbnail = data => {
   const d = data._source
   const t = document.createRange().createContextualFragment(document.getElementById("Thumbnail").innerHTML)
 
-  console.log(d)
-
   // Fill template with data
   const locationArray = []
   if (d.year) locationArray.push(d.year)
@@ -87,6 +85,8 @@ const Thumbnail = data => {
     if (selectedThumbnail) selectedThumbnail.classList.remove("photos__thumbnail--selected")
     selectedThumbnail = e.currentTarget
     selectedThumbnail.classList.add("photos__thumbnail--selected")
+
+    d.elIndex = Array.prototype.indexOf.call(e.currentTarget.parentElement.children, e.currentTarget) + 1
 
     // Load photo in Carousel
     trigger("carousel:loadPhoto", d)

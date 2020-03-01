@@ -51,7 +51,6 @@
     width: calc(100% - 48px);
     max-width: rem(360px);
     z-index: 1;
-    backdrop-filter: blur(20px);
     border-radius: rem(8px);
     transform: translateX(-50%) scale(0.98);
     opacity: 0;
@@ -92,7 +91,7 @@
     }
 
     .theme--light & {
-      background-color: rgba($light-primary, 0.4);
+      background-color: rgba($light-primary, 0.98);
       box-shadow: 0px 0px 0px 1px rgba($dark-base, 0.06) inset, 0px 8px 24px 0px rgba($dark-base, 0.08);
 
       &__bottom {
@@ -101,7 +100,7 @@
     }
 
     .theme--dark & {
-      background-color: rgba($dark-secondary, 0.4);
+      background-color: rgba($dark-secondary, 0.98);
       box-shadow: 0px 0px 0px 1px rgba($light-base, 0.06) inset, 0px 8px 24px 0px rgba($dark-base, 0.08);
 
       &__bottom {

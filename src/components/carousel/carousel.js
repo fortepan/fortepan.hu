@@ -1,5 +1,4 @@
 import throttle from "lodash/throttle"
-import downloadFile from "downloadjs"
 import config from "../../config"
 import { ready, trigger } from "../../utils"
 
@@ -10,6 +9,14 @@ let carouselControl = null
 let carouselControlTimer
 let metaHiddenBeforeSlideshow = false
 let carouselSlideshowInterval = null
+
+const downloadImage = (name, uri) => {
+  const a = document.createElement("a")
+  a.href = uri
+  a.download = name
+  a.target = "_blank"
+  a.click()
+}
 
 document.addEventListener("carousel:loadPhoto", e => {
   const d = e.detail
@@ -44,9 +51,17 @@ document.addEventListener("carousel:loadPhoto", e => {
     })
   })
 
-  // set download button
+  // Set download button
   carouselControl.querySelector("#PhotoDownload").setAttribute("data-name", `${d.mid}.jpg`)
-  carouselControl.querySelector("#PhotoDownload").setAttribute("data-uri", `${config.PHOTO_SOURCE}${d.mid}.jpg`)
+  carouselControl.querySelector("#PhotoDownload").setAttribute("data-uri", `${config.PHOTO_SOURCE_LARGE}${d.mid}.jpg`)
+
+  // Set Controller meta
+  carouselControl.querySelector(".carousel__control__search").innerHTML = document.getElementById(
+    "PhotosSearchExpression"
+  ).innerHTML
+  carouselControl.querySelector(".carousel__control__counter").textContent = `${d.elIndex} / ${
+    document.getElementById("PhotosCount").textContent
+  }`
 
   trigger("carousel:show")
 })
@@ -127,7 +142,7 @@ const initCarousel = el => {
 
   el.querySelector("#PhotoDownload").addEventListener("click", e => {
     e.preventDefault()
-    downloadFile(e.currentTarget.dataset.uri)
+    downloadImage(e.currentTarget.dataset.name, e.currentTarget.dataset.uri)
   })
 
   carouselNode.addEventListener(
@@ -157,7 +172,6 @@ const initCarousel = el => {
   document.addEventListener("keydown", e => {
     if (!carouselNode.classList.contains("carousel--show")) return
 
-    console.log(e.key)
     switch (e.key) {
       case "Escape":
         trigger("carousel:hide")

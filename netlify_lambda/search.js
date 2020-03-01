@@ -8,6 +8,7 @@ const slugify = str => {
   let s = str.toString()
 
   const map = {
+    "-": " |_|—",
     a: "á|à|ã|â|À|Á|Ã|Â",
     e: "é|è|ê|É|È|Ê",
     i: "í|ì|î|Í|Ì|Î",
@@ -17,7 +18,7 @@ const slugify = str => {
     n: "ñ|Ñ",
   }
 
-  s = s.toLowerCase()
+  // s = s.toLowerCase()
 
   Object.keys(map).forEach(pattern => {
     s = s.replace(new RegExp(map[pattern], "g"), pattern)
@@ -47,16 +48,18 @@ exports.handler = (event, context, callback) => {
       query.bool.minimum_should_match = 1
     }
 
-    const q = slugify(params.q)
-    query.bool.should.push({ term: { description_transliterated: `${q}` } })
-    query.bool.should.push({ term: { adomanyozo_name: `${params.q}` } })
-    query.bool.should.push({ term: { varos_transliterated: `${q}` } })
-    query.bool.should.push({ term: { orszag_transliterated: `${q}` } })
-    query.bool.should.push({ term: { cimke_transliterated: `${q}` } })
-    query.bool.should.push({ term: { cimke_syn_transliterated: `${q}` } })
-    if (Number(q) > 0) {
-      query.bool.should.push({ term: { mid: `${q}` } })
-    }
+    const queryArray = slugify(params.q).split("-")
+    queryArray.forEach(q => {
+      query.bool.should.push({ term: { description_transliterated: `${q}` } })
+      query.bool.should.push({ term: { adomanyozo_transliterated: `${q}` } })
+      query.bool.should.push({ term: { varos_transliterated: `${q}` } })
+      query.bool.should.push({ term: { orszag_transliterated: `${q}` } })
+      query.bool.should.push({ term: { cimke_transliterated: `${q}` } })
+      query.bool.should.push({ term: { cimke_syn_transliterated: `${q}` } })
+      if (Number(q) > 0) {
+        query.bool.should.push({ term: { mid: `${q}` } })
+      }
+    })
   }
 
   // if there's a tag search attribute defined (advanced search)
@@ -127,7 +130,7 @@ exports.handler = (event, context, callback) => {
   const requestBody = {
     from: params.from || 0,
     size: params.size || 30,
-    sort: "year",
+    sort: [{ year: { order: "asc" } }, { old_id: { order: "asc" } }],
     track_total_hits: true,
     query,
   }

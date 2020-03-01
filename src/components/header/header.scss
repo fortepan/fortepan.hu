@@ -236,19 +236,16 @@
   }
 
   .theme--light & {
-    backdrop-filter: blur(20px);
-    background-color: rgba($light-base, 0.9);
+    background-color: $light-base;
   }
 
   .theme--dark & {
-    backdrop-filter: blur(20px);
-    background-color: rgba($dark-primary, 0.9);
+    background-color: $dark-primary;
   }
 
   .theme--light &--transparent-dark,
   .theme--dark &--transparent-dark {
     background-color: transparent;
-    backdrop-filter: none;
     color: $light-base;
   }
 
