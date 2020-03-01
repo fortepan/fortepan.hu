@@ -117,6 +117,7 @@
     pointer-events: none;
     transition: transform 0.3s $ease-out-expo, opacity 0.3s $ease-out-expo;
     transform-origin: 50% 0;
+    white-space: nowrap;
 
     &--show {
       opacity: 1;

@@ -13,11 +13,13 @@
 @import "./components/search/search.scss";
 @import "./components/timeline/timeline.scss";
 @import "./components/footer/footer.scss";
+@import "./components/background-icon/background-icon.scss";
 
 /* layouts */
 @import "./layouts/base/base.scss";
 @import "./layouts/home/home.scss";
 @import "./layouts/photos/photos.scss";
+@import "./layouts/article/article.scss";
 
 /* polyfills */
 template {

@@ -27,6 +27,11 @@ h1 {
   line-height: rem(72px);
   @include font-heading-bold();
   letter-spacing: -2px;
+
+  @media screen and (max-width: ($breakpoint-phone - 1px)) {
+    font-size: rem(48px);
+    line-height: rem(56px);
+  }
 }
 
 h3 {
@@ -64,5 +69,24 @@ p a {
 
   &:hover {
     border-bottom: 1px solid $red;
+  }
+}
+
+blockquote {
+  margin: 0 0 2rem;
+  padding: 0.5rem 1.5rem;
+  border-radius: rem(8px);
+  backdrop-filter: blur(20px);
+
+  p {
+    font-weight: 700;
+  }
+
+  .theme--light & {
+    background-color: rgba($light-primary, 0.4);
+  }
+
+  .theme--dark & {
+    background-color: rgba($dark-secondary, 0.4);
   }
 }

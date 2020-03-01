@@ -1,0 +1,24 @@
+.article {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+  h1 {
+    color: $red;
+  }
+
+  &__content {
+    position: relative;
+    padding: rem(64px) rem(32px) 0;
+    max-width: rem(640px);
+    margin: 0 auto;
+
+    @media screen and (max-width: ($breakpoint-tablet - 1px)) {
+      padding: rem(80px) rem(20px) 0;
+    }
+  }
+}

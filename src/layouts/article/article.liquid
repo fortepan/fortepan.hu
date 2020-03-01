@@ -1,0 +1,15 @@
+---
+layout: base/base.liquid
+---
+
+<div class="article scrollview">
+  <section class="article__content">
+  <h1>{{ title }}</h1>
+  {{ content }}
+  </section>
+  {% include footer/footer.liquid %}
+</div>
+
+{% include header/header.liquid %}
+{% include background-icon/background-icon.liquid %}
+{% include search/search.liquid class:"search--floating" %}
