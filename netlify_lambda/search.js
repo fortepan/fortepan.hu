@@ -104,7 +104,7 @@ exports.handler = (event, context, callback) => {
       query.bool.should = []
       query.bool.minimum_should_match = 1
     }
-    const { donor } = params
+    const donor = slugify(params.donor)
     query.bool.should.push({ term: { adomanyozo_search: `${donor}` } })
   }
 
