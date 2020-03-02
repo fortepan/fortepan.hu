@@ -42,13 +42,14 @@ exports.handler = (event, context, callback) => {
   // then it'll search matches in name, description, orszag_name, cimke_name, and varos_name fields
   // SHOULD means "OR" in elastic
   if (params.q) {
+    delete query.bool.must
     if (!query.bool.should) {
       query.bool.should = []
       query.bool.minimum_should_match = 1
     }
 
     const q = slugify(params.q)
-    query.bool.should.push({ term: { description_search: `${q}` } })
+    query.bool.should.push({ term: { description_transliterated: `${q}` } })
     query.bool.should.push({ term: { adomanyozo_search: `${q}` } })
     query.bool.should.push({ term: { varos_search: `${q}` } })
     query.bool.should.push({ term: { helyszin_search: `${q}` } })
@@ -130,6 +131,8 @@ exports.handler = (event, context, callback) => {
     track_total_hits: true,
     query,
   }
+
+  console.log(JSON.stringify(requestBody))
 
   client.search(
     {
