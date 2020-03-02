@@ -47,66 +47,61 @@ exports.handler = (event, context, callback) => {
       query.bool.should = []
       query.bool.minimum_should_match = 1
     }
-
     const q = slugify(params.q)
-    query.bool.should.push({ term: { description_transliterated: `${q}` } })
-    query.bool.should.push({ term: { adomanyozo_search: `${q}` } })
+    query.bool.should.push({ match_phrase: { description_transliterated: `${q}` } })
     query.bool.should.push({ term: { varos_search: `${q}` } })
-    query.bool.should.push({ term: { helyszin_search: `${q}` } })
     query.bool.should.push({ term: { orszag_search: `${q}` } })
-    query.bool.should.push({ term: { cimke_search: `${q}` } })
+    query.bool.should.push({ wildcard: { adomanyozo_search: `*${q}*` } })
+    query.bool.should.push({ wildcard: { cimke_search: `*${q}*` } })
+
     if (Number(q) > 0) {
-      query.bool.should.push({ term: { mid: `${q}` } })
+      query.bool.should.push({ match: { year: `${q}` } })
+      query.bool.should.push({ match: { mid: `${q}` } })
     }
   }
 
   // if there's a tag search attribute defined (advanced search)
   if (params.tag) {
-    if (!query.bool.should) {
-      query.bool.should = []
-      query.bool.minimum_should_match = 1
+    if (!query.bool.must) {
+      query.bool.must = []
     }
     const tag = slugify(params.tag)
-    query.bool.should.push({ term: { cimke_search: `${tag}` } })
+    query.bool.must.push({ term: { cimke_search: `${tag}` } })
   }
 
   // if there's a year search attribute defined (advanced search)
   if (params.year) {
-    if (!query.bool.should) {
-      query.bool.should = []
-      query.bool.minimum_should_match = 1
+    if (!query.bool.must) {
+      query.bool.must = []
     }
-    query.bool.should.push({ term: { year: `${params.year}` } })
+    query.bool.must.push({ term: { year: `${params.year}` } })
   }
 
   // if there's a city search attribute defined (advanced search)
   if (params.city) {
-    if (!query.bool.should) {
-      query.bool.should = []
-      query.bool.minimum_should_match = 1
+    if (!query.bool.must) {
+      query.bool.must = []
     }
     const city = slugify(params.city)
-    query.bool.should.push({ term: { varos_search: `${city}` } })
+    query.bool.must.push({ term: { varos_search: `${city}` } })
   }
 
   // if there's a country search attribute defined (advanced search)
   if (params.country) {
-    if (!query.bool.should) {
-      query.bool.should = []
-      query.bool.minimum_should_match = 1
+    if (!query.bool.must) {
+      query.bool.must = []
     }
     const country = slugify(params.country)
-    query.bool.should.push({ term: { orszag_search: `${country}` } })
+    query.bool.must.push({ term: { orszag_search: `${country}` } })
   }
 
   // if there's a donor search attribute defined (advanced search)
   if (params.donor) {
-    if (!query.bool.should) {
-      query.bool.should = []
-      query.bool.minimum_should_match = 1
+    if (!query.bool.must) {
+      query.bool.must = []
     }
     const donor = slugify(params.donor)
-    query.bool.should.push({ term: { adomanyozo_search: `${donor}` } })
+    query.bool.must.push({ term: { adomanyozo_search: `${donor}` } })
   }
 
   // if there's a year range defined (advanced search / range filter)
