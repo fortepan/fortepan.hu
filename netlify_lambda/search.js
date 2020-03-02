@@ -26,17 +26,18 @@ const slugify = str => {
   return s
 }
 
-const query = {
-  bool: {},
-}
-
 exports.handler = (event, context, callback) => {
   const params = event.queryStringParameters
 
+  const query = {
+    bool: {
+      must: [],
+      should: [],
+    },
+  }
+
   // returns all records when query field is empty
   if (!params || (params && params.q === "")) {
-    query.bool.must = []
-    query.bool.should = []
     query.bool.must.push({ match_all: {} })
   }
 
