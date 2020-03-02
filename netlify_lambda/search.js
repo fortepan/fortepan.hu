@@ -33,15 +33,17 @@ const query = {
 exports.handler = (event, context, callback) => {
   const params = event.queryStringParameters
 
-  // returns all records
+  // returns all records when query field is empty
   if (!params || (params && params.q === "")) {
+    query.bool.must = []
+    query.bool.should = []
     query.bool.must.push({ match_all: {} })
   }
 
   // if query (search term) exists
   // then it'll search matches in name, description, orszag_name, cimke_name, and varos_name fields
   // SHOULD means "OR" in elastic
-  if (params.q) {
+  if (params.q && params.q !== "") {
     delete query.bool.must
     if (!query.bool.should) {
       query.bool.should = []
