@@ -26,16 +26,16 @@ const slugify = str => {
   return s
 }
 
+const query = {
+  bool: {},
+}
+
 exports.handler = (event, context, callback) => {
   const params = event.queryStringParameters
 
   // returns all records
-  const query = {
-    bool: {
-      must: {
-        match_all: {},
-      },
-    },
+  if (!params || (params && params.q === "")) {
+    query.bool.must.push({ match_all: {} })
   }
 
   // if query (search term) exists
