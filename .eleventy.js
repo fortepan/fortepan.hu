@@ -3,6 +3,7 @@ const inlineSVG = require("./plugins/inlineSVG")
 module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/images")
   eleventyConfig.addPassthroughCopy({ "src/static": "/" })
+  eleventyConfig.addPassthroughCopy("_redirects")
   eleventyConfig.setUseGitIgnore(false)
 
   eleventyConfig.addLiquidTag("inlineSVG", inlineSVG)

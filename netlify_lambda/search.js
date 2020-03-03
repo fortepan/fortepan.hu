@@ -52,11 +52,7 @@ exports.handler = (event, context, callback) => {
     }
     const q = slugify(params.q)
     query.bool.should.push({ match_phrase: { description_transliterated: `${q}` } })
-    query.bool.should.push({ term: { varos_search: `${q}` } })
-    query.bool.should.push({ term: { orszag_search: `${q}` } })
-    query.bool.should.push({ wildcard: { adomanyozo_search: `*${q}*` } })
-    query.bool.should.push({ wildcard: { cimke_search: `*${q}*` } })
-
+    query.bool.should.push({ multi_match: { query: `${q}`, fields: "*_search", type: "phrase" } })
     if (Number(q) > 0) {
       query.bool.should.push({ match: { year: `${q}` } })
       query.bool.should.push({ match: { mid: `${q}` } })
