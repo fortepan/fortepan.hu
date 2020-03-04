@@ -33,6 +33,14 @@ exports.handler = (event, context, callback) => {
     bool: {
       must: [],
       should: [],
+      filter: {
+        range: {
+          year: {
+            gt: 0,
+          },
+        },
+      },
+      boost: 1.0,
     },
   }
 
@@ -45,10 +53,8 @@ exports.handler = (event, context, callback) => {
   // then it'll search matches in name, description, orszag_name, cimke_name, and varos_name fields
   // SHOULD means "OR" in elastic
   if (params.q && params.q !== "") {
-    delete query.bool.must
     if (!query.bool.should) {
       query.bool.should = []
-      query.bool.minimum_should_match = 1
     }
     const q = slugify(params.q)
     query.bool.should.push({ match_phrase: { description_transliterated: `${q}` } })
@@ -61,44 +67,29 @@ exports.handler = (event, context, callback) => {
 
   // if there's a tag search attribute defined (advanced search)
   if (params.tag) {
-    if (!query.bool.must) {
-      query.bool.must = []
-    }
     const tag = slugify(params.tag)
     query.bool.must.push({ term: { cimke_search: `${tag}` } })
   }
 
   // if there's a year search attribute defined (advanced search)
   if (params.year) {
-    if (!query.bool.must) {
-      query.bool.must = []
-    }
     query.bool.must.push({ term: { year: `${params.year}` } })
   }
 
   // if there's a city search attribute defined (advanced search)
   if (params.city) {
-    if (!query.bool.must) {
-      query.bool.must = []
-    }
     const city = slugify(params.city)
     query.bool.must.push({ term: { varos_search: `${city}` } })
   }
 
   // if there's a country search attribute defined (advanced search)
   if (params.country) {
-    if (!query.bool.must) {
-      query.bool.must = []
-    }
     const country = slugify(params.country)
     query.bool.must.push({ term: { orszag_search: `${country}` } })
   }
 
   // if there's a donor search attribute defined (advanced search)
   if (params.donor) {
-    if (!query.bool.must) {
-      query.bool.must = []
-    }
     const donor = slugify(params.donor)
     query.bool.must.push({ term: { adomanyozo_search: `${donor}` } })
   }
