@@ -1,5 +1,5 @@
 import throttle from "lodash/throttle"
-import { ready } from "../../utils"
+import { trigger, getURLParams } from "../../utils"
 
 const YEAR_MIN = 1900
 const YEAR_MAX = 1990
@@ -14,8 +14,19 @@ let timelineSlider
 let sliderSelectedRange
 let sliderLeft
 let sliderRight
+let drag = false
 
 let range = 0
+
+const setURLParams = () => {
+  const urlParams = getURLParams()
+  urlParams.year_from = yearStart
+  urlParams.year_to = yearEnd
+  const url = `?${Object.entries(urlParams)
+    .map(([key, val]) => `${key}=${val}`)
+    .join("&")}`
+  trigger("photos:historyPushState", { url })
+}
 
 const setRange = () => {
   range = timelineSlider.offsetWidth - sliderLeft.offsetWidth - sliderRight.offsetWidth
@@ -39,12 +50,17 @@ const fixSlider = () => {
 const sliderStartDrag = () => {
   timelineNode.classList.add("timeline--drag")
   document.querySelector("body").classList.add("disable--selection")
+  drag = true
 }
 
 const sliderStopDrag = () => {
   timelineNode.classList.remove("timeline--drag")
   document.querySelector("body").classList.remove("disable--selection")
   fixSlider()
+  if (drag) {
+    drag = false
+    setURLParams()
+  }
 }
 
 const calcYearInterval = () => {
@@ -120,7 +136,10 @@ const initSliderRight = () => {
   })
 }
 
-const initTimeline = (start, end, random) => {
+const init = (random, start = YEAR_MIN, end = YEAR_MAX) => {
+  if (timelineNode) return { yearStart, yearEnd }
+
+  timelineNode = document.querySelector(".timeline")
   timelineRange = document.querySelector("#TimelineRange")
   timelineSlider = document.querySelector("#TimelineSlider")
   sliderSelectedRange = document.querySelector("#TimelineSliderSelectedRange")
@@ -161,13 +180,10 @@ const initTimeline = (start, end, random) => {
       }, 1000)
     }, 400)
   )
+
+  return { yearStart, yearEnd }
 }
 
-document.addEventListener("initTimeline", e => {
-  const opts = e.detail
-  initTimeline(opts.yearStart || YEAR_MIN, opts.yearEnd || YEAR_MAX, opts.random)
-})
-
-ready(() => {
-  timelineNode = document.querySelector(".timeline")
-})
+export default {
+  init,
+}

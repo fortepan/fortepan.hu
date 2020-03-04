@@ -1,6 +1,7 @@
 import throttle from "lodash/throttle"
 import config from "../../config"
 import { ready, trigger, getURLParams, numberWithCommas } from "../../utils"
+import Timeline from "../../components/timeline/timeline"
 
 const THUMBNAIL_HEIGHT = 160
 
@@ -110,6 +111,14 @@ const loadPhotos = () => {
     const urlParams = getURLParams()
     Object.assign(params, defaultParams, urlParams)
 
+    const period = Timeline.init(
+      params.q == null && !params.year_from && !params.year_to,
+      params.year_from,
+      params.year_to
+    )
+    params.year_from = period.yearStart
+    params.year_to = period.yearEnd
+
     const qs = Object.keys(params)
       .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)
       .join("&")
@@ -144,6 +153,7 @@ const resizeThumbnails = () => {
 }
 
 ready(() => {
+  // Find photosNode
   photosNode = document.querySelector(".photos")
   if (!photosNode) return
 
@@ -151,6 +161,7 @@ ready(() => {
   window.addEventListener("resize", throttle(resizeThumbnails, 1000))
 
   // Bind custom events
+  // select next photo and open carousel
   document.addEventListener("photos:showNextPhoto", () => {
     let next = selectedThumbnail.nextElementSibling
     if (next) {
@@ -165,16 +176,16 @@ ready(() => {
       })
     }
   })
-
+  // select previous photo and open carousel
   document.addEventListener("photos:showPrevPhoto", () => {
     const prev = selectedThumbnail.previousElementSibling
     if (prev) {
       prev.click()
     }
   })
-
+  // when carousel gets closed...
   document.addEventListener("carousel:hide", () => {
-    // Scroll to thumbnail if it's not in the viewport
+    // ...scroll to thumbnail if it's not in the viewport
     if (selectedThumbnail) {
       if (!isThumbnailInViewport(selectedThumbnail.querySelector(".photos__thumbnail__image"))) {
         photosNode.scrollTop = selectedThumbnail.offsetTop - 16 - document.querySelector(".header").offsetHeight
@@ -185,12 +196,14 @@ ready(() => {
   // bind scroll event to photos container
   photosNode.addEventListener("scroll", e => {
     const view = e.target
+    // add shadow to the header when people start to scroll on the page
     if (view.scrollTop > 0) {
       trigger("header:addShadow")
     } else {
       trigger("header:removeShadow")
     }
 
+    // auto-load new items when scrolling reaches the bottom of the page
     if (
       view.scrollTop + view.offsetHeight >= view.scrollHeight &&
       !thumbnailsLoading &&
@@ -212,6 +225,7 @@ ready(() => {
       photosNode.scrollTop = 0
       thumbnailsCount = 0
     }
+
     loadPhotos().then(() => {
       if (getURLParams().id > 0) {
         // show carousel with an image
@@ -221,7 +235,9 @@ ready(() => {
       }
     })
   }
+
   document.addEventListener("photos:historyPushState", e => {
+    // NOTE: the next line needs to be updated when the English version launches
     window.history.pushState(null, "Keresés", e.detail.url)
     onPopState(e)
   })

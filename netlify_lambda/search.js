@@ -33,14 +33,6 @@ exports.handler = (event, context, callback) => {
     bool: {
       must: [],
       should: [],
-      filter: {
-        range: {
-          year: {
-            gt: 0,
-          },
-        },
-      },
-      boost: 1.0,
     },
   }
 
@@ -53,12 +45,9 @@ exports.handler = (event, context, callback) => {
   // then it'll search matches in name, description, orszag_name, cimke_name, and varos_name fields
   // SHOULD means "OR" in elastic
   if (params.q && params.q !== "") {
-    if (!query.bool.should) {
-      query.bool.should = []
-    }
     const q = slugify(params.q)
-    query.bool.should.push({ match_phrase: { description_transliterated: `${q}` } })
-    query.bool.should.push({ multi_match: { query: `${q}`, fields: "*_search", type: "phrase" } })
+    // query.bool.must.push({ match_phrase: { description_search: `${q}` } })
+    query.bool.must.push({ multi_match: { query: `${q}`, fields: "*_search", type: "phrase" } })
     if (Number(q) > 0) {
       query.bool.should.push({ match: { year: `${q}` } })
       query.bool.should.push({ match: { mid: `${q}` } })
@@ -74,6 +63,12 @@ exports.handler = (event, context, callback) => {
   // if there's a year search attribute defined (advanced search)
   if (params.year) {
     query.bool.must.push({ term: { year: `${params.year}` } })
+  }
+
+  // if there's a city search attribute defined (advanced search)
+  if (params.place) {
+    const place = slugify(params.place)
+    query.bool.must.push({ term: { helszin_search: `${place}` } })
   }
 
   // if there's a city search attribute defined (advanced search)
@@ -98,15 +93,15 @@ exports.handler = (event, context, callback) => {
   if (params.year_from || params.year_to) {
     const y = {}
     if (params.year_from) y.gte = params.year_from
-    if (params.year_from) y.lte = params.year_to
+    if (params.year_to) y.lte = params.year_to
 
-    const filter = {
+    const range = {
       range: {
         year: y,
       },
     }
 
-    query.bool.filter = filter
+    query.bool.must.push(range)
   }
 
   const requestBody = {
@@ -132,3 +127,18 @@ exports.handler = (event, context, callback) => {
     }
   )
 }
+
+/*
+Adomanyozok request
+{
+  "aggs" : {
+    "adomanyozok" : {
+      "terms" : {
+        "field" : "adomanyozo_name",
+        "size":10000,
+        "order": {"_key":"asc"}
+       }
+    }
+  },
+  "size": 0
+} */
