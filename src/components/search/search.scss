@@ -1,57 +1,90 @@
 .search {
   position: relative;
-  box-shadow: 0 rem(12px) rem(24px) 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
-  border-radius: rem(8px);
-  max-width: rem(640px);
-  height: rem(64px);
   box-sizing: border-box;
-  padding: rem(16px) rem(16px) rem(16px) rem(48px);
   transition: transform 0.6s $ease-out-expo, opacity 0.3s $ease-out-expo;
+}
 
-  &--floating {
-    position: absolute;
-    z-index: 10000;
-    opacity: 0;
-    pointer-events: none;
-    top: rem(112px);
-    left: 50%;
-    width: calc(100% - 40px);
-    transform: translateX(-50%) translateY(-16px);
-  }
+.search__icon {
+  position: absolute;
+  left: rem(16px);
+  top: 50%;
+  transform: translateY(-50%);
+}
 
-  &--show {
-    opacity: 1;
-    transform: translateX(-50%) translateY(0px);
-    pointer-events: initial;
-  }
+.search__settings {
+  position: absolute;
+  right: rem(16px);
+  top: 50%;
+  transform: translateY(-50%);
+}
 
-  &__icon {
-    position: absolute;
-    left: rem(16px);
-    top: 50%;
-    transform: translateY(-50%);
-  }
+.search--header {
+  height: rem(48px);
+  padding: rem(8px) rem(16px) rem(8px) rem(48px);
+  border-radius: rem(4px);
+  width: 400px;
 
-  &__input {
-    background-color: transparent;
-    border: none;
-    outline: none;
-    color: inherit;
-    font-size: rem(28px);
-    line-height: rem(32px);
-    width: 100%;
-    display: block;
-    margin: 0;
-    padding: 0;
+  @media screen and (max-width: ($breakpoint-desktop - 1px)) {
+    display: none;
   }
+}
 
-  .theme--light & {
-    background-color: $light-base;
-    color: $dark-base;
-  }
+.theme--light .search--header {
+  background-color: $light-primary;
+  color: $dark-base;
+}
 
-  .theme--dark & {
-    background-color: $dark-base;
-    color: $light-base;
-  }
+.theme--dark .search--header {
+  background-color: $dark-base;
+  color: $light-base;
+}
+
+.search--header .search__input {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: inherit;
+  font-size: rem(16px);
+  line-height: rem(32px);
+  width: 100%;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+.search--header .search__input::placeholder {
+  text-transform: uppercase;
+  @include font-heading-demi();
+  letter-spacing: 1px;
+  line-height: rem(20px);
+}
+
+.search--large {
+  height: rem(64px);
+  padding: rem(16px) rem(16px) rem(16px) rem(48px);
+  border-radius: 0.5rem;
+  max-width: 40rem;
+}
+
+.search--large .search__input {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: inherit;
+  font-size: rem(28px);
+  line-height: rem(32px);
+  width: 100%;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+.theme--light .search--large {
+  background-color: $light-base;
+  color: $dark-base;
+}
+
+.theme--dark .search--large {
+  background-color: $dark-base;
+  color: $light-base;
 }

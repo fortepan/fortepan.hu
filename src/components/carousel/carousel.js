@@ -29,7 +29,7 @@ document.addEventListener("carousel:loadPhoto", e => {
 
   if (locationArray.length > 0) {
     document.querySelector(".carousel__meta__location").style.display = "block"
-    document.querySelector(".carousel__meta__location h5").innerHTML = locationArray.join(", ")
+    document.querySelector(".carousel__meta__location h5").innerHTML = locationArray.join(",<br/>")
   } else {
     document.querySelector(".carousel__meta__location").style.display = "none"
   }

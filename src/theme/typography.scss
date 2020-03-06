@@ -22,7 +22,8 @@ html {
   text-size-adjust: 100%;
 }
 
-h1 {
+h1,
+.h1 {
   font-size: rem(64px);
   line-height: rem(72px);
   @include font-heading-bold();
@@ -34,12 +35,14 @@ h1 {
   }
 }
 
-h3 {
+h3,
+.h3 {
   font-size: rem(28px);
   @include font-heading-bold();
 }
 
-h5 {
+h5,
+.h5 {
   font-size: rem(18px);
   line-height: rem(24px);
   @include font-heading-bold();
@@ -75,18 +78,13 @@ p a {
 blockquote {
   margin: 0 0 2rem;
   padding: 0.5rem 1.5rem;
-  border-radius: rem(8px);
-  backdrop-filter: blur(20px);
+  border-radius: rem(16px);
+  border: rem(4px) solid $red;
+  color: $red;
 
   p {
+    font-size: rem(16px);
+    line-height: rem(28px);
     font-weight: 700;
-  }
-
-  .theme--light & {
-    background-color: rgba($light-primary, 0.4);
-  }
-
-  .theme--dark & {
-    background-color: rgba($dark-secondary, 0.4);
   }
 }

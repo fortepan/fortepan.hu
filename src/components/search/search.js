@@ -1,40 +1,57 @@
+import throttle from "lodash/throttle"
 import { ready, trigger } from "../../utils"
+import config from "../../config"
 
-let searchNode = null
-let searchInput = null
+let searchDialog = null
 
-document.addEventListener("search:show", () => {
-  searchNode.classList.add("search--show")
-  searchInput.focus()
-  searchInput.value = ""
+document.addEventListener("searchdialog:show", () => {
+  if (!searchDialog) return
+  searchDialog.classList.add("dialog--show")
+  const input = searchDialog.querySelector("input")
+  input.focus()
+  input.value = ""
 })
 
-document.addEventListener("search:hide", () => {
-  searchNode.classList.remove("search--show")
+document.addEventListener("searchdialog:hide", () => {
+  if (!searchDialog) return
+  searchDialog.classList.remove("dialog--show")
 })
 
-document.addEventListener("search:toggle", () => {
-  searchNode.classList.toggle("search--show")
-  if (searchNode.classList.contains("search--show")) {
-    searchInput.focus()
-    searchInput.value = ""
+document.addEventListener("searchdialog:toggle", () => {
+  if (!searchDialog) return
+  searchDialog.classList.toggle("dialog--show")
+  if (searchDialog.classList.contains("dialog--show")) {
+    const input = searchDialog.querySelector("input")
+    input.focus()
+    input.value = ""
   }
 })
 
-const initSearch = () => {
-  // bind events
-
-  document.addEventListener("keydown", e => {
-    if (!searchNode.classList.contains("search--show")) return
-
-    switch (e.key) {
-      case "Escape":
-        trigger("search:hide")
-        break
-      default:
+window.addEventListener(
+  "resize",
+  throttle(() => {
+    if (!searchDialog) return
+    if (window.innerWidth >= config.BREAKPOINT_DESKTOP && searchDialog.classList.contains("dialog--show")) {
+      searchDialog.classList.remove("dialog--show")
     }
-  })
+  }, 200)
+)
 
+document.addEventListener("keydown", e => {
+  if (!searchDialog) return
+  if (!searchDialog.classList.contains("dialog--show")) return
+
+  switch (e.key) {
+    case "Escape":
+      trigger("searchdialog:hide")
+      break
+    default:
+  }
+})
+
+const initSearch = searchInput => {
+  // bind events
+  const searchNode = searchInput.parentNode
   searchInput.addEventListener("keydown", e => {
     if (e.key === "Enter") {
       const q = `?q=${encodeURIComponent(searchInput.value)}`
@@ -45,7 +62,8 @@ const initSearch = () => {
           url: q,
           resetPhotosWrapper: true,
         })
-        trigger("search:hide")
+
+        trigger("searchdialog:hide")
       }
     }
   })
@@ -56,7 +74,10 @@ const initSearch = () => {
 }
 
 ready(() => {
-  searchNode = document.querySelector(".search")
-  searchInput = document.querySelector(".search__input")
-  if (searchNode) initSearch()
+  searchDialog = document.querySelector(".dialog--search")
+  const searchInputs = document.querySelectorAll(".search__input")
+  if (searchInputs.length > 0)
+    Array.from(searchInputs).forEach(searchInput => {
+      initSearch(searchInput)
+    })
 })

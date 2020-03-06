@@ -47,11 +47,15 @@ exports.handler = (event, context, callback) => {
   if (params.q && params.q !== "") {
     const q = slugify(params.q)
     // query.bool.must.push({ match_phrase: { description_search: `${q}` } })
-    query.bool.must.push({ multi_match: { query: `${q}`, fields: "*_search", type: "phrase" } })
-    if (Number(q) > 0) {
-      query.bool.should.push({ match: { year: `${q}` } })
-      query.bool.should.push({ match: { mid: `${q}` } })
-    }
+    query.bool.must.push({
+      multi_match: {
+        query: `${q}`,
+        fields: ["mid^5", "year^2", "*_search"],
+        type: "most_fields",
+        lenient: true,
+        operator: "and",
+      },
+    })
   }
 
   // if there's a tag search attribute defined (advanced search)
@@ -68,7 +72,7 @@ exports.handler = (event, context, callback) => {
   // if there's a city search attribute defined (advanced search)
   if (params.place) {
     const place = slugify(params.place)
-    query.bool.must.push({ term: { helszin_search: `${place}` } })
+    query.bool.must.push({ term: { helyszin_search: `${place}` } })
   }
 
   // if there's a city search attribute defined (advanced search)
@@ -87,6 +91,12 @@ exports.handler = (event, context, callback) => {
   if (params.donor) {
     const donor = slugify(params.donor)
     query.bool.must.push({ term: { adomanyozo_search: `${donor}` } })
+  }
+
+  // if there's an id search attribute defined (advanced search)
+  if (params.id) {
+    const id = slugify(params.id)
+    query.bool.must.push({ term: { mid: `${id}` } })
   }
 
   // if there's a year range defined (advanced search / range filter)

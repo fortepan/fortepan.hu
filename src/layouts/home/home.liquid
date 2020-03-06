@@ -5,7 +5,10 @@ layout: base/base.liquid
 <div class="home scrollview">
   <section class="home__hero">
     <div class="home__hero__background"></div>
-    {% include search/search.liquid class:"home__hero__search" %}
+    <div class="home__hero__search-wrapper">
+      {% include search/search.liquid class:"home__hero__search search--large" %}
+      <div class="home__hero__total h3">Összesen <a href="/{{ locale }}/photos/" class="home__hero__link"><span></span> fénykép</a></div>
+    </div>
     <div class="home__hero__content">
       <h3 class="home__hero__headline">{{ headline}}</h3>
       <div class="home__hero__text">{{ content }}</div>

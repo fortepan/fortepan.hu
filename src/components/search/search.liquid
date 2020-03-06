@@ -1,4 +1,7 @@
 <div class="search {{ class }}" data-lang="{{ locale }}">
     {% inlineSVG src:"src/static/images/icons/24/icon-search.svg" class:"search__icon" %}
-    <input type="text" name="search" class="search__input" placeholder="Keresés">
+    <input type="text" name="search" class="search__input" placeholder="{{ lang[locale].search }}" autocomplete="off">
+    {% comment %}
+    {% inlineSVG src:"src/static/images/icons/24/icon-settings.svg" class:"search__settings" %}
+    {% endcomment %}
 </div>

@@ -9,7 +9,8 @@
   <div class="header__actions">
     {% unless hide_search %}
     <div class="header__actions__group header__actions__group--search">
-      {% include buttons/circular.liquid icon:"search" class:"button__circular--red" id:"HeaderSearch" href:"#" label: lang[locale].search %}
+      {% include search/search.liquid class:"search--header" %}
+      {% include buttons/circular.liquid icon:"search" class:"button__circular--red" id:"HeaderSearchToggle" href:"#" label: lang[locale].search %}
     </div>
     {% endunless %}
     <div class="header__actions__group header__actions__group--nav">
@@ -35,7 +36,7 @@
     <a class="header__link header__link--top" href="/{{ locale }}/donors/">Adományozók</a>
     {% endcomment %}
     <a class="header__link header__link--top" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=fortepan%40fortepan.hu&currency_code=HUF&source=url" target="_blank">Támogatás</a>
-    <a class="header__link header__link--top" href="https://index.hu/nagykep/" target="_blank">Index Nagykép</a>
+    <a class="header__link header__link--top" href="https://index.hu/fortepan/" target="_blank">Index Nagykép</a>
     <a class="header__link header__link--top header__link--separator-after" href="https://forum.index.hu/Article/showArticle?t=9204653" target="_blank">Fórum</a>
     <a class="header__link header__link--top" href="mailto:fortepan@gmail.com">Kapcsolat</a>
     <a class="header__link header__link--top" href="/{{ locale }}/privacy/">Adatvédelem</a>

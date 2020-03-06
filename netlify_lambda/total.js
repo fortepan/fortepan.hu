@@ -10,9 +10,18 @@ exports.handler = (event, context, callback) => {
     track_total_hits: true,
     query: {
       bool: {
-        must: {
-          match_all: {},
-        },
+        must: [
+          {
+            match_all: {},
+          },
+          {
+            range: {
+              year: {
+                gt: 0,
+              },
+            },
+          },
+        ],
       },
     },
   }

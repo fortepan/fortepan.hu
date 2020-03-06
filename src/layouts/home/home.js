@@ -1,5 +1,4 @@
 import { ready, trigger } from "../../utils"
-import config from "../../config"
 
 let heroBg = null
 const bgIds = [50563, 52724, 54176, 54178, 55558, 55617, 58473, 60057, 60155, 60490, 71299, 71443, 71955, 78498, 78835]
@@ -11,13 +10,30 @@ const loadBackgroundImage = () => {
     heroBg.classList.add("home__hero__background--show")
   }
   const id = bgIds[Math.floor(Math.random() * bgIds.length)]
-  img.src = `${config.PHOTO_SOURCE}${id}.jpg`
+  img.src = `/uploads/${id}.jpg`
+}
+
+const loadCounter = () => {
+  fetch(`/.netlify/functions/total`, {
+    method: "GET",
+  }).then(response => {
+    response
+      .json()
+      .then(data => {
+        document.querySelector(".home__hero__link span").textContent = data.value
+        console.log(data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  })
 }
 
 const init = () => {
   // add event listeners
   heroBg = document.querySelector(".home__hero__background")
   loadBackgroundImage()
+  loadCounter()
 
   document.querySelector(".home").addEventListener("scroll", e => {
     const view = e.target

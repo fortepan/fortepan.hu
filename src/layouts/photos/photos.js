@@ -27,7 +27,7 @@ const setTitle = photosCount => {
   const searchExpressionNode = document.querySelector("#PhotosSearchExpression")
   if (Object.keys(q).length === 0 || q.q === "") {
     searchExpressionNode.classList.remove("photos__subtitle__expression--show")
-  } else {
+  } else if (Object.keys(q)[0] !== "year_from" && Object.keys(q)[0] !== "year_to") {
     searchExpressionNode.classList.add("photos__subtitle__expression--show")
     searchExpressionNode.innerHTML = `${searchExpressionNode.parentNode.dataset[`${Object.keys(q)[0]}Label`]}: <em>${
       q[Object.keys(q)[0]]

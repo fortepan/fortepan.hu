@@ -1,0 +1,25 @@
+.dialog {
+  position: absolute;
+  z-index: 10000;
+  box-shadow: 0 rem(12px) rem(24px) 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+  border-radius: rem(8px);
+  max-width: rem(640px);
+  width: calc(100% - 40px);
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-25%);
+  opacity: 0;
+  box-sizing: border-box;
+  pointer-events: none;
+  transition: transform 0.6s $ease-out-expo, opacity 0.3s $ease-out-expo;
+}
+
+.dialog--search {
+  top: rem(64px);
+}
+
+.dialog--show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(50%);
+  pointer-events: initial;
+}
