@@ -32,6 +32,10 @@ const setRange = () => {
   range = timelineSlider.offsetWidth - sliderLeft.offsetWidth - sliderRight.offsetWidth
 }
 
+const getRange = () => {
+  return { from: yearStart, to: yearEnd }
+}
+
 const setTimelineRange = () => {
   timelineRange.textContent = `${yearStart} — ${yearEnd}`
   sliderLeft.textContent = yearStart
@@ -45,6 +49,15 @@ const fixSlider = () => {
   sliderRight.style.left = `${end + sliderLeft.offsetWidth}px`
   sliderSelectedRange.style.left = `${start + sliderLeft.offsetWidth}px`
   sliderSelectedRange.style.width = `${end - start}px`
+}
+
+const resetSlider = (random, start, end) => {
+  yearStart = random ? YEAR_MIN + Math.round(Math.random() * 80) : start
+  yearEnd = random ? yearStart + 10 : end
+
+  setRange()
+  setTimelineRange()
+  fixSlider()
 }
 
 const sliderStartDrag = () => {
@@ -136,8 +149,20 @@ const initSliderRight = () => {
   })
 }
 
+const disable = () => {
+  if (timelineNode) timelineNode.classList.remove("timeline--show")
+  if (timelineNode) timelineNode.classList.add("timeline--disabled")
+}
+
 const init = (random, start = YEAR_MIN, end = YEAR_MAX) => {
-  if (timelineNode) return { yearStart, yearEnd }
+  if (timelineNode) {
+    timelineNode.classList.remove("timeline--disabled")
+    timelineNode.classList.add("timeline--show")
+
+    resetSlider(random, start, end)
+
+    return { yearStart, yearEnd }
+  }
 
   timelineNode = document.querySelector(".timeline")
   timelineRange = document.querySelector("#TimelineRange")
@@ -146,12 +171,7 @@ const init = (random, start = YEAR_MIN, end = YEAR_MAX) => {
   sliderLeft = document.querySelector("#TimelineSliderLeft")
   sliderRight = document.querySelector("#TimelineSliderRight")
 
-  yearStart = random ? YEAR_MIN + Math.round(Math.random() * 80) : start
-  yearEnd = random ? yearStart + 10 : end
-
-  setRange()
-  setTimelineRange()
-  fixSlider()
+  resetSlider(random, start, end)
 
   initSliderLeft()
   initSliderRight()
@@ -160,7 +180,10 @@ const init = (random, start = YEAR_MIN, end = YEAR_MAX) => {
   document.addEventListener(
     "mousemove",
     throttle(e => {
-      if (!timelineNode.classList.contains("timeline--show")) {
+      if (
+        !timelineNode.classList.contains("timeline--show") &&
+        !timelineNode.classList.contains("timeline--disabled")
+      ) {
         timelineNode.classList.add("timeline--show")
       }
 
@@ -186,4 +209,6 @@ const init = (random, start = YEAR_MIN, end = YEAR_MAX) => {
 
 export default {
   init,
+  getRange,
+  disable,
 }

@@ -28,7 +28,8 @@
     "slideshow": "Diavetítés",
     "details": "Fotó részletek",
     "description": "Leírás",
-    "place": "Helyszín"
+    "place": "Helyszín",
+    "latest": "Friss"
   },
   "en": {
     "search": "Search",
@@ -59,6 +60,7 @@
     "slideshow": "Slideshow",
     "details": "Photo details",
     "description": "Description",
-    "place": "Place"
+    "place": "Place",
+    "latest": "Latest"
   }
 }

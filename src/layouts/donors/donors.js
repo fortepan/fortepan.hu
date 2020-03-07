@@ -21,41 +21,17 @@ const isThumbnailInViewport = el => {
 const setTitle = photosCount => {
   const q = getURLParams()
   const titleNode = document.querySelector(".photos__title")
+  titleNode.textContent =
+    Object.keys(q).length === 0 || q.q === "" ? titleNode.dataset.photosLabel : titleNode.dataset.searchLabel
 
-  // set page title
-  if (typeof q.latest !== "undefined") {
-    titleNode.textContent = titleNode.dataset.latestLabel
-  } else if (Object.keys(q).length === 0 || !q.q || (q.q === "" && !q.latest === "")) {
-    titleNode.textContent = titleNode.dataset.photosLabel
-  } else {
-    titleNode.textContent = titleNode.dataset.searchLabel
-  }
-
-  // set search expression tag content
   const searchExpressionNode = document.querySelector("#PhotosSearchExpression")
-  if (Object.keys(q).length === 0 || q.q === "" || Object.keys(q).indexOf("latest") > -1) {
+  if (Object.keys(q).length === 0 || q.q === "") {
     searchExpressionNode.classList.remove("photos__subtitle__expression--show")
-  } else if (Object.keys(q).indexOf("donor") > -1) {
+  } else if (Object.keys(q)[0] !== "year_from" && Object.keys(q)[0] !== "year_to") {
     searchExpressionNode.classList.add("photos__subtitle__expression--show")
-    searchExpressionNode.innerHTML = `${searchExpressionNode.parentNode.dataset.donorLabel}: <em>${q.donor}</em>`
-  } else if (Object.keys(q).indexOf("year") > -1) {
-    searchExpressionNode.classList.add("photos__subtitle__expression--show")
-    searchExpressionNode.innerHTML = `${searchExpressionNode.parentNode.dataset.yearLabel}: <em>${q.year}</em>`
-  } else if (Object.keys(q).indexOf("country") > -1) {
-    searchExpressionNode.classList.add("photos__subtitle__expression--show")
-    searchExpressionNode.innerHTML = `${searchExpressionNode.parentNode.dataset.countryLabel}: <em>${q.country}</em>`
-  } else if (Object.keys(q).indexOf("city") > -1) {
-    searchExpressionNode.classList.add("photos__subtitle__expression--show")
-    searchExpressionNode.innerHTML = `${searchExpressionNode.parentNode.dataset.cityLabel}: <em>${q.city}</em>`
-  } else if (Object.keys(q).indexOf("place") > -1) {
-    searchExpressionNode.classList.add("photos__subtitle__expression--show")
-    searchExpressionNode.innerHTML = `${searchExpressionNode.parentNode.dataset.placeLabel}: <em>${q.place}</em>`
-  } else if (Object.keys(q).indexOf("tag") > -1) {
-    searchExpressionNode.classList.add("photos__subtitle__expression--show")
-    searchExpressionNode.innerHTML = `${searchExpressionNode.parentNode.dataset.tagLabel}: <em>${q.tag}</em>`
-  } else if (Object.keys(q).indexOf("q") > -1) {
-    searchExpressionNode.classList.add("photos__subtitle__expression--show")
-    searchExpressionNode.innerHTML = `${searchExpressionNode.parentNode.dataset.qLabel}: <em>${q.q}</em>`
+    searchExpressionNode.innerHTML = `${searchExpressionNode.parentNode.dataset[`${Object.keys(q)[0]}Label`]}: <em>${
+      q[Object.keys(q)[0]]
+    }</em>`
   }
 
   document.querySelector("#PhotosCount").textContent = numberWithCommas(photosCount)
@@ -137,16 +113,12 @@ const loadPhotos = () => {
     Object.assign(params, defaultParams, urlParams)
 
     const period = Timeline.init(
-      Object.keys(urlParams).length === 0 || (urlParams.q === "" && !params.year_from && !params.year_to),
+      params.q == null && !params.year_from && !params.year_to,
       params.year_from,
       params.year_to
     )
     params.year_from = period.yearStart
     params.year_to = period.yearEnd
-
-    if (params.year) {
-      Timeline.disable()
-    }
 
     const qs = Object.keys(params)
       .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)

@@ -34,125 +34,125 @@
       background-color: rgba($light-base, 0.08);
     }
   }
+}
 
-  &::before {
-    content: "";
-    position: absolute;
-    left: rem(56px);
-    right: rem(56px);
-    bottom: rem(31px);
-    height: 2px;
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: rem(56px);
+  right: rem(56px);
+  bottom: rem(31px);
+  height: 2px;
+}
+
+.timeline:hover {
+  height: 128px;
+  transition: transform 0.3s $ease-out-expo, opacity 0.3s $ease-out-expo, left 0.5s $ease-out-expo,
+    height 0.6s $ease-out-expo;
+}
+
+.timeline--show {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+  pointer-events: initial;
+  transition: transform 0.3s $ease-out-expo, opacity 0.3s $ease-out-expo, left 0.5s $ease-out-expo,
+    height 0.6s $ease-out-expo 0.4s;
+}
+
+.timeline__title {
+  line-height: rem(32px);
+  margin: 0;
+  opacity: 0;
+  transition: opacity 0.3s $ease-out-expo 0.4s;
+}
+
+.timeline:hover .timeline__title {
+  opacity: 1;
+  transition-duration: 0.6s;
+  transition-delay: 0.2s;
+}
+
+.timeline__range {
+  opacity: 0;
+  transition: opacity 0.15s $ease-out-expo 0.4s;
+  line-height: 1rem;
+
+  .timeline:hover & {
+    opacity: 0.4;
+    transition-duration: 0.6s;
+    transition-delay: 0.2s;
+  }
+}
+
+.timeline__slider__container {
+  height: rem(40px);
+  position: absolute;
+  width: calc(100% - 32px);
+  left: rem(16px);
+  bottom: rem(12px);
+}
+
+.timeline__slider {
+  position: absolute;
+  width: rem(40px);
+  height: rem(40px);
+  border-radius: 50%;
+  transition: left 0.4s $ease-out-expo, background-color 0.3s $ease-out-expo;
+  cursor: pointer;
+  @include font-heading-bold();
+  font-size: rem(11px);
+  line-height: 16px;
+  text-align: center;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding-top: rem(10px);
+
+  .timeline--drag & {
+    transition: none;
   }
 
-  &:hover {
-    height: 128px;
-    transition: transform 0.3s $ease-out-expo, opacity 0.3s $ease-out-expo, left 0.5s $ease-out-expo,
-      height 0.6s $ease-out-expo;
+  .theme--light & {
+    color: $red;
+    border: 2px solid $red;
+    background-color: $light-base;
   }
 
-  &--show {
-    opacity: 1;
-    transform: translateX(-50%) scale(1);
-    pointer-events: initial;
-    transition: transform 0.3s $ease-out-expo, opacity 0.3s $ease-out-expo, left 0.5s $ease-out-expo,
-      height 0.6s $ease-out-expo 0.4s;
+  .theme--dark & {
+    color: $red;
+    border: 2px solid $red;
+    background-color: $dark-secondary;
+  }
+}
+
+.timeline__slider:hover,
+.timeline__slider--active {
+  .theme--light & {
+    color: $light-base;
+    background-color: $red;
   }
 
-  &__title {
-    line-height: rem(32px);
-    margin: 0;
-    opacity: 0;
-    transition: opacity 0.3s $ease-out-expo 0.4s;
+  .theme--dark & {
+    color: $light-base;
+    background-color: $red;
+  }
+}
 
-    .timeline:hover & {
-      opacity: 1;
-      transition-duration: 0.6s;
-      transition-delay: 0.2s;
-    }
+.timeline__slider-selected-range {
+  position: absolute;
+  bottom: rem(19px);
+  height: 2px;
+  width: 0;
+  transition: left 0.4s $ease-out-expo, width 0.4s $ease-out-expo;
+
+  .timeline--drag & {
+    transition: none;
   }
 
-  &__range {
-    opacity: 0;
-    transition: opacity 0.15s $ease-out-expo 0.4s;
-    line-height: 1rem;
-
-    .timeline:hover & {
-      opacity: 0.4;
-      transition-duration: 0.6s;
-      transition-delay: 0.2s;
-    }
+  .theme--light & {
+    background-color: $red;
   }
 
-  &__slider__container {
-    height: rem(40px);
-    position: absolute;
-    width: calc(100% - 32px);
-    left: rem(16px);
-    bottom: rem(12px);
-  }
-
-  &__slider {
-    position: absolute;
-    width: rem(40px);
-    height: rem(40px);
-    border-radius: 50%;
-    transition: left 0.4s $ease-out-expo, background-color 0.3s $ease-out-expo;
-    cursor: pointer;
-    @include font-heading-bold();
-    font-size: rem(11px);
-    line-height: 16px;
-    text-align: center;
-    overflow: hidden;
-    box-sizing: border-box;
-    padding-top: rem(10px);
-
-    .timeline--drag & {
-      transition: none;
-    }
-
-    .theme--light & {
-      color: $red;
-      border: 2px solid $red;
-      background-color: $light-base;
-    }
-
-    .theme--dark & {
-      color: $red;
-      border: 2px solid $red;
-      background-color: $dark-secondary;
-    }
-
-    &:hover,
-    &--active {
-      .theme--light & {
-        color: $light-base;
-        background-color: $red;
-      }
-
-      .theme--dark & {
-        color: $light-base;
-        background-color: $red;
-      }
-    }
-  }
-
-  &__slider-selected-range {
-    position: absolute;
-    bottom: rem(19px);
-    height: 2px;
-    width: 0;
-    transition: left 0.4s $ease-out-expo, width 0.4s $ease-out-expo;
-
-    .timeline--drag & {
-      transition: none;
-    }
-
-    .theme--light & {
-      background-color: $red;
-    }
-
-    .theme--dark & {
-      background-color: $red;
-    }
+  .theme--dark & {
+    background-color: $red;
   }
 }

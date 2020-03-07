@@ -40,7 +40,7 @@
   opacity: 1;
 }
 
-.photos__subtitle__count {
+.photos__count {
   .theme--light & {
     color: $dark-base;
   }
@@ -50,15 +50,15 @@
   }
 }
 
-.photos__subtitle__expression {
+.photos__expression {
   display: none;
 }
 
-.photos__subtitle__expression--show {
+.photos__expression--show {
   display: inline;
 }
 
-.photos__subtitle em {
+.photos__expression em {
   font-style: normal;
 
   .theme--light & {
@@ -70,7 +70,7 @@
   }
 }
 
-.photos__subtitle__expression::after {
+.photos__expression::after {
   content: "·";
   padding: 0 0.5rem;
 }

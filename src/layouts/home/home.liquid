@@ -2,6 +2,8 @@
 layout: base/base.liquid
 ---
 
+{% include header/header.liquid hide_search:true header_class:"header--transparent-dark" %}
+
 <div class="home scrollview">
   <section class="home__hero">
     <div class="home__hero__background"></div>
@@ -14,7 +16,18 @@ layout: base/base.liquid
       <div class="home__hero__text">{{ content }}</div>
     </div>
   </section>
+  <section class="home__new">
+    <div class="photos__wrapper">
+    </div>
+  </section>
   {% include footer/footer.liquid %}
 </div>
 
-{% include header/header.liquid hide_search:true header_class:"header--transparent-dark" %}
+<template id="Thumbnail">
+  <div class="photos__thumbnail">
+      <div class="photos__thumbnail__image"></div>
+      <div class="photos__thumbnail__meta photos__thumbnail__meta--location"></div>
+      <div class="photos__thumbnail__meta photos__thumbnail__meta--description"></div>
+    </div>
+  </div>
+</template>
