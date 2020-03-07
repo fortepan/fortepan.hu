@@ -136,13 +136,7 @@ const loadPhotos = () => {
     const urlParams = getURLParams()
     Object.assign(params, defaultParams, urlParams)
 
-    const period = Timeline.init(
-      Object.keys(urlParams).length === 0 || (urlParams.q === "" && !params.year_from && !params.year_to),
-      params.year_from,
-      params.year_to
-    )
-    params.year_from = period.yearStart
-    params.year_to = period.yearEnd
+    Timeline.init(params.year_from, params.year_to)
 
     if (params.year) {
       Timeline.disable()

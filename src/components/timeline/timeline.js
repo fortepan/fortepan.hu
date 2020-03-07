@@ -51,9 +51,9 @@ const fixSlider = () => {
   sliderSelectedRange.style.width = `${end - start}px`
 }
 
-const resetSlider = (random, start, end) => {
-  yearStart = random ? YEAR_MIN + Math.round(Math.random() * 80) : start
-  yearEnd = random ? yearStart + 10 : end
+const resetSlider = (start, end) => {
+  yearStart = start
+  yearEnd = end
 
   setRange()
   setTimelineRange()
@@ -154,14 +154,11 @@ const disable = () => {
   if (timelineNode) timelineNode.classList.add("timeline--disabled")
 }
 
-const init = (random, start = YEAR_MIN, end = YEAR_MAX) => {
+const init = (start = YEAR_MIN, end = YEAR_MAX) => {
   if (timelineNode) {
     timelineNode.classList.remove("timeline--disabled")
     timelineNode.classList.add("timeline--show")
-
-    resetSlider(random, start, end)
-
-    return { yearStart, yearEnd }
+    resetSlider(start, end)
   }
 
   timelineNode = document.querySelector(".timeline")
@@ -171,7 +168,7 @@ const init = (random, start = YEAR_MIN, end = YEAR_MAX) => {
   sliderLeft = document.querySelector("#TimelineSliderLeft")
   sliderRight = document.querySelector("#TimelineSliderRight")
 
-  resetSlider(random, start, end)
+  resetSlider(start, end)
 
   initSliderLeft()
   initSliderRight()
@@ -203,8 +200,6 @@ const init = (random, start = YEAR_MIN, end = YEAR_MAX) => {
       }, 1000)
     }, 400)
   )
-
-  return { yearStart, yearEnd }
 }
 
 export default {

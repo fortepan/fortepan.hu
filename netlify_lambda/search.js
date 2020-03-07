@@ -100,24 +100,26 @@ exports.handler = (event, context, callback) => {
   }
 
   // if there's a year range defined (advanced search / range filter)
+  const y = {}
   if (params.year_from || params.year_to) {
-    const y = {}
     if (params.year_from) y.gte = params.year_from
     if (params.year_to) y.lte = params.year_to
-
-    const range = {
-      range: {
-        year: y,
-      },
-    }
-
-    query.bool.must.push(range)
+  } else {
+    y.gt = 0
   }
+
+  const range = {
+    range: {
+      year: y,
+    },
+  }
+
+  query.bool.must.push(range)
 
   const requestBody = {
     from: params.from || 0,
     size: params.size || 30,
-    sort: [{ year: { order: "asc" } }, { mid: { order: "asc" } }],
+    sort: [{ year: { order: "asc" } }, { mid: { order: "desc" } }],
     track_total_hits: true,
     query,
   }
