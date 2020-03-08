@@ -1,4 +1,5 @@
 const { Client } = require("@elastic/elasticsearch")
+const moment = require("moment")
 
 const client = new Client({
   node: "http://fortepan:fortepan@v39241.php-friends.de:9200",
@@ -54,8 +55,10 @@ exports.handler = (event, context, callback) => {
   if (params.latest === "") {
     query.bool.must.push({
       range: {
-        mid: {
-          gt: 120000,
+        created: {
+          gt: moment()
+            .subtract(11, "months")
+            .format("X"),
         },
       },
     })

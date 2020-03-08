@@ -80,6 +80,7 @@
     "custom-event-polyfill": "^1.0.7",
     "downloadjs": "^1.4.7",
     "lodash": "^4.17.15",
+    "moment": "^2.24.0",
     "request": "^2.88.0",
     "whatwg-fetch": "^3.0.0"
   }
