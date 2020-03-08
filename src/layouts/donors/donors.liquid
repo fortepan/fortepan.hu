@@ -1,28 +1,5 @@
 ---
-layout: base/base.liquid
+layout: article/article.liquid
 ---
 
-<div class="photos scrollview">
-  <div class="photos__title__wrapper">
-    <h1 class="photos__title" data-search-label="{{ lang[locale].search }}" data-photos-label="{{ lang[locale].photos }}">{{ title }}</h1>
-    <h5 class="photos__subtitle" data-q-label="{{ lang[locale].searchPhrase }}" data-tag-label="{{ lang[locale].tag }}" data-donor-label="{{ lang[locale].donor }}" data-city-label="{{ lang[locale].city }}" data-country-label="{{ lang[locale].country }}" data-place-label="{{ lang[locale].place }}" data-year-label="{{ lang[locale].year }}"><span id="PhotosSearchExpression" class="photos__subtitle__expression"></span><span id="PhotosCount" class="photos__subtitle__count"></span> {{ lang[locale].photoResults }}</h5>
-  </div>
-  <div class="photos__wrapper">
-  </div>
-</div>
-{% include carousel/carousel.liquid %}
-{% include header/header.liquid %}
-{% include timeline/timeline.liquid %}
-
-<div class="dialog dialog--search">
-  {% include search/search.liquid class:"search--large" %}
-</div>
-
-<template id="Thumbnail">
-  <div class="photos__thumbnail">
-      <div class="photos__thumbnail__image"></div>
-      <div class="photos__thumbnail__meta photos__thumbnail__meta--location"></div>
-      <div class="photos__thumbnail__meta photos__thumbnail__meta--description"></div>
-    </div>
-  </div>
-</template>
+<div class="donors" data-lang="{{ locale }}"></div>

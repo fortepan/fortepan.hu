@@ -36,9 +36,31 @@ exports.handler = (event, context, callback) => {
     },
   }
 
+  let sort = [{ year: { order: "asc" } }, { mid: { order: "desc" } }]
+
+  const range = {
+    range: {
+      year: {
+        gt: 0,
+      },
+    },
+  }
+
   // returns all records when query field is empty
   if (!params || (params && params.q === "")) {
     query.bool.must.push({ match_all: {} })
+  }
+
+  if (params.latest === "") {
+    query.bool.must.push({
+      range: {
+        mid: {
+          gt: 120000,
+        },
+      },
+    })
+
+    sort = [{ mid: { order: "desc" } }]
   }
 
   // if query (search term) exists
@@ -100,18 +122,11 @@ exports.handler = (event, context, callback) => {
   }
 
   // if there's a year range defined (advanced search / range filter)
-  const y = {}
   if (params.year_from || params.year_to) {
+    const y = {}
     if (params.year_from) y.gte = params.year_from
     if (params.year_to) y.lte = params.year_to
-  } else {
-    y.gt = 0
-  }
-
-  const range = {
-    range: {
-      year: y,
-    },
+    range.range.year = y
   }
 
   query.bool.must.push(range)
@@ -119,7 +134,7 @@ exports.handler = (event, context, callback) => {
   const requestBody = {
     from: params.from || 0,
     size: params.size || 30,
-    sort: [{ year: { order: "asc" } }, { mid: { order: "desc" } }],
+    sort,
     track_total_hits: true,
     query,
   }
@@ -139,18 +154,3 @@ exports.handler = (event, context, callback) => {
     }
   )
 }
-
-/*
-Adomanyozok request
-{
-  "aggs" : {
-    "adomanyozok" : {
-      "terms" : {
-        "field" : "adomanyozo_name",
-        "size":10000,
-        "order": {"_key":"asc"}
-       }
-    }
-  },
-  "size": 0
-} */
