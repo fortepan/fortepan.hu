@@ -13,7 +13,7 @@
       {% include buttons/circular.liquid icon:"search" class:"button__circular--red" id:"HeaderSearchToggle" href:"#" label: lang[locale].search %}
     </div>
     {% endunless %}
-    <div class="header__actions__group header__actions__group--nav">
+    <div class="header__actions__group header__actions__group--items">
       <a class="header__link header__link--top header__link--top-action" href="/{{ locale }}/photos/">{{ lang[locale].photos }}</a>
       <a class="header__link header__link--top header__link--top-action" href="/{{ locale }}/photos/?latest">{{ lang[locale].latest }}</a>
     </div>
@@ -34,7 +34,8 @@
     {% endcomment %}
   </div>
   <div class="header__nav">
-    <a class="header__link header__link--top" href="/{{ locale }}/photos/">Fotók</a>
+    <a class="header__link header__link--top header__link--hide-on-desktop" href="/{{ locale }}/photos/">Fotók</a>
+    <a class="header__link header__link--top header__link--separator-after header__link--hide-on-desktop" href="/{{ locale }}/photos/?latest">Friss</a>
     <a class="header__link header__link--top" href="/{{ locale }}/about-us/">Rólunk</a>
     <a class="header__link header__link--top" href="/{{ locale }}/donors/">Adományozók</a>
     <a class="header__link header__link--top" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=fortepan%40fortepan.hu&currency_code=HUF&source=url" target="_blank">Támogatás</a>
