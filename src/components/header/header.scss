@@ -111,15 +111,15 @@
   right: 0;
 }
 
-.header__actions__group::after {
-  background-color: rgba($dark-base, 0.06);
-}
-
-.header__actions__group::after {
+.header--transparent:not(.header--shadow-bottom) .header__actions__group:not(:last-child)::after {
   background-color: rgba($light-base, 0.06);
 }
 
-.header--transparent .header__actions__group::after {
+.theme--light .header__actions__group:not(:last-child)::after {
+  background-color: rgba($dark-base, 0.06);
+}
+
+.theme--dark .header__actions__group:not(:last-child)::after {
   background-color: rgba($light-base, 0.06);
 }
 
@@ -251,17 +251,17 @@
   }
 }
 
-.header--transparent .header__link--top-action {
-  color: $light-base;
-}
-
-.header--transparent .header__link--top-action:hover {
-  color: rgba($light-base, 0.6);
-}
-
 .header--transparent:not(.header--shadow-bottom) {
   color: $light-base;
   background-color: transparent;
+}
+
+.header--transparent:not(.header--shadow-bottom) .header__link--top-action {
+  color: $light-base;
+}
+
+.header--transparent:not(.header--shadow-bottom) .header__link--top-action:hover {
+  color: rgba($light-base, 0.6);
 }
 
 #LightThemeSwitcher {
