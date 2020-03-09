@@ -1,6 +1,6 @@
 export default {
   PHOTO_SOURCE: "https://fortepan.download/_photo/display/",
-  PHOTO_SOURCE_LARGE: "/download/",
+  PHOTO_SOURCE_LARGE: "https://fortepan.download/_photo/download/fortepan_",
   THUMBNAILS_QUERY_LIMIT: 30,
   BREAKPOINT_PHONE_XS: 330,
   BREAKPOINT_PHONE_SM: 390,

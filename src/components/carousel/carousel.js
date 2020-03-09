@@ -14,7 +14,6 @@ const downloadImage = (name, uri) => {
   const a = document.createElement("a")
   a.href = uri
   a.download = name
-  a.target = "_blank"
   a.click()
 }
 
