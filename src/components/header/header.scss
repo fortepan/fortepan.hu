@@ -192,7 +192,8 @@
   background-color: $light-secondary;
 }
 
-.theme--dark .header__link--separator-after::after {
+.theme--dark .header__link--separator-after::after,
+.header--transparent-dark .header__link--separator-after::after {
   background-color: $dark-tertiary;
 }
 

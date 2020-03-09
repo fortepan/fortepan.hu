@@ -14,6 +14,10 @@
     </div>
     {% endunless %}
     <div class="header__actions__group header__actions__group--nav">
+      <a class="header__link header__link--top header__link--top-action" href="/{{ locale }}/photos/">{{ lang[locale].photos }}</a>
+      <a class="header__link header__link--top header__link--top-action" href="/{{ locale }}/photos/?latest">{{ lang[locale].latest }}</a>
+    </div>
+    <div class="header__actions__group header__actions__group--nav">
       {% include buttons/circular.liquid icon:"darkmode" id:"DarkThemeSwitcher" href:"#" label: lang[locale].darkmode %}
       {% include buttons/circular.liquid icon:"lightmode" id:"LightThemeSwitcher" href:"#" label: lang[locale].lightmode %}
       {% include buttons/circular.liquid icon:"menu" id:"HeaderNavigationToggle" href:"#" label: lang[locale].menu class:"button__circular--no-label" %}

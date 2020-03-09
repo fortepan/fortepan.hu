@@ -37,7 +37,7 @@ exports.handler = (event, context, callback) => {
     },
   }
 
-  let sort = [{ year: { order: "asc" } }, { mid: { order: "desc" } }]
+  let sort = [{ year: { order: "asc" } }, { created: { order: "desc" } }]
 
   const range = {
     range: {
@@ -57,13 +57,13 @@ exports.handler = (event, context, callback) => {
       range: {
         created: {
           gt: moment()
-            .subtract(11, "months")
+            .subtract(3, "months")
             .format("X"),
         },
       },
     })
 
-    sort = [{ mid: { order: "desc" } }]
+    sort = [{ year: { order: "asc" } }, { created: { order: "desc" } }]
   }
 
   // if query (search term) exists

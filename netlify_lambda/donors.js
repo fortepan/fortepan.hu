@@ -1,7 +1,11 @@
 const { Client } = require("@elastic/elasticsearch")
 
 const client = new Client({
-  node: "http://fortepan:fortepan@v39241.php-friends.de:9200",
+  nodes: [
+    "http://fortepan:fortepan@v39241.php-friends.de:9200",
+    "http://fortepan:fortepan@v39242.php-friends.de:9200",
+    "http://fortepan:fortepan@v39243.php-friends.de:9200",
+  ],
 })
 
 exports.handler = (event, context, callback) => {
