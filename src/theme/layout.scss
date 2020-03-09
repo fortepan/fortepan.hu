@@ -1,0 +1,13 @@
+blockquote {
+  margin: 0 0 2rem;
+  padding: 0 1.5rem;
+  border-left: rem(8px) solid $red;
+
+  .theme--dark & {
+    color: $grey;
+  }
+
+  .theme--light & {
+    color: $grey;
+  }
+}

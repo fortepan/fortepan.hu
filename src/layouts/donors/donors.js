@@ -1,4 +1,4 @@
-import { ready } from "../../utils"
+import { ready, slugify } from "../../utils"
 
 let donorsNode = null
 
@@ -52,24 +52,29 @@ const alphabet = [
 const loadDonors = () => {
   return new Promise((resolve, reject) => {
     // generate all groups
-    alphabet.forEach(letter => {
-      const group = document.createElement("div")
-      group.dataset.group = letter
-      group.className = "donors__group"
-      donorsNode.appendChild(group)
-
-      const groupHeading = document.createElement("h3")
-      groupHeading.textContent = letter
-      group.appendChild(groupHeading)
-    })
 
     fetch(`/.netlify/functions/donors`, {
       method: "GET",
     }).then(response => {
+      alphabet.forEach(letter => {
+        const group = document.createElement("div")
+        group.dataset.group = letter
+        group.className = "donors__group"
+        donorsNode.appendChild(group)
+
+        const groupHeading = document.createElement("h3")
+        groupHeading.textContent = letter
+        group.appendChild(groupHeading)
+      })
+
       response
         .json()
         .then(data => {
-          data.buckets.forEach(itemData => {
+          const dataSorted = data.buckets.sort((a, b) => {
+            return a.key.localeCompare(b.key, "hu", { ignorePunctuation: false })
+          })
+
+          dataSorted.forEach(itemData => {
             // create link node
             const itemNode = document.createElement("a")
             itemNode.innerHTML = `<span class="donors__donor__name">${itemData.key}</span><span class="donors__donor__doc-count">(${itemData.doc_count})</span>`

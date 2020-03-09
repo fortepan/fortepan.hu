@@ -74,17 +74,3 @@ p a {
     border-bottom: 1px solid $red;
   }
 }
-
-blockquote {
-  margin: 0 0 2rem;
-  padding: 0.5rem 1.5rem;
-  border-radius: rem(16px);
-  border: rem(4px) solid $red;
-  color: $red;
-
-  p {
-    font-size: rem(16px);
-    line-height: rem(28px);
-    font-weight: 700;
-  }
-}

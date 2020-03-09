@@ -35,3 +35,25 @@ export const removeClassByPrefix = (el, prefix) => {
 export const numberWithCommas = x => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 }
+
+export const slugify = str => {
+  let s = str.toString()
+
+  const map = {
+    a: "á|à|ã|â|À|Á|Ã|Â",
+    e: "é|è|ê|É|È|Ê",
+    i: "í|ì|î|Í|Ì|Î",
+    o: "ó|ò|ö|ô|õ|ő|Ó|Ò|Ö|Ô|Õ|Ő",
+    u: "ú|ù|û|ü|ű|Ú|Ù|Û|Ü|Ű",
+    c: "ç|Ç",
+    n: "ñ|Ñ",
+  }
+
+  s = s.toLowerCase()
+
+  Object.keys(map).forEach(pattern => {
+    s = s.replace(new RegExp(map[pattern], "g"), pattern)
+  })
+
+  return s
+}

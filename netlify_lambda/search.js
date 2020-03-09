@@ -1,31 +1,13 @@
 const { Client } = require("@elastic/elasticsearch")
-const moment = require("moment")
+const { slugify } = require("../src/utils")
 
 const client = new Client({
-  node: "http://fortepan:fortepan@v39241.php-friends.de:9200",
+  nodes: [
+    "http://fortepan:fortepan@v39241.php-friends.de:9200",
+    "http://fortepan:fortepan@v39242.php-friends.de:9200",
+    "http://fortepan:fortepan@v39243.php-friends.de:9200",
+  ],
 })
-
-const slugify = str => {
-  let s = str.toString()
-
-  const map = {
-    a: "á|à|ã|â|À|Á|Ã|Â",
-    e: "é|è|ê|É|È|Ê",
-    i: "í|ì|î|Í|Ì|Î",
-    o: "ó|ò|ö|ô|õ|ő|Ó|Ò|Ö|Ô|Õ|Ő",
-    u: "ú|ù|û|ü|ű|Ú|Ù|Û|Ü|Ű",
-    c: "ç|Ç",
-    n: "ñ|Ñ",
-  }
-
-  s = s.toLowerCase()
-
-  Object.keys(map).forEach(pattern => {
-    s = s.replace(new RegExp(map[pattern], "g"), pattern)
-  })
-
-  return s
-}
 
 exports.handler = (event, context, callback) => {
   const params = event.queryStringParameters
@@ -56,9 +38,7 @@ exports.handler = (event, context, callback) => {
     query.bool.must.push({
       range: {
         created: {
-          gt: moment()
-            .subtract(3, "months")
-            .format("X"),
+          gt: 1581638400,
         },
       },
     })
@@ -141,8 +121,6 @@ exports.handler = (event, context, callback) => {
     track_total_hits: true,
     query,
   }
-
-  console.log(JSON.stringify(requestBody))
 
   client.search(
     {
