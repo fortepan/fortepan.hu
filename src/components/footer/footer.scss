@@ -1,66 +1,95 @@
 .footer {
-  padding: rem(120px) 2rem 3rem;
+  padding: rem(64px) 2rem 3rem;
   overflow: hidden;
   text-align: center;
 
   @media screen and (max-width: ($breakpoint-tablet - 1px)) {
     padding: rem(64px) 2rem 3rem;
   }
+}
 
-  &__link {
-    text-decoration: none;
-    transition: color 0.3s $ease-out-expo;
-    color: inherit;
+.footer__link {
+  text-decoration: none;
+  transition: color 0.3s $ease-out-expo;
+  color: inherit;
+  @include font-heading-demi();
+  text-transform: uppercase;
+  margin: 0 rem(16px);
+  letter-spacing: 1px;
+  line-height: rem(32px);
 
-    @include font-heading-demi();
-    font-weight: 600;
-    text-transform: uppercase;
-    margin: 0 rem(16px);
-    letter-spacing: 1px;
-    line-height: rem(32px);
+  .theme--dark & {
+    color: $grey;
 
-    .theme--dark & {
-      color: $grey;
-
-      &:hover {
-        color: $light-base;
-      }
-    }
-
-    .theme--light & {
-      color: $grey;
-
-      &:hover {
-        color: $dark-base;
-      }
+    &:hover {
+      color: $light-base;
     }
   }
 
-  &__small {
-    display: block;
-    margin-top: 1.5rem;
-    font-size: rem(12px);
-    line-height: rem(20px);
+  .theme--light & {
+    color: $grey;
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .theme--dark & {
-      color: $grey;
-
-      a:hover {
-        color: $light-base;
-      }
-    }
-
-    .theme--light & {
-      color: $grey;
-
-      a:hover {
-        color: $dark-base;
-      }
+    &:hover {
+      color: $dark-base;
     }
   }
+}
+
+.footer__small {
+  display: block;
+  margin-top: 1.5rem;
+  font-size: rem(12px);
+  line-height: rem(20px);
+
+  .theme--dark & {
+    color: $grey;
+  }
+
+  .theme--light & {
+    color: $grey;
+  }
+}
+
+.footer__small a {
+  color: inherit;
+  text-decoration: none;
+
+  .theme--light &:hover {
+    color: $dark-base;
+  }
+
+  .theme--dark &:hover {
+    color: $light-base;
+  }
+}
+
+.footer__icons {
+  text-align: center;
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer__icons__icon {
+  display: inline-block;
+  text-decoration: none;
+  user-select: none;
+  transition: color 0.3s $ease-out-expo;
+
+  .theme--light & {
+    color: $dark-base;
+  }
+
+  .theme--dark & {
+    color: $light-base;
+  }
+}
+
+.footer__icons__icon:hover {
+  color: $red;
+}
+
+.footer__icons__icon + .footer__icons__icon {
+  margin-left: 1rem;
 }

@@ -1,6 +1,14 @@
 .border-grief {
   display: inline-block;
-  border: 3px solid $dark-base;
+  border: 2px solid;
   line-height: rem(24px);
   padding: 0 rem(4px);
+
+  .theme--light & {
+    border-color: $dark-base;
+  }
+
+  .theme--dark & {
+    border-color: $light-base;
+  }
 }
