@@ -20,8 +20,8 @@ const loadCounter = () => {
     response
       .json()
       .then(data => {
-        document.querySelector(".home__hero__link span").textContent = data.value
-        console.log(data)
+        document.querySelector(".home__hero__total a span").textContent = data.value
+        document.querySelector(".home__hero__total").classList.add("home__hero__total--show")
       })
       .catch(err => {
         console.log(err)

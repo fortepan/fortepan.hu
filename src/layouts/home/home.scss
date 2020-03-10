@@ -37,18 +37,28 @@
 }
 
 .home__hero__total {
+  opacity: 0;
+  pointer-events: none;
   margin-top: 1.5rem;
+  transition: opacity 0.3s $ease-out-expo;
+  font-size: rem(24px);
+}
+
+.home__hero__total--show {
+  opacity: 1;
+  pointer-events: all;
 }
 
 .home__hero__total a {
   text-decoration: none;
-  color: $red;
-  transition: border-color 0.2s $ease-out-expo;
-  border-bottom: 2px solid transparent;
+  color: $light-base;
+  transition: color 0.2s $ease-out-expo, border-color 0.2s $ease-out-expo;
+  border-bottom: 2px solid $light-base;
 }
 
 .home__hero__total a:hover {
-  border-color: $red;
+  color: rgba($light-base, 0.8);
+  border-color: rgba($light-base, 0.8);
 }
 
 .home__hero__total a::after {
@@ -59,6 +69,11 @@
   background-image: url(/images/icons/16/icon-forward.svg);
   margin-left: rem(4px);
   transform: translateY(1px);
+  transition: opacity 0.2s $ease-out-expo;
+}
+
+.home__hero__total a:hover::after {
+  opacity: 0.8;
 }
 
 .home__hero__background {
