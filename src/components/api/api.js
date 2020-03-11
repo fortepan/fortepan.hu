@@ -2,7 +2,7 @@ import { slugify } from "../../utils"
 import config from "../../config"
 
 const elasticRequest = (body, callback, error) => {
-  const searchHost = `${config.API_URL}/elasticsearch_index_fortepan_media/_search`
+  const searchHost = `${config.API_URL || "/api-search"}/elasticsearch_index_fortepan_media/_search`
 
   // Perform the request.
   const xmlHttp = new XMLHttpRequest()
@@ -27,7 +27,7 @@ const search = (params, callback, error) => {
     },
   }
 
-  let sort = [{ year: { order: "asc" } }, { created: { order: "desc" } }]
+  let sort = [{ year: { order: "asc" } }, { created: { order: "desc" } }, { mid: { order: "desc" } }]
 
   const range = {
     range: {
