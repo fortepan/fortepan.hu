@@ -26,6 +26,9 @@
     <div class="base__main">
     {{ content }}
     </div>
+    <script>
+      window.ENV = "{{ siteData.environment }}"
+    </script>
     <script src="/{% if siteData.environment == 'production' %}{{ manifestJS['_dist/app.js'] | replace: '_dist/','' }}{% else %}app.js{% endif %}"></script>
   </body>
 </html>

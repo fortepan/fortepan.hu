@@ -1,8 +1,8 @@
 import { slugify } from "../../utils"
-import config from "../../config"
 
 const elasticRequest = (body, callback, error) => {
-  const searchHost = `${config.API_URL}/elasticsearch_index_fortepan_media/_search`
+  const apiUrl = window.ENV === "production" ? "/api-search" : "http://fortepan:fortepan@v39241.php-friends.de:9200"
+  const searchHost = `${apiUrl}/elasticsearch_index_fortepan_media/_search`
 
   // Perform the request.
   const xmlHttp = new XMLHttpRequest()
