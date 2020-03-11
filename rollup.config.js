@@ -3,12 +3,14 @@ import { terser } from "rollup-plugin-terser"
 import hash from "rollup-plugin-hash"
 import babel from "rollup-plugin-babel"
 import commonjs from "rollup-plugin-commonjs"
+import injectEnv from "rollup-plugin-inject-env"
 
 export default {
   input: "src/scripts.js",
   plugins: [
     resolve(),
     commonjs(),
+    injectEnv(),
     babel({
       exclude: "node_modules/**",
       presets: [
