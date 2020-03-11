@@ -1,7 +1,7 @@
 export default {
   PHOTO_SOURCE: "https://fortepan.download/_photo/display/",
   PHOTO_SOURCE_LARGE: "https://fortepan.download/_photo/download/fortepan_",
-  API_URL: process.env.API_URL,
+  API_URL: "process.env.API_URL",
   THUMBNAILS_QUERY_LIMIT: 30,
   BREAKPOINT_PHONE_XS: 330,
   BREAKPOINT_PHONE_SM: 390,

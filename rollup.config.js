@@ -3,14 +3,17 @@ import { terser } from "rollup-plugin-terser"
 import hash from "rollup-plugin-hash"
 import babel from "rollup-plugin-babel"
 import commonjs from "rollup-plugin-commonjs"
-import injectEnv from "rollup-plugin-inject-env"
+import replace from "@rollup/plugin-replace"
+import dotenv from "dotenv"
+
+dotenv.config()
 
 export default {
   input: "src/scripts.js",
   plugins: [
     resolve(),
     commonjs(),
-    injectEnv(),
+    replace({ "process.env.API_URL": process.env.API_URL }),
     babel({
       exclude: "node_modules/**",
       presets: [

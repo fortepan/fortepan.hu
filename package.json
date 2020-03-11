@@ -33,6 +33,7 @@
     "@babel/core": "^7.8.7",
     "@babel/preset-env": "^7.8.7",
     "@csstools/postcss-sass": "^4.0.0",
+    "@rollup/plugin-replace": "^2.3.1",
     "acorn": "^7.1.1",
     "add": "^2.0.6",
     "autoprefixer": "^9.7.4",
@@ -71,6 +72,7 @@
   },
   "dependencies": {
     "custom-event-polyfill": "^1.0.7",
+    "dotenv": "^8.2.0",
     "lodash": "^4.17.15"
   }
 }
