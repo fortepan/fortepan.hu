@@ -27,7 +27,7 @@ const search = (params, callback, error) => {
     },
   }
 
-  let sort = [{ year: { order: "asc" } }, { created: { order: "desc" } }, { mid: { order: "desc" } }]
+  const sort = [{ year: { order: "asc" } }, { created: { order: "desc" } }, { mid: { order: "desc" } }]
 
   const range = {
     range: {
@@ -50,8 +50,6 @@ const search = (params, callback, error) => {
         },
       },
     })
-
-    sort = [{ year: { order: "asc" } }, { created: { order: "desc" } }]
   }
 
   // if query (search term) exists
