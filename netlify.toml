@@ -7,4 +7,3 @@
   from = "/search-api/*"
   to = "http://v39241.php-friends.de:9200/:splat"
   status = 200
-  force = true
