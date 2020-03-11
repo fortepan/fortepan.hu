@@ -2,6 +2,7 @@ import throttle from "lodash/throttle"
 import config from "../../config"
 import { ready, trigger, getURLParams, numberWithCommas } from "../../utils"
 import Timeline from "../../components/timeline/timeline"
+import api from "../../components/api/api"
 
 const THUMBNAIL_HEIGHT = 160
 
@@ -142,29 +143,23 @@ const loadPhotos = () => {
       Timeline.disable()
     }
 
-    const qs = Object.keys(params)
-      .map(k => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)
-      .join("&")
-
-    fetch(`/.netlify/functions/search?${qs}`, {
-      method: "GET",
-    }).then(response => {
-      response
-        .json()
-        .then(data => {
-          setTitle(data.hits.total.value)
-          data.hits.hits.forEach(itemData => {
-            thumbnailsCount += 1
-            const thumbnailFragment = new Thumbnail(itemData)
-            wrapperNode.appendChild(thumbnailFragment)
-          })
-          thumbnailsLoading = false
-          resolve()
+    api.search(
+      params,
+      data => {
+        console.log(data)
+        setTitle(data.hits.total.value)
+        data.hits.hits.forEach(itemData => {
+          thumbnailsCount += 1
+          const thumbnailFragment = new Thumbnail(itemData)
+          wrapperNode.appendChild(thumbnailFragment)
         })
-        .catch(err => {
-          reject(err)
-        })
-    })
+        thumbnailsLoading = false
+        resolve()
+      },
+      statusText => {
+        reject(statusText)
+      }
+    )
   })
 }
 

@@ -1,17 +1,24 @@
-const { Client } = require("@elastic/elasticsearch")
-const { slugify } = require("../src/utils")
+import { slugify } from "../../utils"
 
-const client = new Client({
-  nodes: [
-    "http://fortepan:fortepan@v39241.php-friends.de:9200",
-    "http://fortepan:fortepan@v39242.php-friends.de:9200",
-    "http://fortepan:fortepan@v39243.php-friends.de:9200",
-  ],
-})
+const elasticRequest = (body, callback, error) => {
+  const searchHost = "http://v39241.php-friends.de:9200/elasticsearch_index_fortepan_media/_search"
 
-exports.handler = (event, context, callback) => {
-  const params = event.queryStringParameters
+  // Perform the request.
+  const xmlHttp = new XMLHttpRequest()
+  xmlHttp.open("POST", searchHost, true)
+  xmlHttp.setRequestHeader("Authorization", `Basic ${btoa("fortepan:fortepan")}`)
+  xmlHttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
+  xmlHttp.onload = () => {
+    if (xmlHttp.status === 200) {
+      callback(JSON.parse(xmlHttp.responseText))
+    } else {
+      error(xmlHttp.statusText)
+    }
+  }
+  xmlHttp.send(JSON.stringify(body))
+}
 
+const search = (params, callback, error) => {
   const query = {
     bool: {
       must: [],
@@ -114,7 +121,7 @@ exports.handler = (event, context, callback) => {
 
   query.bool.must.push(range)
 
-  const requestBody = {
+  const body = {
     from: params.from || 0,
     size: params.size || 30,
     sort,
@@ -122,16 +129,53 @@ exports.handler = (event, context, callback) => {
     query,
   }
 
-  client.search(
-    {
-      index: "elasticsearch_index_fortepan_media",
-      body: requestBody,
+  elasticRequest(body, callback, error)
+}
+
+const getTotal = (callback, error) => {
+  const body = {
+    size: 0,
+    track_total_hits: true,
+    query: {
+      bool: {
+        must: [
+          {
+            match_all: {},
+          },
+          {
+            range: {
+              year: {
+                gt: 0,
+              },
+            },
+          },
+        ],
+      },
     },
-    (err, result) => {
-      callback(null, {
-        statusCode: err ? err.statusCode : result.statusCode,
-        body: JSON.stringify(err ? err.body : result.body),
-      })
-    }
-  )
+  }
+
+  elasticRequest(body, callback, error)
+}
+
+const getDonors = (callback, error) => {
+  const body = {
+    size: 0,
+    aggs: {
+      donors: {
+        terms: {
+          field: "adomanyozo_name",
+          size: 10000,
+          order: { _key: "asc" },
+        },
+      },
+    },
+  }
+
+  elasticRequest(body, callback, error)
+}
+
+export default {
+  search,
+  getTotal,
+  getDonors,
 }

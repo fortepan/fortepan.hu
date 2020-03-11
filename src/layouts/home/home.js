@@ -1,4 +1,5 @@
 import { ready, trigger } from "../../utils"
+import api from "../../components/api/api"
 
 let heroBg = null
 const bgIds = [50563, 52724, 54176, 54178, 55558, 55617, 58473, 60057, 60155, 60490, 71299, 71443, 71955, 78498, 78835]
@@ -13,27 +14,15 @@ const loadBackgroundImage = () => {
   img.src = `/uploads/${id}.jpg`
 }
 
-const loadCounter = () => {
-  fetch(`/.netlify/functions/total`, {
-    method: "GET",
-  }).then(response => {
-    response
-      .json()
-      .then(data => {
-        document.querySelector(".home__hero__total a span").textContent = data.value
-        document.querySelector(".home__hero__total").classList.add("home__hero__total--show")
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  })
-}
-
 const init = () => {
   // add event listeners
   heroBg = document.querySelector(".home__hero__background")
   loadBackgroundImage()
-  loadCounter()
+
+  api.getTotal(data => {
+    document.querySelector(".home__hero__total a span").textContent = data.hits.total.value
+    document.querySelector(".home__hero__total").classList.add("home__hero__total--show")
+  })
 
   document.querySelector(".home").addEventListener("scroll", e => {
     const view = e.target
