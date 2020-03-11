@@ -2,8 +2,9 @@
   Command = "npm run build"
   Publish = "_dist/"
 
-## This rule redirects to an external API
+## This rule redirects to an external API, signing requests with a secret
 [[redirects]]
-  from = "/search-api"
-  to = "http://v39241.php-friends.de:9200/"
+  from = "/search-api/*"
+  to = "http://v39241.php-friends.de:9200/:splat"
   status = 200
+  force = true
