@@ -1,5 +1,4 @@
 // load polyfills
-import "whatwg-fetch"
 import "custom-event-polyfill"
 
 // app
