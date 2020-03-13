@@ -8,6 +8,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="fragment" content="!">
 
     {% if siteData.environment == 'production' %}
       {% assign site_url = siteData.site %}
@@ -16,10 +17,10 @@
     {% endif %}
 
 
-    <link rel="shortcut icon" href="/favicon.ico" />
-    <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" />
-    <link rel="mask-icon" href="/images/icons/fortepan-logo.svg" color="#F73F13">
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="shortcut icon" href="{{ site_url }}/favicon.ico" />
+    <link rel="apple-touch-icon" href="{{ site_url }}/images/icons/apple-touch-icon.png" />
+    <link rel="mask-icon" href="{{ site_url }}/images/icons/fortepan-logo.svg" color="#F73F13">
+    <link rel="icon" type="image/x-icon" href="{{ site_url }}/favicon.ico">
     <meta name="theme-color" content="#F73F13">
 
     <meta property="twitter:image:src" content="{{ site_url }}/images/social/fortepan-twitter-1.jpg" />
