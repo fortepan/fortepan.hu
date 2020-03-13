@@ -1,6 +1,6 @@
 import throttle from "lodash/throttle"
 import config from "../../config"
-import { ready, trigger } from "../../utils"
+import { ready, trigger, setPageMeta } from "../../utils"
 
 const CAROUSEL_SLIDESHOW_DELAY = 4000
 
@@ -9,16 +9,25 @@ let carouselControl = null
 let carouselControlTimer
 let metaHiddenBeforeSlideshow = false
 let carouselSlideshowInterval = null
+let currentImageMeta = null
 
-const downloadImage = (name, uri) => {
+const downloadImage = () => {
+  const dialogNode = document.querySelector(".dialog--download")
+  dialogNode.classList.add("dialog--show")
+  dialogNode.querySelector(".dialog__content").innerHTML = dialogNode.dataset.content.replace(
+    "$donor",
+    `<br/><b>Fortepan / ${currentImageMeta.adomanyozo_name}</b>`
+  )
+
   const a = document.createElement("a")
-  a.href = uri
-  a.download = name
+  a.href = `${config.PHOTO_SOURCE_LARGE}${currentImageMeta.mid}.jpg`
   a.click()
 }
 
 document.addEventListener("carousel:loadPhoto", e => {
   const d = e.detail
+
+  currentImageMeta = d
 
   const locationArray = []
   if (d.orszag_name) locationArray.push(`<a href="?country=${encodeURIComponent(d.orszag_name)}">${d.orszag_name}</a>`)
@@ -50,10 +59,6 @@ document.addEventListener("carousel:loadPhoto", e => {
     })
   })
 
-  // Set download button
-  carouselControl.querySelector("#PhotoDownload").setAttribute("data-name", `${d.mid}.jpg`)
-  carouselControl.querySelector("#PhotoDownload").setAttribute("data-uri", `${config.PHOTO_SOURCE_LARGE}${d.mid}.jpg`)
-
   // Set Controller meta
   carouselControl.querySelector(".carousel__control__search").innerHTML = document.getElementById(
     "PhotosSearchExpression"
@@ -62,7 +67,10 @@ document.addEventListener("carousel:loadPhoto", e => {
     document.getElementById("PhotosCount").textContent
   }`
 
+  setPageMeta(`${d.mid}`, d.description, `${window.location.host}${config.PHOTO_SOURCE}${d.mid}.jpg`)
+
   trigger("carousel:show")
+  trigger("carousel:hideDownloadDialog")
 })
 
 document.addEventListener("carousel:show", () => {
@@ -113,6 +121,10 @@ document.addEventListener("carousel:toggleSlideshow", () => {
   }
 })
 
+document.addEventListener("carousel:hideDownloadDialog", () => {
+  document.querySelector(".dialog--download").classList.remove("dialog--show")
+})
+
 const initCarousel = el => {
   // bind events
   el.querySelector("#PhotoNext").addEventListener("click", e => {
@@ -141,7 +153,12 @@ const initCarousel = el => {
 
   el.querySelector("#PhotoDownload").addEventListener("click", e => {
     e.preventDefault()
-    downloadImage(e.currentTarget.dataset.name, e.currentTarget.dataset.uri)
+    downloadImage()
+  })
+
+  el.querySelector("#DialogDownloadClose").addEventListener("click", e => {
+    e.preventDefault()
+    trigger("carousel:hideDownloadDialog")
   })
 
   carouselNode.addEventListener(

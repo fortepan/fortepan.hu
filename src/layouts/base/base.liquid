@@ -3,12 +3,40 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-    <meta name="description" content="{{ renderData.description or description or metadata.description }}" />
+    <meta name="description" content="{{ description }}" />
     <meta name="apple-mobile-web-app-title" content="Fortepan">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <title>{{ renderData.title or title or metadata.title }}</title>
+
+    {% if siteData.environment == 'production' %}
+      {% assign site_url = siteData.site %}
+    {% else %}
+      {% assign site_url = siteData.site_dev %}
+    {% endif %}
+
+
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.png" />
+    <link rel="mask-icon" href="/images/icons/fortepan-logo.svg" color="#F73F13">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <meta name="theme-color" content="#F73F13">
+
+    <meta property="twitter:image:src" content="{{ site_url }}/images/social/fortepan-twitter-1.jpg" />
+    <meta property="twitter:site" content="@Fortepan" />
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content="{{ title }}" />
+    <meta property="twitter:description" content="{{ description }}" />
+
+    <meta property="og:image" content="{{ site_url }}/images/social/fortepan-facebook-1.jpg" />
+    <meta property="og:site_name" content="Fortepan" />
+    <meta property="og:type" content="object" />
+    <meta property="og:title" content="{{ title }}" />
+    <meta property="og:description" content="{{ description }}" />
+
+    <title>{{ title }}</title>
+
+
     <link rel="stylesheet" href="https://use.typekit.net/shi7abw.css" />
     <link
       rel="stylesheet"

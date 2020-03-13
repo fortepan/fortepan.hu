@@ -36,7 +36,7 @@ export const numberWithCommas = x => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
 }
 
-export const slugify = str => {
+export const slugify = (str, removeSpaces) => {
   let s = str.toString()
 
   const map = {
@@ -55,5 +55,27 @@ export const slugify = str => {
     s = s.replace(new RegExp(map[pattern], "g"), pattern)
   })
 
+  if (removeSpaces) {
+    s = s.replace(new RegExp("·|/|_|,|:|;| ", "g"), "-")
+  }
+
   return s
+}
+
+export const setPageMeta = (title, description, imgSrc) => {
+  if (title) {
+    const titleText = `Fortepan — ${title}`
+    document.title = titleText
+    document.querySelector('meta[property="twitter:title"]').setAttribute("content", titleText)
+    document.querySelector('meta[property="og:title"]').setAttribute("content", titleText)
+  }
+  if (description) {
+    document.querySelector('meta[property="description"]').setAttribute("content", description)
+    document.querySelector('meta[property="twitter:description"]').setAttribute("content", description)
+    document.querySelector('meta[property="og:description"]').setAttribute("content", description)
+  }
+  if (imgSrc) {
+    document.querySelector('meta[property="twitter:image:src"]').setAttribute("content", imgSrc)
+    document.querySelector('meta[property="og:image"]').setAttribute("content", imgSrc)
+  }
 }

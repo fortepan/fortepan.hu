@@ -15,11 +15,42 @@
 }
 
 .dialog--search {
-  top: rem(64px);
+  top: rem(120px);
+}
+
+.dialog--download {
+  max-width: rem(480px);
+  .theme--light & {
+    background-color: $light-base;
+  }
+
+  .theme--dark & {
+    background-color: $dark-base;
+  }
 }
 
 .dialog--show {
   opacity: 1;
-  transform: translateX(-50%) translateY(50%);
+  transform: translateX(-50%) translateY(-50%);
   pointer-events: initial;
+}
+
+.dialog__close {
+  position: absolute;
+  right: rem(8px);
+  top: rem(8px);
+}
+
+.dialog__wrapper {
+  padding: rem(24px);
+}
+
+.dialog__title {
+  margin: 0;
+}
+
+.dialog__content {
+  margin: rem(4px) 0 0 0;
+  font-size: rem(14px);
+  line-height: rem(24px);
 }

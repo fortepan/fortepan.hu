@@ -54,4 +54,12 @@
             </div>
         </div>
     </div>
+
+    <div class="dialog dialog--download" data-content="{{ lang[locale].dialog_download }}">
+    {% include buttons/circular.liquid icon:"close" id:"DialogDownloadClose" href:"#" label:lang[locale].close class:"dialog__close" %}
+        <div class="dialog__wrapper">
+            <h3 class="dialog__title">{{ lang[locale].download }}</h3>
+            <p class="dialog__content"></p>
+        </div>
+    </div>
 </div>
