@@ -247,7 +247,7 @@ ready(() => {
     loadPhotos().then(() => {
       if (getURLParams().id > 0) {
         // show carousel with an image
-        console.log("show carousel")
+        if (document.querySelector(".photos__thumbnail")) document.querySelector(".photos__thumbnail").click()
       } else {
         trigger("carousel:hide")
       }

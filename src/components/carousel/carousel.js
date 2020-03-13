@@ -1,6 +1,6 @@
 import throttle from "lodash/throttle"
 import config from "../../config"
-import { ready, trigger, setPageMeta } from "../../utils"
+import { ready, trigger, setPageMeta, getURLParams } from "../../utils"
 
 const CAROUSEL_SLIDESHOW_DELAY = 4000
 
@@ -76,7 +76,9 @@ document.addEventListener("carousel:loadPhoto", e => {
 document.addEventListener("carousel:show", () => {
   if (!carouselNode.classList.contains("carousel--show")) {
     carouselNode.classList.add("carousel--show")
-    carouselControl.classList.add("carousel__control--show")
+
+    if (document.querySelectorAll(".photos__thumbnail").length > 1)
+      carouselControl.classList.add("carousel__control--show")
   }
 })
 
@@ -85,6 +87,9 @@ document.addEventListener("carousel:hide", () => {
   if (document.querySelector("body").classList.contains("base--carousel-slideshow")) trigger("carousel:pauseSlideshow")
 
   carouselNode.classList.remove("carousel--show")
+  if (!(document.querySelectorAll(".photos__thumbnail").length > 1) && getURLParams().id > 0) {
+    trigger("photos:historyPushState", { url: "?q=", resetPhotosWrapper: true })
+  }
 })
 
 document.addEventListener("carousel:toggleMeta", () => {
@@ -164,24 +169,26 @@ const initCarousel = el => {
   carouselNode.addEventListener(
     "mousemove",
     throttle(e => {
-      if (!carouselControl.classList.contains("carousel__control--show")) {
-        carouselControl.classList.add("carousel__control--show")
-      }
-
-      if (carouselControlTimer) clearTimeout(carouselControlTimer)
-      carouselControlTimer = setTimeout(() => {
-        const bounds = carouselControl.getBoundingClientRect()
-        if (
-          !(
-            e.clientX >= bounds.left &&
-            e.clientX <= bounds.right &&
-            e.clientY >= bounds.top &&
-            e.clientY <= bounds.bottom
-          )
-        ) {
-          carouselControl.classList.remove("carousel__control--show")
+      if (document.querySelectorAll(".photos__thumbnail").length > 1) {
+        if (!carouselControl.classList.contains("carousel__control--show")) {
+          carouselControl.classList.add("carousel__control--show")
         }
-      }, 1000)
+
+        if (carouselControlTimer) clearTimeout(carouselControlTimer)
+        carouselControlTimer = setTimeout(() => {
+          const bounds = carouselControl.getBoundingClientRect()
+          if (
+            !(
+              e.clientX >= bounds.left &&
+              e.clientX <= bounds.right &&
+              e.clientY >= bounds.top &&
+              e.clientY <= bounds.bottom
+            )
+          ) {
+            carouselControl.classList.remove("carousel__control--show")
+          }
+        }, 1000)
+      }
     }, 400)
   )
 
