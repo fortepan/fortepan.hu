@@ -8,7 +8,8 @@ sections:
   path: src/pages
   label: Pages
   create: all
-  match: "**/*"
+  match: "**/*.md"
+  exclude: src/pages/**/*(photos|donors).md
 - type: document
   path: src/data/lang.json
   label: Dictionary
