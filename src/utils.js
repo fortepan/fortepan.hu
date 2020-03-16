@@ -70,7 +70,7 @@ export const setPageMeta = (title, description, imgSrc) => {
     document.querySelector('meta[property="og:title"]').setAttribute("content", titleText)
   }
   if (description) {
-    document.querySelector('meta[property="description"]').setAttribute("content", description)
+    document.querySelector('meta[name="description"]').setAttribute("content", description)
     document.querySelector('meta[property="twitter:description"]').setAttribute("content", description)
     document.querySelector('meta[property="og:description"]').setAttribute("content", description)
   }

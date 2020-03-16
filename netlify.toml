@@ -7,3 +7,8 @@
   from = "/search-api/*"
   to = "http://v39241.php-friends.de:9200/:splat"
   status = 200
+
+[[redirects]]
+  from = "/photos/*"
+  to = "https://fortepan.download/_photo/display/:splat"
+  status = 200
