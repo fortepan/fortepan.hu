@@ -12,9 +12,8 @@ sections:
 - type: document
   path: src/data/lang.json
   label: Dictionary
-  match: "**/*"
-upload_dir: uploads
-public_path: "/uploads"
+upload_dir: src/static/uploads
+public_path: "/images/uploads"
 front_matter_path: ''
 use_front_matter_path: false
 file_template: ":filename:"
