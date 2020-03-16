@@ -1,9 +1,9 @@
 ---
 layout: article/article.liquid
 title: Adatvédelem
-permalink: /hu/privacy/
----
+permalink: "/hu/privacy/"
 
+---
 ### Adatvédelmi tájékoztató és a honlap használatával kapcsolatos tudnivalók
 
 A Fortepan mint adatkezelő tiszteletben tartja a honlapját látogatók adatainak biztonságát.
