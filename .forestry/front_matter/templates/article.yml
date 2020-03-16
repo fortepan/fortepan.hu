@@ -13,3 +13,5 @@ fields:
   name: permalink
   label: permalink
   hidden: false
+pages:
+- src/pages/hu/about-us.md
