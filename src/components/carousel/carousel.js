@@ -67,7 +67,13 @@ document.addEventListener("carousel:loadPhoto", e => {
     document.getElementById("PhotosCount").textContent
   }`
 
-  setPageMeta(`${d.mid}`, d.description, `${config.PHOTO_SOURCE}${d.mid}.jpg`)
+  setPageMeta(
+    `${d.mid}`,
+    `${d.description ? `${d.description} — ` : ""}${document.querySelector(".carousel__meta__donor h6").textContent}: ${
+      d.adomanyozo_name
+    } (${d.year})`,
+    `${config.PHOTO_SOURCE}${d.mid}.jpg`
+  )
 
   trigger("carousel:show")
   trigger("carousel:hideDownloadDialog")
