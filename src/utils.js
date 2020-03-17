@@ -1,3 +1,5 @@
+import lang from "./data/lang"
+
 export const isTouchDevice = () => {
   return "ontouchstart" in window || window.navigator.maxTouchPoints > 0 || window.navigator.msMaxTouchPoints > 0
 }
@@ -78,4 +80,24 @@ export const setPageMeta = (title, description, imgSrc) => {
     document.querySelector('meta[property="twitter:image:src"]').setAttribute("content", imgSrc)
     document.querySelector('meta[property="og:image"]').setAttribute("content", imgSrc)
   }
+}
+
+export const copyToClipboard = textToCopy => {
+  const input = document.createElement("textarea")
+  input.className = "visuallyhidden"
+  input.value = textToCopy
+
+  document.body.appendChild(input)
+
+  input.select()
+
+  const l = lang[document.querySelector("body").dataset.lang]
+  console.log(l)
+  if (document.execCommand("copy")) {
+    trigger("snackbar:show", { message: "Text has been copied to clipboard.", autoHide: true })
+  } else {
+    trigger("snackbar:show", { message: "Failed to copy text.", autoHide: true })
+  }
+
+  document.body.removeChild(input)
 }

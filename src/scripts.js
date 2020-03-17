@@ -10,6 +10,7 @@ import "./components/carousel/carousel"
 import "./components/search/search"
 import "./components/timeline/timeline"
 import "./components/background-icon/background-icon"
+import "./components/snackbar/snackbar"
 
 // layouts
 import "./layouts/base/base"

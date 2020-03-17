@@ -90,6 +90,11 @@
       display: flex;
     }
 
+    &__pager--disabled {
+      pointer-events: none;
+      opacity: 0.2;
+    }
+
     &__search {
       white-space: nowrap;
       text-overflow: ellipsis;

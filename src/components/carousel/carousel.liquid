@@ -13,6 +13,7 @@
                 {% comment %}
                 {% include buttons/circular.liquid icon:"bookmark" id:"PhotoBookmark" href:"#" label: lang[locale].bookmark %}
                 {% endcomment %}
+
                 {% include buttons/circular.liquid icon:"download" id:"PhotoDownload" href:"#" label: lang[locale].download %}
                 {% comment %}
                 {% include buttons/circular.liquid icon:"share" id:"PhotoShare" href:"#" label: lang[locale].share %}
@@ -60,6 +61,19 @@
         <div class="dialog__wrapper">
             <h3 class="dialog__title">{{ lang[locale].download }}</h3>
             <p class="dialog__content"></p>
+        </div>
+    </div>
+
+    <div class="dialog dialog--share">
+        {% include buttons/circular.liquid icon:"close" id:"DialogShareClose" href:"#" label:lang[locale].close class:"dialog__close" %}
+        <div class="dialog__wrapper">
+            <h3 class="dialog__title">{{ lang[locale].share }}</h3>
+            <p class="dialog__content">
+                <h5 class="dialog__content__action"><a href="#">{{ lang[locale].share_facebook }}</a></h5>
+                <h5 class="dialog__content__action"><a href="#">{{ lang[locale].share_twitter }}</a></h5>
+                <h5 class="dialog__content__action"><a href="#">{{ lang[locale].share_email }}</a></h5>
+                <h5 class="dialog__content__action"><a href="#" class="dialog__content__action">{{ lang[locale].copy_link }}</a></h5>
+            </p>
         </div>
     </div>
 </div>

@@ -225,7 +225,8 @@ ready(() => {
     if (
       view.scrollTop + view.offsetHeight >= view.scrollHeight &&
       !thumbnailsLoading &&
-      thumbnailsCount % config.THUMBNAILS_QUERY_LIMIT === 0
+      thumbnailsCount % config.THUMBNAILS_QUERY_LIMIT === 0 &&
+      thumbnailsCount > 0
     ) {
       thumbnailsLoading = true
       loadPhotos()

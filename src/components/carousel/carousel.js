@@ -1,6 +1,6 @@
 import throttle from "lodash/throttle"
 import config from "../../config"
-import { ready, trigger, setPageMeta, getURLParams } from "../../utils"
+import { ready, trigger, setPageMeta, getURLParams, copyToClipboard } from "../../utils"
 
 const CAROUSEL_SLIDESHOW_DELAY = 4000
 
@@ -42,7 +42,7 @@ document.addEventListener("carousel:loadPhoto", e => {
     document.querySelector(".carousel__meta__location").style.display = "none"
   }
   document.querySelector(".carousel__meta__description").innerHTML = d.description ? d.description : ""
-  document.querySelector(".carousel__meta__id h5").textContent = d.mid
+  document.querySelector(".carousel__meta__id h5").innerHTML = `<a href="?id=${d.mid}">${d.mid}</a>`
   document.querySelector(".carousel__meta__year h5").innerHTML = `<a href="?year=${d.year}">${d.year}</a>`
   document.querySelector(".carousel__meta__donor h5").innerHTML = `<a href="?donor=${encodeURIComponent(
     d.adomanyozo_name
@@ -68,7 +68,7 @@ document.addEventListener("carousel:loadPhoto", e => {
   }`
 
   setPageMeta(
-    `${d.mid}`,
+    `#${d.mid}`,
     `${d.description ? `${d.description} — ` : ""}${document.querySelector(".carousel__meta__donor h6").textContent}: ${
       d.adomanyozo_name
     } (${d.year})`,
@@ -77,6 +77,12 @@ document.addEventListener("carousel:loadPhoto", e => {
 
   trigger("carousel:show")
   trigger("carousel:hideDownloadDialog")
+
+  if (document.querySelectorAll(".photos__thumbnail").length > 1) {
+    document.querySelector(".carousel__control__pager").classList.remove("carousel__control__pager--disabled")
+  } else {
+    document.querySelector(".carousel__control__pager").classList.add("carousel__control__pager--disabled")
+  }
 })
 
 document.addEventListener("carousel:show", () => {
@@ -136,6 +142,14 @@ document.addEventListener("carousel:hideDownloadDialog", () => {
   document.querySelector(".dialog--download").classList.remove("dialog--show")
 })
 
+document.addEventListener("carousel:showShareDialog", () => {
+  document.querySelector(".dialog--share").classList.add("dialog--show")
+})
+
+document.addEventListener("carousel:hideShareDialog", () => {
+  document.querySelector(".dialog--share").classList.remove("dialog--show")
+})
+
 const initCarousel = el => {
   // bind events
   el.querySelector("#PhotoNext").addEventListener("click", e => {
@@ -167,6 +181,18 @@ const initCarousel = el => {
     downloadImage()
   })
 
+  if (el.querySelector("#PhotoShare")) {
+    el.querySelector("#PhotoShare").addEventListener("click", e => {
+      e.preventDefault()
+      trigger("carousel:showShareDialog")
+    })
+  }
+
+  el.querySelector("#DialogShareClose").addEventListener("click", e => {
+    e.preventDefault()
+    trigger("carousel:hideShareDialog")
+  })
+
   el.querySelector("#DialogDownloadClose").addEventListener("click", e => {
     e.preventDefault()
     trigger("carousel:hideDownloadDialog")
@@ -175,26 +201,24 @@ const initCarousel = el => {
   carouselNode.addEventListener(
     "mousemove",
     throttle(e => {
-      if (document.querySelectorAll(".photos__thumbnail").length > 1) {
-        if (!carouselControl.classList.contains("carousel__control--show")) {
-          carouselControl.classList.add("carousel__control--show")
-        }
-
-        if (carouselControlTimer) clearTimeout(carouselControlTimer)
-        carouselControlTimer = setTimeout(() => {
-          const bounds = carouselControl.getBoundingClientRect()
-          if (
-            !(
-              e.clientX >= bounds.left &&
-              e.clientX <= bounds.right &&
-              e.clientY >= bounds.top &&
-              e.clientY <= bounds.bottom
-            )
-          ) {
-            carouselControl.classList.remove("carousel__control--show")
-          }
-        }, 1000)
+      if (!carouselControl.classList.contains("carousel__control--show")) {
+        carouselControl.classList.add("carousel__control--show")
       }
+
+      if (carouselControlTimer) clearTimeout(carouselControlTimer)
+      carouselControlTimer = setTimeout(() => {
+        const bounds = carouselControl.getBoundingClientRect()
+        if (
+          !(
+            e.clientX >= bounds.left &&
+            e.clientX <= bounds.right &&
+            e.clientY >= bounds.top &&
+            e.clientY <= bounds.bottom
+          )
+        ) {
+          carouselControl.classList.remove("carousel__control--show")
+        }
+      }, 1000)
     }, 400)
   )
 
