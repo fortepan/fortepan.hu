@@ -28,6 +28,7 @@
   .theme--dark & {
     background-color: $dark-base;
   }
+  z-index: 1000;
 }
 
 .dialog--show {
@@ -57,13 +58,21 @@
 }
 
 .dialog__content__action {
+  @include font-heading-demi();
   display: block;
   margin: 0;
-  padding: rem(6px) 0;
+  padding: rem(8px) 0 rem(8px) rem(28px);
+  position: relative;
+
+  svg {
+    position: absolute;
+    left: 0;
+  }
 
   a {
     text-decoration: none;
     color: $grey;
+    font-weight: 500;
   }
 
   a:hover {

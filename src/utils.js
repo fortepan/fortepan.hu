@@ -82,7 +82,7 @@ export const setPageMeta = (title, description, imgSrc) => {
   }
 }
 
-export const copyToClipboard = textToCopy => {
+export const copyToClipboard = (textToCopy, type) => {
   const input = document.createElement("textarea")
   input.className = "visuallyhidden"
   input.value = textToCopy
@@ -92,12 +92,21 @@ export const copyToClipboard = textToCopy => {
   input.select()
 
   const l = lang[document.querySelector("body").dataset.lang]
-  console.log(l)
-  if (document.execCommand("copy")) {
-    trigger("snackbar:show", { message: "Text has been copied to clipboard.", autoHide: true })
+  const res = document.execCommand("copy")
+  if (res) {
+    trigger("snackbar:show", {
+      message: type === "link" ? l.copy_link_clipboard : l.copy_text_clipboard,
+      autoHide: true,
+      status: "success",
+    })
   } else {
-    trigger("snackbar:show", { message: "Failed to copy text.", autoHide: true })
+    trigger("snackbar:show", {
+      message: type === "link" ? l.copy_link_clipboard_failed : l.copy_text_clipboard_failed,
+      autoHide: true,
+      status: "error",
+    })
   }
 
   document.body.removeChild(input)
+  return res
 }

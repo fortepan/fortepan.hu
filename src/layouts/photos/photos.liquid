@@ -14,6 +14,27 @@ layout: base/base.liquid
 {% include header/header.liquid %}
 {% include timeline/timeline.liquid %}
 
+<div class="dialog dialog--download" data-content="{{ lang[locale].dialog_download }}">
+  {% include buttons/circular.liquid icon:"close" id:"DialogDownloadClose" href:"#" label:lang[locale].close class:"dialog__close" %}
+  <div class="dialog__wrapper">
+      <h3 class="dialog__title">{{ lang[locale].download }}</h3>
+      <p class="dialog__content"></p>
+  </div>
+</div>
+
+<div class="dialog dialog--share">
+  {% include buttons/circular.liquid icon:"close" id:"DialogShareClose" href:"#" label:lang[locale].close class:"dialog__close" %}
+  <div class="dialog__wrapper">
+      <h3 class="dialog__title">{{ lang[locale].share }}</h3>
+      <p class="dialog__content">
+          <h5 class="dialog__content__action"><a href="#" id="ShareFacebook" target="_blank">{% inlineSVG src:"src/static/images/icons/24/icon-facebook.svg" %}{{ lang[locale].share_facebook }}</a></h5>
+          <h5 class="dialog__content__action"><a href="#" id="ShareTwitter" target="_blank">{% inlineSVG src:"src/static/images/icons/24/icon-twitter.svg" %}{{ lang[locale].share_twitter }}</a></h5>
+          <h5 class="dialog__content__action"><a href="#" id="ShareEmail">{% inlineSVG src:"src/static/images/icons/24/icon-email.svg" %}{{ lang[locale].share_email }}</a></h5>
+          <h5 class="dialog__content__action"><a href="#" id="ShareLink">{% inlineSVG src:"src/static/images/icons/24/icon-link.svg" %}{{ lang[locale].copy_link }}</a></h5>
+      </p>
+  </div>
+</div>
+
 <template id="Thumbnail">
   <div class="photos__thumbnail">
       <div class="photos__thumbnail__image"></div>

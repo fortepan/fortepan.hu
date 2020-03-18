@@ -77,6 +77,7 @@ document.addEventListener("carousel:loadPhoto", e => {
 
   trigger("carousel:show")
   trigger("carousel:hideDownloadDialog")
+  trigger("carousel:hideShareDialog")
 
   if (document.querySelectorAll(".photos__thumbnail").length > 1) {
     document.querySelector(".carousel__control__pager").classList.remove("carousel__control__pager--disabled")
@@ -102,6 +103,8 @@ document.addEventListener("carousel:hide", () => {
   if (!(document.querySelectorAll(".photos__thumbnail").length > 1) && getURLParams().id > 0) {
     trigger("photos:historyPushState", { url: "?q=", resetPhotosWrapper: true })
   }
+
+  trigger("carousel:hideShareDialog")
 })
 
 document.addEventListener("carousel:toggleMeta", () => {
@@ -181,21 +184,52 @@ const initCarousel = el => {
     downloadImage()
   })
 
-  if (el.querySelector("#PhotoShare")) {
-    el.querySelector("#PhotoShare").addEventListener("click", e => {
-      e.preventDefault()
-      trigger("carousel:showShareDialog")
-    })
-  }
-
-  el.querySelector("#DialogShareClose").addEventListener("click", e => {
+  el.querySelector("#PhotoShare").addEventListener("click", e => {
     e.preventDefault()
-    trigger("carousel:hideShareDialog")
+    trigger("carousel:showShareDialog")
   })
 
-  el.querySelector("#DialogDownloadClose").addEventListener("click", e => {
+  document.querySelector("#ShareLink").addEventListener("click", e => {
+    e.preventDefault()
+    const res = copyToClipboard(
+      `${window.location.origin + window.location.pathname}?id=${currentImageMeta.mid}`,
+      "link"
+    )
+    if (res) trigger("carousel:hideShareDialog")
+  })
+
+  document.querySelector("#ShareFacebook").addEventListener("click", e => {
+    e.preventDefault()
+    const url = `https://www.facebook.com/dialog/share?app_id=498572111052804&href=${encodeURIComponent(
+      `${window.location.origin + window.location.pathname}?id=${currentImageMeta.mid}`
+    )}`
+    window.open(url, "_blank")
+  })
+
+  document.querySelector("#ShareTwitter").addEventListener("click", e => {
+    e.preventDefault()
+    const url = `https://twitter.com/share?text=${encodeURIComponent(
+      document.querySelector("meta[name=description]").getAttribute("content")
+    )}&url=${encodeURIComponent(`${window.location.origin + window.location.pathname}?id=${currentImageMeta.mid}`)}`
+    window.open(url, "_blank")
+  })
+
+  document.querySelector("#ShareEmail").addEventListener("click", e => {
+    e.preventDefault()
+    const url = `mailto:?subject=${document.title}&body=${encodeURIComponent(
+      document.querySelector("meta[name=description]").getAttribute("content")
+    )} ${encodeURIComponent(`${window.location.origin + window.location.pathname}?id=${currentImageMeta.mid}`)}`
+    window.location.href = url
+  })
+
+  document.querySelector("#DialogDownloadClose").addEventListener("click", e => {
     e.preventDefault()
     trigger("carousel:hideDownloadDialog")
+  })
+
+  document.querySelector("#DialogShareClose").addEventListener("click", e => {
+    e.preventDefault()
+    trigger("carousel:hideShareDialog")
   })
 
   carouselNode.addEventListener(
