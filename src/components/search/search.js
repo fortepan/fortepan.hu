@@ -27,6 +27,22 @@ document.addEventListener("searchdialog:toggle", () => {
   }
 })
 
+document.addEventListener("search:clear", () => {
+  Array.from(document.querySelectorAll(".search__input")).forEach(searchInput => {
+    // eslint-disable-next-line no-param-reassign
+    searchInput.value = ""
+  })
+})
+
+document.addEventListener("search:setValue", e => {
+  if (e.detail) {
+    Array.from(document.querySelectorAll(".search__input")).forEach(searchInput => {
+      // eslint-disable-next-line no-param-reassign
+      searchInput.value = e.detail.value
+    })
+  }
+})
+
 window.addEventListener(
   "resize",
   throttle(() => {

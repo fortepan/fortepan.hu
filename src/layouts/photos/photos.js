@@ -143,6 +143,13 @@ const loadPhotos = () => {
       Timeline.disable()
     }
 
+    // clear search fields if query is not defined in the request
+    if (!params.q) {
+      trigger("search:clear")
+    } else {
+      trigger("search:setValue", { value: params.q })
+    }
+
     api.search(
       params,
       data => {
