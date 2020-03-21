@@ -1,5 +1,8 @@
 import { slugify } from "../../utils"
 
+let autocompleteData = null
+let autocompleteDataLoaded = false
+
 const elasticRequest = (body, callback, error) => {
   const apiUrl = window.ENV === "production" ? "/search-api" : "http://fortepan:fortepan@v39241.php-friends.de:9200"
   const searchHost = `${apiUrl}/elasticsearch_index_fortepan_media/_search`
@@ -173,8 +176,52 @@ const getDonors = (callback, error) => {
   elasticRequest(body, callback, error)
 }
 
+const autoSuggest = (prefix, callback, error) => {
+  const filterAutoCompleteData = () => {
+    if (!autocompleteData) error()
+    else {
+      const res = []
+      Object.keys(autocompleteData).forEach(key => {
+        const items = autocompleteData[key].filter(keyword => {
+          if (slugify(keyword).indexOf(slugify(prefix)) === 0) return true
+          return false
+        })
+        items.forEach(item => {
+          res.push({ keyword: item, type: key })
+        })
+      })
+
+      const resSorted = res.sort((a, b) => {
+        return a.keyword.localeCompare(b.keyword, "hu", { ignorePunctuation: false })
+      })
+
+      callback(resSorted)
+    }
+  }
+
+  if (!autocompleteData && !autocompleteDataLoaded) {
+    autocompleteDataLoaded = "loading"
+    const xmlHttp = new XMLHttpRequest()
+    xmlHttp.open("GET", "/autocomplete.json", true)
+    xmlHttp.onload = () => {
+      if (xmlHttp.status === 200) {
+        autocompleteDataLoaded = "loaded"
+        autocompleteData = JSON.parse(xmlHttp.responseText)
+        filterAutoCompleteData()
+      } else {
+        autocompleteDataLoaded = false
+        error()
+      }
+    }
+    xmlHttp.send()
+  } else {
+    filterAutoCompleteData()
+  }
+}
+
 export default {
   search,
   getTotal,
   getDonors,
+  autoSuggest,
 }

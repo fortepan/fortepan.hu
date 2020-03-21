@@ -13,17 +13,17 @@
 
 .search__settings {
   position: absolute;
-  right: rem(16px);
+  right: 1rem;
   top: 50%;
   transform: translateY(-50%);
 }
 
 .search--header {
-  height: rem(48px);
-  padding: rem(8px) rem(16px) rem(8px) rem(48px);
-  border-radius: rem(4px);
+  height: 3rem;
+  padding: 0.5rem 1rem 0.5rem 3rem;
+  border-radius: 0.25rem;
   width: 400px;
-  margin-right: rem(16px);
+  margin-right: 1rem;
 
   @media screen and (max-width: ($breakpoint-desktop - 1px)) {
     display: none;
@@ -45,8 +45,8 @@
   border: none;
   outline: none;
   color: inherit;
-  font-size: rem(16px);
-  line-height: rem(32px);
+  font-size: 1rem;
+  line-height: 2rem;
   width: 100%;
   display: block;
   margin: 0;
@@ -57,12 +57,12 @@
   text-transform: uppercase;
   @include font-heading-demi();
   letter-spacing: 1px;
-  line-height: rem(20px);
+  line-height: 1.25rem;
 }
 
 .search--large {
-  height: rem(64px);
-  padding: rem(16px) rem(16px) rem(16px) rem(48px);
+  height: 4rem;
+  padding: 1rem 1rem 1rem 3rem;
   border-radius: 0.5rem;
   max-width: 40rem;
 }
@@ -72,8 +72,8 @@
   border: none;
   outline: none;
   color: inherit;
-  font-size: rem(28px);
-  line-height: rem(32px);
+  font-size: 1.75rem;
+  line-height: 2rem;
   width: 100%;
   display: block;
   margin: 0;
@@ -86,6 +86,62 @@
 }
 
 .theme--dark .search--large {
+  background-color: $dark-base;
+  color: $light-base;
+}
+
+.search__autosuggest {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 100%;
+  padding: 1rem 0;
+  z-index: 1;
+  box-sizing: border-box;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s $ease-out-expo;
+  border-radius: 0.25rem;
+  box-shadow: 0 rem(12px) rem(24px) 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+  font-size: rem(14px);
+}
+
+.search__autosuggest--show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.search--large .search__autosuggest {
+  border-radius: 0.5rem;
+}
+
+.search__autosuggest__item {
+  display: block;
+  color: inherit;
+  text-align: left;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  transition: color 0.3s $ease-out-expo, background-color 0.3s $ease-out-expo;
+}
+
+.search__autosuggest__item:hover,
+.search__autosuggest__item--selected {
+  background-color: $red;
+  color: $light-base;
+}
+
+.theme--light .search__autosuggest {
+  background-color: $light-primary;
+  color: $dark-base;
+}
+
+.theme--light .search--large .search__autosuggest {
+  background-color: $light-base;
+  color: $dark-base;
+}
+
+.theme--dark .search__autosuggest {
   background-color: $dark-base;
   color: $light-base;
 }
