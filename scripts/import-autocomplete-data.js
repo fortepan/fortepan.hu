@@ -12,7 +12,7 @@ const client = new Client({
   ],
 })
 
-const getKeywords = (key, callback) => {
+const getKeywords = (key, callback, error) => {
   client.search(
     {
       index: "elasticsearch_index_fortepan_media",
@@ -29,10 +29,17 @@ const getKeywords = (key, callback) => {
       },
     },
     (err, result) => {
-      callback({
-        statusCode: err ? err.statusCode : result.statusCode,
-        body: JSON.stringify(err ? err.body : result.body),
-      })
+      if (err) {
+        error({
+          statusCode: err.statusCode,
+          body: JSON.stringify(err.body),
+        })
+      } else {
+        callback({
+          statusCode: err ? err.statusCode : result.statusCode,
+          body: JSON.stringify(err ? err.body : result.body),
+        })
+      }
     }
   )
 }
@@ -41,18 +48,28 @@ const promises = []
 KEYS.forEach(key => {
   keywords[key] = []
   promises.push(
-    new Promise(resolve => {
-      getKeywords(key, res => {
-        const data = JSON.parse(res.body)
-        data.aggregations.keywords.buckets.forEach(bucket => {
-          keywords[key].push(bucket.key)
-        })
-        resolve()
-      })
+    new Promise((resolve, reject) => {
+      getKeywords(
+        key,
+        res => {
+          const data = JSON.parse(res.body)
+          data.aggregations.keywords.buckets.forEach(bucket => {
+            keywords[key].push(bucket.key)
+          })
+          resolve()
+        },
+        error => {
+          reject(error)
+        }
+      )
     })
   )
 })
 
-Promise.all(promises).then(() => {
-  fs.writeFile("src/static/autocomplete.json", JSON.stringify(keywords), "utf8")
-})
+Promise.all(promises)
+  .then(() => {
+    fs.writeFile("src/static/autocomplete.json", JSON.stringify(keywords), "utf8")
+  })
+  .catch(err => {
+    console.log(err)
+  })
