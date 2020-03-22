@@ -68,7 +68,7 @@ KEYS.forEach(key => {
 
 Promise.all(promises)
   .then(() => {
-    fs.writeFile("src/static/autocomplete.json", JSON.stringify(keywords), "utf8")
+    fs.writeFile("src/static/autocomplete.json", JSON.stringify(keywords))
   })
   .catch(err => {
     console.log(err)
