@@ -123,9 +123,9 @@
   font-weight: 500;
   padding: 0.5rem 1rem;
   transition: color 0.3s $ease-out-expo, background-color 0.3s $ease-out-expo;
+  cursor: pointer;
 }
 
-.search__autosuggest__item:hover,
 .search__autosuggest__item--selected {
   background-color: $red;
   color: $light-base;
@@ -144,4 +144,12 @@
 .theme--dark .search__autosuggest {
   background-color: $dark-base;
   color: $light-base;
+}
+
+.theme--light .search__autosuggest__item:not(.search__autosuggest__item--selected):hover {
+  background-color: $light-secondary;
+}
+
+.theme--dark .search__autosuggest__item:not(.search__autosuggest__item--selected):hover {
+  background-color: $dark-primary;
 }

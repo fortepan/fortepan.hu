@@ -79,8 +79,12 @@ const searchSubmit = searchInput => {
   const searchNode = searchInput.parentNode
   let q = `?q=${encodeURIComponent(searchInput.value)}`
 
+  console.log(searchNode.querySelector(".search__autosuggest__item--selected"))
+
   const selectedItem = searchNode.querySelector(".search__autosuggest__item--selected")
   if (selectedItem) q = `?${selectedItem.dataset.type}=${encodeURIComponent(selectedItem.textContent)}`
+
+  console.log(q)
 
   if (window.location.pathname.indexOf("/photos") === -1) {
     window.location = `/${document.querySelector("body").dataset.lang}/photos/${q}`
@@ -120,7 +124,14 @@ const initSearch = searchInput => {
                 itemNode.className = "search__autosuggest__item"
                 itemNode.textContent = res[i].keyword
                 autoSuggestNode.appendChild(itemNode)
-                itemNode.addEventListener("click", () => {
+                itemNode.addEventListener("click", event => {
+                  const selectedItem = event.currentTarget.parentNode.querySelector(
+                    ".search__autosuggest__item--selected"
+                  )
+                  if (selectedItem) {
+                    selectedItem.classList.remove("search__autosuggest__item--selected")
+                  }
+                  event.currentTarget.classList.add("search__autosuggest__item--selected")
                   searchSubmit(searchInput)
                 })
               }
@@ -165,8 +176,10 @@ const initSearch = searchInput => {
   })
 
   searchInput.addEventListener("blur", () => {
-    const autoSuggestNode = searchNode.querySelector(".search__autosuggest")
-    autoSuggestNode.classList.remove("search__autosuggest--show")
+    setTimeout(() => {
+      const autoSuggestNode = searchNode.querySelector(".search__autosuggest")
+      autoSuggestNode.classList.remove("search__autosuggest--show")
+    }, 200)
     trigger("search:hide")
   })
 }
