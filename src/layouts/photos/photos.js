@@ -84,6 +84,7 @@ const Thumbnail = data => {
   if (d.year) locationArray.push(d.year)
   if (d.varos_name) locationArray.push(d.varos_name)
   if (d.helyszin_name) locationArray.push(d.helyszin_name)
+  if (!d.varos_name && !d.helyszin_name && d.orszag_name) locationArray.push(d.orszag_name)
   t.querySelector(".photos__thumbnail__meta--location").textContent = locationArray.join(" · ")
   t.querySelector(".photos__thumbnail__meta--description").textContent = d.description ? d.description : ""
 

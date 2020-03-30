@@ -187,15 +187,18 @@ const autoSuggest = (prefix, callback, error) => {
           return false
         })
         items.forEach(item => {
-          res.push({ keyword: item, type: key })
+          res.push(item)
         })
       })
 
       const resSorted = res.sort((a, b) => {
-        return a.keyword.localeCompare(b.keyword, "hu", { ignorePunctuation: false })
+        return a.localeCompare(b, "hu", { ignorePunctuation: false })
       })
 
-      callback(resSorted)
+      const filterDuplucates = keywords => keywords.filter((v, i) => keywords.indexOf(v) === i)
+      const resFiltered = filterDuplucates(resSorted)
+
+      callback(resFiltered)
     }
   }
 

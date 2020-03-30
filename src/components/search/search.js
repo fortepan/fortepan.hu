@@ -79,12 +79,8 @@ const searchSubmit = searchInput => {
   const searchNode = searchInput.parentNode
   let q = `?q=${encodeURIComponent(searchInput.value)}`
 
-  console.log(searchNode.querySelector(".search__autosuggest__item--selected"))
-
   const selectedItem = searchNode.querySelector(".search__autosuggest__item--selected")
-  if (selectedItem) q = `?${selectedItem.dataset.type}=${encodeURIComponent(selectedItem.textContent)}`
-
-  console.log(q)
+  if (selectedItem) q = `?q=${encodeURIComponent(selectedItem.textContent)}`
 
   if (window.location.pathname.indexOf("/photos") === -1) {
     window.location = `/${document.querySelector("body").dataset.lang}/photos/${q}`
@@ -120,9 +116,8 @@ const initSearch = searchInput => {
               autoSuggestNode.innerHTML = ""
               for (let i = 0; i < Math.min(5, res.length); i += 1) {
                 const itemNode = document.createElement("div")
-                itemNode.dataset.type = QUERY_PARAMS[res[i].type]
                 itemNode.className = "search__autosuggest__item"
-                itemNode.textContent = res[i].keyword
+                itemNode.textContent = res[i]
                 autoSuggestNode.appendChild(itemNode)
                 itemNode.addEventListener("click", event => {
                   const selectedItem = event.currentTarget.parentNode.querySelector(
