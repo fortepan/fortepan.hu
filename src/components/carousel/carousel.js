@@ -30,10 +30,21 @@ document.addEventListener("carousel:loadPhoto", e => {
   currentImageMeta = d
 
   const locationArray = []
-  if (d.orszag_name) locationArray.push(`<a href="?country=${encodeURIComponent(d.orszag_name)}">${d.orszag_name}</a>`)
-  if (d.varos_name) locationArray.push(`<a href="?city=${encodeURIComponent(d.varos_name)}">${d.varos_name}</a>`)
-  if (d.helyszin_name)
-    locationArray.push(`<a href="?place=${encodeURIComponent(d.helyszin_name)}">${d.helyszin_name}</a>`)
+  if (d.orszag_name) {
+    d.orszag_name.forEach(item => {
+      locationArray.push(`<a href="?country=${encodeURIComponent(item)}">${item}</a>`)
+    })
+  }
+  if (d.varos_name) {
+    d.varos_name.forEach(item => {
+      locationArray.push(`<a href="?city=${encodeURIComponent(item)}">${item}</a>`)
+    })
+  }
+  if (d.helyszin_name) {
+    d.helyszin_name.forEach(item => {
+      locationArray.push(`<a href="?place=${encodeURIComponent(item)}">${item}</a>`)
+    })
+  }
 
   if (locationArray.length > 0) {
     document.querySelector(".carousel__meta__location").style.display = "block"
