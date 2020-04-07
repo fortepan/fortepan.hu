@@ -61,7 +61,9 @@ document.addEventListener("carousel:loadPhoto", e => {
   document.querySelector(".carousel__meta__tags p").innerHTML = d.cimke_name
     ? d.cimke_name.map(tag => `<a href="?tag=${encodeURIComponent(tag)}">${tag}</a>`).join(", ")
     : ""
-  document.querySelector(".carousel__photo").style.backgroundImage = `url(${config.PHOTO_SOURCE}${d.mid}.jpg)`
+  document.querySelector(
+    ".carousel__photo"
+  ).style.backgroundImage = `url(${config.PHOTO_SOURCE}1600/fortepan_${d.mid}.jpg)`
 
   Array.from(document.querySelectorAll(".carousel__meta a")).forEach(anchorNode => {
     anchorNode.addEventListener("click", event => {
