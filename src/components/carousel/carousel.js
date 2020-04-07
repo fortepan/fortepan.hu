@@ -11,6 +11,14 @@ let metaHiddenBeforeSlideshow = false
 let carouselSlideshowInterval = null
 let currentImageMeta = null
 
+const showCarouselPhoto = url => {
+  const photosNode = document.querySelector(".carousel__photos")
+  photosNode.querySelectorAll("img").forEach(img => {
+    img.classList.remove("show")
+  })
+  photosNode.querySelector(`img[src="${url}"]`).classList.add("show")
+}
+
 const downloadImage = () => {
   const dialogNode = document.querySelector(".dialog--download")
   dialogNode.classList.add("dialog--show")
@@ -61,9 +69,30 @@ document.addEventListener("carousel:loadPhoto", e => {
   document.querySelector(".carousel__meta__tags p").innerHTML = d.cimke_name
     ? d.cimke_name.map(tag => `<a href="?tag=${encodeURIComponent(tag)}">${tag}</a>`).join(", ")
     : ""
-  document.querySelector(
-    ".carousel__photo"
-  ).style.backgroundImage = `url(${config.PHOTO_SOURCE}1600/fortepan_${d.mid}.jpg)`
+
+  // load photo
+  const photoSrc = `${config.PHOTO_SOURCE}1600/fortepan_${d.mid}.jpg`
+  if (!document.querySelector(`.carousel__photos img[src="${photoSrc}"]`)) {
+    const img = new Image()
+    img.className = "carousel__photo"
+    document.querySelector(".carousel__photos").appendChild(img)
+
+    img.addEventListener("load", event => {
+      const i = event.target
+      i.dataset.naturalWidth = i.naturalWidth
+      i.dataset.naturalHeight = i.naturalHeight
+
+      setTimeout(() => {
+        showCarouselPhoto(photoSrc)
+      }, 100)
+    })
+    img.src = photoSrc
+  } else {
+    showCarouselPhoto(photoSrc)
+  }
+  // document.querySelector(
+  //  ".carousel__photo"
+  // ).style.backgroundImage = `url(${config.PHOTO_SOURCE}1600/fortepan_${d.mid}.jpg)`
 
   Array.from(document.querySelectorAll(".carousel__meta a")).forEach(anchorNode => {
     anchorNode.addEventListener("click", event => {
