@@ -11,11 +11,16 @@ let metaHiddenBeforeSlideshow = false
 let carouselSlideshowInterval = null
 let currentImageMeta = null
 
-const showCarouselPhoto = url => {
+const hideCarouselPhotos = () => {
   const photosNode = document.querySelector(".carousel__photos")
   photosNode.querySelectorAll("img").forEach(img => {
     img.classList.remove("show")
   })
+}
+
+const showCarouselPhoto = url => {
+  const photosNode = document.querySelector(".carousel__photos")
+  hideCarouselPhotos()
   photosNode.querySelector(`img[src="${url}"]`).classList.add("show")
 }
 
@@ -140,6 +145,9 @@ document.addEventListener("carousel:show", () => {
 document.addEventListener("carousel:hide", () => {
   // pause slideshow when carousel gets closed
   if (document.querySelector("body").classList.contains("base--carousel-slideshow")) trigger("carousel:pauseSlideshow")
+
+  // hide all photos
+  hideCarouselPhotos()
 
   carouselNode.classList.remove("carousel--show")
   if (!(document.querySelectorAll(".photos__thumbnail").length > 1) && getURLParams().id > 0) {
