@@ -105,7 +105,8 @@ const Thumbnail = data => {
 
     resizeThumbnail(imgContainer.parentNode)
   })
-  img.src = `${config.PHOTO_SOURCE}${d.mid}.jpg`
+  img.srcset = `${config.PHOTO_SOURCE}240/fortepan_${d.mid}.jpg 1x, ${config.PHOTO_SOURCE}480/fortepan_${d.mid}.jpg 2x`
+  img.src = `${config.PHOTO_SOURCE}240/fortepan_${d.mid}.jpg`
 
   // Bind events
   t.querySelector(".photos__thumbnail").addEventListener("click", e => {
