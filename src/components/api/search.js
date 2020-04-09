@@ -4,10 +4,10 @@ let autocompleteData = null
 let autocompleteDataLoaded = false
 
 const elasticRequest = (body, callback, error) => {
-  const apiUrl = window.ENV === "production" ? "/search-api" : "http://fortepan:fortepan@v39241.php-friends.de:9200"
+  const apiUrl = "http://v39241.php-friends.de:9200"
   const searchHost = `${apiUrl}/elasticsearch_index_fortepan_media/_search`
 
-  // Perform the request.
+  // Perform the request
   const xmlHttp = new XMLHttpRequest()
   xmlHttp.open("POST", searchHost, true)
   xmlHttp.setRequestHeader("Authorization", `Basic ${btoa("fortepan:fortepan")}`)

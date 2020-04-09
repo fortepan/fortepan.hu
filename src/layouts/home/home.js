@@ -1,5 +1,5 @@
 import { ready, trigger } from "../../utils"
-import api from "../../components/api/api"
+import search from "../../components/api/search"
 
 let heroBg = null
 const bgIds = [50563, 52724, 54176, 54178, 55558, 55617, 58473, 60057, 60155, 60490, 71299, 71443, 71955, 78498, 78835]
@@ -19,7 +19,7 @@ const init = () => {
   heroBg = document.querySelector(".home__hero__background")
   loadBackgroundImage()
 
-  api.getTotal(data => {
+  search.getTotal(data => {
     document.querySelector(".home__hero__total a span").textContent = data.hits.total.value
     document.querySelector(".home__hero__total").classList.add("home__hero__total--show")
   })

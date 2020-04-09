@@ -7,3 +7,6 @@ _dist
 src/data/manifest*
 .DS_Store
 src/static/autocomplete.json
+
+# Local Netlify folder
+.netlify

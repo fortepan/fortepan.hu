@@ -10,6 +10,5 @@
     "_dist/**/*.html",
     "_dist/**/*.{png,svg,jpg,jpeg,gif,mp4}"
  ],
- "http2": false,
- "open": true
+ "http2": false
 }

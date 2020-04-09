@@ -1,18 +1,9 @@
 import throttle from "lodash/throttle"
 import { ready, trigger } from "../../utils"
 import config from "../../config"
-import api from "../api/api"
+import search from "../api/search"
 
 let searchDialog = null
-
-const QUERY_PARAMS = {
-  orszag_name: "country",
-  varos_name: "city",
-  helyszin_name: "location",
-  adomanyozo_name: "donor",
-  szerzo_name: "author",
-  cimke_name: "tag",
-}
 
 document.addEventListener("searchdialog:show", () => {
   if (!searchDialog) return
@@ -108,7 +99,7 @@ const initSearch = searchInput => {
     const autoSuggestNode = searchNode.querySelector(".search__autosuggest")
     if (searchInput.value.length > 1) {
       if (e.key !== "ArrowDown" && e.key !== "ArrowUp") {
-        api.autoSuggest(
+        search.autoSuggest(
           searchInput.value,
           res => {
             if (res.length > 0) {

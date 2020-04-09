@@ -1,5 +1,5 @@
 import { ready } from "../../utils"
-import api from "../../components/api/api"
+import search from "../../components/api/search"
 
 let donorsNode = null
 
@@ -53,7 +53,7 @@ const alphabet = [
 const loadDonors = () => {
   // generate all groups
 
-  api.getDonors(data => {
+  search.getDonors(data => {
     alphabet.forEach(letter => {
       const group = document.createElement("div")
       group.dataset.group = letter

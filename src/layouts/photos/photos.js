@@ -2,7 +2,7 @@ import throttle from "lodash/throttle"
 import config from "../../config"
 import { ready, trigger, getURLParams, numberWithCommas } from "../../utils"
 import Timeline from "../../components/timeline/timeline"
-import api from "../../components/api/api"
+import search from "../../components/api/search"
 
 const THUMBNAIL_HEIGHT = 160
 
@@ -152,7 +152,7 @@ const loadPhotos = () => {
       trigger("search:setValue", { value: params.q })
     }
 
-    api.search(
+    search.search(
       params,
       data => {
         console.log(data)
