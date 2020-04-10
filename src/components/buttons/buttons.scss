@@ -35,6 +35,18 @@
     background-color: $red;
   }
 
+  .theme--light &--has-background {
+    background-color: rgba($dark-base, 0.06);
+  }
+
+  .theme--light &--has-background:hover {
+    background-color: rgba($dark-base, 0.12);
+  }
+
+  .theme--light &--disabled {
+    color: rgba($dark-base, 0.4);
+  }
+
   .theme--dark & {
     color: $light-base;
     background-color: transparent;
@@ -54,8 +66,12 @@
     background-color: $red;
   }
 
-  .theme--light &--disabled {
-    color: rgba($dark-base, 0.4);
+  .theme--dark &--has-background {
+    background-color: rgba($light-base, 0.06);
+  }
+
+  .theme--dark &--has-background:hover {
+    background-color: rgba($light-base, 0.12);
   }
 
   .theme--dark &--disabled {
@@ -107,7 +123,7 @@
   }
 
   & + &--separator-after {
-    margin-right: rem(24px);
+    margin-left: rem(24px);
   }
 
   &__icon {

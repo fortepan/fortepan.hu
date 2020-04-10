@@ -15,11 +15,6 @@ const initHeader = () => {
     trigger("toggleTheme")
   })
 
-  headerNode.querySelector("#CarouselClose").addEventListener("click", e => {
-    e.preventDefault()
-    trigger("carousel:hide")
-  })
-
   if (headerNode.querySelector("#HeaderSearchToggle")) {
     headerNode.querySelector("#HeaderSearchToggle").addEventListener("click", e => {
       e.preventDefault()

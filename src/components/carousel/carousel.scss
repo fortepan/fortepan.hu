@@ -23,25 +23,25 @@
 
 .carousel__photos {
   position: absolute;
-  left: rem(16px);
-  top: rem(96px);
-  right: rem(296px);
-  bottom: rem(16px);
+  left: rem(64px);
+  top: rem(144px);
+  right: rem(344px);
+  bottom: rem(32px);
   background-size: contain;
   background-position: center center;
   background-repeat: no-repeat;
-  transition: top 0.4s $ease-out-expo, right 0.4s $ease-out-expo;
+  transition: top 0.4s $ease-out-expo, right 0.4s $ease-out-expo, bottom 0.4s $ease-out-expo;
 
   @media screen and (max-width: ($breakpoint-desktop - 1px)) {
-    top: rem(80px);
+    top: rem(128px);
   }
 
   .base--hide-carousel-meta & {
-    right: rem(16px);
+    right: rem(64px);
   }
 
   .base--carousel-slideshow & {
-    top: rem(16px);
+    top: rem(64px);
   }
 }
 
@@ -61,85 +61,60 @@
   }
 }
 
-.carousel__control {
+.carousel__actions {
   position: absolute;
-  left: calc(50% - 140px);
-  bottom: rem(40px);
-  width: calc(100% - 48px);
-  max-width: rem(360px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  left: 0;
+  top: rem(80px);
+  right: rem(280px);
+  height: rem(64px);
+  box-sizing: border-box;
+  padding: 0 rem(8px);
   z-index: 1;
-  border-radius: rem(8px);
-  transform: translateX(-50%) scale(0.98);
-  opacity: 0;
-  pointer-events: none;
-  user-select: none;
-  transition: transform 0.8s $ease-out-expo, opacity 0.8s $ease-out-expo;
+  transition: top 0.4s $ease-out-expo, right 0.4s $ease-out-expo;
+
+  @media screen and (max-width: ($breakpoint-desktop - 1px)) {
+    top: rem(64px);
+  }
 
   .base--hide-carousel-meta & {
-    left: 50%;
+    right: 0;
   }
 
-  .theme--light & {
-    background-color: rgba($light-primary, 0.98);
-    box-shadow: 0px 0px 0px 1px rgba($dark-base, 0.06) inset, 0px 8px 24px 0px rgba($dark-base, 0.08);
-  }
-
-  .theme--dark & {
-    background-color: rgba($dark-secondary, 0.98);
-    box-shadow: 0px 0px 0px 1px rgba($light-base, 0.06) inset, 0px 8px 24px 0px rgba($dark-base, 0.08);
-  }
-
-  &--show {
-    opacity: 1;
-    transform: translateX(-50%) scale(1);
-    pointer-events: initial;
-    transition: transform 0.3s $ease-out-expo, opacity 0.3s $ease-out-expo, left 0.5s $ease-out-expo;
+  .base--carousel-slideshow & {
+    top: 0;
   }
 }
 
-.carousel__control__top {
+.carousel__actions__group {
+  display: flex;
+}
+
+.carousel__pager {
+  position: absolute;
   display: flex;
   justify-content: space-between;
-  padding: 8px;
-}
+  top: calc(50% + 40px);
+  left: rem(8px);
+  z-index: 1;
+  right: rem(288px);
+  transition: top 0.4s $ease-out-expo, right 0.4s $ease-out-expo;
+  transform: translateY(-50%);
 
-.carousel__control__bottom {
-  display: flex;
-  justify-content: space-between;
-  font-size: rem(11px);
-  padding: 8px;
-
-  .theme--light & {
-    border-top: 1px solid rgba($dark-base, 0.06);
+  .base--hide-carousel-meta & {
+    right: rem(8px);
   }
 
-  .theme--dark & {
-    border-top: 1px solid rgba($light-base, 0.06);
+  .base--carousel-slideshow & {
+    top: calc(50%);
   }
 }
 
-.carousel__control__actions {
-  display: flex;
-}
-
-.carousel__control__pager {
-  display: flex;
-}
-
-.carousel__control__pager--disabled {
+.carousel__pager.disable {
   pointer-events: none;
-  opacity: 0.2;
-}
-
-.carousel__control__search {
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  padding-right: 1rem;
-}
-
-.carousel__control__counter {
-  white-space: nowrap;
+  opacity: 0;
 }
 
 .carousel__meta {
@@ -190,6 +165,24 @@
       color: $red;
       border-bottom-color: $red;
     }
+  }
+}
+
+.carousel__meta__counter {
+  width: 100%;
+  white-space: nowrap;
+  margin: rem(-4px) rem(-24px) 0;
+  padding: 0 rem(24px) rem(20px);
+  line-height: rem(24px);
+  font-size: 13px;
+  letter-spacing: 0;
+
+  .theme--light & {
+    border-bottom: 1px solid rgba($dark-base, 0.06);
+  }
+
+  .theme--dark & {
+    border-bottom: 1px solid rgba($light-base, 0.06);
   }
 }
 

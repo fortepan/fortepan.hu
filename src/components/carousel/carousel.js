@@ -1,26 +1,16 @@
-import throttle from "lodash/throttle"
 import config from "../../config"
 import { ready, trigger, setPageMeta, getURLParams, copyToClipboard } from "../../utils"
 
 const CAROUSEL_SLIDESHOW_DELAY = 4000
 
 let carouselNode = null
-let carouselControl = null
-let carouselControlTimer
+let carouselPager = null
 let metaHiddenBeforeSlideshow = false
 let carouselSlideshowInterval = null
 let currentImageMeta = null
 
-const hideCarouselPhotos = () => {
-  const photosNode = document.querySelector(".carousel__photos")
-  photosNode.querySelectorAll("img").forEach(img => {
-    img.classList.remove("show")
-  })
-}
-
 const showCarouselPhoto = url => {
   const photosNode = document.querySelector(".carousel__photos")
-  hideCarouselPhotos()
   photosNode.querySelector(`img[src="${url}"]`).classList.add("show")
 }
 
@@ -40,8 +30,20 @@ const downloadImage = () => {
 document.addEventListener("carousel:loadPhoto", e => {
   const d = e.detail
 
-  currentImageMeta = d
+  /*
+  // set search info
+  document.querySelector(".carousel__meta__search").innerHTML = document.getElementById(
+    "PhotosSearchExpression"
+  ).innerHTML
+  `
+  */
 
+  document.querySelector(".carousel__meta__counter").textContent = `${d.elIndex} / ${
+    document.getElementById("PhotosCount").textContent
+  }`
+
+  // set meta sidebar data
+  currentImageMeta = d
   const locationArray = []
   if (d.orszag_name) {
     d.orszag_name.forEach(item => {
@@ -58,7 +60,6 @@ document.addEventListener("carousel:loadPhoto", e => {
       locationArray.push(`<a href="?place=${encodeURIComponent(item)}">${item}</a>`)
     })
   }
-
   if (locationArray.length > 0) {
     document.querySelector(".carousel__meta__location").style.display = "block"
     document.querySelector(".carousel__meta__location h5").innerHTML = locationArray.join(",<br/>")
@@ -95,10 +96,8 @@ document.addEventListener("carousel:loadPhoto", e => {
   } else {
     showCarouselPhoto(photoSrc)
   }
-  // document.querySelector(
-  //  ".carousel__photo"
-  // ).style.backgroundImage = `url(${config.PHOTO_SOURCE}1600/fortepan_${d.mid}.jpg)`
 
+  // bind history api calls to sidabar anchors
   Array.from(document.querySelectorAll(".carousel__meta a")).forEach(anchorNode => {
     anchorNode.addEventListener("click", event => {
       event.preventDefault()
@@ -106,14 +105,7 @@ document.addEventListener("carousel:loadPhoto", e => {
     })
   })
 
-  // Set Controller meta
-  carouselControl.querySelector(".carousel__control__search").innerHTML = document.getElementById(
-    "PhotosSearchExpression"
-  ).innerHTML
-  carouselControl.querySelector(".carousel__control__counter").textContent = `${d.elIndex} / ${
-    document.getElementById("PhotosCount").textContent
-  }`
-
+  // set html page meta for social sharing
   setPageMeta(
     `#${d.mid}`,
     `${d.description ? `${d.description} — ` : ""}${document.querySelector(".carousel__meta__donor h6").textContent}: ${
@@ -122,14 +114,16 @@ document.addEventListener("carousel:loadPhoto", e => {
     `${config.PHOTO_SOURCE}${d.mid}.jpg`
   )
 
+  // trigger further carousel events
   trigger("carousel:show")
   trigger("carousel:hideDownloadDialog")
   trigger("carousel:hideShareDialog")
 
+  // keep pager disabled if there's only one photo thumbnail in the photos list
   if (document.querySelectorAll(".photos__thumbnail").length > 1) {
-    document.querySelector(".carousel__control__pager").classList.remove("carousel__control__pager--disabled")
+    document.querySelector(".carousel__pager").classList.remove("disable")
   } else {
-    document.querySelector(".carousel__control__pager").classList.add("carousel__control__pager--disabled")
+    document.querySelector(".carousel__pager").classList.add("disable")
   }
 })
 
@@ -137,24 +131,30 @@ document.addEventListener("carousel:show", () => {
   if (!carouselNode.classList.contains("carousel--show")) {
     carouselNode.classList.add("carousel--show")
 
-    if (document.querySelectorAll(".photos__thumbnail").length > 1)
-      carouselControl.classList.add("carousel__control--show")
+    // if there are more photos on the photos page, display pager
+    if (document.querySelectorAll(".photos__thumbnail").length > 1) carouselPager.classList.add("show")
   }
 })
 
 document.addEventListener("carousel:hide", () => {
-  // pause slideshow when carousel gets closed
-  if (document.querySelector("body").classList.contains("base--carousel-slideshow")) trigger("carousel:pauseSlideshow")
+  // pause slideshow if the slideshow is playing
+  if (document.querySelector("body").classList.contains("base--carousel-slideshow")) {
+    trigger("carousel:pauseSlideshow")
+  } else {
+    // hide all photos
+    trigger("carousel:hidePhotos")
 
-  // hide all photos
-  hideCarouselPhotos()
+    // hide dialogs
+    trigger("carousel:hideShareDialog")
 
-  carouselNode.classList.remove("carousel--show")
-  if (!(document.querySelectorAll(".photos__thumbnail").length > 1) && getURLParams().id > 0) {
-    trigger("photos:historyPushState", { url: "?q=", resetPhotosWrapper: true })
+    // hide carousel
+    carouselNode.classList.remove("carousel--show")
+
+    // load all photos if there's only one photo loaded in the carousel
+    if (!(document.querySelectorAll(".photos__thumbnail").length > 1) && getURLParams().id > 0) {
+      trigger("photos:historyPushState", { url: "?q=", resetPhotosWrapper: true })
+    }
   }
-
-  trigger("carousel:hideShareDialog")
 })
 
 document.addEventListener("carousel:toggleMeta", () => {
@@ -191,6 +191,13 @@ document.addEventListener("carousel:toggleSlideshow", () => {
   }
 })
 
+document.addEventListener("carousel:hidePhotos", () => {
+  const photosNode = document.querySelector(".carousel__photos")
+  photosNode.querySelectorAll("img").forEach(img => {
+    img.classList.remove("show")
+  })
+})
+
 document.addEventListener("carousel:hideDownloadDialog", () => {
   document.querySelector(".dialog--download").classList.remove("dialog--show")
 })
@@ -204,7 +211,15 @@ document.addEventListener("carousel:hideShareDialog", () => {
 })
 
 const initCarousel = el => {
-  // bind events
+  carouselPager = document.querySelector(".carousel__pager")
+
+  // bind close button event
+  el.querySelector("#CarouselClose").addEventListener("click", e => {
+    e.preventDefault()
+    trigger("carousel:hide")
+  })
+
+  // bind pager events
   el.querySelector("#PhotoNext").addEventListener("click", e => {
     e.preventDefault()
     trigger("photos:showNextPhoto")
@@ -214,31 +229,35 @@ const initCarousel = el => {
     trigger("photos:showPrevPhoto")
   })
 
+  // bind sidebar toggle button event
   el.querySelector("#PhotoDetails").addEventListener("click", e => {
     e.preventDefault()
     trigger("carousel:toggleMeta")
   })
 
+  // bind slideshow button events
   el.querySelector("#PhotoSlideshowPlay").addEventListener("click", e => {
     e.preventDefault()
     trigger("carousel:playSlideshow")
   })
-
   el.querySelector("#PhotoSlideshowPause").addEventListener("click", e => {
     e.preventDefault()
     trigger("carousel:pauseSlideshow")
   })
 
+  // bind download button event
   el.querySelector("#PhotoDownload").addEventListener("click", e => {
     e.preventDefault()
     downloadImage()
   })
 
+  // bind share button event
   el.querySelector("#PhotoShare").addEventListener("click", e => {
     e.preventDefault()
     trigger("carousel:showShareDialog")
   })
 
+  // bind share panel button events
   document.querySelector("#ShareLink").addEventListener("click", e => {
     e.preventDefault()
     const res = copyToClipboard(
@@ -247,7 +266,6 @@ const initCarousel = el => {
     )
     if (res) trigger("carousel:hideShareDialog")
   })
-
   document.querySelector("#ShareFacebook").addEventListener("click", e => {
     e.preventDefault()
     const url = `https://www.facebook.com/dialog/share?app_id=498572111052804&href=${encodeURIComponent(
@@ -255,7 +273,6 @@ const initCarousel = el => {
     )}`
     window.open(url, "_blank")
   })
-
   document.querySelector("#ShareTwitter").addEventListener("click", e => {
     e.preventDefault()
     const url = `https://twitter.com/share?text=${encodeURIComponent(
@@ -263,7 +280,6 @@ const initCarousel = el => {
     )}&url=${encodeURIComponent(`${window.location.origin + window.location.pathname}?id=${currentImageMeta.mid}`)}`
     window.open(url, "_blank")
   })
-
   document.querySelector("#ShareEmail").addEventListener("click", e => {
     e.preventDefault()
     const url = `mailto:?subject=${document.title}&body=${encodeURIComponent(
@@ -272,40 +288,17 @@ const initCarousel = el => {
     window.location.href = url
   })
 
+  // bind download panel button events
   document.querySelector("#DialogDownloadClose").addEventListener("click", e => {
     e.preventDefault()
     trigger("carousel:hideDownloadDialog")
   })
-
   document.querySelector("#DialogShareClose").addEventListener("click", e => {
     e.preventDefault()
     trigger("carousel:hideShareDialog")
   })
 
-  carouselNode.addEventListener(
-    "mousemove",
-    throttle(e => {
-      if (!carouselControl.classList.contains("carousel__control--show")) {
-        carouselControl.classList.add("carousel__control--show")
-      }
-
-      if (carouselControlTimer) clearTimeout(carouselControlTimer)
-      carouselControlTimer = setTimeout(() => {
-        const bounds = carouselControl.getBoundingClientRect()
-        if (
-          !(
-            e.clientX >= bounds.left &&
-            e.clientX <= bounds.right &&
-            e.clientY >= bounds.top &&
-            e.clientY <= bounds.bottom
-          )
-        ) {
-          carouselControl.classList.remove("carousel__control--show")
-        }
-      }, 1000)
-    }, 400)
-  )
-
+  // bind key events
   document.addEventListener("keydown", e => {
     if (!carouselNode.classList.contains("carousel--show")) return
 
@@ -329,6 +322,5 @@ const initCarousel = el => {
 
 ready(() => {
   carouselNode = document.querySelector(".carousel")
-  carouselControl = document.querySelector(".carousel__control")
   if (carouselNode) initCarousel(carouselNode)
 })

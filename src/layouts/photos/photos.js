@@ -192,12 +192,14 @@ ready(() => {
   document.addEventListener("photos:showNextPhoto", () => {
     let next = selectedThumbnail.nextElementSibling
     if (next) {
+      trigger("carousel:hidePhotos")
       next.click()
     } else if (thumbnailsCount % config.THUMBNAILS_QUERY_LIMIT === 0) {
       thumbnailsLoading = true
       loadPhotos().then(() => {
         next = selectedThumbnail.nextElementSibling
         if (next) {
+          trigger("carousel:hidePhotos")
           next.click()
         }
       })
@@ -207,6 +209,7 @@ ready(() => {
   document.addEventListener("photos:showPrevPhoto", () => {
     const prev = selectedThumbnail.previousElementSibling
     if (prev) {
+      trigger("carousel:hidePhotos")
       prev.click()
     }
   })
