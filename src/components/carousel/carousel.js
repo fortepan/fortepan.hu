@@ -30,20 +30,13 @@ const downloadImage = () => {
 document.addEventListener("carousel:loadPhoto", e => {
   const d = e.detail
 
-  /*
-  // set search info
-  document.querySelector(".carousel__meta__search").innerHTML = document.getElementById(
-    "PhotosSearchExpression"
-  ).innerHTML
-  `
-  */
+  currentImageMeta = d
 
   document.querySelector(".carousel__meta__counter").textContent = `${d.elIndex} / ${
     document.getElementById("PhotosCount").textContent
   }`
 
   // set meta sidebar data
-  currentImageMeta = d
   const locationArray = []
   if (d.orszag_name) {
     d.orszag_name.forEach(item => {
@@ -81,6 +74,7 @@ document.addEventListener("carousel:loadPhoto", e => {
   if (!document.querySelector(`.carousel__photos img[src="${photoSrc}"]`)) {
     const img = new Image()
     img.className = "carousel__photo"
+    img.dataset.mediaId = d.mid
     document.querySelector(".carousel__photos").appendChild(img)
 
     img.addEventListener("load", event => {
@@ -88,9 +82,11 @@ document.addEventListener("carousel:loadPhoto", e => {
       i.dataset.naturalWidth = i.naturalWidth
       i.dataset.naturalHeight = i.naturalHeight
 
-      setTimeout(() => {
-        showCarouselPhoto(photoSrc)
-      }, 100)
+      if (i.dataset.mediaId === currentImageMeta.mid.join("")) {
+        setTimeout(() => {
+          showCarouselPhoto(photoSrc)
+        }, 100)
+      }
     })
     img.src = photoSrc
   } else {
