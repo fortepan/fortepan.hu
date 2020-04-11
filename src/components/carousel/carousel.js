@@ -5,12 +5,19 @@ const CAROUSEL_SLIDESHOW_DELAY = 4000
 
 let carouselNode = null
 let metaHiddenBeforeSlideshow = false
-let carouselSlideshowInterval = null
+let carouselSlideshowTimeout = null
 let currentImageMeta = null
 
 const showCarouselPhoto = url => {
   const photosNode = document.querySelector(".carousel__photos__all")
   photosNode.querySelector(`img[src="${url}"]`).classList.add("show")
+
+  if (document.querySelector("body").classList.contains("base--carousel-slideshow")) {
+    clearTimeout(carouselSlideshowTimeout)
+    carouselSlideshowTimeout = setTimeout(() => {
+      trigger("photos:showNextPhoto")
+    }, CAROUSEL_SLIDESHOW_DELAY)
+  }
 }
 
 const downloadImage = () => {
@@ -166,7 +173,7 @@ document.addEventListener("carousel:playSlideshow", () => {
   metaHiddenBeforeSlideshow = document.querySelector("body").classList.contains("base--hide-carousel-meta")
   trigger("carousel:hideMeta")
 
-  carouselSlideshowInterval = setInterval(() => {
+  carouselSlideshowTimeout = setTimeout(() => {
     trigger("photos:showNextPhoto")
   }, CAROUSEL_SLIDESHOW_DELAY)
 })
@@ -174,7 +181,7 @@ document.addEventListener("carousel:playSlideshow", () => {
 document.addEventListener("carousel:pauseSlideshow", () => {
   document.querySelector("body").classList.remove("base--carousel-slideshow")
   if (!metaHiddenBeforeSlideshow) trigger("carousel:toggleMeta")
-  clearInterval(carouselSlideshowInterval)
+  clearTimeout(carouselSlideshowTimeout)
 })
 
 document.addEventListener("carousel:toggleSlideshow", () => {
