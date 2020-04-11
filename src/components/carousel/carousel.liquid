@@ -1,23 +1,23 @@
 
 <div class="carousel">
-    <div class="carousel__pager disable">
-        {% include buttons/circular.liquid icon:"previous" id:"PhotoPrev" href:"#" label:lang[locale].prev class:"button__circular--has-background" %}
-        {% include buttons/circular.liquid icon:"next" id:"PhotoNext" href:"#" label:lang[locale].next class:"button__circular--has-background" %}
-    </div>
-    <div class="carousel__photos"></div>
-    <div class="carousel__actions">
-        {% include buttons/circular.liquid icon:"close" id:"CarouselClose" href:"#" label:lang[locale].close %}
-        <div class="carousel__actions__group">
-            {% include buttons/circular.liquid icon:"play" id:"PhotoSlideshowPlay" href:"#" label:lang[locale].slideshow %}
-            {% include buttons/circular.liquid icon:"pause" id:"PhotoSlideshowPause" href:"#" label:lang[locale].slideshow %}
-            {% include buttons/circular.liquid icon:"download" id:"PhotoDownload" href:"#" label: lang[locale].download class:"button__circular--separator-before" %}
-            {% include buttons/circular.liquid icon:"share" id:"PhotoShare" href:"#" label: lang[locale].share %}
-            {% include buttons/circular.liquid icon:"sidebar" id:"PhotoDetails" href:"#" label: lang[locale].details %}
+    <div class="carousel__photos hide-controls">
+        <div class="loader carousel__photos__loader"><div class="loader__anim"><span></span></div></div>
+        {% include buttons/circular.liquid icon:"previous" id:"PhotoPrev" href:"#" label:lang[locale].prev class:"button__circular--has-background carousel__photos__pager carousel__photos__pager--left disable" %}
+        {% include buttons/circular.liquid icon:"next" id:"PhotoNext" href:"#" label:lang[locale].next class:"button__circular--has-background carousel__photos__pager carousel__photos__pager--right disable" %}
+        <div class="carousel__photos__all"></div>
+        <div class="carousel__photos__actions">
+            {% include buttons/circular.liquid icon:"close" id:"CarouselClose" href:"#" label:lang[locale].close %}
+            <div class="carousel__photos__actions__group">
+                {% include buttons/circular.liquid icon:"play" id:"PhotoSlideshowPlay" href:"#" label:lang[locale].slideshow %}
+                {% include buttons/circular.liquid icon:"pause" id:"PhotoSlideshowPause" href:"#" label:lang[locale].slideshow %}
+                {% include buttons/circular.liquid icon:"download" id:"PhotoDownload" href:"#" label: lang[locale].download class:"button__circular--separator-before" %}
+                {% include buttons/circular.liquid icon:"share" id:"PhotoShare" href:"#" label: lang[locale].share %}
+                {% include buttons/circular.liquid icon:"sidebar" id:"PhotoDetails" href:"#" label: lang[locale].details %}
+            </div>
         </div>
     </div>
     <div class="carousel__meta scrollview">
         <div class="carousel__meta__content">
-            <div class="caption carousel__meta__counter"></div>
             <div class="carousel__meta__location">
                 <h6>{{ lang[locale].description }}</h6>
                 <h5></h5>

@@ -23,6 +23,6 @@
 
 [[redirects]]
   from = "/photos/*"
-  to = "https://fortepan.download/_photo/display/:splat"
+  to = "https://fortepan.download/_photo/:splat"
   status = 200
   force = true

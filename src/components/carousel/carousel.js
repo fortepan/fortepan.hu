@@ -4,13 +4,12 @@ import { ready, trigger, setPageMeta, getURLParams, copyToClipboard } from "../.
 const CAROUSEL_SLIDESHOW_DELAY = 4000
 
 let carouselNode = null
-let carouselPager = null
 let metaHiddenBeforeSlideshow = false
 let carouselSlideshowInterval = null
 let currentImageMeta = null
 
 const showCarouselPhoto = url => {
-  const photosNode = document.querySelector(".carousel__photos")
+  const photosNode = document.querySelector(".carousel__photos__all")
   photosNode.querySelector(`img[src="${url}"]`).classList.add("show")
 }
 
@@ -31,10 +30,6 @@ document.addEventListener("carousel:loadPhoto", e => {
   const d = e.detail
 
   currentImageMeta = d
-
-  document.querySelector(".carousel__meta__counter").textContent = `${d.elIndex} / ${
-    document.getElementById("PhotosCount").textContent
-  }`
 
   // set meta sidebar data
   const locationArray = []
@@ -71,11 +66,12 @@ document.addEventListener("carousel:loadPhoto", e => {
 
   // load photo
   const photoSrc = `${config.PHOTO_SOURCE}1600/fortepan_${d.mid}.jpg`
-  if (!document.querySelector(`.carousel__photos img[src="${photoSrc}"]`)) {
+  if (!document.querySelector(`.carousel__photos__all img[src="${photoSrc}"]`)) {
     const img = new Image()
     img.className = "carousel__photo"
     img.dataset.mediaId = d.mid
-    document.querySelector(".carousel__photos").appendChild(img)
+    document.querySelector(".carousel__photos__all").appendChild(img)
+    document.querySelector(".carousel__photos__loader").classList.add("show")
 
     img.addEventListener("load", event => {
       const i = event.target
@@ -83,6 +79,7 @@ document.addEventListener("carousel:loadPhoto", e => {
       i.dataset.naturalHeight = i.naturalHeight
 
       if (i.dataset.mediaId === currentImageMeta.mid.join("")) {
+        document.querySelector(".carousel__photos__loader").classList.remove("show")
         setTimeout(() => {
           showCarouselPhoto(photoSrc)
         }, 100)
@@ -117,18 +114,19 @@ document.addEventListener("carousel:loadPhoto", e => {
 
   // keep pager disabled if there's only one photo thumbnail in the photos list
   if (document.querySelectorAll(".photos__thumbnail").length > 1) {
-    document.querySelector(".carousel__pager").classList.remove("disable")
+    document.querySelectorAll(".carousel__photos__pager").forEach(pager => {
+      pager.classList.remove("disable")
+    })
   } else {
-    document.querySelector(".carousel__pager").classList.add("disable")
+    document.querySelectorAll(".carousel__photos__pager").forEach(pager => {
+      pager.classList.add("disable")
+    })
   }
 })
 
 document.addEventListener("carousel:show", () => {
   if (!carouselNode.classList.contains("carousel--show")) {
     carouselNode.classList.add("carousel--show")
-
-    // if there are more photos on the photos page, display pager
-    if (document.querySelectorAll(".photos__thumbnail").length > 1) carouselPager.classList.add("show")
   }
 })
 
@@ -188,7 +186,7 @@ document.addEventListener("carousel:toggleSlideshow", () => {
 })
 
 document.addEventListener("carousel:hidePhotos", () => {
-  const photosNode = document.querySelector(".carousel__photos")
+  const photosNode = document.querySelector(".carousel__photos__all")
   photosNode.querySelectorAll("img").forEach(img => {
     img.classList.remove("show")
   })
@@ -207,8 +205,6 @@ document.addEventListener("carousel:hideShareDialog", () => {
 })
 
 const initCarousel = el => {
-  carouselPager = document.querySelector(".carousel__pager")
-
   // bind close button event
   el.querySelector("#CarouselClose").addEventListener("click", e => {
     e.preventDefault()
@@ -292,6 +288,15 @@ const initCarousel = el => {
   document.querySelector("#DialogShareClose").addEventListener("click", e => {
     e.preventDefault()
     trigger("carousel:hideShareDialog")
+  })
+
+  // add photos container hover actions
+  document.querySelector(".carousel__photos").addEventListener("mouseover", e => {
+    e.currentTarget.classList.remove("hide-controls")
+  })
+
+  document.querySelector(".carousel__photos").addEventListener("mouseout", e => {
+    e.currentTarget.classList.add("hide-controls")
   })
 
   // bind key events

@@ -73,6 +73,7 @@
     "@elastic/elasticsearch": "^7.6.1",
     "custom-event-polyfill": "^1.0.7",
     "dotenv": "^8.2.0",
-    "lodash": "^4.17.15"
+    "lodash": "^4.17.15",
+    "netlify-cli": "^2.43.0"
   }
 }
