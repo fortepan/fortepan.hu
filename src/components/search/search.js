@@ -5,6 +5,7 @@ import search from "../api/search"
 
 let searchDialog = null
 
+// show search dialog
 document.addEventListener("searchdialog:show", () => {
   if (!searchDialog) return
   searchDialog.classList.add("dialog--show")
@@ -13,11 +14,13 @@ document.addEventListener("searchdialog:show", () => {
   input.value = ""
 })
 
+// hide search dialog
 document.addEventListener("searchdialog:hide", () => {
   if (!searchDialog) return
   searchDialog.classList.remove("dialog--show")
 })
 
+// toggle seach dialog
 document.addEventListener("searchdialog:toggle", () => {
   if (!searchDialog) return
   searchDialog.classList.toggle("dialog--show")
@@ -28,6 +31,7 @@ document.addEventListener("searchdialog:toggle", () => {
   }
 })
 
+// clear all seach boxes on the page
 document.addEventListener("search:clear", () => {
   Array.from(document.querySelectorAll(".search__input")).forEach(searchInput => {
     // eslint-disable-next-line no-param-reassign
@@ -35,6 +39,7 @@ document.addEventListener("search:clear", () => {
   })
 })
 
+// set all search values on the page
 document.addEventListener("search:setValue", e => {
   if (e.detail) {
     Array.from(document.querySelectorAll(".search__input")).forEach(searchInput => {
@@ -44,6 +49,7 @@ document.addEventListener("search:setValue", e => {
   }
 })
 
+// show / hide search dialog on smaller devices
 window.addEventListener(
   "resize",
   throttle(() => {
@@ -53,18 +59,6 @@ window.addEventListener(
     }
   }, 200)
 )
-
-document.addEventListener("keydown", e => {
-  if (!searchDialog) return
-  if (!searchDialog.classList.contains("dialog--show")) return
-
-  switch (e.key) {
-    case "Escape":
-      trigger("searchdialog:hide")
-      break
-    default:
-  }
-})
 
 const searchSubmit = searchInput => {
   const searchNode = searchInput.parentNode
@@ -105,6 +99,7 @@ const initSearch = searchInput => {
             if (res.length > 0) {
               autoSuggestNode.classList.add("search__autosuggest--show")
               autoSuggestNode.innerHTML = ""
+
               for (let i = 0; i < Math.min(5, res.length); i += 1) {
                 const itemNode = document.createElement("div")
                 itemNode.className = "search__autosuggest__item"
@@ -159,6 +154,10 @@ const initSearch = searchInput => {
     } else {
       autoSuggestNode.classList.remove("search__autosuggest--show")
     }
+
+    if (e.key === "Escape") {
+      trigger("searchdialog:hide")
+    }
   })
 
   searchInput.addEventListener("blur", () => {
@@ -166,7 +165,7 @@ const initSearch = searchInput => {
       const autoSuggestNode = searchNode.querySelector(".search__autosuggest")
       autoSuggestNode.classList.remove("search__autosuggest--show")
     }, 200)
-    trigger("search:hide")
+    trigger("searchdialog:hide")
   })
 }
 

@@ -71,6 +71,19 @@ document.addEventListener("carousel:loadPhoto", e => {
     ? d.cimke_name.map(tag => `<a href="?tag=${encodeURIComponent(tag)}">${tag}</a>`).join(", ")
     : ""
 
+  // set carousel photo background
+  const selectedPhoto = document.querySelector(".photos__thumbnail--selected")
+  if (selectedPhoto) {
+    const photosBackgroundNode = document.querySelector(".carousel__photos__background")
+    photosBackgroundNode.style.backgroundImage = selectedPhoto.querySelector(
+      ".photos__thumbnail__image"
+    ).style.backgroundImage
+    photosBackgroundNode.classList.remove("fade-in")
+    setTimeout(() => {
+      photosBackgroundNode.classList.add("fade-in")
+    }, 20)
+  }
+
   // load photo
   const photoSrc = `${config.PHOTO_SOURCE}1600/fortepan_${d.mid}.jpg`
   if (!document.querySelector(`.carousel__photos__all img[src="${photoSrc}"]`)) {

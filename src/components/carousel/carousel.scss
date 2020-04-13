@@ -28,6 +28,7 @@
   right: rem(280px);
   bottom: rem(0px);
   transition: top 0.4s $ease-out-expo, right 0.4s $ease-out-expo, bottom 0.4s $ease-out-expo;
+  background-color: $dark-base;
 
   @media screen and (max-width: ($breakpoint-desktop - 1px)) {
     top: rem(64px);
@@ -45,6 +46,25 @@
 .loader.carousel__photos__loader {
   top: 50%;
   left: 50%;
+}
+
+.carousel__photos__background {
+  position: absolute;
+  left: -30px;
+  right: -30px;
+  top: -30px;
+  bottom: -30px;
+  background-size: cover;
+  background-position: center center;
+  opacity: 0.2;
+  filter: blur(30px);
+  will-change: opacity;
+  opacity: 0;
+}
+
+.carousel__photos__background.fade-in {
+  transition: opacity 0.8s ease-out;
+  opacity: 0.2;
 }
 
 .carousel__photos__all {
