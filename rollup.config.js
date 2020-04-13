@@ -1,27 +1,11 @@
 import resolve from "rollup-plugin-node-resolve"
 import { terser } from "rollup-plugin-terser"
 import hash from "rollup-plugin-hash"
-import babel from "rollup-plugin-babel"
 import commonjs from "rollup-plugin-commonjs"
 
 export default {
   input: "src/scripts.js",
-  plugins: [
-    resolve(),
-    commonjs(),
-    babel({
-      exclude: "node_modules/**",
-      presets: [
-        [
-          "@babel/preset-env",
-          {
-            corejs: 3,
-            useBuiltIns: "usage",
-          },
-        ],
-      ],
-    }),
-  ],
+  plugins: [resolve(), commonjs()],
   output: [
     {
       file: "_dist/app.js",

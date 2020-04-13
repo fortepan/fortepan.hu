@@ -74,7 +74,7 @@ const resizeThumbnail = thumbnail => {
   t.style.minWidth = `${w}px`
 }
 
-const Thumbnail = data => {
+const Thumbnail = function(data) {
   // eslint-disable-next-line no-underscore-dangle
   const d = data._source
   const t = document.createRange().createContextualFragment(document.getElementById("Thumbnail").innerHTML)

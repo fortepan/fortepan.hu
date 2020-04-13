@@ -1,6 +1,9 @@
 {
-  "plugins": ["stylelint-prettier"],
+  "plugins": [
+    "stylelint-prettier",
+    "stylelint-no-unsupported-browser-features"],
   "rules": {
-    "prettier/prettier": true
+    "prettier/prettier": true,
+    "plugin/no-unsupported-browser-features": [true, { "severity": "warning" }]
   }
 }

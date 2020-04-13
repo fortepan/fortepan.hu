@@ -1,6 +1,3 @@
-// load polyfills
-import "custom-event-polyfill"
-
 // app
 import "./config"
 
