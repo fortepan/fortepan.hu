@@ -2,9 +2,15 @@
 label: cmsConfig
 hide_body: true
 fields:
-- type: text
-  name: latestDate
-  label: Friss - dátum
+- name: latestDate
+  type: datetime
+  label: Friss dátum
   description: A Friss oldalon ettől a dátumtól kezdődik a képek listázása.
+  config:
+    required: false
+    date_format: 
+    time_format: 
+    display_utc: false
+    export_format: MMMM DD, YYYY
 pages:
 - src/data/cmsConfig.json
