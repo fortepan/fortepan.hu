@@ -12,3 +12,8 @@
     border-color: $light-base;
   }
 }
+
+.scrollview {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}

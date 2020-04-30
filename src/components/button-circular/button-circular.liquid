@@ -1,0 +1,5 @@
+<button-circular id="{{ id }}" href="{{ href || '#' }}" class="button-circular {{ class }}"{% if trigger %} data-trigger="{{ trigger }}"{% endif %}>
+    {% capture icon_src %}src/static/images/icons/24/icon-{{ icon }}.svg{% endcapture %}
+    {% inlineSVG src:icon_src class:"button-circular__icon" %}
+    <div class="button-circular__label">{{ label }}</div>
+</button-circular>

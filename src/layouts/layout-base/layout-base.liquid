@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <meta name="description" content="{{ description }}" />
+    <meta name="apple-mobile-web-app-title" content="Fortepan">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="fragment" content="!">
+
+    {% if siteData.environment == 'production' %}
+      {% assign site_url = siteData.site %}
+    {% else %}
+      {% assign site_url = siteData.site_dev %}
+    {% endif %}
+
+
+    <link rel="shortcut icon" href="{{ site_url }}/favicon.ico" />
+    <link rel="apple-touch-icon" href="{{ site_url }}/images/icons/apple-touch-icon.png" />
+    <link rel="mask-icon" href="{{ site_url }}/images/icons/fortepan-logo.svg" color="#F73F13">
+    <link rel="icon" type="image/x-icon" href="{{ site_url }}/favicon.ico">
+    <meta name="theme-color" content="#F73F13">
+
+    <meta property="twitter:image:src" content="{{ site_url }}/images/social/fortepan-twitter-1.jpg" />
+    <meta property="twitter:site" content="@Fortepan" />
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content="{{ title }}" />
+    <meta property="twitter:description" content="{{ description }}" />
+
+    <meta property="og:image" content="{{ site_url }}/images/social/fortepan-facebook-1.jpg" />
+    <meta property="og:site_name" content="Fortepan" />
+    <meta property="og:type" content="object" />
+    <meta property="og:title" content="{{ title }}" />
+    <meta property="og:description" content="{{ description }}" />
+
+    <title>{{ title }}</title>
+
+    <link rel="stylesheet" href="https://use.typekit.net/shi7abw.css" />
+    <link
+      rel="stylesheet"
+      href="/{% if siteData.environment == 'production' %}{{ manifestCSS['app.css'] }}{% else %}app.css{% endif %}"
+    />
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-19831966-3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-19831966-3');
+    </script>
+
+    <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.10/webcomponents-bundle.js"></script>
+    <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.10/custom-elements-es5-adapter.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=URLSearchParams%2CObject.fromEntries"></script>
+  </head>
+  <body itemscope itemtype="http://schema.org/WebPage" data-lang="{{ locale }}">
+    <main>
+    {{ content }}
+    </main>
+    <script>
+      window.ENV = "{{ siteData.environment }}"
+      window.lang = "{{ locale }}"
+    </script>
+    <script src="/{% if siteData.environment == 'production' %}{{ manifestJS['_dist/app.js'] | replace: '_dist/','' }}{% else %}app.js{% endif %}"></script>
+  </body>
+</html>

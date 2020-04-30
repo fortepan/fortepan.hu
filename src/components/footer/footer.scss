@@ -41,25 +41,25 @@
   font-size: rem(12px);
   line-height: rem(20px);
 
+  a {
+    color: inherit;
+    text-decoration: none;
+
+    .theme--light &:hover {
+      color: $dark-base;
+    }
+
+    .theme--dark &:hover {
+      color: $light-base;
+    }
+  }
+
   .theme--dark & {
     color: $grey;
   }
 
   .theme--light & {
     color: $grey;
-  }
-}
-
-.footer__small a {
-  color: inherit;
-  text-decoration: none;
-
-  .theme--light &:hover {
-    color: $dark-base;
-  }
-
-  .theme--dark &:hover {
-    color: $light-base;
   }
 }
 
@@ -77,6 +77,14 @@
   user-select: none;
   transition: color 0.3s $ease-out-expo;
 
+  &:hover {
+    color: $red;
+  }
+
+  & + & {
+    margin-left: 1rem;
+  }
+
   .theme--light & {
     color: $dark-base;
   }
@@ -84,12 +92,4 @@
   .theme--dark & {
     color: $light-base;
   }
-}
-
-.footer__icons__icon:hover {
-  color: $red;
-}
-
-.footer__icons__icon + .footer__icons__icon {
-  margin-left: 1rem;
 }

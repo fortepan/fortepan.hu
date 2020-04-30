@@ -1,0 +1,20 @@
+---
+layout: layout-base/layout-base.liquid
+---
+
+{% include header-nav/header-nav.liquid hide_search:true header_class:"header-nav--transparent" %}
+
+<layout-home class="layout-home scrollview js-header-watchscroll">
+  <section class="layout-home__hero">
+    <div class="layout-home__hero__background"></div>
+    <div class="layout-home__hero__search-wrapper">
+      {% include input-search/input-search.liquid class:"input-search input-search--large layout-home__hero__search" %}
+      <div class="layout-home__hero__total h3">Összesen <a href="/{{ locale }}/photos/"><span></span> fénykép</a></div>
+    </div>
+    <div class="layout-home__hero__content">
+      <h3 class="layout-home__hero__headline">{{ description }}</h3>
+      <div class="layout-home__hero__text">{{ content }}</div>
+    </div>
+  </section>
+  {% include footer/footer.liquid %}
+</layout-home>

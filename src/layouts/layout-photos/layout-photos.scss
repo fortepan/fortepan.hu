@@ -1,0 +1,25 @@
+.layout-photos {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  padding: rem(104px) rem(24px) rem(48px);
+  box-sizing: border-box;
+
+  @media screen and (max-width: ($breakpoint-desktop - 1px)) {
+    padding: rem(88px) rem(8px) rem(48px);
+  }
+}
+
+.layout-photos__grid {
+  max-width: rem(1080px);
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.layout-photos__grid::after {
+  content: "";
+  flex-grow: 999999999;
+}

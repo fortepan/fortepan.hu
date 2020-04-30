@@ -1,5 +1,5 @@
 ---
-layout: photos/photos.liquid
+layout: layout-photos/layout-photos.liquid
 title: Photos
 permalink: /en/photos/
 ---

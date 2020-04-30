@@ -1,0 +1,13 @@
+<dialog-share class="dialog dialog-share">
+  {% include button-circular/button-circular.liquid icon:"close" id:"DialogShareClose" trigger:"dialogShare:hide" label:lang[locale].close class:"dialog__close" %}
+
+  <div class="dialog__wrapper">
+      <h3 class="dialog__title">{{ lang[locale].share }}</h3>
+      <p class="dialog__content">
+          <h5 class="dialog__content__action"><a href="#" id="ShareFacebook" target="_blank">{% inlineSVG src:"src/static/images/icons/24/icon-facebook.svg" %}{{ lang[locale].share_facebook }}</a></h5>
+          <h5 class="dialog__content__action"><a href="#" id="ShareTwitter" target="_blank">{% inlineSVG src:"src/static/images/icons/24/icon-twitter.svg" %}{{ lang[locale].share_twitter }}</a></h5>
+          <h5 class="dialog__content__action"><a href="#" id="ShareEmail">{% inlineSVG src:"src/static/images/icons/24/icon-email.svg" %}{{ lang[locale].share_email }}</a></h5>
+          <h5 class="dialog__content__action"><a href="#" id="ShareLink">{% inlineSVG src:"src/static/images/icons/24/icon-link.svg" %}{{ lang[locale].copy_link }}</a></h5>
+      </p>
+  </div>
+</dialog-share>

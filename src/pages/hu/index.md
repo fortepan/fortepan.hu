@@ -1,5 +1,5 @@
 ---
-layout: home/home.liquid
+layout: layout-home/layout-home.liquid
 title: Fortepan
 permalink: "/"
 ---

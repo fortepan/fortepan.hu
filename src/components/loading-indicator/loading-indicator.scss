@@ -1,0 +1,117 @@
+.loading-indicator {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1000;
+  border-radius: 50%;
+  overflow: hidden;
+  padding: 0.5rem;
+  box-shadow: 0 rem(12px) rem(24px) 0 rgba(0, 0, 0, 0.16);
+  transition: opacity 0.4s $ease-out-expo, transform 0.6s $ease-out-expo;
+  transform: translate(-50%, -50%) scale(0.4);
+  opacity: 0;
+  user-select: none;
+  pointer-events: none;
+
+  &.is-visible {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    transition-delay: 2s;
+  }
+
+  .theme--light & {
+    background-color: $light-base;
+  }
+
+  .theme--dark & {
+    background-color: $dark-base;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    box-sizing: border-box;
+    border-radius: 50%;
+    left: 0.5rem;
+    top: 0.5rem;
+
+    .theme--light & {
+      border: 3px solid rgba($red, 0.15);
+    }
+
+    .theme--dark & {
+      border: 3px solid rgba($red, 0.4);
+    }
+  }
+}
+
+.loading-indicator__anim {
+  position: relative;
+  height: 40px;
+  width: 40px;
+  animation: loader-rotate-1 4.8s linear infinite;
+
+  span {
+    display: block;
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    height: 40px;
+    width: 40px;
+    clip: rect(0, 40px, 40px, 20px);
+    animation: loader-rotate-2 1.2s linear infinite;
+  }
+
+  span::after {
+    content: "";
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    height: 40px;
+    width: 40px;
+    clip: rect(0, 40px, 40px, 20px);
+    border: 3px solid $red;
+    border-radius: 50%;
+    animation: loader-rotate-3 1.2s $ease-in-out-quart infinite;
+  }
+}
+
+@keyframes loader-rotate-1 {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes loader-rotate-2 {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(220deg);
+  }
+}
+
+@keyframes loader-rotate-3 {
+  0% {
+    transform: rotate(-140deg);
+  }
+  50% {
+    transform: rotate(-160deg);
+  }
+  100% {
+    transform: rotate(140deg);
+  }
+}

@@ -1,0 +1,32 @@
+body {
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  transition: color 0.2s $ease-out-expo, background-color 0.2s $ease-out-expo;
+
+  main {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    overflow: hidden;
+    transition: transform 0.4s $ease-out-expo;
+    transform: translateX(0);
+  }
+
+  &.theme--light {
+    color: $dark-base;
+    background-color: $light-base;
+  }
+
+  &.theme--dark {
+    color: $light-base;
+    background-color: $dark-primary;
+  }
+
+  &.disable--selection {
+    user-select: none;
+  }
+}

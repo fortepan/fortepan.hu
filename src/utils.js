@@ -1,4 +1,9 @@
-import lang from "./data/lang"
+import langData from "./data/lang"
+
+export const lang = key => {
+  const l = langData[document.querySelector("body").dataset.lang]
+  return l[key]
+}
 
 export const isTouchDevice = () => {
   return "ontouchstart" in window || window.navigator.maxTouchPoints > 0 || window.navigator.msMaxTouchPoints > 0
@@ -82,6 +87,16 @@ export const setPageMeta = (title, description, imgSrc) => {
   }
 }
 
+export const onClassChange = function(node, callback) {
+  const classObserver = new window.MutationObserver(() => {
+    callback(node)
+  })
+  classObserver.observe(node, {
+    attributes: true,
+    attributeFilter: ["class"],
+  })
+}
+
 export const copyToClipboard = (textToCopy, type) => {
   const input = document.createElement("textarea")
   input.className = "visuallyhidden"
@@ -91,17 +106,16 @@ export const copyToClipboard = (textToCopy, type) => {
 
   input.select()
 
-  const l = lang[document.querySelector("body").dataset.lang]
   const res = document.execCommand("copy")
   if (res) {
     trigger("snackbar:show", {
-      message: type === "link" ? l.copy_link_clipboard : l.copy_text_clipboard,
+      message: type === "link" ? lang("copy_link_clipboard") : lang("copy_text_clipboard"),
       autoHide: true,
       status: "success",
     })
   } else {
     trigger("snackbar:show", {
-      message: type === "link" ? l.copy_link_clipboard_failed : l.copy_text_clipboard_failed,
+      message: type === "link" ? lang("copy_link_clipboard_failed") : lang("copy_text_clipboard_failed"),
       autoHide: true,
       status: "error",
     })
@@ -109,4 +123,13 @@ export const copyToClipboard = (textToCopy, type) => {
 
   document.body.removeChild(input)
   return res
+}
+
+export const isElementInViewport = el => {
+  if (el) {
+    const top = document.querySelector(".header") ? document.querySelector(".header").offsetHeight : 0
+    const bounds = el.getBoundingClientRect()
+    return bounds.top >= top && bounds.bottom <= window.innerHeight
+  }
+  return false
 }

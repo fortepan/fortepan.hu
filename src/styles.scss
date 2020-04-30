@@ -9,25 +9,25 @@
 @import "./theme/helpers.scss";
 
 /* components */
-@import "./components/buttons/buttons.scss";
-@import "./components/dialog/dialog.scss";
-@import "./components/header/header.scss";
-@import "./components/carousel/carousel.scss";
-@import "./components/search/search.scss";
-@import "./components/timeline/timeline.scss";
-@import "./components/footer/footer.scss";
 @import "./components/background-icon/background-icon.scss";
+@import "./components/button-circular/button-circular.scss";
+@import "./components/carousel-photo/carousel-photo.scss";
+@import "./components/carousel-sidebar/carousel-sidebar.scss";
+@import "./components/dialog/dialog.scss";
+@import "./components/dialog-simple-search/dialog-simple-search.scss";
+@import "./components/footer/footer.scss";
+@import "./components/header-nav/header-nav.scss";
+@import "./components/input-search/input-search.scss";
+@import "./components/loading-indicator/loading-indicator.scss";
+@import "./components/photos-carousel/photos-carousel.scss";
+@import "./components/photos-thumbnail/photos-thumbnail.scss";
+@import "./components/photos-timeline/photos-timeline.scss";
+@import "./components/photos-title/photos-title.scss";
 @import "./components/snackbar/snackbar.scss";
-@import "./components/loader/loader.scss";
 
 /* layouts */
-@import "./layouts/base/base.scss";
-@import "./layouts/home/home.scss";
-@import "./layouts/photos/photos.scss";
-@import "./layouts/article/article.scss";
-@import "./layouts/donors/donors.scss";
-
-/* polyfills */
-template {
-  display: none;
-}
+@import "./layouts/layout-base/layout-base.scss";
+@import "./layouts/layout-home/layout-home.scss";
+@import "./layouts/layout-photos/layout-photos.scss";
+@import "./layouts/layout-article/layout-article.scss";
+@import "./layouts/layout-donors/layout-donors.scss";
