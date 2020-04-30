@@ -4,4 +4,5 @@ hide_body: true
 fields:
 - type: text
   name: latestDate
-  label: latestDate
+  label: Friss - dátum
+  description: A Friss oldalon ettől a dátumtól kezdődik a képek listázása.
