@@ -6,3 +6,5 @@ fields:
   name: latestDate
   label: Friss - dátum
   description: A Friss oldalon ettől a dátumtól kezdődik a képek listázása.
+pages:
+- src/data/cmsConfig.json
