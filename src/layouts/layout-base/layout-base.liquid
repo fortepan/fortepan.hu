@@ -60,8 +60,9 @@
     {{ content }}
     </main>
     <script>
-      window.ENV = "{{ siteData.environment }}"
-      window.lang = "{{ locale }}"
+      {% for param in cmsConfig %}
+      window.{{param[0]}} = "{{param[1]}}";
+      {% endfor %}
     </script>
     <script src="/{% if siteData.environment == 'production' %}{{ manifestJS['_dist/app.js'] | replace: '_dist/','' }}{% else %}app.js{% endif %}"></script>
   </body>

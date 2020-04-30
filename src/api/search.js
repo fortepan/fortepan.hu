@@ -49,7 +49,7 @@ const search = (params, callback, error) => {
     query.bool.must.push({
       range: {
         created: {
-          gt: 1581638400,
+          gt: Date.parse(window.latestDate) / 1000,
         },
       },
     })
