@@ -7,7 +7,7 @@ fields:
   label: Friss dátum
   description: A Friss oldalon ettől a dátumtól kezdődik a képek listázása.
   config:
-    required: false
+    required: true
     date_format: MMMM DD, YYYY
     time_format: 
     display_utc: true
