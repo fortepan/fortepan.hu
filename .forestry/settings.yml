@@ -7,7 +7,6 @@ sections:
 - type: document
   path: src/data/cmsConfig.json
   label: Config
-  match: "**/*"
 - type: directory
   path: src/pages
   label: Pages

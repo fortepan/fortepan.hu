@@ -1,0 +1,7 @@
+---
+label: cmsConfig
+hide_body: true
+fields:
+- type: text
+  name: latestDate
+  label: latestDate
