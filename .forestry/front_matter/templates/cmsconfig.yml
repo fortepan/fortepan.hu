@@ -8,9 +8,9 @@ fields:
   description: A Friss oldalon ettől a dátumtól kezdődik a képek listázása.
   config:
     required: false
-    date_format: 
+    date_format: MMMM DD, YYYY
     time_format: 
-    display_utc: false
+    display_utc: true
     export_format: MMMM DD, YYYY
 pages:
 - src/data/cmsConfig.json
