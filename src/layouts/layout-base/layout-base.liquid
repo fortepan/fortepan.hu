@@ -54,6 +54,7 @@
     <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.10/webcomponents-bundle.js"></script>
     <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.10/custom-elements-es5-adapter.js"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=URLSearchParams%2CObject.fromEntries"></script>
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   </head>
   <body itemscope itemtype="http://schema.org/WebPage" data-lang="{{ locale }}">
     <main>
@@ -65,5 +66,17 @@
       {% endfor %}
     </script>
     <script src="/{% if siteData.environment == 'production' %}{{ manifestJS['_dist/app.js'] | replace: '_dist/','' }}{% else %}app.js{% endif %}"></script>
+    
+    <script>
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on("init", user => {
+          if (!user) {
+            window.netlifyIdentity.on("login", () => {
+              document.location.href = "/admin/";
+            });
+          }
+        });
+      }
+    </script>
   </body>
 </html>

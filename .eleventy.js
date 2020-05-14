@@ -3,6 +3,7 @@ const inlineSVG = require("./plugins/inlineSVG")
 module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/images")
   eleventyConfig.addPassthroughCopy({ "src/static": "/" })
+  eleventyConfig.addPassthroughCopy({ admin: "/admin/" })
   eleventyConfig.addPassthroughCopy({ "node_modules/@webcomponents/webcomponentsjs": "/webcomponents-polyfill" })
   eleventyConfig.setUseGitIgnore(false)
 
