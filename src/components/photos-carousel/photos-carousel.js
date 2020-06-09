@@ -182,6 +182,11 @@ class PhotosCarousel extends HTMLElement {
         // if carousel is not visible then keyboard actions shouldn't work
         if (!this.classList.contains("is-visible")) return
 
+        // if an input is in focused state, keyboard actions shouldn't work
+        const { activeElement } = document
+        const inputs = ["input", "select", "button", "textarea"]
+        if (activeElement && inputs.indexOf(activeElement.tagName.toLowerCase()) !== -1) return
+
         switch (e.key) {
           case "Escape":
             trigger("photosCarousel:hide")
