@@ -10,7 +10,6 @@ class LoadingIndicator extends HTMLElement {
   }
 
   show() {
-    console.log("show indicator")
     this.classList.add("is-visible")
   }
 

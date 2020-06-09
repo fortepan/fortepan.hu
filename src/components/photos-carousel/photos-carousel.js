@@ -99,6 +99,7 @@ class PhotosCarousel extends HTMLElement {
       "photosCarousel:showPhoto",
       function(e) {
         this.currentImageMeta = e.detail
+        console.log(e.detail)
         this.showPhoto()
       }.bind(this)
     )
