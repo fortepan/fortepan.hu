@@ -7,6 +7,7 @@
   command = "npm run dev"
   targetPort = 4000
   publish = "_dist/"
+  autoLaunch = false
 
 ## This rule redirects to an external API, signing requests with a secret
 [[redirects]]
