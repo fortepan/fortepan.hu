@@ -1,4 +1,5 @@
 import throttle from "lodash/throttle"
+import { trigger } from "../../utils"
 
 class HeaderNav extends HTMLElement {
   constructor() {
@@ -62,6 +63,12 @@ class HeaderNav extends HTMLElement {
         }, 200)
       }, 100).bind(this)
     )
+
+    this.querySelector("[data-trigger]").addEventListener("click", e => {
+      e.preventDefault()
+      console.log(e.currentTarget.dataset.trigger)
+      trigger(e.currentTarget.dataset.trigger)
+    })
   }
 }
 window.customElements.define("header-nav", HeaderNav)

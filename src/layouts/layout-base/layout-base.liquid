@@ -60,13 +60,14 @@
     <main>
     {{ content }}
     </main>
+    {% include dialog-signin/dialog-signin.liquid %}
     <script>
       {% for param in cmsConfig %}
       window.{{param[0]}} = "{{param[1]}}";
       {% endfor %}
     </script>
     <script src="/{% if siteData.environment == 'production' %}{{ manifestJS['_dist/app.js'] | replace: '_dist/','' }}{% else %}app.js{% endif %}"></script>
-    
+
     <script>
       if (window.netlifyIdentity) {
         window.netlifyIdentity.on("init", user => {

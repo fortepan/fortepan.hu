@@ -9,8 +9,8 @@ class DialogSignin extends HTMLElement {
   }
 
   bindCustomEvents() {
-    document.addEventListener("DialogSignin:show", this.show.bind(this))
-    document.addEventListener("DialogSignin:hide", this.hide.bind(this))
+    document.addEventListener("dialogSignin:show", this.show.bind(this))
+    document.addEventListener("dialogSignin:hide", this.hide.bind(this))
   }
 
   hide() {
