@@ -4,6 +4,7 @@
   functions = "functions/"
 
 [dev]
+  framework = "#custom"
   command = "npm run dev"
   targetPort = 4000
   publish = "_dist/"
