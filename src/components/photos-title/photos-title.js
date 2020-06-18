@@ -25,6 +25,9 @@ class PhotosTitle extends HTMLElement {
     } else if (Object.keys(q).indexOf("donor") > -1) {
       searchExpressionNode.classList.add("is-visible")
       searchExpressionNode.innerHTML = `${lang("donor")}: <em>${q.donor}</em>`
+    } else if (Object.keys(q).indexOf("photographer") > -1) {
+      searchExpressionNode.classList.add("is-visible")
+      searchExpressionNode.innerHTML = `${lang("photographer")}: <em>${q.photographer}</em>`
     } else if (Object.keys(q).indexOf("year") > -1) {
       searchExpressionNode.classList.add("is-visible")
       searchExpressionNode.innerHTML = `${lang("year")}: <em>${q.year}</em>`

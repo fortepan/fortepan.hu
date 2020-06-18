@@ -107,6 +107,12 @@ const search = (params, callback, error) => {
     query.bool.must.push({ term: { adomanyozo_search: `${donor}` } })
   }
 
+  // if there's a photographer search attribute defined (advanced search)
+  if (params.photographer) {
+    const photographer = slugify(params.photographer)
+    query.bool.must.push({ term: { szerzo_search: `${photographer}` } })
+  }
+
   // if there's an id search attribute defined (advanced search)
   if (params.id) {
     const id = slugify(params.id)

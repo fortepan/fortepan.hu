@@ -36,16 +36,34 @@ class CarouselSidebar extends HTMLElement {
       this.querySelector(".carousel-sidebar__location").style.display = "none"
     }
     this.querySelector(".carousel-sidebar__description").innerHTML = this.data.description ? this.data.description : ""
+
     this.querySelector(".carousel-sidebar__id h5").innerHTML = `<a href="?id=${this.data.mid}">${this.data.mid}</a>`
+
     this.querySelector(
       ".carousel-sidebar__year h5"
     ).innerHTML = `<a href="?year=${this.data.year}">${this.data.year}</a>`
+
     this.querySelector(".carousel-sidebar__donor h5").innerHTML = `<a href="?donor=${encodeURIComponent(
       this.data.adomanyozo_name
     )}">${this.data.adomanyozo_name}</a>`
-    this.querySelector(".carousel-sidebar__tags p").innerHTML = this.data.cimke_name
-      ? this.data.cimke_name.map(tag => `<a href="?tag=${encodeURIComponent(tag)}">${tag}</a>`).join(", ")
-      : ""
+
+    if (this.data.szerzo_name) {
+      this.querySelector(".carousel-sidebar__photographer h5").innerHTML = `<a href="?photographer=${encodeURIComponent(
+        this.data.szerzo_name
+      )}">${this.data.szerzo_name}</a>`
+      this.querySelector(".carousel-sidebar__photographer").style.display = "block"
+    } else {
+      this.querySelector(".carousel-sidebar__photographer").style.display = "none"
+    }
+
+    if (this.data.cimke_name) {
+      this.querySelector(".carousel-sidebar__tags p").innerHTML = this.data.cimke_name
+        ? this.data.cimke_name.map(tag => `<a href="?tag=${encodeURIComponent(tag)}">${tag}</a>`).join(", ")
+        : ""
+      this.querySelector(".carousel-sidebar__tags").style.display = "block"
+    } else {
+      this.querySelector(".carousel-sidebar__tags").style.display = "none"
+    }
 
     // bind history api calls to sidabar anchors
     Array.from(this.querySelectorAll(".carousel-sidebar a")).forEach(anchorNode => {
