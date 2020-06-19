@@ -1,5 +1,6 @@
 import config from "../../config"
-import { lang } from "../../utils"
+import { lang, trigger } from "../../utils"
+import auth from "../../api/auth"
 
 class DialogSignin extends HTMLElement {
   constructor() {
@@ -11,6 +12,23 @@ class DialogSignin extends HTMLElement {
   bindCustomEvents() {
     document.addEventListener("dialogSignin:show", this.show.bind(this))
     document.addEventListener("dialogSignin:hide", this.hide.bind(this))
+
+    this.querySelector("button").addEventListener("click", this.signin.bind(this))
+  }
+
+  signin(e) {
+    e.preventDefault()
+    const credentials = {}
+    credentials.name = this.querySelector("input[name=email]").value
+    credentials.pass = this.querySelector("input[name=password]").value
+    auth.signin(credentials)
+    .then(resp => {
+      trigger("dialogSignin:hide")
+      console.log(resp)
+    })
+    .catch(err => {
+      console.log(err)
+    })
   }
 
   hide() {

@@ -1,5 +1,6 @@
 import throttle from "lodash/throttle"
 import { trigger } from "../../utils"
+import auth from "../../api/auth"
 
 class HeaderNav extends HTMLElement {
   constructor() {
@@ -11,6 +12,24 @@ class HeaderNav extends HTMLElement {
     this.initNavigation()
     this.bindCustomEvents()
     this.bindScroll()
+
+    auth.checkUserStatus().then(res => {
+      console.log(res)
+    }).catch(error => {
+      console.log(error)
+    })
+
+    auth.getNewToken().then(res => {
+      console.log(res)
+    }).catch(error => {
+      console.log(error)
+    })
+
+    auth.queryLists().then(res => {
+      console.log(res)
+    }).catch(error => {
+      console.log(error)
+    })
   }
 
   bindCustomEvents() {
@@ -64,10 +83,12 @@ class HeaderNav extends HTMLElement {
       }, 100).bind(this)
     )
 
-    this.querySelector("[data-trigger]").addEventListener("click", e => {
-      e.preventDefault()
-      console.log(e.currentTarget.dataset.trigger)
-      trigger(e.currentTarget.dataset.trigger)
+    this.querySelectorAll("[data-trigger]").forEach(el => {
+      el.addEventListener("click", e => {
+        e.preventDefault()
+        console.log(e.currentTarget.dataset.trigger)
+        trigger(e.currentTarget.dataset.trigger)
+      })
     })
   }
 }
