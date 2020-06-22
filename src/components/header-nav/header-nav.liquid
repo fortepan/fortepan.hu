@@ -5,44 +5,48 @@
       <span>Fortepan</span>
     </a>
   </div>
+  <div class="header-nav__search">
+  {% unless hide_search %}
+    {% include input-search/input-search.liquid class:"input-search--header" %}
+  {% endunless %}
+  </div>
   <div class="header-nav__actions">
     {% unless hide_search %}
     <div class="header-nav__actions__group header-nav__actions__group--search">
-      {% include input-search/input-search.liquid class:"input-search--header" %}
       {% include button-circular/button-circular.liquid icon:"search" class:"button-circular--red" id:"HeaderSearchToggle" trigger:"dialogSimpleSearch:toggle" label:lang[locale].search %}
     </div>
     {% endunless %}
     <div class="header-nav__actions__group header-nav__actions__group--items">
       <a class="header-nav__link header-nav__link--top header-nav__link--top-action" href="/{{ locale }}/photos/">{{ lang[locale].photos }}</a>
       <a class="header-nav__link header-nav__link--top header-nav__link--top-action" href="/{{ locale }}/photos/?latest">{{ lang[locale].latest }}</a>
-      <a class="header-nav__link header-nav__link--top header-nav__link--top-action" href="#" data-trigger="dialogSignin:show">{{ lang[locale].signin }}</a>
-      <a class="header-nav__link header-nav__link--top header-nav__link--top-action" href="#" data-trigger="dialogSignup:show">{{ lang[locale].signup }}</a>
     </div>
     <div class="header-nav__actions__group header-nav__actions__group--nav">
-      {% include button-circular/button-circular.liquid icon:"darkmode" id:"DarkThemeSwitcher" trigger:"toggleTheme" label:lang[locale].darkmode %}
-      {% include button-circular/button-circular.liquid icon:"lightmode" id:"LightThemeSwitcher" trigger:"toggleTheme" label:lang[locale].lightmode %}
-      {% include button-circular/button-circular.liquid icon:"menu" id:"HeaderNavigationToggle" trigger:"headerNav:toggleNav" label:lang[locale].menu class:"button-circular--no-label" %}
+      {% include button-circular/button-circular.liquid icon:"menu" trigger:"headerNav:toggleMenu" label:lang[locale].menu %}
+      {% include button-circular/button-circular.liquid icon:"profile" trigger:"headerNav:toggleProfile" label:lang[locale].profile %}
     </div>
-    {% comment %}
-    <div class="header-nav__actions__group header-nav__actions__group--login">
-      <a href="#" class="header-nav__link header-nav__link--top header-nav__link--top-action" id="HeaderLogin">{{ lang[locale].login }}</a>
-      {% if locale == "hu" %}
-      <a class="header-nav__link header-nav__link--top header-nav__link--top-action" href="/en/photos/">EN</a>
-      {% else %}
-      <a class="header-nav__link header-nav__link--top header-nav__link--top-action" href="/">HU</a>
-      {% endif %}
-    </div>
-    {% endcomment %}
   </div>
-  <div class="header-nav__nav">
+  <div class="header-nav__popup" id="HeaderNavigationProfile">
+    <a href="#" class="header-nav__link header-nav__link--top" id="HeaderSignin" data-trigger="dialogSignin:show">{{ lang[locale].signin }}</a>
+    <a href="#" class="header-nav__link header-nav__link--top header-nav__link--separator-after" id="HeaderSignup" data-trigger="dialogSignup:show">{{ lang[locale].signup }}</a>
+    <h6>{{ lang[locale].settings }}</h6>
+    <a href="#" class="header-nav__link header-nav__link--top header-nav__link--separator-after" id="DarkThemeSwitcher" data-trigger="toggleTheme">
+      {{ lang[locale].darkmode }}
+      <span class="header-nav__toggle-switch"></span>
+    </a>
+    <h6>{{ lang[locale].language }}</h6>
+    <a class="header-nav__link header-nav__link--top lang-hu" href="/">Magyar</a>
+    <a class="header-nav__link header-nav__link--top lang-en" href="/en/">English</a>
+  </div>
+  <div class="header-nav__popup" id="HeaderNavigationMenu">
     <a class="header-nav__link header-nav__link--top header-nav__link--hide-on-desktop" href="/{{ locale }}/photos/">Fotók</a>
     <a class="header-nav__link header-nav__link--top header-nav__link--separator-after header-nav__link--hide-on-desktop" href="/{{ locale }}/photos/?latest">Friss</a>
     <a class="header-nav__link header-nav__link--top" href="/{{ locale }}/about-us/">Rólunk</a>
     <a class="header-nav__link header-nav__link--top" href="/{{ locale }}/donors/">Adományozók</a>
     <a class="header-nav__link header-nav__link--top" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=fortepan%40fortepan.hu&currency_code=HUF&source=url" target="_blank">Támogatás</a>
     <a class="header-nav__link header-nav__link--top" href="https://index.hu/fortepan/" target="_blank">Index Nagykép</a>
-    <a class="header-nav__link header-nav__link--top header-nav__link--separator-after" href="https://forum.index.hu/Article/showArticle?t=9204653" target="_blank">Fórum</a>
-    <a class="header-nav__link header-nav__link--top" href="mailto:fortepan@gmail.com">Kapcsolat</a>
-    <a class="header-nav__link header-nav__link--top" href="/{{ locale }}/privacy/">Adatvédelem</a>
+    <a class="header-nav__link header-nav__link--top" href="https://forum.index.hu/Article/showArticle?t=9204653" target="_blank">Fórum</a>
+    <a class="header-nav__link header-nav__link--top header-nav__link--separator-after" href="https://www.facebook.com/FortepanArchivum/" target="_blank">Facebook</a>
+    <a class="header-nav__link header-nav__link" href="mailto:fortepan@gmail.com">Kapcsolat</a>
+    <a class="header-nav__link header-nav__link" href="/{{ locale }}/privacy/">Adatvédelem</a>
   </div>
 </header-nav>

@@ -1,11 +1,11 @@
-import { trigger } from "../../utils"
+import { trigger, isTouchDevice } from "../../utils"
 
 class ButtonCircular extends HTMLElement {
   constructor() {
     super()
 
     if (this.dataset.trigger) {
-      this.addEventListener("click", this.onClick.bind(this))
+      this.addEventListener(isTouchDevice() ? "touchstart" : "click", this.onClick.bind(this))
     }
   }
 

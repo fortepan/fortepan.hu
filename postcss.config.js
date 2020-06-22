@@ -6,6 +6,7 @@ module.exports = {
     "@csstools/postcss-sass": {
       syntax: "postcss-scss",
     },
+    "postcss-inline-svg": {},
     autoprefixer: {},
     cssnano: process.env.POSTCSS_ENV === "production" ? { preset: "default" } : false,
     "postcss-hash":

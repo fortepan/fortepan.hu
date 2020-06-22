@@ -1,28 +1,28 @@
-import { trigger, setCookie } from "../utils"
+import { trigger } from "../utils"
 
 const AUTH_HOST = "https://drupal.admin.fortepan.hu"
 
-const signin = (body) => {
+const signin = body => {
   return new Promise((resolve, reject) => {
     const xmlHttp = new XMLHttpRequest()
-  xmlHttp.open("POST", `${AUTH_HOST}/user/login?_format=json`, true)
-  xmlHttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
-  xmlHttp.withCredentials = true
-  xmlHttp.onload = () => {
-    if (xmlHttp.status === 200) {
-      const respData = JSON.parse(xmlHttp.responseText)
-      localStorage.setItem("auth", xmlHttp.responseText)
-      trigger("auth:loggedIn")
-      resolve(respData)
-    } else {
-      reject(xmlHttp.statusText)
+    xmlHttp.open("POST", `${AUTH_HOST}/user/login?_format=json`, true)
+    xmlHttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
+    xmlHttp.withCredentials = true
+    xmlHttp.onload = () => {
+      if (xmlHttp.status === 200) {
+        const respData = JSON.parse(xmlHttp.responseText)
+        localStorage.setItem("auth", xmlHttp.responseText)
+        trigger("auth:loggedIn")
+        resolve(respData)
+      } else {
+        reject(xmlHttp.statusText)
+      }
     }
-  }
-  xmlHttp.send(JSON.stringify(body))
+    xmlHttp.send(JSON.stringify(body))
   })
 }
 
-const signout = (body) => {
+const signout = body => {
   return new Promise((resolve, reject) => {
     const authTokens = JSON.parse(localStorage.getItem("auth"))
     const xmlHttp = new XMLHttpRequest()
@@ -37,42 +37,42 @@ const signout = (body) => {
         trigger("auth:loggedOut")
         resolve(respData)
       } else {
-       reject(xmlHttp.statusText)
+        reject(xmlHttp.statusText)
       }
     }
     xmlHttp.send()
-    })
-}
-
-const signup = (body) => {
-  return new Promise((resolve, reject) => {
-  const xmlHttp = new XMLHttpRequest()
-  xmlHttp.open("POST", `${AUTH_HOST}/user/register?_format=json`, true)
-  xmlHttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
-  xmlHttp.onload = () => {
-    if (xmlHttp.status === 200) {
-      resolve(JSON.parse(xmlHttp.responseText))
-    } else {
-      reject(xmlHttp.statusText)
-    }
-  }
-  xmlHttp.send(JSON.stringify(body))
   })
 }
 
-const forgot = (body) => {
+const signup = body => {
   return new Promise((resolve, reject) => {
-  const xmlHttp = new XMLHttpRequest()
-  xmlHttp.open("POST", `${AUTH_HOST}/user/password?_format=json`, true)
-  xmlHttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
-  xmlHttp.onload = () => {
-    if (xmlHttp.status === 200) {
-      resolve(JSON.parse(xmlHttp.responseText))
-    } else {
-      reject(xmlHttp.statusText)
+    const xmlHttp = new XMLHttpRequest()
+    xmlHttp.open("POST", `${AUTH_HOST}/user/register?_format=json`, true)
+    xmlHttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
+    xmlHttp.onload = () => {
+      if (xmlHttp.status === 200) {
+        resolve(JSON.parse(xmlHttp.responseText))
+      } else {
+        reject(xmlHttp.statusText)
+      }
     }
-  }
-  xmlHttp.send(JSON.stringify(body))
+    xmlHttp.send(JSON.stringify(body))
+  })
+}
+
+const forgot = body => {
+  return new Promise((resolve, reject) => {
+    const xmlHttp = new XMLHttpRequest()
+    xmlHttp.open("POST", `${AUTH_HOST}/user/password?_format=json`, true)
+    xmlHttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
+    xmlHttp.onload = () => {
+      if (xmlHttp.status === 200) {
+        resolve(JSON.parse(xmlHttp.responseText))
+      } else {
+        reject(xmlHttp.statusText)
+      }
+    }
+    xmlHttp.send(JSON.stringify(body))
   })
 }
 
@@ -128,8 +128,6 @@ const queryLists = () => {
   })
 }
 
-
-
 export default {
   signin,
   signup,
@@ -137,5 +135,5 @@ export default {
   forgot,
   checkUserStatus,
   getNewToken,
-  queryLists
+  queryLists,
 }
