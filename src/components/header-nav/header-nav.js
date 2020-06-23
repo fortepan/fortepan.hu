@@ -13,25 +13,7 @@ class HeaderNav extends HTMLElement {
     this.bindScroll()
 
     auth
-      .checkUserStatus()
-      .then(res => {
-        console.log(res)
-      })
-      .catch(error => {
-        console.log(error)
-      })
-
-    auth
-      .getNewToken()
-      .then(res => {
-        console.log(res)
-      })
-      .catch(error => {
-        console.log(error)
-      })
-
-    auth
-      .queryLists()
+      .queryUser()
       .then(res => {
         console.log(res)
       })
@@ -43,19 +25,27 @@ class HeaderNav extends HTMLElement {
   bindCustomEvents() {
     // bind listeners
     document.addEventListener("headerNav:toggleMenu", e => {
-      this.togglePopup(e.detail.currentTarget, this.querySelector("#HeaderNavigationMenu"))
+      this.togglePopup(
+        e.detail.currentTarget,
+        this.querySelector("#HeaderNavigationMenu"),
+        e.detail && e.detail.forceHide
+      )
     })
     document.addEventListener("headerNav:toggleProfile", e => {
-      this.togglePopup(e.detail.currentTarget, this.querySelector("#HeaderNavigationProfile"))
+      this.togglePopup(
+        e.detail.currentTarget,
+        this.querySelector("#HeaderNavigationProfile"),
+        e.detail && e.detail.forceHide
+      )
     })
     document.addEventListener("photosCarousel:show", this.addShadow.bind(this))
     document.addEventListener("photosCarousel:hide", this.removeShadow.bind(this))
   }
 
-  togglePopup(itemNode, popupNode) {
+  togglePopup(itemNode, popupNode, forceHide = false) {
     const itemRect = itemNode.getBoundingClientRect()
     this.querySelectorAll(".header-nav__popup").forEach(node => {
-      if (node === popupNode) {
+      if (node === popupNode && !forceHide) {
         node.style.left = `${itemRect.x + itemRect.width / 2}px`
         node.classList.add("is-visible")
       } else {

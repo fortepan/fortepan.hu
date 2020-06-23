@@ -1,3 +1,28 @@
+button,
 .button {
-    
+  padding: 1rem;
+  line-height: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  white-space: nowrap;
+  border: 0;
+
+  color: $light-base;
+  background-color: $red;
+  border-radius: 0.25rem;
+
+  transition: transform 0.4s $ease-out-expo, background-color 0.4s $ease-out-expo;
+
+  margin: 1.5rem 0 0;
+
+  &:hover {
+    background-color: darken($red, 5);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transition-duration: 0.15s;
+    background-color: darken($red, 5);
+    transform: translateY(0px);
+  }
 }
