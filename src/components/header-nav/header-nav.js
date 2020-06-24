@@ -1,5 +1,4 @@
 import throttle from "lodash/throttle"
-import { trigger, isTouchDevice } from "../../utils"
 import auth from "../../api/auth"
 
 class HeaderNav extends HTMLElement {
@@ -12,14 +11,7 @@ class HeaderNav extends HTMLElement {
     this.bindCustomEvents()
     this.bindScroll()
 
-    auth
-      .queryUser()
-      .then(res => {
-        console.log(res)
-      })
-      .catch(error => {
-        console.log(error)
-      })
+    auth.queryUser().catch(() => {})
   }
 
   bindCustomEvents() {
@@ -40,6 +32,11 @@ class HeaderNav extends HTMLElement {
     })
     document.addEventListener("photosCarousel:show", this.addShadow.bind(this))
     document.addEventListener("photosCarousel:hide", this.removeShadow.bind(this))
+
+    document.addEventListener("auth:signedIn", this.updateProfile.bind(this))
+
+    // bind logout
+    this.querySelector("#HeaderSignout").addEventListener("click", auth.signout)
   }
 
   togglePopup(itemNode, popupNode, forceHide = false) {
@@ -78,6 +75,12 @@ class HeaderNav extends HTMLElement {
     }
   }
 
+  updateProfile() {
+    const authData = JSON.parse(localStorage.getItem("auth"))
+    this.querySelector("#HeaderProfileName").textContent = authData.current_user.name
+    this.querySelector("#HeaderProfileEmail").textContent = authData.current_user.mail
+  }
+
   initPopup() {
     document.addEventListener(
       "mousemove",
@@ -94,14 +97,6 @@ class HeaderNav extends HTMLElement {
         }, 200)
       }, 100).bind(this)
     )
-
-    //
-    this.querySelectorAll(".header-nav__popup *[data-trigger]").forEach(el => {
-      el.addEventListener(isTouchDevice() ? "touchstart" : "click", e => {
-        e.preventDefault()
-        trigger(e.currentTarget.dataset.trigger, { currentTarget: e.currentTarget })
-      })
-    })
   }
 }
 window.customElements.define("header-nav", HeaderNav)

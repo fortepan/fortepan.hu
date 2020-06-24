@@ -4,12 +4,9 @@
   <div class="dialog__wrapper">
       <h3 class="dialog__title">{{ lang[locale].signup }}</h3>
       <div class="dialog__form">
-        <label for="name">{{ lang[locale].full_name }}</label>
-        <input class="input" name="name" type="text" placeholder="{{ lang[locale].full_name }}"/>
-        <label for="email">{{ lang[locale].email }}</label>
-        <input class="input" name="email" type="email" placeholder="{{ lang[locale].email }}"/>
-        <label for="password">{{ lang[locale].password }}</label>
-        <input class="input" name="password" type="password" placeholder="{{ lang[locale].password }}" />
+        {% include dialog-input/dialog-input.liquid type:"text" name:"name" label:lang[locale].username %}
+        {% include dialog-input/dialog-input.liquid type:"email" name:"email" label:lang[locale].email %}
+        {% include dialog-input/dialog-input.liquid type:"password" name:"password" label:lang[locale].password %}
         <button class="button dialog__button">{{ lang[locale].signup }}</button>
       </div>
   </div>

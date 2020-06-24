@@ -22,20 +22,11 @@
     </div>
     <div class="header-nav__actions__group header-nav__actions__group--nav">
       {% include button-circular/button-circular.liquid icon:"menu" trigger:"headerNav:toggleMenu" label:lang[locale].menu %}
-      {% include button-circular/button-circular.liquid icon:"profile" trigger:"headerNav:toggleProfile" label:lang[locale].profile %}
+      <div class="header-nav__profile-icon">
+        {% include button-circular/button-circular.liquid icon:"profile" trigger:"headerNav:toggleProfile" label:lang[locale].profile class:"is-hidden-when-signed-in" %}
+        {% include button-circular/button-circular.liquid icon:"profile-signed-in" trigger:"headerNav:toggleProfile" label:lang[locale].profile class:"is-visible-when-signed-in" %}
+      </div>
     </div>
-  </div>
-  <div class="header-nav__popup" id="HeaderNavigationProfile">
-    <a href="#" class="header-nav__link header-nav__link--top" id="HeaderSignin" data-trigger="dialogSignin:show">{{ lang[locale].signin }}</a>
-    <a href="#" class="header-nav__link header-nav__link--top header-nav__link--separator-after" id="HeaderSignup" data-trigger="dialogSignup:show">{{ lang[locale].signup }}</a>
-    <h6>{{ lang[locale].settings }}</h6>
-    <a href="#" class="header-nav__link header-nav__link--top header-nav__link--separator-after" id="DarkThemeSwitcher" data-trigger="toggleTheme">
-      {{ lang[locale].darkmode }}
-      <span class="header-nav__toggle-switch"></span>
-    </a>
-    <h6>{{ lang[locale].language }}</h6>
-    <a class="header-nav__link header-nav__link--top lang-hu" href="/">Magyar</a>
-    <a class="header-nav__link header-nav__link--top lang-en" href="/en/">English</a>
   </div>
   <div class="header-nav__popup" id="HeaderNavigationMenu">
     <a class="header-nav__link header-nav__link--top header-nav__link--hide-on-desktop" href="/{{ locale }}/photos/">Fotók</a>
@@ -48,5 +39,22 @@
     <a class="header-nav__link header-nav__link--top header-nav__link--separator-after" href="https://www.facebook.com/FortepanArchivum/" target="_blank">Facebook</a>
     <a class="header-nav__link header-nav__link" href="mailto:fortepan@gmail.com">Kapcsolat</a>
     <a class="header-nav__link header-nav__link" href="/{{ locale }}/privacy/">Adatvédelem</a>
+  </div>
+  <div class="header-nav__popup" id="HeaderNavigationProfile">
+    <a href="#" class="header-nav__link header-nav__link--top is-hidden-when-signed-in" id="HeaderSignin" data-trigger="dialogSignin:show">{{ lang[locale].signin }}</a>
+    <a href="#" class="header-nav__link header-nav__link--top header-nav__link--separator-after is-hidden-when-signed-in" id="HeaderSignup" data-trigger="dialogSignup:show">{{ lang[locale].signup }}</a>
+    <a href="#" class="header-nav__link header-nav__link--top is-visible-when-signed-in" id="HeaderProfile">
+      <span id="HeaderProfileName">UserName</span>
+      <span id="HeaderProfileEmail" class="header-nav__link__small">name@yourcompany.com</span>
+    </a>
+    <a href="#" class="header-nav__link header-nav__link--top header-nav__link--separator-after is-visible-when-signed-in" id="HeaderSignout">{{ lang[locale].signout }}</a>
+    <h6>{{ lang[locale].settings }}</h6>
+    <a href="#" class="header-nav__link header-nav__link--top header-nav__link--separator-after" id="DarkThemeSwitcher" data-trigger="toggleTheme">
+      {{ lang[locale].darkmode }}
+      <span class="header-nav__toggle-switch"></span>
+    </a>
+    <h6>{{ lang[locale].language }}</h6>
+    <a class="header-nav__link header-nav__link--top lang-hu" href="/">Magyar</a>
+    <a class="header-nav__link header-nav__link--top lang-en" href="/en/">English</a>
   </div>
 </header-nav>

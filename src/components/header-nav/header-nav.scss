@@ -186,6 +186,11 @@
   padding: rem(8px) rem(24px);
   transition: color 0.3s $ease-out-expo, background-color 0.3s $ease-out-expo;
 
+  > * {
+    display: block;
+    white-space: nowrap;
+  }
+
   .theme--light & {
     color: $dark-base;
   }
@@ -228,6 +233,24 @@
 .header-nav__link--top {
   font-size: 1rem;
   font-weight: 600;
+}
+
+.header-nav__link__small {
+  font-size: rem(12px);
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  line-height: 1.25rem;
+
+  .theme--light & {
+    color: $grey;
+  }
+
+  .theme--dark & {
+    color: $grey;
+  }
 }
 
 .header-nav__link--top-action {
@@ -311,4 +334,37 @@ body[data-lang="en"] .header-nav__link.lang-en {
     height: 1rem;
     background: svg-load("static/images/icons/16/icon-check.svg");
   }
+}
+
+.header-nav__profile-icon {
+  display: flex;
+  position: relative;
+  width: 3rem;
+  height: 3rem;
+  margin-left: 0.25rem;
+
+  .button-circular {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    margin-left: 0;
+  }
+}
+
+.header-nav .is-visible-when-signed-in {
+  display: none;
+}
+
+.auth-signed-in .header-nav .is-visible-when-signed-in {
+  display: block;
+}
+
+.header-nav .is-hidden-when-signed-in {
+  display: block;
+}
+
+.auth-signed-in .header-nav .is-hidden-when-signed-in {
+  display: none;
 }

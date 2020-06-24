@@ -1,5 +1,4 @@
-import config from "../../config"
-import { lang } from "../../utils"
+import { trigger } from "../../utils"
 import auth from "../../api/auth"
 
 class DialogSignup extends HTMLElement {
@@ -22,13 +21,21 @@ class DialogSignup extends HTMLElement {
     credentials.name = { value: this.querySelector("input[name=name]").value }
     credentials.mail = { value: this.querySelector("input[name=email]").value }
     credentials.pass = { value: this.querySelector("input[name=password]").value }
-    auth.signup(credentials)
-    .then(resp => {
-      console.log(resp)
-    })
-    .catch(err => {
-      console.log(err)
-    })
+    auth
+      .signup(credentials)
+      .then(() => {
+        // user should be signed in after a successful registration
+        auth.signin(credentials).then(this.success)
+      })
+      .catch(this.error)
+  }
+
+  error(statusText) {
+    trigger("snackbar:show", { message: statusText, status: "error", autoHide: true })
+  }
+
+  success() {
+    trigger("dialogSignup:hide")
   }
 
   hide() {
@@ -37,6 +44,7 @@ class DialogSignup extends HTMLElement {
 
   show() {
     this.classList.add("is-visible")
+    this.querySelector("input").focus()
   }
 }
 

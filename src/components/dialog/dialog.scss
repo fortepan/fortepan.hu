@@ -84,5 +84,24 @@
 }
 
 .dialog__button {
+  margin-top: 2.5rem;
   width: 100%;
+  cursor: pointer;
+}
+
+.dialog__link {
+  display: inline-block;
+  margin-top: 0.5rem;
+  color: $red;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.6s $ease-out-expo;
+
+  &:hover {
+    color: darken($red, 10);
+  }
+}
+
+.dialog__link--small {
+  font-size: rem(13px);
 }

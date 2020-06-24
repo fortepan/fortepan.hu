@@ -1,5 +1,4 @@
-import config from "../../config"
-import { lang, trigger } from "../../utils"
+import { trigger } from "../../utils"
 import auth from "../../api/auth"
 
 class DialogResetPassword extends HTMLElement {
@@ -10,8 +9,8 @@ class DialogResetPassword extends HTMLElement {
   }
 
   bindCustomEvents() {
-    document.addEventListener("dialogSignin:show", this.show.bind(this))
-    document.addEventListener("dialogSignin:hide", this.hide.bind(this))
+    document.addEventListener("dialogResetPassword:show", this.show.bind(this))
+    document.addEventListener("dialogResetPassword:hide", this.hide.bind(this))
 
     this.querySelector("button").addEventListener("click", this.resetPassword.bind(this))
   }
@@ -19,15 +18,14 @@ class DialogResetPassword extends HTMLElement {
   resetPassword(e) {
     e.preventDefault()
     const credentials = {}
-    credentials.email = this.querySelector("input[name=email]").value
+    credentials.mail = this.querySelector("input[name=email]").value
     auth
-      .signin(credentials)
-      .then(resp => {
-        trigger("dialogSignin:hide")
-        console.log(resp)
+      .forgot(credentials)
+      .then(() => {
+        trigger("dialogResetPassword:hide")
       })
-      .catch(err => {
-        console.log(err)
+      .catch(statusText => {
+        trigger("snackbar:show", { message: statusText, status: "error", autoHide: true })
       })
   }
 
@@ -37,6 +35,7 @@ class DialogResetPassword extends HTMLElement {
 
   show() {
     this.classList.add("is-visible")
+    this.querySelector("input").focus()
   }
 }
 

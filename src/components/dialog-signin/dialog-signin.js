@@ -1,5 +1,4 @@
-import config from "../../config"
-import { lang, trigger } from "../../utils"
+import { trigger } from "../../utils"
 import auth from "../../api/auth"
 
 class DialogSignin extends HTMLElement {
@@ -19,16 +18,20 @@ class DialogSignin extends HTMLElement {
   signin(e) {
     e.preventDefault()
     const credentials = {}
-    credentials.name = this.querySelector("input[name=email]").value
+    credentials.name = this.querySelector("input[name=name]").value
     credentials.pass = this.querySelector("input[name=password]").value
-    auth.signin(credentials)
-    .then(resp => {
-      trigger("dialogSignin:hide")
-      console.log(resp)
-    })
-    .catch(err => {
-      console.log(err)
-    })
+    auth
+      .signin(credentials)
+      .then(this.success)
+      .catch(this.error)
+  }
+
+  error(statusText) {
+    trigger("snackbar:show", { message: statusText, status: "error", autoHide: true })
+  }
+
+  success() {
+    trigger("dialogSignin:hide")
   }
 
   hide() {
@@ -37,6 +40,7 @@ class DialogSignin extends HTMLElement {
 
   show() {
     this.classList.add("is-visible")
+    this.querySelector("input").focus()
   }
 }
 
