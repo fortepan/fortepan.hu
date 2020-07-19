@@ -22,6 +22,7 @@ import "./components/photos-title/photos-title"
 
 import "./components/snackbar/snackbar"
 import "./components/toggle-theme/toggle-theme"
+import "./components/selectize-control/selectize-control"
 
 // Layouts and layout elements
 import "./layouts/layout-home/layout-home"

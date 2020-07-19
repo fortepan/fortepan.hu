@@ -60,9 +60,6 @@ class CarouselSidebar extends HTMLElement {
       this.querySelector(".carousel-sidebar__tags p").innerHTML = this.data.cimke_name
         ? this.data.cimke_name.map(tag => `<a href="?tag=${encodeURIComponent(tag)}">${tag}</a>`).join(", ")
         : ""
-      this.querySelector(".carousel-sidebar__tags").style.display = "block"
-    } else {
-      this.querySelector(".carousel-sidebar__tags").style.display = "none"
     }
 
     // bind history api calls to sidabar anchors

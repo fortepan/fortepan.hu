@@ -1,6 +1,6 @@
 import { trigger } from "../utils"
 
-const AUTH_HOST = "https://drupal.admin.fortepan.hu"
+const AUTH_HOST = "https://drupal.admin.fortepan.hu/hu"
 
 const setSignedInStatus = isUserSignedIn => {
   if (isUserSignedIn) {
