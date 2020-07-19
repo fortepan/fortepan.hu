@@ -32,3 +32,4 @@ The local url is configured in `.lightserverrc`
 ```
 npm run build
 ```
+fortepan
