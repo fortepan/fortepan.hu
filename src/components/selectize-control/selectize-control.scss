@@ -1,3 +1,13 @@
+.selectize-control {
+  position: relative;
+  margin-top: 0.5rem;
+  display: block;
+}
+
+.selectize-control.hide {
+  display: none;
+}
+
 .selectize-input {
   box-sizing: border-box;
   padding: 0.75rem;
@@ -35,10 +45,7 @@
   font-weight: 500;
   padding: 0.25rem 0.5rem;
   border-radius: rem(2px);
-
-  & + & {
-    margin-left: 0.25rem;
-  }
+  margin-right: 0.25rem;
 
   .theme--light & {
     background-color: $light-base;
@@ -47,9 +54,30 @@
   }
 
   .theme--dark & {
-    background-color: $dark-primary;
+    background-color: $dark-tertiary;
     color: $light-base;
     box-shadow: 0 1px 3px 0 rgba($dark-base, 0.1), 0 0 0 1px rgba($dark-base, 0.05);
+  }
+}
+
+.selectize-control__tag__close {
+  border: none !important;
+  outline: none;
+
+  &::after {
+    content: "";
+    width: 1rem;
+    height: 1rem;
+    display: inline-block;
+    margin-left: 0.25rem;
+    margin-right: -0.25rem;
+    background: svg-load("static/images/icons/16/icon-close.svg", fill=none, stroke=#888);
+    vertical-align: text-bottom;
+    transition: opacity 0.2s ease-out;
+  }
+
+  &:hover::after {
+    opacity: 0.6;
   }
 }
 
@@ -68,14 +96,77 @@
   margin: 0;
   min-width: rem(4px);
 
+  .theme--light & {
+    color: $dark-base;
+  }
+
+  .theme--dark & {
+    color: $light-base;
+  }
+
   &.hide {
     position: absolute;
     visibility: hidden;
     pointer-events: none;
     width: auto;
   }
+}
 
-  * + & {
-    margin-left: 4px;
+.selectize-input__autosuggest {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  padding: 0.5rem 0;
+  z-index: 1;
+  box-sizing: border-box;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s $ease-out-expo;
+  border-radius: 0.25rem;
+  box-shadow: 0 rem(12px) rem(24px) 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+  font-size: rem(14px);
+
+  &.is-visible {
+    opacity: 1;
+    pointer-events: all;
   }
+
+  .theme--light & {
+    background-color: $light-primary;
+    color: $dark-base;
+  }
+
+  .theme--dark & {
+    background-color: $dark-base;
+    color: $light-base;
+  }
+}
+
+.selectize-input__autosuggest__item {
+  display: block;
+  color: inherit;
+  text-align: left;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: rem(13px);
+  padding: 0.25rem 1rem;
+  transition: color 0.3s $ease-out-expo, background-color 0.3s $ease-out-expo;
+  cursor: pointer;
+
+  &.is-selected {
+    background-color: $red;
+    color: $light-base;
+  }
+
+  .theme--light &:not(.is-selected):hover {
+    background-color: $light-secondary;
+  }
+
+  .theme--dark &:not(.is-selected):hover {
+    background-color: $dark-primary;
+  }
+}
+
+.selectize-control__save {
+  cursor: pointer;
 }

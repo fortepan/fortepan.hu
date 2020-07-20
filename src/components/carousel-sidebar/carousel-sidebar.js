@@ -3,6 +3,9 @@ import { trigger } from "../../utils"
 class CarouselSidebar extends HTMLElement {
   constructor() {
     super()
+
+    this.addTagNode = this.querySelector(".carousel-sidebar__add-tag")
+
     this.bindCustomEvents()
   }
 
@@ -63,11 +66,16 @@ class CarouselSidebar extends HTMLElement {
     }
 
     // bind history api calls to sidabar anchors
-    Array.from(this.querySelectorAll(".carousel-sidebar a")).forEach(anchorNode => {
+    Array.from(this.querySelectorAll(".carousel-sidebar a:not([class])")).forEach(anchorNode => {
       anchorNode.addEventListener("click", event => {
         event.preventDefault()
         trigger("layoutPhotos:historyPushState", { url: event.currentTarget.href, resetPhotosGrid: true })
       })
+    })
+
+    this.addTagNode.addEventListener("click", e => {
+      e.preventDefault()
+      trigger("carouselSidebar:toggleSelectizeControl")
     })
   }
 
@@ -83,10 +91,16 @@ class CarouselSidebar extends HTMLElement {
     document.querySelector("body").classList.toggle("hide-carousel-sidebar")
   }
 
+  toggleSelectizeControl() {
+    this.addTagNode.classList.toggle("hide")
+    this.addTagNode.nextElementSibling.classList.toggle("hide")
+  }
+
   bindCustomEvents() {
     document.addEventListener("carouselSidebar:show", this.show)
     document.addEventListener("carouselSidebar:hide", this.hide)
     document.addEventListener("carouselSidebar:toggle", this.toggle)
+    document.addEventListener("carouselSidebar:toggleSelectizeControl", this.toggleSelectizeControl.bind(this))
   }
 }
 

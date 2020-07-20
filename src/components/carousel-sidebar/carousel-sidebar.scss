@@ -91,7 +91,7 @@
   }
 }
 
-.carousel-sidebar a.carousel-sidebar__meta__tags__add-tag {
+.carousel-sidebar a.carousel-sidebar__add-tag {
   display: block;
   font-weight: bold;
   color: $red;
@@ -108,5 +108,9 @@
     margin-right: 0.25rem;
     background: svg-load("static/images/icons/16/icon-add.svg");
     vertical-align: text-bottom;
+  }
+
+  &.hide {
+    display: none;
   }
 }

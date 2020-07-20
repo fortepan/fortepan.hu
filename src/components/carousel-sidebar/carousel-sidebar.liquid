@@ -24,8 +24,8 @@
         <div class="carousel-sidebar__tags">
             <h6>{{ lang[locale].tags }}</h6>
             <p></p>
-            <a class="carousel-sidebar__meta__tags__add-tag">{{ lang[locale].add_tag }}</a>
-            {% include selectize-control/selectize-control.liquid %}
+            <a class="carousel-sidebar__add-tag">{{ lang[locale].add_tag }}</a>
+            {% include selectize-control/selectize-control.liquid class:"carousel-sidebar__selectize hide" %}
         </div>
     </div>
 </carousel-sidebar>
