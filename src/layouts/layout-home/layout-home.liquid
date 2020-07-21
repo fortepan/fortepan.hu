@@ -9,7 +9,11 @@ layout: layout-base/layout-base.liquid
     <div class="layout-home__hero__background"></div>
     <div class="layout-home__hero__search-wrapper">
       {% include input-search/input-search.liquid class:"input-search input-search--large layout-home__hero__search" %}
+      {% if locale == "hu" %}
       <div class="layout-home__hero__total h3">Összesen <a href="/{{ locale }}/photos/"><span></span> fénykép</a></div>
+      {% else %}
+      <div class="layout-home__hero__total h3"><a href="/{{ locale }}/photos/"><span></span> photos</a> in total</div>
+      {% endif %}
     </div>
     <div class="layout-home__hero__content">
       <h3 class="layout-home__hero__headline">{{ description }}</h3>

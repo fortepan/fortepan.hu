@@ -1,6 +1,6 @@
 <header-nav class="header-nav {{ header_class }}">
   <div class="header-nav__logo">
-    <a href="/" class="header-nav__logo__link">
+    <a href="/{{ locale }}/" class="header-nav__logo__link">
       {% inlineSVG src:"src/static/images/header-logo.svg" class:"header-nav__logo" %}
       <span>Fortepan</span>
     </a>
@@ -24,23 +24,24 @@
     {% comment %}
     <div class="header-nav__actions__group header-nav__actions__group--login">
       <a href="#" class="header-nav__link header-nav__link--top header-nav__link--top-action" id="HeaderLogin">{{ lang[locale].login }}</a>
-      {% if locale == "hu" %}
-      <a class="header-nav__link header-nav__link--top header-nav__link--top-action" href="/en/photos/">EN</a>
-      {% else %}
-      <a class="header-nav__link header-nav__link--top header-nav__link--top-action" href="/">HU</a>
-      {% endif %}
     </div>
     {% endcomment %}
   </div>
   <div class="header-nav__nav">
-    <a class="header-nav__link header-nav__link--top header-nav__link--hide-on-desktop" href="/{{ locale }}/photos/">Fotók</a>
-    <a class="header-nav__link header-nav__link--top header-nav__link--separator-after header-nav__link--hide-on-desktop" href="/{{ locale }}/photos/?latest">Friss</a>
-    <a class="header-nav__link header-nav__link--top" href="/{{ locale }}/about-us/">Rólunk</a>
-    <a class="header-nav__link header-nav__link--top" href="/{{ locale }}/donors/">Adományozók</a>
-    <a class="header-nav__link header-nav__link--top" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=fortepan%40fortepan.hu&currency_code=HUF&source=url" target="_blank">Támogatás</a>
-    <a class="header-nav__link header-nav__link--top" href="https://index.hu/fortepan/" target="_blank">Index Nagykép</a>
+    <a class="header-nav__link header-nav__link--top header-nav__link--hide-on-desktop" href="/{{ locale }}/photos/">{{ lang[locale].photos }}</a>
+    <a class="header-nav__link header-nav__link--top header-nav__link--separator-after header-nav__link--hide-on-desktop" href="/{{ locale }}/photos/?latest">{{ lang[locale].latest }}</a>
+    <a class="header-nav__link header-nav__link--top" href="/{{ locale }}/about-us/">{{ lang[locale].about_us }}</a>
+    <a class="header-nav__link header-nav__link--top" href="/{{ locale }}/donors/">{{ lang[locale].donors }}</a>
+    <a class="header-nav__link header-nav__link--top" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=fortepan%40fortepan.hu&currency_code=HUF&source=url" target="_blank">{{ lang[locale].donate }}</a>
     <a class="header-nav__link header-nav__link--top header-nav__link--separator-after" href="https://forum.index.hu/Article/showArticle?t=9204653" target="_blank">Fórum</a>
-    <a class="header-nav__link header-nav__link--top" href="mailto:fortepan@gmail.com">Kapcsolat</a>
-    <a class="header-nav__link header-nav__link--top" href="/{{ locale }}/privacy/">Adatvédelem</a>
+    <a class="header-nav__link header-nav__link--top" href="https://index.hu/fortepan/" target="_blank">Index Nagykép</a>
+    <a class="header-nav__link header-nav__link--top" href="https://www.facebook.com/FortepanArchivum/" target="_blank">Facebook</a>
+    <a class="header-nav__link header-nav__link--top" href="mailto:fortepan@gmail.com">{{ lang[locale].contact_us }}</a>
+    <a class="header-nav__link header-nav__link--top header-nav__link--separator-after" href="/{{ locale }}/privacy/">{{ lang[locale].privacy_policy }}</a>
+    {% if locale == "hu" %}
+      <a class="header-nav__link header-nav__link--top" href="/en/">English</a>
+    {% else %}
+      <a class="header-nav__link header-nav__link--top" href="/">Magyar</a>
+    {% endif %}
   </div>
 </header-nav>
