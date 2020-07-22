@@ -4,7 +4,7 @@ let autocompleteData = null
 let autocompleteDataLoaded = false
 
 const elasticRequest = (body, callback, error) => {
-  const apiUrl = "/search-api"
+  const apiUrl = "https://es.admin.fortepan.hu"
   const searchHost = `${apiUrl}/elasticsearch_index_fortepan_media/_search`
 
   // Perform the request

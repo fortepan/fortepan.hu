@@ -59,7 +59,7 @@ const queryUser = () => {
   return new Promise((resolve, reject) => {
     const authTokens = JSON.parse(localStorage.getItem("auth"))
 
-    if (authTokens && authTokens.credentials && authTokens.current_user.mail) {
+    if (authTokens && authTokens.current_user.mail) {
       // return stored credentials
       setSignedInStatus(true)
       resolve(authTokens)
@@ -69,7 +69,7 @@ const queryUser = () => {
       xmlHttp.open("GET", `${AUTH_HOST}/jsonapi/user/user?filter[name]=${authTokens.current_user.name}`, true)
       xmlHttp.setRequestHeader("Content-Type", "application/vnd.api+json")
       xmlHttp.setRequestHeader("Accept", "application/vnd.api+json")
-      xmlHttp.setRequestHeader("Authorization", `Basic ${authTokens.credentials}`)
+
       xmlHttp.onload = () => {
         if (xmlHttp.status === 200) {
           const respData = JSON.parse(xmlHttp.responseText).data[0]
@@ -142,7 +142,6 @@ const signin = body => {
       if (xmlHttp.status === 200) {
         const respData = JSON.parse(xmlHttp.responseText)
         respData.credentials = btoa(unescape(encodeURIComponent(`${respData.current_user.name}:${body.pass}`)))
-        localStorage.setItem("auth", JSON.stringify(respData))
 
         // query user data ast the sign-in response doesn't contain all user info
         queryUser()
