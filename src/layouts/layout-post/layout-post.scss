@@ -1,4 +1,4 @@
-.layout-article {
+.layout-post {
   position: absolute;
   width: 100%;
   left: 0;
@@ -8,7 +8,21 @@
   box-sizing: border-box;
 }
 
-.layout-article__content {
+.layout-post__title {
+  margin-bottom: 0;
+  line-height: 1;
+}
+
+.layout-post__author {
+  margin-top: 1.5rem;
+  margin-bottom: 4rem;
+}
+
+.layout-post__date {
+  color: $red;
+}
+
+.layout-post__content {
   position: relative;
   padding: rem(64px) rem(32px) 0;
   max-width: rem(640px);

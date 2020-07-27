@@ -5,7 +5,7 @@ layout: layout-base/layout-base.liquid
 <div class="layout-post scrollview js-header-watchscroll">
   <section class="layout-post__content">
   <h1 class="layout-post__title">{{ title }}</h1>
-  <h6 class="layout-post__author">{{ date | date: '%Y/%m/%d' }} — {{ author }}</h6>
+  <h6 class="layout-post__author"><span class="layout-post__date">{{ date | date: '%Y/%m/%d' }}</span> — {{ author }}</h6>
   {{ content }}
   </section>
   {% include footer/footer.liquid %}
