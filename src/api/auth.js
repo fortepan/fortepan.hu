@@ -9,6 +9,7 @@ const setSignedInStatus = isUserSignedIn => {
   } else {
     trigger("auth:signedOut")
     document.querySelector("body").classList.remove("auth-signed-in")
+    localStorage.removeItem("auth")
   }
 }
 
