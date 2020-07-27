@@ -11,3 +11,14 @@ blockquote {
     color: $grey;
   }
 }
+
+figure {
+  margin: 0;
+  margin-left: 4rem;
+}
+
+figcaption {
+  font-size: rem(14px);
+  color: $grey;
+  line-height: 1.75;
+}
