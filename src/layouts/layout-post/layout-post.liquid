@@ -1,0 +1,16 @@
+---
+layout: layout-base/layout-base.liquid
+---
+
+<div class="layout-post scrollview js-header-watchscroll">
+  <section class="layout-post__content">
+  <h1 class="layout-post__title">{{ title }}</h1>
+  <h6 class="layout-post__author"><span class="layout-post__date">{{ date | date: '%Y/%m/%d' }}</span> — {{ author }}</h6>
+  {{ content }}
+  </section>
+  {% include footer/footer.liquid %}
+</div>
+
+{% include header-nav/header-nav.liquid %}
+{% include background-icon/background-icon.liquid %}
+{% include dialog-simple-search/dialog-simple-search.liquid class:"search--floating" %}

@@ -11,3 +11,30 @@ blockquote {
     color: $grey;
   }
 }
+
+figure {
+  margin: 0;
+  margin-top: 4rem;
+
+  img {
+    display: block;
+    margin-bottom: 1rem;
+    @media screen and (min-width: ($breakpoint-desktop)) {
+      margin-left: rem(-168px);
+      margin-right: rem(-168px);
+    }
+  }
+}
+
+figcaption {
+  font-size: rem(14px);
+  line-height: 2;
+
+  .theme--light & {
+    color: $dark-tertiary;
+  }
+
+  .theme--dark & {
+    color: $light-secondary;
+  }
+}

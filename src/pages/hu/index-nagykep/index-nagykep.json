@@ -1,0 +1,4 @@
+{ 
+    "layout": "layout-post/layout-post.liquid",
+    "permalink": "/hu/index-nagykep/{{ page.fileSlug }}.html" 
+}

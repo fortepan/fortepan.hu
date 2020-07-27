@@ -1,0 +1,34 @@
+.layout-post {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.layout-post__title {
+  margin-bottom: 0;
+  line-height: 1;
+}
+
+.layout-post__author {
+  margin-top: 1.5rem;
+  margin-bottom: 4rem;
+}
+
+.layout-post__date {
+  color: $red;
+}
+
+.layout-post__content {
+  position: relative;
+  padding: rem(64px) rem(32px) 0;
+  max-width: rem(640px);
+  margin: 0 auto;
+
+  @media screen and (max-width: ($breakpoint-tablet - 1px)) {
+    padding: rem(80px) rem(20px) 0;
+  }
+}

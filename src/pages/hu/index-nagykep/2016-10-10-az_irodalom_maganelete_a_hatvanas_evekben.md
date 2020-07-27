@@ -1,0 +1,57 @@
+---
+title: "Szerelmek, megcsalások, házasságok a hatvanas években"
+date: 2016-10-10T00:00:00.000+00:00
+author: Kiss Eszter, Barakonyi Szabolcs (képszerkesztő)
+---
+
+Szerelmek, megcsalások, házasságok és válságok, válásokat is túlélő, örök összekapcsolódások az irodalomtankönyvekből (is alig) ismert írók, költők, művészek életéből. Nemes Nagy Ágnes és Lengyel Balázs túl van már lobogáson, börtönéveken és váláson, Rab Zsuzsa és Csanádi Imre az első férj, Kormos István egykori lakásában kezd új életet, Szántó Piroska és Vas István hatalmas könyvtárral, szinte polgári jólétben Hunyady József újabb fotóin a Fortepanon.
+
+<figure>
+<img src="/images/12837904_b11ea1d13e5743f0418936d77683a16f_wm.jpg" alt="" />
+<figcaption>[Nemes Nagy Ágnes](https://pim.hu/hu/dia/dia-tagjai/nemes-nagy-agnes#fotok/) (1922-1992) és Lengyel Balázs (1918-2007) a Királyhágó utca 5/a-ban. A házaspár 1958-ban elvált, a költőnő addigi lakásukban maradt, férje pár házzal odébb költözött. Sosem szakadtak el egymástól. Évtizedekkel később, amikor már mindketten idősek és betegek voltak, Lengyel második felesége, Vera kísérte át férjét és egy presszóban várakozott, míg az egykori pár irodalomról beszélgetett. Nemes Nagy Ágnes, a szép magyar–latin–művészettörténet szakos egyetemista és Lengyel Balázs, az ellenzéki mozgalmakkal kapcsolatot tartó jogász 1942-ben ismerkedett meg egy diákkori barátnő révén. Igazi háborús esküvő volt az övék 1944-ben. Lengyel Balázs közben elhagyta alakulatát, Budapesten bujkált katonaszökevényként és Nemes Nagy Ágnessel együtt több embert megmentettek (ezért 1997-ben megkapták „Yad Vashem” kitüntetést Izraeltől). A pamlagon hever a költőnő gitárja.[Lator László visszaemlékezése](http://webcache.googleusercontent.com/search?q=cache:kXItExOszdAJ:www.lib.jgytf.u-%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20szeged.hu/folyoiratok/tiszataj/96-06/legenda.pdf+&cd=4&hl=hu&ct=clnk&gl=hu&client=firefox-%20b)) szerint Nemes Nagy Ágnes szeretett énekelni: zsoltárokat és a 20-as évek kupléit, slágereit. (Fotó: Hunyady József / FORTEPAN)</figcaption>
+</figure>
+
+<figure>
+<img src="/images/12837908_096a29f3c8aef2020520e53ff32f817b_wm.jpg" alt="" />
+<figcaption>Lengyel Balázs és Babits Nemes Nagy Ágnes íróasztalánál. Babits és a Nyugat eszmeisége annyira meghatározó volt számukra, hogy azt folytatva alapították meg 1946-ban az Újhold c. folyóiratot. A Pilinszky, Mándy, Somlyó és Szabó Magda írásait közlő lapot 1948-ban betiltották. A Rákosi-korszak által meghatározott irodalmi keretek a Nemes Nagy-Lengyel párost is a fordítói, ifjúsági irodalmi és tanári kényszerpályára szorították. 1957-ben Lengyel Balázst letartóztatták, de semmilyen politikai tevékenységet nem tudtak rábizonyítani. A börtönből szabadulva azonban nem tért vissza feleségéhez, 1958-ban elváltak. Az ötvenes-hatvanas évek végül az ő szakmai sorsukban is konszolidációt hozott: Nemes Nagy Ágnes végre „szabad szellemi foglalkozású íróként” dolgozhatott, Lengyel Balázs a Corvina, majd a Móra Kiadóban szerkesztett és megjelenhettek kritikái is. Babits és az Újhold még egyszer összekapcsolta őket: 1986-ban almanach formájában újraindították, 1991-ig 12 kötet jelent meg és nemzedéktől függetlenül megjelenést biztosított mindenkinek, aki megütötte[„a magas művészi-szellemi minőség elvét.”](https://pim.hu/hu/dia/dia-tagjai/nemes-nagy-agnes) (Fotó: Hunyady József / FORTEPAN)</figcaption>
+</figure>
+
+<figure>
+<img src="/images/12837906_1f8a6d373c37245507cf8e8dd7b819f2_wm.jpg" alt="" />
+<figcaption>Nemes Nagy Ágnes szépsége egykor nagy hatást gyakorolt az írókra is, noha ő utálta „kerek parasztarcát.” Lengyel Balázs „lángoló erejű-intenzitású,” „szikrázó-izzó intellektusú” lénynek látta lobogó szőke hajú feleségét, akit egyszer így fedtek meg a 2-es villamoson a léghuzatban: [Csináljon valamit, megfulladok a hajától!](http://webcache.googleusercontent.com/search?q=cache:kXItExOszdAJ:www.lib.jgytf.u-szeged.hu/folyoiratok/tiszataj/96-06/legenda.pdf+&cd=4&hl=hu&ct=clnk&gl=hu&client=firefox-b) Pilinszkyt az ötvenes években az sem zavarta, hogy férjezett: az Apokrif írása közben annyira közel kerültek egymáshoz, hogy eljátszott a lánykérés gondolatával. Az egyik dolog, amin a terv megbukott, hogy a protestáns Ágnes kategorikusan ellenállt a katolizálás gondolatának: „Hogy én katolikussá?! Térjen át ő! Forognának sírjukban gályára vonszolt őseim!” – válaszolta a költőnő. Pilinszky nem tudhatta, hogy Nemes Nagy Ágnest apja csak egyre figyelmeztette:[„Lányom, vigyázz, ne érintkezz katolikus fiúval, mert ebből lesznek a vegyesházasságok.”](http://dia.jadox.pim.hu/jetspeed/displayXhtml?docId=0000000946&secId=0000091930&mainContent=true&mode=html) Az együttélés azonban nehéz volt. „Az indulatok vibrálását, kínzó állapotát naponta meg kellett élni” – emlékezett Lengyel Balázs. Pár nappal halála előtt így búcsúzott volt férjétől Nemes Nagy Ágnes: „Nézd, mondta csodálatos nagylelkűségével, tudom, hogy olykor erőszakos voltam veled, rád oktrojáltam az akaratomat, szétromboltam, amit Te szerettél volna. És beszélt még ehhez hasonlókat. Én pedig, mondtam neki, rettenetes sok fájdalmat okoztam neked. Kétségbeesnivalóan sokat. Mert más voltam, mint Te, és kínzottan folytattam a szót, ami ebben a helyzetben már úgyse könnyít semmit sem. Mégis mondta, ez volt a mi életünk. Így volt, ez volt. [Mindkettőnké.”](http://dia.jadox.pim.hu/jetspeed/displayXhtml?docId=0000000946&secId=0000091930&mainContent=true&mode=html) (Fotó: Hunyady József / FORTEPAN)</figcaption>
+</figure>
+
+<figure>
+<img src="/images/12837898_7c215b7db0604c3b8191a8bd6b20fd9e_wm.jpg" alt="" />
+<figcaption>Bátor volt és bátorító. Sebesült volt, tele megbántottsággal és túlérzékenységgel, keménységgel és indulattal – mondta róla Lengyel Balázs. Lator László, a kortárs és barát ugyanezt [„protestáns, puritán zordságnak,”](http://webcache.googleusercontent.com/search?q=cache:kXItExOszdAJ:www.lib.jgytf.u-szeged.hu/folyoiratok/tiszataj/96-06/legenda.pdf+&cd=4&hl=hu&ct=clnk&gl=hu&client=firefox-b) komolyságnak hívta, amellyel jól összefért a játékosság, a gyermeki kedély. Nagyon szerette az irodalmi játékokat, rejtvényeket. (Fotó: Hunyady József / FORTEPAN)</figcaption>
+</figure>
+
+<figure>
+<img src="/images/12837900_93be91edaf10858db80560baf14c24be_wm.jpg" alt="" />
+<figcaption>Rab Zsuzsa (1926-1998) és Csanádi Imre (1920-1991) a Lóczy Lajos utca 5-ben. A lakásban eredetileg az író, költő, műfordító, újságíró Rab élt első férjével, a Vackor-könyveket jegyző Kormos Istvánnal (1923–1977), aki pár év után a túlságosan rendezett körülmények (koloniálbútorok, több rend ruha és cipő) elől 1963-ban Franciaországba és egy új szerelembe menekült. Párizsból viszont áldását küldte az új frigyre, sőt ki tudja, miért, ahol csak lehetett, igyekezett a volt feleség és az új férj fordításait, verseit elhelyezni. [„Akinek tíz nagy verse van, az nagy költő, és Csanádinak van tíz nagy verse”](http://webcache.googleusercontent.com/search?q=cache:RfCa07AV_RYJ:www.forrasfolyoirat.hu/0601/albert.pdf+&cd=15&hl=hu&ct=clnk&gl=hu&client=firefox-b) – mondta. Akinek van kedve, olvasson utána. (Fotó: Hunyady József / FORTEPAN)</figcaption>
+</figure>
+
+<figure>
+<img src="/images/12837902_182902b21f569093fb29cabd49269cfb_wm.jpg" alt="" />
+<figcaption>Rab Zsuzsa indulásában szülővárosa, Pápa és édesapja tűnik meghatározónak: már iskolás korában verseket írt és az első világháborús orosz hadifogságból visszatérő apától megtanult oroszul. „Nagyon eleven,” „szép kis tűzről pattant lánynak” írják le a pápai református kollégium igazgatójának lányát, aki bejáratos volt a fiúosztályba, fejre állt a katedrán, és könyörgésre megszerezte az érettségi tételeket. Rab Zsuzsa budapesti bölcsészkaron mélyítette el orosztudását, ahol a lányból „eleven, jókedélyű nő” lett. Bár 17 évesen már megjelent egy verseskötete, nagyon sokáig csak műfordítóként tartották számon: [„Lehet, hogy nem vagyok igazából költő, de azért fordítani, azt tudok!”](http://webcache.googleusercontent.com/search?q=cache:RfCa07AV_RYJ:www.forrasfolyoirat.hu/0601/albert.pdf+&cd=15&hl=hu&ct=clnk&gl=hu&client=firefox-b) – mondta egyszer magáról. (Fotó: Hunyady József / FORTEPAN)</figcaption>
+</figure>
+
+<figure>
+<img src="/images/12837896_588e6bd4dd0b64890f6b0809481bf81f_wm.jpg" alt="" />
+<figcaption>A költő, író, műfordító, balladagyűjtő, publicista, szerkesztő [Csanádi Imre](https://hu.wikipedia.org/wiki/Csan%C3%A1di_Imre) neve ma már Rab Zsuzsáénál is jobban kikopott a köztudatból. Csanádi Zámolyon született, mint Csoóri Sándor. Rövid ideig volt a Képzőművészeti Főiskola, majd a Győrffy-kollégium növendéke, aztán bevonult és orosz hadifogságba került. Innen 1948-ban tért haza. Ezután folyóiratok (Szabad Föld, Szabad Ifjúság) és könyvkiadók (Magvető, Szépirodalmi) munkatársa, 1976–1980 között az Új Tükör főszerkesztője volt. Verseket írt és balladákat gyűjtött, bezsebelt három József Attila és egy Kossuth díjat. A Rab-Csanádi házasság 1969-ben, 4 év után felbomlott. A kortársak „nagyon rossz” házasságként emlegették, mert „Imre nem volt könnyű ember.” Nem engedte a nagy vendégségeket, felesége nem ihatott: „Imre határozottan kijelentette, hogy azt nem! [Nő, ilyet, nem!](http://webcache.googleusercontent.com/search?q=cache:RfCa07AV_RYJ:www.forrasfolyoirat.hu/0601/albert.pdf+&cd=15&hl=hu&ct=clnk&gl=hu&client=firefox-b) Rátette a poharára a kezét.” (Fotó: Hunyady József / FORTEPAN)</figcaption>
+</figure>
+
+<figure>
+<img src="/images/12837894_7a9cacb4e54096dec2c8fa21b0519146_wm.jpg" alt="" />
+<figcaption>Szántó Piroska (1913-1998) a Várkert rakpart 17. első emeleti lakásban. A festőnő Szőnyi István tanítványa volt a Képzőművészeti Főiskolán, majd csatlakozott a Szocialista Képzőművészek Társaságához, aztán a Szentendrén együtt dolgozott Bálint Endrével, Korniss Dezsővel, Vajda Lajossal. Itt ismerkedett meg Vas Istvánnal is, akivel évekig folyt szenvedélyes, se vele-se nélküle kapcsolata. Ami az ötvenes években az elhallgattatott íróknak és költőknek a műfordítás volt, az volt a művészeknek a könyvillusztráció: Szántó Piroska Villont, Shakespeare-t, Krúdyt illusztrált. A hatvanas években már Párizsban és Rómában is kiállíthatott. (Fotó: Hunyady József / FORTEPAN)</figcaption>
+</figure>
+
+<figure>
+<img src="/images/12837892_98986c9420f3f049b1e99eda5b938ba2_wm.jpg" alt="" />
+<figcaption>Vas István (1910-1991) gazdag zsidó polgárfiúként az irodalmat választotta és Kassák Lajos nevelt lányát, a mozdulatművész Nagy Etit, aki pár év házasság után meghalt. A háború alatt munkaszolgálatos volt, 1945-ben Ottlik Géza lakásán bujkált. 1945-ben belépett a Magyar Kommunista Pártba, de 1953-ban kérte párttagság alóli felmentését. A hatvanas években sokan szemére vetették, hogy jóban volt Aczél elvtárssal, akinek egyszer 1944-ben lehetőséget adott arra, hogy megmentse az életét. [„Aránylag nagyszerű”](http://mandarchiv.hu/cikk/4609/Miert_olvassunk_Vas_Istvant) – mondta állítólag a rendszerről. A képen épp a jellegzetes „vasnyakkendő” (vagyis egy nem vagy félig megkötött kravátli) helyett polgári csokornyakkendőben ül íróasztala mellett. (Fotó: Hunyady József / FORTEPAN)</figcaption>
+</figure>
+
+<figure>
+<img src="/images/12837890_fe5d9e28180bb1e782d89171879228d2_wm.jpg" alt="" />
+<figcaption>Kapcsolatuk elején csak ők hittek magukban – vagy ők sem. Végül csaknem 40 év házasság lett belőle. Szántó Piroska hét évvel élte túl férjét. Életművét a Szombathelyi Képtárnak ajándékozta. (Fotó: Hunyady József / FORTEPAN)</figcaption>
+</figure>
