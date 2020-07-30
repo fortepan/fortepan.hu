@@ -1,11 +1,11 @@
 import { slugify } from "../utils"
+import config from "../config"
 
 let autocompleteData = null
 let autocompleteDataLoaded = false
 
 const elasticRequest = (body, callback, error) => {
-  const apiUrl = "https://es.admin.fortepan.hu"
-  const searchHost = `${apiUrl}/elasticsearch_index_fortepan_media/_search`
+  const searchHost = `${config.ELASTIC_HOST}/elasticsearch_index_fortepan_media/_search`
 
   // Perform the request
   const xmlHttp = new XMLHttpRequest()

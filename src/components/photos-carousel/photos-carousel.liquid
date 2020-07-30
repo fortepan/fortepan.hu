@@ -2,7 +2,7 @@
     <div class="photos-carousel__photos hide-controls theme--dark">
         <div class="photos-carousel__photos__background"></div>
 
-        {% include loading-indicator/loading-indicator.liquid class:"photos-carousel__photos__loader" %}
+        {% include loading-indicator/loading-indicator.liquid class:"photos-carousel__photos__loader is-delayed" id:"LoadingIndicatorCarousel" %}
 
         {% include button-circular/button-circular.liquid icon:"previous" id:"PhotoPrev" trigger:"layoutPhotos:showPrevPhoto" label:lang[locale].prev class:"button-circular--has-background photos-carousel__photos__pager photos-carousel__photos__pager--left disable" %}
         {% include button-circular/button-circular.liquid icon:"next" id:"PhotoNext" trigger:"layoutPhotos:showNextPhoto" label:lang[locale].next class:"button-circular--has-background photos-carousel__photos__pager photos-carousel__photos__pager--right disable" %}

@@ -5,6 +5,10 @@ class CarouselSidebar extends HTMLElement {
     super()
 
     this.addTagNode = this.querySelector(".carousel-sidebar__add-tag")
+    this.addTagNode.addEventListener("click", e => {
+      e.preventDefault()
+      trigger("carouselSidebar:toggleSelectizeControl")
+    })
 
     this.bindCustomEvents()
   }
@@ -73,10 +77,8 @@ class CarouselSidebar extends HTMLElement {
       })
     })
 
-    this.addTagNode.addEventListener("click", e => {
-      e.preventDefault()
-      trigger("carouselSidebar:toggleSelectizeControl")
-    })
+    // eslint-disable-next-line prefer-destructuring
+    this.addTagNode.nextElementSibling.photoId = this.data.uuid[0]
   }
 
   show() {

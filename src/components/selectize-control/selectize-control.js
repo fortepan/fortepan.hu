@@ -1,5 +1,6 @@
 import searchAPI from "../../api/search"
 import { trigger } from "../../utils"
+import addTag from "../../api/add-tag"
 
 class SelectizeControl extends HTMLElement {
   constructor() {
@@ -9,7 +10,11 @@ class SelectizeControl extends HTMLElement {
     this.bindEvents()
   }
 
-  addTag(val) {
+  set photoId(id) {
+    this.pId = id
+  }
+
+  addTagNode(val) {
     const tags = []
     this.querySelectorAll(".selectize-control__tag").forEach(el => {
       tags.push(el.textContent)
@@ -61,7 +66,7 @@ class SelectizeControl extends HTMLElement {
     this.inputNode.addEventListener("keyup", e => {
       if (e.key === "Enter") {
         if (this.inputNode.value.length > 0) {
-          this.addTag(this.inputNode.value)
+          this.addTagNode(this.inputNode.value)
         }
       }
 
@@ -161,7 +166,7 @@ class SelectizeControl extends HTMLElement {
       }
       e.currentTarget.classList.add("is-selected")
 
-      this.addTag(e.currentTarget.textContent)
+      this.addTagNode(e.currentTarget.textContent)
     })
 
     return itemNode
@@ -169,6 +174,7 @@ class SelectizeControl extends HTMLElement {
 
   submit() {
     return new Promise(resolve => {
+      addTag.addTag("próba", this.pId)
       resolve()
     })
   }

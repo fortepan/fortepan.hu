@@ -16,6 +16,13 @@
     transform: translateX(-50%) translateY(-50%) scale(1);
     pointer-events: initial;
   }
+
+  &.is-disabled {
+    &::after {
+      pointer-events: initial;
+      opacity: 1;
+    }
+  }
 }
 
 .dialog::before {
@@ -28,6 +35,21 @@
   transform: translate(-50%, -50%);
   background-color: rgba($dark-base, 0.6);
   z-index: -10;
+}
+
+.dialog::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  background-color: rgba($light-base, 0.6);
+  pointer-events: none;
+  opacity: 0;
+  border-radius: rem(8px);
+  transition: opacity 0.2s ease-out;
 }
 
 .dialog__close {
@@ -57,6 +79,7 @@
 .dialog__content {
   margin: rem(4px) 0 0 0;
   font-size: rem(14px);
+  font-weight: 400;
   line-height: rem(24px);
 }
 

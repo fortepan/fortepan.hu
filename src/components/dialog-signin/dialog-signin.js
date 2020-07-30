@@ -1,4 +1,4 @@
-import { trigger } from "../../utils"
+import { trigger, lang } from "../../utils"
 import auth from "../../api/auth"
 
 class DialogSignin extends HTMLElement {
@@ -20,18 +20,36 @@ class DialogSignin extends HTMLElement {
     const credentials = {}
     credentials.name = this.querySelector("input[name=name]").value
     credentials.pass = this.querySelector("input[name=password]").value
+
+    trigger("loadingIndicator:show", { id: "LoadingIndicatorBase" })
+    this.classList.add("is-disabled")
+
     auth
       .signin(credentials)
-      .then(this.success)
-      .catch(this.error)
+      .then(this.success.bind(this))
+      .catch(this.error.bind(this))
+  }
+
+  errorMessageHandler(text) {
+    const errorMessages = {
+      "The user has not been activated or is blocked.": lang("user_signin_error"),
+      "Sorry, unrecognized username or password.": lang("user_signin_error"),
+    }
+
+    return errorMessages[text]
   }
 
   error(statusText) {
-    trigger("snackbar:show", { message: statusText, status: "error", autoHide: true })
+    this.classList.remove("is-disabled")
+    trigger("loadingIndicator:hide", { id: "LoadingIndicatorBase" })
+    trigger("snackbar:show", { message: this.errorMessageHandler(statusText), status: "error", autoHide: true })
   }
 
   success() {
+    this.classList.remove("is-disabled")
+    trigger("loadingIndicator:hide", { id: "LoadingIndicatorBase" })
     trigger("dialogSignin:hide")
+    trigger("snackbar:show", { message: lang("user_signin_success"), status: "success", autoHide: true })
   }
 
   hide() {

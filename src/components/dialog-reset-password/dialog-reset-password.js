@@ -1,4 +1,4 @@
-import { trigger } from "../../utils"
+import { trigger, lang } from "../../utils"
 import auth from "../../api/auth"
 
 class DialogResetPassword extends HTMLElement {
@@ -19,14 +19,31 @@ class DialogResetPassword extends HTMLElement {
     e.preventDefault()
     const credentials = {}
     credentials.mail = this.querySelector("input[name=email]").value
+
+    trigger("loadingIndicator:show", { id: "LoadingIndicatorBase" })
+    this.classList.add("is-disabled")
+
     auth
       .forgot(credentials)
       .then(() => {
+        trigger("loadingIndicator:hide", { id: "LoadingIndicatorBase" })
+        this.classList.remove("is-disabled")
         trigger("dialogResetPassword:hide")
+        trigger("snackbar:show", { message: lang("password_forgot_success"), status: "success", autoHide: true })
       })
       .catch(statusText => {
-        trigger("snackbar:show", { message: statusText, status: "error", autoHide: true })
+        trigger("loadingIndicator:hide", { id: "LoadingIndicatorBase" })
+        this.classList.remove("is-disabled")
+        trigger("snackbar:show", { message: this.errorMessageHandler(statusText), status: "error", autoHide: true })
       })
+  }
+
+  errorMessageHandler(text) {
+    const errorMessages = {
+      "Unrecognized username or email address.": lang("password_forgot_error"),
+    }
+
+    return errorMessages[text]
   }
 
   hide() {

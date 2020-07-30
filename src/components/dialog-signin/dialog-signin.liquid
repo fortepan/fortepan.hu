@@ -4,7 +4,7 @@
   <div class="dialog__wrapper">
       <h3 class="dialog__title">{{ lang[locale].login }}</h3>
       <div class="dialog__form">
-        {% include dialog-input/dialog-input.liquid type:"text" name:"name" label:lang[locale].username %}
+        {% include dialog-input/dialog-input.liquid type:"text" name:"name" label:lang[locale].username_or_email %}
         {% include dialog-input/dialog-input.liquid type:"password" name:"password" label:lang[locale].password %}
         <a href="#" class="dialog__link dialog__link--small" data-trigger="dialogResetPassword:show|dialogSignin:hide">{{ lang[locale].password_forgot }} →</a>
         <button class="button dialog__button">{{ lang[locale].signin }}</button>

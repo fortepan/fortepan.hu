@@ -1,8 +1,7 @@
 import { trigger } from "../utils"
+import config from "../config"
 
-const AUTH_HOST = "https://drupal.admin.fortepan.hu/hu"
-
-const setSignedInStatus = isUserSignedIn => {
+const setLoginStatus = isUserSignedIn => {
   if (isUserSignedIn) {
     trigger("auth:signedIn")
     document.querySelector("body").classList.add("auth-signed-in")
@@ -19,12 +18,12 @@ const signout = () => {
 
     if (authData && authData.logout_token) {
       const xmlHttp = new XMLHttpRequest()
-      xmlHttp.open("POST", `${AUTH_HOST}/user/logout?_format=json&token=${authData.logout_token}`, true)
+      xmlHttp.open("POST", `${config.DRUPAL_HOST}/user/logout?_format=json&token=${authData.logout_token}`, true)
       xmlHttp.setRequestHeader("Content-Type", "application/json")
       xmlHttp.withCredentials = true
       xmlHttp.onload = () => {
         if (xmlHttp.status === 204) {
-          setSignedInStatus(false)
+          setLoginStatus(false)
           resolve()
         } else {
           const respData = JSON.parse(xmlHttp.responseText)
@@ -36,7 +35,7 @@ const signout = () => {
       }
       xmlHttp.send()
     } else {
-      setSignedInStatus(false)
+      setLoginStatus(false)
       // eslint-disable-next-line prefer-promise-reject-errors
       reject("User is not logged in")
     }
@@ -46,7 +45,7 @@ const signout = () => {
 const signup = body => {
   return new Promise((resolve, reject) => {
     const xmlHttp = new XMLHttpRequest()
-    xmlHttp.open("POST", `${AUTH_HOST}/user/register?_format=json`, true)
+    xmlHttp.open("POST", `${config.DRUPAL_HOST}/user/register?_format=json`, true)
     xmlHttp.setRequestHeader("Content-Type", "application/json")
     xmlHttp.onload = () => {
       if (xmlHttp.status === 200) {
@@ -63,7 +62,7 @@ const signup = body => {
 const forgot = body => {
   return new Promise((resolve, reject) => {
     const xmlHttp = new XMLHttpRequest()
-    xmlHttp.open("POST", `${AUTH_HOST}/user/password?_format=json`, true)
+    xmlHttp.open("POST", `${config.DRUPAL_HOST}/user/password?_format=json`, true)
     xmlHttp.setRequestHeader("Content-Type", "application/json")
     xmlHttp.withCredentials = true
     xmlHttp.onload = () => {
@@ -84,12 +83,12 @@ const queryUser = () => {
     const authData = JSON.parse(localStorage.getItem("auth"))
     if (authData) {
       // if auth data is present, we presume that the user is already logged in
-      setSignedInStatus(true)
+      setLoginStatus(true)
     }
     // check if user data exists
     if (authData && authData.current_user.uid) {
       const xmlHttp = new XMLHttpRequest()
-      xmlHttp.open("GET", `${AUTH_HOST}/jsonapi/user/user?filter[uid]=${authData.current_user.uid}`, true)
+      xmlHttp.open("GET", `${config.DRUPAL_HOST}/jsonapi/user/user?filter[uid]=${authData.current_user.uid}`, true)
       xmlHttp.setRequestHeader("Content-Type", "application/vnd.api+json")
       xmlHttp.setRequestHeader("Accept", "application/vnd.api+json")
       xmlHttp.withCredentials = true
@@ -105,17 +104,17 @@ const queryUser = () => {
             localStorage.setItem("auth", JSON.stringify(authData))
 
             // store the user details
-            setSignedInStatus(true)
+            setLoginStatus(true)
           } else {
             // if user id is not present in the response then UI should switch to logged out state
             // the cookie session might be expired in this case
-            setSignedInStatus(false)
+            setLoginStatus(false)
           }
 
           resolve(authData)
         } else {
           const respData = JSON.parse(xmlHttp.responseText)
-          setSignedInStatus(false)
+          setLoginStatus(false)
           reject(respData.message)
         }
       }
@@ -126,11 +125,11 @@ const queryUser = () => {
   })
 }
 
-const getNewToken = () => {
+const getUserStatus = () => {
   return new Promise((resolve, reject) => {
     const xmlHttp = new XMLHttpRequest()
-    xmlHttp.open("GET", `${AUTH_HOST}/session/token`, true)
-    xmlHttp.setRequestHeader("Content-Type", "application/vnd.api+json")
+    xmlHttp.open("GET", `${config.DRUPAL_HOST}/user/login_status?_format=json`, true)
+    xmlHttp.setRequestHeader("Content-Type", "application/json")
     xmlHttp.withCredentials = true
     xmlHttp.onload = () => {
       if (xmlHttp.status === 200) {
@@ -144,11 +143,12 @@ const getNewToken = () => {
   })
 }
 
-const queryLists = () => {
+const getToken = () => {
   return new Promise((resolve, reject) => {
     const xmlHttp = new XMLHttpRequest()
-    xmlHttp.open("GET", `${AUTH_HOST}/jsonapi/taxonomy_term/private`, true)
-    xmlHttp.setRequestHeader("Content-Type", "application/vnd.api+json")
+    xmlHttp.open("GET", `${config.DRUPAL_HOST}/session/token`, true)
+    xmlHttp.setRequestHeader("Content-Type", "application/json")
+    xmlHttp.withCredentials = true
     xmlHttp.onload = () => {
       if (xmlHttp.status === 200) {
         resolve(xmlHttp.responseText)
@@ -164,16 +164,14 @@ const queryLists = () => {
 const signin = body => {
   return new Promise((resolve, reject) => {
     const xmlHttp = new XMLHttpRequest()
-    xmlHttp.open("POST", `${AUTH_HOST}/user/login?_format=json`, true)
+    xmlHttp.open("POST", `${config.DRUPAL_HOST}/user/login?_format=json`, true)
     xmlHttp.setRequestHeader("Content-Type", "application/json")
-    xmlHttp.withCredentials = true
     xmlHttp.onload = () => {
       if (xmlHttp.status === 200) {
         const respData = JSON.parse(xmlHttp.responseText)
-        // respData.credentials = btoa(unescape(encodeURIComponent(`${respData.current_user.name}:${body.pass}`)))
         localStorage.setItem("auth", JSON.stringify(respData))
 
-        // query user data ast the sign-in response doesn't contain all user info
+        // query user data after first login as the sign-in response doesn't contain all neccessary user info
         queryUser()
           .then(resp => {
             resolve(resp)
@@ -194,8 +192,8 @@ export default {
   signin,
   signup,
   signout,
+  getUserStatus,
+  getToken,
   forgot,
   queryUser,
-  getNewToken,
-  queryLists,
 }

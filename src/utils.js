@@ -2,7 +2,8 @@ import langData from "./data/lang"
 
 export const lang = key => {
   const l = langData[document.querySelector("body").dataset.lang]
-  return l[key]
+  const val = l[key] ? l[key] : key
+  return val.replace(/(?:\r\n|\r|\n)/g, "<br/>")
 }
 
 export const isTouchDevice = () => {
