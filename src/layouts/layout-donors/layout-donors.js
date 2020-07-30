@@ -1,59 +1,56 @@
 import searchAPI from "../../api/search"
 
-const ALPHABET = {
-  hu: [
-    "A",
-    "Á",
-    "B",
-    "C",
-    "Cs",
-    "D",
-    "Dz",
-    "Dzs",
-    "E",
-    "É",
-    "F",
-    "G",
-    "Gy",
-    "H",
-    "I",
-    "Í",
-    "J",
-    "K",
-    "L",
-    "Ly",
-    "M",
-    "N",
-    "Ny",
-    "O",
-    "Ó",
-    "Ö",
-    "Ő",
-    "P",
-    "Q",
-    "R",
-    "S",
-    "Sz",
-    "T",
-    "Ty",
-    "U",
-    "Ú",
-    "Ü",
-    "Ű",
-    "V",
-    "W",
-    "X",
-    "Y",
-    "Z",
-    "Zs",
-  ],
-}
+const ALPHABET = [
+  "A",
+  "Á",
+  "B",
+  "C",
+  "Cs",
+  "D",
+  "Dz",
+  "Dzs",
+  "E",
+  "É",
+  "F",
+  "G",
+  "Gy",
+  "H",
+  "I",
+  "Í",
+  "J",
+  "K",
+  "L",
+  "Ly",
+  "M",
+  "N",
+  "Ny",
+  "O",
+  "Ó",
+  "Ö",
+  "Ő",
+  "P",
+  "Q",
+  "R",
+  "S",
+  "Sz",
+  "T",
+  "Ty",
+  "U",
+  "Ú",
+  "Ü",
+  "Ű",
+  "V",
+  "W",
+  "X",
+  "Y",
+  "Z",
+  "Zs",
+]
 
 class LayoutDonors extends HTMLElement {
   // generate all groups
   constructor() {
     super()
-    this.lang = document.querySelector("body").dataset.lang
     this.renderContent()
   }
 
@@ -61,7 +58,7 @@ class LayoutDonors extends HTMLElement {
     searchAPI.getDonors(
       function(data) {
         // render alphabet groups
-        ALPHABET[this.lang].forEach(
+        ALPHABET.forEach(
           function(letter) {
             const group = document.createElement("div")
             group.dataset.group = letter
@@ -90,7 +87,7 @@ class LayoutDonors extends HTMLElement {
 
             // find group id
             let groupId
-            ALPHABET[this.lang].forEach(letter => {
+            ALPHABET.forEach(letter => {
               if (itemData.key.toLowerCase().indexOf(letter.toLowerCase()) === 0) groupId = letter
             })
 
