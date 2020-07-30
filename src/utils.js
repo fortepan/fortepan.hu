@@ -1,7 +1,11 @@
 import langData from "./data/lang"
 
+export const getLocale = () => {
+  return document.querySelector("body").dataset.lang
+}
+
 export const lang = key => {
-  const l = langData[document.querySelector("body").dataset.lang]
+  const l = langData[getLocale()]
   return l[key]
 }
 
