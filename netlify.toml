@@ -28,3 +28,9 @@
   to = "https://fortepan.download/_photo/:splat"
   status = 200
   force = true
+
+[[redirects]]
+  from = "/hu/"
+  to = "/"
+  status = 200
+  force = true

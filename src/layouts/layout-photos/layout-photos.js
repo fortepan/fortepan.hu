@@ -21,14 +21,13 @@ class LayoutPhotos extends HTMLElement {
 
     // History API
     // Custom event to load content and update page meta tag
-    document.addEventListener(
-      "layoutPhotos:historyPushState",
-      function(e) {
-        window.history.pushState(null, lang("search"), e.detail.url)
-        this.onPopState(e)
-      }.bind(this)
-    )
-    window.onpopstate = this.onPopState
+    document.addEventListener("layoutPhotos:historyPushState", e => {
+      window.history.pushState(null, lang("search"), e.detail.url)
+      this.onPopState(e)
+    })
+    window.onpopstate = e => {
+      this.onPopState(e)
+    }
     this.onPopState()
 
     // resize thumbnails when window gets resized
@@ -85,19 +84,17 @@ class LayoutPhotos extends HTMLElement {
         // search for photos
         searchAPI.search(
           params,
-          function(data) {
+          data => {
             document.querySelector(".photos-title").set(data.hits.total.value)
-            data.hits.hits.forEach(
-              function(itemData) {
-                this.thumbnailsCount += 1
-                const thumbnail = document.createElement("photos-thumbnail")
-                this.photosGridNode.appendChild(thumbnail)
-                thumbnail.bindData = itemData
-              }.bind(this)
-            )
+            data.hits.hits.forEach(itemData => {
+              this.thumbnailsCount += 1
+              const thumbnail = document.createElement("photos-thumbnail")
+              this.photosGridNode.appendChild(thumbnail)
+              thumbnail.bindData = itemData
+            })
             this.thumbnailsLoading = false
             resolve()
-          }.bind(this),
+          },
           statusText => {
             reject(statusText)
           }

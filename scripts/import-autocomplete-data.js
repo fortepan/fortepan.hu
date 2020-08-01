@@ -1,15 +1,13 @@
 const { Client } = require("@elastic/elasticsearch")
 const fs = require("fs")
 
-const keywords = {}
-const KEYS = ["orszag_name", "varos_name", "helyszin_name", "adomanyozo_name", "szerzo_name", "cimke_name"]
+const KEYS = {
+  HU: ["orszag_name", "varos_name", "helyszin_name", "adomanyozo_name", "szerzo_name", "cimke_name"],
+  EN: ["orszag_en", "varos_en", "helyszin_en", "adomanyozo_name", "szerzo_en", "cimke_en"],
+}
 
 const client = new Client({
-  nodes: [
-    "http://fortepan:fortepan@v39241.php-friends.de:9200",
-    "http://fortepan:fortepan@v39242.php-friends.de:9200",
-    "http://fortepan:fortepan@v39243.php-friends.de:9200",
-  ],
+  nodes: ["https://fortepan:fortepan@es.admin.fortepan.hu"],
 })
 
 const getKeywords = (key, callback, error) => {
@@ -44,34 +42,41 @@ const getKeywords = (key, callback, error) => {
   )
 }
 
-const promises = []
-KEYS.forEach(key => {
-  keywords[key] = []
-  promises.push(
-    new Promise((resolve, reject) => {
-      getKeywords(
-        key,
-        res => {
-          const data = JSON.parse(res.body)
-          data.aggregations.keywords.buckets.forEach(bucket => {
-            keywords[key].push(bucket.key)
-          })
-          resolve()
-        },
-        error => {
-          reject(error)
-        }
-      )
-    })
-  )
-})
+const saveAutocompleteLangFile = lang => {
+  const keywords = {}
+  const promises = []
+  KEYS[lang].forEach(key => {
+    keywords[key] = []
+    promises.push(
+      new Promise((resolve, reject) => {
+        getKeywords(
+          key,
+          res => {
+            const data = JSON.parse(res.body)
+            data.aggregations.keywords.buckets.forEach(bucket => {
+              keywords[key].push(bucket.key)
+            })
+            resolve()
+          },
+          error => {
+            reject(error)
+          }
+        )
+      })
+    )
+  })
 
-Promise.all(promises)
-  .then(() => {
-    fs.writeFile("src/static/autocomplete.json", JSON.stringify(keywords), err => {
-      if (err) console.log("error", err)
+  Promise.all(promises)
+    .then(() => {
+      fs.writeFile(`src/static/autocomplete-${lang.toLowerCase()}.json`, JSON.stringify(keywords), err => {
+        if (err) console.log("error", err)
+      })
     })
-  })
-  .catch(err => {
-    console.log(err)
-  })
+    .catch(err => {
+      console.log(err)
+    })
+}
+
+Object.keys(KEYS).forEach(k => {
+  saveAutocompleteLangFile(k)
+})

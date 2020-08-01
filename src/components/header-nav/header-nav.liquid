@@ -1,6 +1,6 @@
 <header-nav class="header-nav {{ header_class }}">
   <div class="header-nav__logo">
-    <a href="/" class="header-nav__logo__link">
+    <a href="/{{ locale }}/" class="header-nav__logo__link">
       {% inlineSVG src:"src/static/images/header-logo.svg" class:"header-nav__logo" %}
       <span>Fortepan</span>
     </a>
@@ -53,10 +53,8 @@
       {{ lang[locale].darkmode }}
       <span class="header-nav__toggle-switch"></span>
     </a>
-    {% comment %}
     <h6>{{ lang[locale].language }}</h6>
     <a class="header-nav__link header-nav__link--top lang-hu" href="/">Magyar</a>
     <a class="header-nav__link header-nav__link--top lang-en" href="/en/">English</a>
-    {% endcomment %}
   </div>
 </header-nav>

@@ -1,5 +1,5 @@
 import config from "../../config"
-import { lang, trigger, setPageMeta } from "../../utils"
+import { lang, trigger, setPageMeta, getLocale } from "../../utils"
 
 const THUMBNAIL_HEIGHT = 160
 
@@ -67,12 +67,19 @@ class PhotosThumbnail extends HTMLElement {
 
   render() {
     // Fill template with data
+    const locale = getLocale()
     const locationArray = []
     if (this.data.year) locationArray.push(this.data.year)
-    if (this.data.varos_name) locationArray.push(this.data.varos_name)
-    if (this.data.helyszin_name) locationArray.push(this.data.helyszin_name)
-    if (!this.data.varos_name && !this.data.helyszin_name && this.data.orszag_name)
-      locationArray.push(this.data.orszag_name)
+    if (locale === "hu") {
+      if (this.data.varos_name) locationArray.push(this.data.varos_name)
+      if (this.data.helyszin_name) locationArray.push(this.data.helyszin_name)
+      if (!this.data.varos_name && !this.data.helyszin_name && this.data.orszag_name)
+        locationArray.push(this.data.orszag_name)
+    } else if (locale === "en") {
+      if (this.data.varos_en) locationArray.push(this.data.varos_en)
+      if (this.data.helyszin_en) locationArray.push(this.data.helyszin_en)
+      if (!this.data.varos_en && !this.data.helyszin_en && this.data.orszag_en) locationArray.push(this.data.orszag_en)
+    }
     this.querySelector(".photos-thumbnail__meta--location").textContent = locationArray.join(" · ")
     this.querySelector(".photos-thumbnail__meta--description").textContent = this.data.description
       ? this.data.description

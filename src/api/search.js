@@ -1,4 +1,4 @@
-import { slugify } from "../utils"
+import { slugify, getLocale } from "../utils"
 import config from "../config"
 
 let autocompleteData = null
@@ -75,7 +75,9 @@ const search = (params, callback, error) => {
   // if there's a tag search attribute defined (advanced search)
   if (params.tag) {
     const tag = slugify(params.tag)
-    query.bool.must.push({ term: { cimke_search: `${tag}` } })
+    query.bool.must.push(
+      getLocale() === "hu" ? { term: { cimke_search: `${tag}` } } : { term: { cimke_en_search: `${tag}` } }
+    )
   }
 
   // if there's a year search attribute defined (advanced search)
@@ -86,19 +88,25 @@ const search = (params, callback, error) => {
   // if there's a city search attribute defined (advanced search)
   if (params.place) {
     const place = slugify(params.place)
-    query.bool.must.push({ term: { helyszin_search: `${place}` } })
+    query.bool.must.push(
+      getLocale() === "hu" ? { term: { helyszin_search: `${place}` } } : { term: { helyszin_en_search: `${place}` } }
+    )
   }
 
   // if there's a city search attribute defined (advanced search)
   if (params.city) {
     const city = slugify(params.city)
-    query.bool.must.push({ term: { varos_search: `${city}` } })
+    query.bool.must.push(
+      getLocale() === "hu" ? { term: { varos_search: `${city}` } } : { term: { varos_en_search: `${city}` } }
+    )
   }
 
   // if there's a country search attribute defined (advanced search)
   if (params.country) {
     const country = slugify(params.country)
-    query.bool.must.push({ term: { orszag_search: `${country}` } })
+    query.bool.must.push(
+      getLocale() === "hu" ? { term: { orszag_search: `${country}` } } : { term: { orszag_en_search: `${country}` } }
+    )
   }
 
   // if there's a donor search attribute defined (advanced search)
@@ -213,7 +221,7 @@ const autoSuggest = (prefix, filter = false, callback, error) => {
   if (!autocompleteData && !autocompleteDataLoaded) {
     autocompleteDataLoaded = "loading"
     const xmlHttp = new XMLHttpRequest()
-    xmlHttp.open("GET", "/autocomplete.json", true)
+    xmlHttp.open("GET", `/autocomplete-${getLocale()}.json`, true)
     xmlHttp.onload = () => {
       if (xmlHttp.status === 200) {
         autocompleteDataLoaded = "loaded"
