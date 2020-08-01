@@ -37,7 +37,7 @@ const signout = () => {
     } else {
       setLoginStatus(false)
       // eslint-disable-next-line prefer-promise-reject-errors
-      reject("User is not logged in")
+      reject("The user has not been activated or is blocked.")
     }
   })
 }
@@ -105,13 +105,14 @@ const queryUser = () => {
 
             // store the user details
             setLoginStatus(true)
+            resolve(authData)
           } else {
             // if user id is not present in the response then UI should switch to logged out state
             // the cookie session might be expired in this case
             setLoginStatus(false)
+            // eslint-disable-next-line prefer-promise-reject-errors
+            reject("The user has not been activated or is blocked.")
           }
-
-          resolve(authData)
         } else {
           const respData = JSON.parse(xmlHttp.responseText)
           setLoginStatus(false)
@@ -172,13 +173,15 @@ const signin = body => {
         localStorage.setItem("auth", JSON.stringify(respData))
 
         // query user data after first login as the sign-in response doesn't contain all neccessary user info
-        queryUser()
-          .then(resp => {
-            resolve(resp)
-          })
-          .catch(error => {
-            reject(error)
-          })
+        setTimeout(() => {
+          queryUser()
+            .then(resp => {
+              resolve(resp)
+            })
+            .catch(error => {
+              reject(error)
+            })
+        }, 1000)
       } else {
         const respData = JSON.parse(xmlHttp.responseText)
         reject(respData.message)
