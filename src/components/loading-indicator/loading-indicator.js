@@ -11,7 +11,6 @@ class LoadingIndicator extends HTMLElement {
 
   show(e) {
     if (e.detail && e.detail.id === this.id) {
-      console.log(this.id)
       this.classList.add("is-visible")
     }
   }

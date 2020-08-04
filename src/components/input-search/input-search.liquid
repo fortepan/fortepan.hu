@@ -1,8 +1,10 @@
 <input-search class="input-search {{ class }}">
+    {% if type == "search" %}
     {% inlineSVG src:"src/static/images/icons/24/icon-search.svg" class:"input-search__icon" %}
-    <input type="search" name="search" class="input-search__input" placeholder="{{ lang[locale].search }}" autocomplete="off">
+    {% endif %}
+    <input type="{{ type }}" name="search" class="input-search__input" placeholder="{{ lang[locale].search }}" autocomplete="off">
     <div class="input-search__autosuggest"></div>
-    {% comment %}
-    {% inlineSVG src:"src/static/images/icons/24/icon-settings.svg" class:"search__settings" %}
-    {% endcomment %}
+    {% if advanced == true %}
+    {% include button-circular/button-circular.liquid icon:"settings" class:"button-circular button-circular--transparent input-search__advanced" trigger:"dialogAdvancedSearch:show" label:lang[locale].advanced_search %}
+    {% endif %}
 </input-search>

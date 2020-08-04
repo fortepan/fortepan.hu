@@ -5,7 +5,7 @@
   border-radius: 50%;
   border: 0;
   padding: 0;
-  transition: background-color 0.4s $ease-out-expo;
+  transition: background-color 0.4s $ease-out-expo, color 0.2s $ease-out-expo;
   cursor: pointer;
   position: relative;
   user-select: none;
@@ -30,8 +30,12 @@
     background-color: transparent;
   }
 
-  .theme--light &:hover {
+  .theme--light &:not(.button-circular--transparent):hover {
     background-color: rgba($dark-base, 0.06);
+  }
+
+  .theme--light &.button-circular--transparent:hover {
+    color: rgba($dark-base, 0.6);
   }
 
   .theme--light &--red {
@@ -61,8 +65,12 @@
     background-color: transparent;
   }
 
-  .theme--dark &:hover {
+  .theme--dark &:not(.button-circular--transparent):hover {
     background-color: rgba($light-base, 0.06);
+  }
+
+  .theme--dark &.button-circular--transparent:hover {
+    color: rgba($light-base, 0.6);
   }
 
   .header-nav--transparent:not(.has-shadow) &:hover {

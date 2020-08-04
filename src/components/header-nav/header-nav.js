@@ -11,7 +11,14 @@ class HeaderNav extends HTMLElement {
     this.bindCustomEvents()
     this.bindScroll()
 
-    auth.queryUser().catch(() => {})
+    auth
+      .getUserStatus()
+      .then(isUserSignedIn => {
+        if (isUserSignedIn) {
+          auth.queryUser()
+        }
+      })
+      .catch()
   }
 
   bindCustomEvents() {
@@ -77,8 +84,10 @@ class HeaderNav extends HTMLElement {
 
   updateProfile() {
     const authData = JSON.parse(localStorage.getItem("auth"))
-    this.querySelector("#HeaderProfileName").textContent = authData.current_user.name
-    this.querySelector("#HeaderProfileEmail").textContent = authData.current_user.mail
+    if (authData && authData.current_user) {
+      this.querySelector("#HeaderProfileName").textContent = authData.current_user.name
+      this.querySelector("#HeaderProfileEmail").textContent = authData.current_user.mail
+    }
   }
 
   initPopup() {

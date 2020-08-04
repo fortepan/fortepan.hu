@@ -1,9 +1,10 @@
+import { trigger } from "../utils"
 import config from "../config"
-import auth from "../api/auth"
 
-const saveTag = tag => {
+const addTag = (tag, photoId) => {
   return new Promise((resolve, reject) => {
-    const data = {
+    const authData = JSON.parse(localStorage.getItem("auth"))
+    const tagData = {
       data: {
         type: "taxonomy_term-cimke",
         attributes: {
@@ -11,33 +12,7 @@ const saveTag = tag => {
         },
       },
     }
-
-    auth.getToken().then(csrfToken => {
-      const xmlHttp = new XMLHttpRequest()
-      xmlHttp.open("POST", `${config.DRUPAL_HOST}/jsonapi/taxonomy_term/cimke`, true)
-      xmlHttp.setRequestHeader("X-CSRF-Token", csrfToken)
-      xmlHttp.setRequestHeader("Content-Type", "application/vnd.api+json")
-      xmlHttp.setRequestHeader("Accept", "application/vnd.api+json")
-      xmlHttp.withCredentials = true
-      xmlHttp.onload = () => {
-        if (xmlHttp.status === 204) {
-          resolve(JSON.parse(xmlHttp.responseText))
-        } else {
-          const respData = JSON.parse(xmlHttp.responseText)
-          reject(respData.message.replace(/(?:\r\n|\r|\n)/g, "<br />"))
-        }
-      }
-      xmlHttp.error = err => {
-        reject(err)
-      }
-      xmlHttp.send(JSON.stringify(data))
-    })
-  })
-}
-
-const assignTagWithPhoto = (tagId, photoId) => {
-  return new Promise((resolve, reject) => {
-    const data = {
+    const tag2ImageData = {
       data: {
         type: "tag2image--tag2image",
         attributes: {},
@@ -45,7 +20,7 @@ const assignTagWithPhoto = (tagId, photoId) => {
           tag: {
             data: {
               type: "taxonomy_term--cimke",
-              id: tagId,
+              id: "",
             },
           },
           image: {
@@ -58,42 +33,40 @@ const assignTagWithPhoto = (tagId, photoId) => {
       },
     }
 
-    const authData = JSON.parse(localStorage.getItem("auth"))
-
-    const xmlHttp = new XMLHttpRequest()
-    xmlHttp.open("POST", `${config.DRUPAL_HOST}/jsonapi/tag2image/tag2image`, true)
-    // xmlHttp.setRequestHeader("X-CSRF-Token", authData.csrf_token)
-    xmlHttp.setRequestHeader("Content-Type", "application/vnd.api+json")
-    xmlHttp.setRequestHeader("Accept", "application/vnd.api+json")
-    xmlHttp.withCredentials = true
-    xmlHttp.onload = () => {
-      const respData = JSON.parse(xmlHttp.responseText)
-      if (xmlHttp.status === 200) {
-        console.log(respData)
-        resolve(respData.data.id)
-      } else {
-        reject(respData.message.replace(/(?:\r\n|\r|\n)/g, "<br />"))
-      }
-    }
-    xmlHttp.error = err => {
-      reject(err)
-    }
-    xmlHttp.send(JSON.stringify(data))
-  })
-}
-
-const addTag = (tag, photoId) => {
-  return new Promise((resolve, reject) => {
-    const authData = JSON.parse(localStorage.getItem("auth"))
-
     if (authData) {
-      saveTag(tag)
-        .then(tagId => {
-          assignTagWithPhoto(tagId, photoId).then(() => {
-            resolve()
+      trigger("loadingIndicator:show", { id: "LoadingIndicatorBase" })
+      fetch(`${config.DRUPAL_HOST}/jsonapi/taxonomy_term/cimke`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/vnd.api+json",
+          Accept: "application/vnd.api+json",
+        },
+        credentials: "same-origin",
+        body: JSON.stringify(tagData),
+      })
+        .then(tagResp => {
+          tagResp.json().then(tagRespData => {
+            tag2ImageData.data.relationships.tag.data.id = tagRespData.data.id
+
+            fetch(`${config.DRUPAL_HOST}/jsonapi/tag2image/tag2image`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/vnd.api+json",
+                Accept: "application/vnd.api+json",
+              },
+              credentials: "same-origin",
+              body: JSON.stringify(tag2ImageData),
+            }).then(tag2ImageResp => {
+              tag2ImageResp.json().then(tag2ImageRespData => {
+                console.log(tag2ImageRespData)
+                trigger("loadingIndicator:hide", { id: "LoadingIndicatorBase" })
+                resolve(tag2ImageRespData)
+              })
+            })
           })
         })
         .catch(err => {
+          trigger("loadingIndicator:hide", { id: "LoadingIndicatorBase" })
           reject(err)
         })
     } else {
