@@ -1,7 +1,6 @@
 <dialog-signup class="dialog dialog-signup">
-  {% include button-circular/button-circular.liquid icon:"close" id:"DialogSignupClose" trigger:"dialogSignup:hide" label:lang[locale].close class:"dialog__close" %}
-
   <div class="dialog__wrapper">
+      {% include button-circular/button-circular.liquid icon:"close" id:"DialogSignupClose" trigger:"dialogSignup:hide" label:lang[locale].close class:"dialog__close" %}
       <h3 class="dialog__title">{{ lang[locale].signup }}</h3>
       <div class="dialog__form">
         {% include dialog-input/dialog-input.liquid type:"text" name:"name" label:lang[locale].username %}
