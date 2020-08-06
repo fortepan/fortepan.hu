@@ -1,5 +1,5 @@
 import searchAPI from "../../api/search"
-import { trigger } from "../../utils"
+import { trigger, lang } from "../../utils"
 import addTag from "../../api/add-tag"
 
 class SelectizeControl extends HTMLElement {
@@ -107,6 +107,8 @@ class SelectizeControl extends HTMLElement {
     this.submitNode.addEventListener("click", e => {
       e.preventDefault()
       this.submit().then(() => {
+        this.removeAllTags()
+        trigger("snackbar:show", { message: lang("tags_save_success"), status: "success", autoHide: true })
         trigger("carouselSidebar:toggleSelectizeControl")
       })
     })
@@ -115,6 +117,12 @@ class SelectizeControl extends HTMLElement {
   bindEvents() {
     this.addEventListener("click", () => {
       this.querySelector("input").focus()
+    })
+  }
+
+  removeAllTags() {
+    this.querySelectorAll(".selectize-control__tag").forEach(el => {
+      el.parentNode.removeChild(el)
     })
   }
 
@@ -173,9 +181,39 @@ class SelectizeControl extends HTMLElement {
   }
 
   submit() {
-    return new Promise(resolve => {
-      addTag.addTag("próba", this.pId)
-      resolve()
+    return new Promise((resolve, reject) => {
+      const tags = []
+      this.querySelectorAll(".selectize-control__tag").forEach(el => {
+        tags.push(el.textContent)
+      })
+
+      const promises = []
+      tags.forEach(tag => {
+        promises.push(
+          new Promise((addTagResolve, addTagReject) => {
+            addTag
+              .addTag(tag, this.pId)
+              .then(resp => {
+                if (resp.data.id) {
+                  addTagResolve()
+                } else {
+                  addTagReject()
+                }
+              })
+              .catch(err => {
+                addTagReject(err)
+              })
+          })
+        )
+      })
+
+      Promise.all(promises)
+        .then(() => {
+          resolve()
+        })
+        .catch(err => {
+          reject(err)
+        })
     })
   }
 }
