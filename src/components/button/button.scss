@@ -1,8 +1,9 @@
 button,
 .button {
+  @include font-heading-demi();
   padding: 1rem;
   line-height: 1rem;
-  font-size: 1rem;
+  font-size: rem(18px);
   font-weight: 600;
   white-space: nowrap;
   border: 0;

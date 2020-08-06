@@ -50,10 +50,10 @@ h5,
 
 h6,
 .caption {
-  font-size: rem(11px);
-  font-weight: 600;
+  @include font-heading-demi();
+  font-size: rem(13px);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
   line-height: rem(20px);
 }
 

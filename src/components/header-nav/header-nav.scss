@@ -231,11 +231,12 @@
 }
 
 .header-nav__link--top {
-  font-size: 1rem;
-  font-weight: 600;
+  @include font-heading-demi();
+  font-size: rem(18px);
 }
 
 .header-nav__link__small {
+  @include font-body;
   font-size: rem(12px);
   font-weight: 400;
   white-space: nowrap;
