@@ -109,7 +109,6 @@ class SelectizeControl extends HTMLElement {
       this.submit().then(() => {
         this.removeAllTags()
         trigger("snackbar:show", { message: lang("tags_save_success"), status: "success", autoHide: true })
-        trigger("carouselSidebar:toggleSelectizeControl")
       })
     })
   }
@@ -140,7 +139,7 @@ class SelectizeControl extends HTMLElement {
 
           // add max 4 more items from the autosuggest filter results
           if (res.length > 0) {
-            for (let i = 0; i < Math.min(4, res.length); i += 1) {
+            for (let i = 0; i < Math.min(10, res.length); i += 1) {
               this.autoSuggestNode.appendChild(this.createAutoSuggestItem(res[i]))
             }
           }
@@ -180,12 +179,18 @@ class SelectizeControl extends HTMLElement {
     return itemNode
   }
 
+  focus() {
+    this.querySelector("input").focus()
+  }
+
   submit() {
     return new Promise((resolve, reject) => {
       const tags = []
       this.querySelectorAll(".selectize-control__tag").forEach(el => {
         tags.push(el.textContent)
       })
+
+      if (tags.length === 0) reject()
 
       const promises = []
       tags.forEach(tag => {

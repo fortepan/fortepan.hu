@@ -62,6 +62,7 @@ module.exports = {
     slideshow: "Diavetítés",
     tag: "Kulcsszó",
     tags: "Kulcsszavak",
+    tags_signin_alert: "Új kulcsszó hozzáadásához kérjük, hogy előbb lépjen be.",
     tags_save_success: "A javasolt kulcsszavakat adminisztrátorunk rövidesen ellenőrzi.",
     timeline: "Idővonal",
     user_profile: "Felhasználói profil",

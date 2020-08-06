@@ -43,13 +43,17 @@ class HeaderNav extends HTMLElement {
     document.addEventListener("auth:signedIn", this.updateProfile.bind(this))
 
     // bind logout
-    this.querySelector("#HeaderSignout").addEventListener("click", auth.signout)
+    this.querySelector("#HeaderSignout").addEventListener("click", e => {
+      e.preventDefault()
+      auth.signout()
+    })
   }
 
   togglePopup(itemNode, popupNode, forceHide = false) {
     const itemRect = itemNode.getBoundingClientRect()
     this.querySelectorAll(".header-nav__popup").forEach(node => {
       if (node === popupNode && !forceHide) {
+        // eslint-disable-next-line no-param-reassign
         node.style.left = `${itemRect.x + itemRect.width / 2}px`
         node.classList.add("is-visible")
       } else {

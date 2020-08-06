@@ -1,4 +1,5 @@
-import { trigger, getLocale } from "../../utils"
+import { trigger, getLocale, lang } from "../../utils"
+import auth from "../../api/auth"
 
 class CarouselSidebar extends HTMLElement {
   constructor() {
@@ -7,7 +8,7 @@ class CarouselSidebar extends HTMLElement {
     this.addTagNode = this.querySelector(".carousel-sidebar__add-tag")
     this.addTagNode.addEventListener("click", e => {
       e.preventDefault()
-      trigger("carouselSidebar:toggleSelectizeControl")
+      trigger("carouselSidebar:showSelectizeControl")
     })
 
     this.bindCustomEvents()
@@ -18,9 +19,9 @@ class CarouselSidebar extends HTMLElement {
     this.render(getLocale())
   }
 
-  render(lang) {
+  render(propLang) {
     // set sidebar data
-    if (lang === "hu") {
+    if (propLang === "hu") {
       const locationArray = []
       if (this.data.orszag_name) {
         this.data.orszag_name.forEach(item => {
@@ -56,7 +57,7 @@ class CarouselSidebar extends HTMLElement {
           ".carousel-sidebar__tags p"
         ).innerHTML = `<span class="carousel-sidebar__tags__empty">–</span>`
       }
-    } else if (lang === "en") {
+    } else if (propLang === "en") {
       const locationArray = []
       if (this.data.orszag_en) {
         this.data.orszag_en.forEach(item => {
@@ -136,16 +137,31 @@ class CarouselSidebar extends HTMLElement {
     document.querySelector("body").classList.toggle("hide-carousel-sidebar")
   }
 
-  toggleSelectizeControl() {
-    this.addTagNode.classList.toggle("hide")
-    this.addTagNode.nextElementSibling.classList.toggle("hide")
+  showSelectizeControl() {
+    auth.getUserStatus().then(userIsSignedIn => {
+      if (userIsSignedIn) {
+        this.addTagNode.classList.add("is-hidden")
+        this.addTagNode.nextElementSibling.classList.remove("is-hidden")
+        this.querySelector(".carousel-sidebar__selectize").focus()
+      } else {
+        trigger("snackbar:show", { message: lang("tags_signin_alert"), status: "error", autoHide: true })
+        trigger("dialogSignin:show")
+      }
+    })
+  }
+
+  hideSelectizeControl() {
+    this.addTagNode.classList.remove("is-hidden")
+    this.addTagNode.nextElementSibling.classList.add("is-hidden")
   }
 
   bindCustomEvents() {
     document.addEventListener("carouselSidebar:show", this.show)
     document.addEventListener("carouselSidebar:hide", this.hide)
     document.addEventListener("carouselSidebar:toggle", this.toggle)
-    document.addEventListener("carouselSidebar:toggleSelectizeControl", this.toggleSelectizeControl.bind(this))
+    document.addEventListener("carouselSidebar:showSelectizeControl", this.showSelectizeControl.bind(this))
+    document.addEventListener("auth:signedOut", this.hideSelectizeControl.bind(this))
+    document.addEventListener("photosCarousel:hide", this.hideSelectizeControl.bind(this))
   }
 }
 

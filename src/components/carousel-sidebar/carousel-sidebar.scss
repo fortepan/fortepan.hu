@@ -116,7 +116,11 @@
     vertical-align: text-bottom;
   }
 
-  &.hide {
+  &.is-hidden {
     display: none;
   }
+}
+
+body:not(.auth-signed-in) .carousel-sidebar__selectize {
+  display: none;
 }
