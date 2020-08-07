@@ -34,14 +34,16 @@ const addTag = (tag, photoId) => {
     }
 
     if (authData) {
+      console.log(authData)
       trigger("loadingIndicator:show", { id: "LoadingIndicatorBase" })
       fetch(`${config.DRUPAL_HOST}/jsonapi/taxonomy_term/cimke`, {
         method: "POST",
         headers: {
           "Content-Type": "application/vnd.api+json",
           Accept: "application/vnd.api+json",
+          "X-CSRF-Token": authData.csrf_token,
         },
-        credentials: "same-origin",
+        credentials: "include",
         body: JSON.stringify(tagData),
       })
         .then(tagResp => {
@@ -53,8 +55,9 @@ const addTag = (tag, photoId) => {
               headers: {
                 "Content-Type": "application/vnd.api+json",
                 Accept: "application/vnd.api+json",
+                "X-CSRF-Token": authData.csrf_token,
               },
-              credentials: "same-origin",
+              credentials: "include",
               body: JSON.stringify(tag2ImageData),
             }).then(tag2ImageResp => {
               tag2ImageResp.json().then(tag2ImageRespData => {
