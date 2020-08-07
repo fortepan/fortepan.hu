@@ -20,6 +20,7 @@ const signout = () => {
       const xmlHttp = new XMLHttpRequest()
       xmlHttp.open("POST", `${config.DRUPAL_HOST}/user/logout?_format=json&token=${authData.logout_token}`, true)
       xmlHttp.setRequestHeader("Content-Type", "application/json")
+      xmlHttp.setRequestHeader("X-CSRF-Token", authData.csrf_token)
       xmlHttp.withCredentials = true
       xmlHttp.onload = () => {
         if (xmlHttp.status === 204) {
