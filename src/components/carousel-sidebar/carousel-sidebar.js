@@ -121,6 +121,10 @@ class CarouselSidebar extends HTMLElement {
       })
     })
 
+    // reset selectize control
+    this.querySelector(".carousel-sidebar__selectize").reset()
+    this.hideSelectizeControl()
+
     // eslint-disable-next-line prefer-destructuring
     this.addTagNode.nextElementSibling.photoId = this.data.uuid[0]
   }

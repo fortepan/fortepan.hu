@@ -107,7 +107,7 @@ class SelectizeControl extends HTMLElement {
     this.submitNode.addEventListener("click", e => {
       e.preventDefault()
       this.submit().then(() => {
-        this.removeAllTags()
+        this.reset()
         trigger("snackbar:show", { message: lang("tags_save_success"), status: "success", autoHide: true })
       })
     })
@@ -119,7 +119,7 @@ class SelectizeControl extends HTMLElement {
     })
   }
 
-  removeAllTags() {
+  reset() {
     this.querySelectorAll(".selectize-control__tag").forEach(el => {
       el.parentNode.removeChild(el)
     })
