@@ -192,27 +192,29 @@ class SelectizeControl extends HTMLElement {
 
       if (tags.length === 0) reject()
 
-      const promises = []
-      tags.forEach(tag => {
-        promises.push(
-          new Promise((addTagResolve, addTagReject) => {
-            addTag
-              .addTag(tag, this.pId)
-              .then(resp => {
-                if (resp.data.id) {
-                  addTagResolve()
-                } else {
-                  addTagReject()
-                }
-              })
-              .catch(err => {
-                addTagReject(err)
-              })
-          })
-        )
-      })
+      const addTags = () => {
+        return new Promise((res, rej) => {
+          const recursiveTagging = () => {
+            const tag = tags.shift()
 
-      Promise.all(promises)
+            if (tag) {
+              addTag
+                .addTag(tag, this.pId)
+                .then(() => {
+                  recursiveTagging()
+                })
+                .catch(e => {
+                  rej(e)
+                })
+            } else {
+              res()
+            }
+          }
+          recursiveTagging()
+        })
+      }
+
+      addTags()
         .then(() => {
           resolve()
         })

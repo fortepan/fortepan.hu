@@ -34,7 +34,6 @@ const addTag = (tag, photoId) => {
     }
 
     if (authData) {
-      console.log(authData)
       trigger("loadingIndicator:show", { id: "LoadingIndicatorBase" })
       fetch(`${config.DRUPAL_HOST}/jsonapi/taxonomy_term/cimke`, {
         method: "POST",
@@ -61,7 +60,6 @@ const addTag = (tag, photoId) => {
               body: JSON.stringify(tag2ImageData),
             }).then(tag2ImageResp => {
               tag2ImageResp.json().then(tag2ImageRespData => {
-                console.log(tag2ImageRespData)
                 trigger("loadingIndicator:hide", { id: "LoadingIndicatorBase" })
                 resolve(tag2ImageRespData)
               })
