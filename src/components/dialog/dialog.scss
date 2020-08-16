@@ -1,29 +1,26 @@
 .dialog {
   position: absolute;
   z-index: 1000;
-  box-shadow: 0 rem(12px) rem(24px) 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
-  border-radius: rem(8px);
-  max-width: rem(480px);
-  width: calc(100% - 40px);
-  left: 50%;
-  top: 50%;
-  transform: translateX(-50%) translateY(-50%) scale(1.04);
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
   opacity: 0;
   box-sizing: border-box;
   pointer-events: none;
-  transition: transform 0.6s $ease-out-expo, opacity 0.6s $ease-out-expo;
-
-  .theme--light & {
-    background-color: $light-base;
-  }
-
-  .theme--dark & {
-    background-color: $dark-base;
-  }
+  transition: opacity 0.6s $ease-out-expo;
+  background-color: rgba($dark-base, 0.6);
+  padding: 5rem 1.5rem;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  will-change: opacity;
 
   &.is-visible {
     opacity: 1;
-    transform: translateX(-50%) translateY(-50%) scale(1);
     pointer-events: initial;
   }
 }
@@ -35,7 +32,56 @@
 }
 
 .dialog__wrapper {
+  margin: auto;
   padding: rem(24px);
+  box-shadow: 0 rem(12px) rem(24px) 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+  border-radius: rem(8px);
+  max-width: rem(440px);
+  min-height: min-content;
+  max-height: max-content;
+  height: auto;
+  width: 100%;
+  transform: scale(1.04);
+  transition: transform 0.6s $ease-out-expo;
+
+  .dialog.is-visible & {
+    transform: scale(1);
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+    border-radius: rem(8px);
+    transition: opacity 0.2s ease-out;
+  }
+
+  .dialog.is-disabled &::after {
+    pointer-events: initial;
+    opacity: 1;
+  }
+
+  .theme--light & {
+    background-color: $light-base;
+  }
+
+  .theme--dark & {
+    background-color: $dark-primary;
+  }
+
+  .theme--light &::after {
+    background-color: rgba($light-base, 0.6);
+  }
+
+  .theme--dark &::after {
+    background-color: rgba($dark-primary, 0.6);
+  }
 }
 
 .dialog__title {
@@ -45,6 +91,7 @@
 .dialog__content {
   margin: rem(4px) 0 0 0;
   font-size: rem(14px);
+  font-weight: 400;
   line-height: rem(24px);
 }
 
@@ -69,4 +116,27 @@
   a:hover {
     color: inherit;
   }
+}
+
+.dialog__button {
+  margin-top: 2.5rem;
+  width: 100%;
+  cursor: pointer;
+}
+
+.dialog__link {
+  display: inline-block;
+  margin-top: 0.5rem;
+  color: $red;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.6s $ease-out-expo;
+
+  &:hover {
+    color: darken($red, 10);
+  }
+}
+
+.dialog__link--small {
+  font-size: rem(13px);
 }

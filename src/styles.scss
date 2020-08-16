@@ -10,13 +10,16 @@
 
 /* components */
 @import "./components/background-icon/background-icon.scss";
+@import "./components/button/button.scss";
 @import "./components/button-circular/button-circular.scss";
 @import "./components/carousel-photo/carousel-photo.scss";
 @import "./components/carousel-sidebar/carousel-sidebar.scss";
 @import "./components/dialog/dialog.scss";
 @import "./components/dialog-simple-search/dialog-simple-search.scss";
+@import "./components/dialog-input/dialog-input.scss";
 @import "./components/footer/footer.scss";
 @import "./components/header-nav/header-nav.scss";
+@import "./components/input/input.scss";
 @import "./components/input-search/input-search.scss";
 @import "./components/loading-indicator/loading-indicator.scss";
 @import "./components/photos-carousel/photos-carousel.scss";
@@ -24,6 +27,7 @@
 @import "./components/photos-timeline/photos-timeline.scss";
 @import "./components/photos-title/photos-title.scss";
 @import "./components/snackbar/snackbar.scss";
+@import "./components/selectize-control/selectize-control.scss";
 
 /* layouts */
 @import "./layouts/layout-base/layout-base.scss";

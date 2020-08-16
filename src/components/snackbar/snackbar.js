@@ -10,7 +10,7 @@ document.addEventListener("snackbar:show", e => {
   } else {
     snackbar = document.querySelector(".snackbar")
   }
-  snackbar.textContent = e.detail.message
+  snackbar.innerHTML = e.detail.message
 
   snackbar.classList.remove("snackbar--success")
   snackbar.classList.remove("snackbar--error")

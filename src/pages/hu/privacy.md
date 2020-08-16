@@ -2,6 +2,7 @@
 layout: layout-article/layout-article.liquid
 title: Adatvédelem
 permalink: "/hu/privacy/"
+hide_search: true
 ---
 
 ### Adatvédelmi tájékoztató és a honlap használatával kapcsolatos tudnivalók

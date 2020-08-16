@@ -1,12 +1,19 @@
 # Dependency directories
 node_modules/
+
 # dotenv environment variables file
 .env
+
 # eleventy.js build output
 _dist
 src/data/manifest*
-.DS_Store
 src/static/autocomplete.json
 
 # Local Netlify folder
 .netlify
+
+# Code editor related
+.nova
+
+# OS related
+.DS_Store

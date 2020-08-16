@@ -91,9 +91,36 @@
   }
 }
 
-.carousel-sidebar__tags__add-tag {
+.carousel-sidebar__tags__empty {
+  color: $grey;
+  opacity: 0.6;
+  user-select: none;
+}
+
+.carousel-sidebar a.carousel-sidebar__add-tag {
+  display: block;
   font-weight: bold;
+  color: $red;
+  cursor: pointer;
+  line-height: 1rem;
+  border-bottom: none;
+  margin-top: 0.5rem;
 
   &::before {
+    content: "";
+    width: 1rem;
+    height: 1rem;
+    display: inline-block;
+    margin-right: 0.25rem;
+    background: svg-load("static/images/icons/16/icon-add.svg");
+    vertical-align: text-bottom;
   }
+
+  &.is-hidden {
+    display: none;
+  }
+}
+
+body:not(.auth-signed-in) .carousel-sidebar__selectize {
+  display: none;
 }

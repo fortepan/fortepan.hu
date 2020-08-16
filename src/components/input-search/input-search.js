@@ -75,6 +75,7 @@ class InputSearch extends HTMLElement {
     if (this.inputNode.value.length > 0) {
       searchAPI.autoSuggest(
         this.inputNode.value,
+        false,
         function(res) {
           this.autoSuggestNode.classList.add("is-visible")
           this.autoSuggestNode.innerHTML = ""

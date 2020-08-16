@@ -8,6 +8,7 @@
   command = "npm run dev"
   targetPort = 4000
   publish = "_dist/"
+  autoLaunch = false
 
 ## This rule redirects to an external API, signing requests with a secret
 [[redirects]]
@@ -18,7 +19,7 @@
 
 [[redirects]]
   from = "/auth-api/*"
-  to = "http://admin.fortepan.hu:8080/:splat?_format=json"
+  to = "https://drupal.admin.fortepan.hu"
   status = 200
   force = true
 

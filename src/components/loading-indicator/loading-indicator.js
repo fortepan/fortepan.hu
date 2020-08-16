@@ -9,12 +9,16 @@ class LoadingIndicator extends HTMLElement {
     document.addEventListener("loadingIndicator:hide", this.hide.bind(this))
   }
 
-  show() {
-    this.classList.add("is-visible")
+  show(e) {
+    if (e.detail && e.detail.id === this.id) {
+      this.classList.add("is-visible")
+    }
   }
 
-  hide() {
-    this.classList.remove("is-visible")
+  hide(e) {
+    if (e.detail && e.detail.id === this.id) {
+      this.classList.remove("is-visible")
+    }
   }
 }
 window.customElements.define("loading-indicator", LoadingIndicator)

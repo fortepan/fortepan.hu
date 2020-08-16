@@ -1,16 +1,21 @@
 .button-circular {
-  display: flex;
+  display: block;
   width: rem(48px);
   height: rem(48px);
   border-radius: 50%;
   border: 0;
   padding: 0;
-  transition: background-color 0.4s $ease-out-expo;
+  transition: background-color 0.4s $ease-out-expo, color 0.2s $ease-out-expo;
   cursor: pointer;
   position: relative;
-  align-items: center;
-  justify-content: center;
   user-select: none;
+
+  svg {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
 
   * {
     pointer-events: none;
@@ -25,8 +30,12 @@
     background-color: transparent;
   }
 
-  .theme--light &:hover {
+  .theme--light &:not(.button-circular--transparent):hover {
     background-color: rgba($dark-base, 0.06);
+  }
+
+  .theme--light &.button-circular--transparent:hover {
+    color: rgba($dark-base, 0.6);
   }
 
   .theme--light &--red {
@@ -56,8 +65,16 @@
     background-color: transparent;
   }
 
-  .theme--dark &:hover {
+  .theme--dark &:not(.button-circular--transparent):hover {
     background-color: rgba($light-base, 0.06);
+  }
+
+  .theme--dark &.button-circular--transparent:hover {
+    color: rgba($light-base, 0.6);
+  }
+
+  .header-nav--transparent:not(.has-shadow) &:hover {
+    background-color: rgba($dark-base, 0.4);
   }
 
   .theme--dark &--red {
@@ -142,6 +159,7 @@
 
 .button-circular__label {
   position: absolute;
+  z-index: 100;
   left: 50%;
   top: 100%;
   font-size: rem(11px);

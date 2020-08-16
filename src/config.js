@@ -1,4 +1,6 @@
 export default {
+  DRUPAL_HOST: "https://drupal.admin.fortepan.hu",
+  ELASTIC_HOST: "https://es.admin.fortepan.hu",
   PHOTO_SOURCE: "https://fortepan.download/_photo/",
   PHOTO_SOURCE_LARGE: "https://fortepan.download/_photo/download/fortepan_",
   THUMBNAILS_QUERY_LIMIT: 30,

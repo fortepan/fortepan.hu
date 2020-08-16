@@ -1,0 +1,14 @@
+<dialog-advanced-search class="dialog dialog-advanced-search">
+  <div class="dialog__wrapper">
+      {% include button-circular/button-circular.liquid icon:"close" trigger:"dialogAdvancedSearch:hide" label:lang[locale].close class:"dialog__close button-circular--transparent" %}
+      <h3 class="dialog__title">{{ lang[locale].advanced_search }}</h3>
+      <div class="dialog__form">
+        {% include dialog-input/dialog-input.liquid type:"text" name:"keyword" label:lang[locale].keyword %}
+        {% include dialog-input/dialog-input.liquid type:"text" name:"country" label:lang[locale].country %}
+        {% include dialog-input/dialog-input.liquid type:"text" name:"city_and_place" label:lang[locale].city_and_location %}
+        {% include dialog-input/dialog-input.liquid type:"text" name:"year" label:lang[locale].year %}
+        {% include dialog-input/dialog-input.liquid type:"text" name:"donor" label:lang[locale].donor %}
+        <button class="button dialog__button">{{ lang[locale].search }}</button>
+      </div>
+  </div>
+</dialog-advanced-search>

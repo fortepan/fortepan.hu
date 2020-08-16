@@ -45,17 +45,17 @@ class PhotosCarousel extends HTMLElement {
       photo.id = `Fortepan-${id}`
       photo.imageSrc = `${config.PHOTO_SOURCE}1600/fortepan_${id}.jpg`
       photo.classList.add("is-active")
-      trigger("loadingIndicator:show")
+      trigger("loadingIndicator:show", { id: "LoadingIndicatorCarousel" })
       photo.loadCallback = function() {
-        trigger("loadingIndicator:hide")
+        trigger("loadingIndicator:hide", { id: "LoadingIndicatorCarousel" })
         this.stepSlideshow()
       }.bind(this)
       document.querySelector(".photos-carousel__photos__all").appendChild(photo)
     } else if (photo.loaded) {
-      trigger("loadingIndicator:hide")
+      trigger("loadingIndicator:hide", { id: "LoadingIndicatorCarousel" })
       photo.classList.add("is-active")
     } else {
-      trigger("loadingIndicator:show")
+      trigger("loadingIndicator:show", { id: "LoadingIndicatorCarousel" })
     }
   }
 
@@ -99,7 +99,6 @@ class PhotosCarousel extends HTMLElement {
       "photosCarousel:showPhoto",
       function(e) {
         this.currentImageMeta = e.detail
-        console.log(e.detail)
         this.showPhoto()
       }.bind(this)
     )

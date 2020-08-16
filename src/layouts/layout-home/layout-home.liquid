@@ -8,7 +8,7 @@ layout: layout-base/layout-base.liquid
   <section class="layout-home__hero">
     <div class="layout-home__hero__background"></div>
     <div class="layout-home__hero__search-wrapper">
-      {% include input-search/input-search.liquid class:"input-search input-search--large layout-home__hero__search" %}
+      {% include input-search/input-search.liquid class:"input-search input-search--large layout-home__hero__search" type:"search" advanced:true %}
       {% if locale == "hu" %}
       <div class="layout-home__hero__total h3">Összesen <a href="/{{ locale }}/photos/"><span></span> fénykép</a></div>
       {% else %}

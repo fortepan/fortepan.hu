@@ -7,7 +7,6 @@
   padding: rem(16px) rem(8px) rem(16px) rem(16px);
   box-sizing: border-box;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   transition: box-shadow 0.6s $ease-out-expo, background-color 0.4s $ease-out-expo, color 0.2s $ease-out-expo,
     transform 0.6s $ease-out-expo;
@@ -58,6 +57,11 @@
   align-items: center;
 }
 
+.header-nav__search {
+  flex: 1;
+  padding-left: 2.5rem;
+}
+
 .header-nav__logo__link {
   text-decoration: none;
   color: inherit;
@@ -91,6 +95,7 @@
   display: flex;
   position: relative;
   padding: 0 rem(8px);
+  align-items: center;
 
   &:last-child {
     padding-right: 0;
@@ -119,6 +124,9 @@
 
 .header-nav__actions__group--search {
   padding-right: rem(8px);
+  @media screen and (min-width: ($breakpoint-desktop)) {
+    display: none;
+  }
 }
 
 .header-nav__actions__group--items {
@@ -128,9 +136,10 @@
   }
 }
 
-.header-nav__nav {
+.header-nav__popup {
+  padding: 1rem 0;
   position: absolute;
-  padding: rem(24px);
+  box-sizing: border-box;
   top: rem(64px);
   transform: translate(-90%, 8px);
   opacity: 0;
@@ -139,6 +148,14 @@
   transition: transform 0.3s $ease-out-expo, opacity 0.3s $ease-out-expo;
   transform-origin: 50% 0;
   white-space: nowrap;
+  min-width: rem(200px);
+
+  h6 {
+    color: $grey;
+    margin: 0;
+    padding: 0 rem(24px);
+    line-height: 1.5rem;
+  }
 
   &.is-visible {
     opacity: 1;
@@ -147,26 +164,10 @@
     transition: transform 0.6s $ease-out-expo, opacity 0.6s $ease-out-expo;
   }
 
-  &::before {
-    content: "";
-    width: rem(12px);
-    height: rem(12px);
-    border-radius: rem(4px) 0 0 0;
-    transform: rotate(45deg);
-    position: absolute;
-    left: calc(90% - 6px);
-    top: rem(-6px);
-  }
-
   .theme--light & {
     background-color: $light-base;
     border-radius: rem(8px);
     box-shadow: 0px 0px 0px 1px rgba($dark-base, 0.04), 0px 12px 36px rgba($dark-base, 0.12);
-  }
-
-  .theme--light &::before {
-    background-color: $light-base;
-    box-shadow: -1px -1px 0px 0px rgba($dark-base, 0.04);
   }
 
   .theme--dark & {
@@ -174,39 +175,51 @@
     border-radius: rem(8px);
     box-shadow: 0px 0px 0px 1px rgba($light-base, 0.04) inset, 0px 8px 24px rgba($dark-base, 0.12);
   }
-
-  .theme--dark &::before {
-    background-color: $dark-secondary;
-    box-shadow: -1px -1px 0px 0px rgba($light-base, 0.04);
-  }
 }
 
 .header-nav__link {
+  display: block;
+  font-size: rem(13px);
+  font-weight: 500;
   text-decoration: none;
-  transition: color 0.3s $ease-out-expo;
+  line-height: rem(16px);
+  padding: rem(8px) rem(24px);
+  transition: color 0.3s $ease-out-expo, background-color 0.3s $ease-out-expo;
+
+  > * {
+    display: block;
+    white-space: nowrap;
+  }
 
   .theme--light & {
-    color: $grey;
-  }
-
-  .theme--dark & {
-    color: $grey;
-  }
-
-  .theme--light &:hover {
     color: $dark-base;
   }
 
-  .theme--dark &:hover {
+  .theme--dark & {
     color: $light-base;
   }
+
+  .theme--light &:hover {
+    background-color: rgba($dark-base, 0.06);
+  }
+
+  .theme--dark &:hover {
+    background-color: rgba($light-base, 0.06);
+  }
+}
+
+.header-nav__link--separator-after {
+  margin-bottom: 1.5rem;
+  position: relative;
 }
 
 .header-nav__link--separator-after::after {
   content: "";
-  display: block;
+  position: absolute;
+  bottom: -0.75rem;
+  left: 1.5rem;
+  right: 0;
   height: 1px;
-  margin: rem(16px) 0;
 
   .theme--light & {
     background-color: $light-secondary;
@@ -219,22 +232,38 @@
 
 .header-nav__link--top {
   @include font-heading-demi();
+  font-size: rem(18px);
+}
+
+.header-nav__link__small {
+  @include font-body;
+  font-size: rem(12px);
+  font-weight: 400;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   display: block;
-  text-transform: uppercase;
-  margin: rem(8px) 0;
-  letter-spacing: 1px;
-  line-height: rem(20px);
+  line-height: 1.25rem;
+
+  .theme--light & {
+    color: $grey;
+  }
+
+  .theme--dark & {
+    color: $grey;
+  }
 }
 
 .header-nav__link--top-action {
-  margin: rem(14px) rem(10px);
+  padding: rem(8px) rem(16px);
+  border-radius: 1rem;
 
   .header-nav--transparent:not(.has-shadow) & {
     color: $light-base;
   }
 
   .header-nav--transparent:not(.has-shadow) &:hover {
-    color: rgba($light-base, 0.6);
+    background-color: rgba($dark-base, 0.4);
   }
 }
 
@@ -254,21 +283,89 @@
   }
 }
 
-#LightThemeSwitcher {
-  margin: 0;
+.header-nav__toggle-switch {
+  position: absolute;
+  width: 3rem;
+  height: 1.5rem;
+  border-radius: 0.75rem;
+  right: 1rem;
+  top: 0.25rem;
+  transition: background-color 0.3s $ease-out-expo;
 
   .theme--light & {
-    display: none;
+    background-color: rgba($dark-base, 0.1);
   }
 
   .theme--dark & {
-    display: none;
+    background-color: $red;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0.25rem;
+    top: 0.25rem;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    transition: transform 0.6s $ease-out-expo, background-color 0.3s $ease-out-expo;
+
+    .theme--light & {
+      background-color: $light-base;
+    }
+
+    .theme--dark & {
+      transform: translateX(24px);
+      background-color: $light-base;
+    }
   }
 }
 
-/* Hide search button on desktop browsers */
-@media screen and (min-width: ($breakpoint-desktop)) {
-  #HeaderSearchToggle {
-    display: none;
+body[data-lang="hu"] .header-nav__link.lang-hu,
+body[data-lang="en"] .header-nav__link.lang-en {
+  background-color: rgba($red, 0.1);
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    right: 1rem;
+    top: 0.5rem;
+    width: 1rem;
+    height: 1rem;
+    background: svg-load("static/images/icons/16/icon-check.svg");
   }
+}
+
+.header-nav__profile-icon {
+  display: flex;
+  position: relative;
+  width: 3rem;
+  height: 3rem;
+  margin-left: 0.25rem;
+
+  .button-circular {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    margin-left: 0;
+  }
+}
+
+.header-nav .is-visible-when-signed-in {
+  display: none;
+}
+
+.auth-signed-in .header-nav .is-visible-when-signed-in {
+  display: block;
+}
+
+.header-nav .is-hidden-when-signed-in {
+  display: block;
+}
+
+.auth-signed-in .header-nav .is-hidden-when-signed-in {
+  display: none;
 }
