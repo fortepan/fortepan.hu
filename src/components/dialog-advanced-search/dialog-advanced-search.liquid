@@ -2,13 +2,15 @@
   <div class="dialog__wrapper">
       {% include button-circular/button-circular.liquid icon:"close" trigger:"dialogAdvancedSearch:hide" label:lang[locale].close class:"dialog__close button-circular--transparent" %}
       <h3 class="dialog__title">{{ lang[locale].advanced_search }}</h3>
-      <div class="dialog__form">
-        {% include dialog-input/dialog-input.liquid type:"text" name:"keyword" label:lang[locale].keyword %}
-        {% include dialog-input/dialog-input.liquid type:"text" name:"country" label:lang[locale].country %}
-        {% include dialog-input/dialog-input.liquid type:"text" name:"city_and_place" label:lang[locale].city_and_location %}
-        {% include dialog-input/dialog-input.liquid type:"text" name:"year" label:lang[locale].year %}
-        {% include dialog-input/dialog-input.liquid type:"text" name:"donor" label:lang[locale].donor %}
-        <button class="button dialog__button">{{ lang[locale].search }}</button>
+      <div class="dialog__form dialog-advanced-search__form">
+        {% include dialog-input/dialog-input.liquid type:"text" name:"keyword" label:lang[locale].keyword autosuggest:"" class:"dialog-advanced-search__keyword" %}
+        {% include dialog-input/dialog-input.liquid type:"text" name:"country" label:lang[locale].country autosuggest:"orszag_name,orszag_en" class:"dialog-advanced-search__country" %}
+        {% include dialog-input/dialog-input.liquid type:"text" name:"city" label:lang[locale].city autosuggest:"varos_name,varos_en" class:"dialog-advanced-search__city" %}
+        {% include dialog-input/dialog-input.liquid type:"text" name:"year" label:lang[locale].year class:"dialog-advanced-search__year" %}
+        {% include dialog-input/dialog-input.liquid type:"text" name:"donor" label:lang[locale].donor autosuggest:"adomanyozo_name,szerzo_name" class:"dialog-advanced-search__donor" %}
+        <div class="dialog-advanced-search__actions">
+          <button class="button dialog__button dialog-advanced-search__button">{{ lang[locale].search }}</button>
+        </div>
       </div>
   </div>
 </dialog-advanced-search>

@@ -22,6 +22,9 @@ class PhotosTitle extends HTMLElement {
     const searchExpressionNode = this.querySelector("#PhotosSearchExpression")
     if (Object.keys(q).length === 0 || q.q === "" || Object.keys(q).indexOf("latest") > -1) {
       searchExpressionNode.classList.remove("is-visible")
+    } else if (Object.keys(q).indexOf("advancedSearch") > -1) {
+      searchExpressionNode.classList.add("is-visible")
+      searchExpressionNode.innerHTML = `${lang("advanced_search")}`
     } else if (Object.keys(q).indexOf("donor") > -1) {
       searchExpressionNode.classList.add("is-visible")
       searchExpressionNode.innerHTML = `${lang("donor")}: <em>${q.donor}</em>`

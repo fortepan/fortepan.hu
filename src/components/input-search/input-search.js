@@ -18,15 +18,12 @@ class InputSearch extends HTMLElement {
     )
 
     // hide autosuggest on blur
-    this.inputNode.addEventListener(
-      "blur",
-      function() {
-        setTimeout(() => {
-          this.autoSuggestNode.classList.remove("is-visible")
-        }, 200)
+    this.inputNode.addEventListener("blur", () => {
+      setTimeout(() => {
+        this.autoSuggestNode.classList.remove("is-visible")
         trigger("dialogSimpleSearch:hide")
-      }.bind(this)
-    )
+      }, 200)
+    })
 
     // show autosuggest on focus
     this.inputNode.addEventListener("focus", this.showAutosuggestNode.bind(this))

@@ -52,11 +52,16 @@
   transform: translateY(-50%);
 }
 
-.input-search__settings {
+.input-search__advanced {
   position: absolute;
-  right: 1rem;
+  right: 0;
   top: 50%;
   transform: translateY(-50%);
+  z-index: 2;
+
+  .input-search--large & {
+    right: 0.5rem;
+  }
 }
 
 .input-search__input {
@@ -64,7 +69,7 @@
   border: none;
   outline: none;
   color: inherit;
-  width: 100%;
+  width: calc(100% - 2rem);
   display: block;
   margin: 0;
   padding: 0;
@@ -153,10 +158,4 @@
   .theme--dark &:not(.is-selected):hover {
     background-color: $dark-primary;
   }
-}
-
-.input-search__advanced {
-  position: absolute;
-  right: 0.5rem;
-  top: 0.5rem;
 }

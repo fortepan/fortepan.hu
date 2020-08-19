@@ -4,9 +4,5 @@
     {% endif %}
     <input type="{{ type }}" name="search" class="input-search__input" placeholder="{{ lang[locale].search }}" autocomplete="off">
     <div class="input-search__autosuggest"></div>
-    {% comment %}
-    {% if advanced == true %}
     {% include button-circular/button-circular.liquid icon:"settings" class:"button-circular button-circular--transparent input-search__advanced" trigger:"dialogAdvancedSearch:show" label:lang[locale].advanced_search %}
-    {% endif %}
-    {% endcomment %}
 </input-search>

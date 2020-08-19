@@ -7,7 +7,8 @@ node_modules/
 # eleventy.js build output
 _dist
 src/data/manifest*
-src/static/autocomplete.json
+src/static/autocomplete-en.json
+src/static/autocomplete-hu.json
 
 # Local Netlify folder
 .netlify
@@ -17,3 +18,4 @@ src/static/autocomplete.json
 
 # OS related
 .DS_Store
+

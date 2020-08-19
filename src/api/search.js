@@ -194,9 +194,11 @@ const autoSuggest = (prefix, filter = false, callback, error) => {
   const filterAutoCompleteData = () => {
     if (!autocompleteData) error()
     else {
+      let filterArray
+      if (filter) filterArray = filter.split(",")
       const res = []
       Object.keys(autocompleteData).forEach(key => {
-        if (!filter || filter === key) {
+        if (!filter || filter.length === 0 || (filterArray && filterArray.indexOf(key) > -1)) {
           const items = autocompleteData[key].filter(keyword => {
             if (slugify(keyword).indexOf(slugify(prefix)) === 0) return true
             return false
