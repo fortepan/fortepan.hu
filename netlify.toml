@@ -34,3 +34,9 @@
   to = "/"
   status = 200
   force = true
+
+[[redirects]]
+  from = "/reset/*"
+  to = "/"
+  status = 200
+  force = true
