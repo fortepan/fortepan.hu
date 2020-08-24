@@ -36,7 +36,13 @@
   force = true
 
 [[redirects]]
-  from = "/reset/*"
+  from = "/hu/user/*"
+  to = "/"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/en/user/*"
   to = "/"
   status = 200
   force = true
