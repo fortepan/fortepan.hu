@@ -3,7 +3,7 @@ export default {
   ELASTIC_HOST: "https://es.admin.fortepan.hu",
   PHOTO_SOURCE: "https://fortepan.download/_photo/",
   PHOTO_SOURCE_LARGE: "https://fortepan.download/_photo/download/fortepan_",
-  THUMBNAILS_QUERY_LIMIT: 30,
+  THUMBNAILS_QUERY_LIMIT: 40,
   BREAKPOINT_PHONE_XS: 330,
   BREAKPOINT_PHONE_SM: 390,
   BREAKPOINT_PHONE: 640,

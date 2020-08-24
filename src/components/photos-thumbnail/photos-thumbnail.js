@@ -34,7 +34,7 @@ class PhotosThumbnail extends HTMLElement {
     )
   }
 
-  set bindData(d) {
+  bindData(d) {
     // eslint-disable-next-line no-underscore-dangle
     this.data = d._source
 
@@ -52,7 +52,7 @@ class PhotosThumbnail extends HTMLElement {
     this.render()
 
     // load thumbnail image
-    this.loadImage()
+    return this.loadImage()
   }
 
   resize() {
@@ -86,29 +86,37 @@ class PhotosThumbnail extends HTMLElement {
       : ""
   }
 
-  loadImage() {
-    const img = new Image()
+  show() {
     const imgContainer = this.querySelector(".photos-thumbnail__image")
-    img.draggable = false
+    imgContainer.parentNode.classList.remove("is-hidden")
+    setTimeout(() => {
+      imgContainer.parentNode.classList.add("is-visible")
+    }, 100)
+  }
 
-    img.addEventListener(
-      "load",
-      function() {
+  loadImage() {
+    return new Promise(resolve => {
+      const img = new Image()
+      const imgContainer = this.querySelector(".photos-thumbnail__image")
+      img.draggable = false
+
+      img.addEventListener("load", () => {
         this.naturalWidth = img.naturalWidth
         this.naturalHeight = img.naturalHeight
-        imgContainer.parentNode.classList.remove("is-hidden")
-
-        setTimeout(() => {
-          imgContainer.parentNode.classList.add("is-visible")
-        }, 100)
-
+        imgContainer.parentNode.classList.add("is-loaded")
         this.resize(imgContainer.parentNode)
-      }.bind(this)
-    )
+        resolve()
+      })
 
-    img.srcset = `${config.PHOTO_SOURCE}240/fortepan_${this.data.mid}.jpg 1x, ${config.PHOTO_SOURCE}480/fortepan_${this.data.mid}.jpg 2x`
-    img.src = `${config.PHOTO_SOURCE}240/fortepan_${this.data.mid}.jpg`
-    imgContainer.appendChild(img)
+      img.addEventListener("error", () => {
+        console.log(img)
+        resolve()
+      })
+
+      img.srcset = `${config.PHOTO_SOURCE}240/fortepan_${this.data.mid}.jpg 1x, ${config.PHOTO_SOURCE}480/fortepan_${this.data.mid}.jpg 2x`
+      img.src = `${config.PHOTO_SOURCE}240/fortepan_${this.data.mid}.jpg`
+      imgContainer.appendChild(img)
+    })
   }
 }
 window.customElements.define("photos-thumbnail", PhotosThumbnail)

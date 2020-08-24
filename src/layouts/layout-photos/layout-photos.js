@@ -54,53 +54,66 @@ class LayoutPhotos extends HTMLElement {
     }
   }
 
+  showAllLoadedThumbnails() {
+    this.querySelectorAll(".photos-thumbnail.is-loaded:not(.is-visible)").forEach(thumbnail => {
+      thumbnail.show()
+    })
+  }
+
   loadPhotos() {
-    return new Promise(
-      function(resolve, reject) {
-        const params = {}
-        const defaultParams = {
-          size: config.THUMBNAILS_QUERY_LIMIT,
-          from: this.thumbnailsCount,
-        }
-        const urlParams = getURLParams()
+    return new Promise((resolve, reject) => {
+      const params = {}
+      const defaultParams = {
+        size: config.THUMBNAILS_QUERY_LIMIT,
+        from: this.thumbnailsCount,
+      }
+      const urlParams = getURLParams()
 
-        // merge default params with query params
-        Object.assign(params, defaultParams, urlParams)
+      // merge default params with query params
+      Object.assign(params, defaultParams, urlParams)
 
-        // init timeline
-        this.timelineNode.reset = { start: params.year_from, end: params.year_to }
-        if (params.year) {
-          this.timelineNode.disable()
-        }
+      // init timeline
+      this.timelineNode.reset = { start: params.year_from, end: params.year_to }
+      if (params.year) {
+        this.timelineNode.disable()
+      }
 
-        if (!params.q) {
-          // clear all search fields if query is not defined in the request
-          trigger("inputSearch:clear")
-        } else {
-          // set all search fields' value if query param is set
-          trigger("inputSearch:setValue", { value: params.q })
-        }
+      if (!params.q) {
+        // clear all search fields if query is not defined in the request
+        trigger("inputSearch:clear")
+      } else {
+        // set all search fields' value if query param is set
+        trigger("inputSearch:setValue", { value: params.q })
+      }
 
-        // search for photos
-        searchAPI.search(
-          params,
-          data => {
-            document.querySelector(".photos-title").set(data.hits.total.value)
-            data.hits.hits.forEach(itemData => {
-              this.thumbnailsCount += 1
-              const thumbnail = document.createElement("photos-thumbnail")
-              this.photosGridNode.appendChild(thumbnail)
-              thumbnail.bindData = itemData
-            })
+      // show loading indicator
+      trigger("loadingIndicator:show", { id: "LoadingIndicatorBase" })
+
+      // search for photos
+      searchAPI.search(
+        params,
+        data => {
+          const thumbnailLoadingPromises = []
+          document.querySelector(".photos-title").set(data.hits.total.value)
+          data.hits.hits.forEach(itemData => {
+            this.thumbnailsCount += 1
+            const thumbnail = document.createElement("photos-thumbnail")
+            this.photosGridNode.appendChild(thumbnail)
+            thumbnailLoadingPromises.push(thumbnail.bindData(itemData))
+          })
+
+          Promise.all(thumbnailLoadingPromises).then(() => {
             this.thumbnailsLoading = false
+            trigger("loadingIndicator:hide", { id: "LoadingIndicatorBase" })
+            this.showAllLoadedThumbnails()
             resolve()
-          },
-          statusText => {
-            reject(statusText)
-          }
-        )
-      }.bind(this)
-    )
+          })
+        },
+        statusText => {
+          reject(statusText)
+        }
+      )
+    })
   }
 
   // and load new photos when address bar url changes
