@@ -24,6 +24,9 @@ import "./components/photos-title/photos-title"
 import "./components/snackbar/snackbar"
 import "./components/toggle-theme/toggle-theme"
 import "./components/selectize-control/selectize-control"
+import "./components/cookie-consent/cookie-consent"
+
+import "./components/google-analytics/google-analytics"
 
 // Layouts and layout elements
 import "./layouts/layout-home/layout-home"

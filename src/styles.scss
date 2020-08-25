@@ -7,6 +7,7 @@
 @import "./theme/typography.scss";
 @import "./theme/layout.scss";
 @import "./theme/helpers.scss";
+@import "./theme/scopes.scss";
 
 /* components */
 @import "./components/background-icon/background-icon.scss";
@@ -28,6 +29,7 @@
 @import "./components/photos-title/photos-title.scss";
 @import "./components/snackbar/snackbar.scss";
 @import "./components/selectize-control/selectize-control.scss";
+@import "./components/cookie-consent/cookie-consent.scss";
 
 /* layouts */
 @import "./layouts/layout-base/layout-base.scss";

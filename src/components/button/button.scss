@@ -7,24 +7,52 @@ button,
   font-weight: 600;
   white-space: nowrap;
   border: 0;
-
-  color: $light-base;
-  background-color: $red;
   border-radius: 0.25rem;
 
-  transition: transform 0.4s $ease-out-expo, background-color 0.4s $ease-out-expo;
-
-  margin: 1.5rem 0 0;
+  transition: transform 0.4s $ease-out-expo, background-color 0.4s $ease-out-expo, color 0.4s $ease-out-expo;
 
   &:hover {
-    background-color: darken($red, 5);
     transform: translateY(-1px);
   }
 
   &:active {
     transition-duration: 0.15s;
-    background-color: darken($red, 5);
     transform: translateY(0px);
+  }
+}
+
+.button--primary {
+  color: $light-base;
+  background-color: $red;
+
+  &:hover,
+  &:active {
+    background-color: darken($red, 5);
+  }
+}
+
+.button--secondary {
+  .theme--light & {
+    color: $grey;
+    background-color: $light-secondary;
+  }
+
+  .theme--dark & {
+    color: $grey;
+    background-color: $dark-tertiary;
+  }
+
+  &:hover,
+  &:active {
+    .theme--light & {
+      color: darken($grey, 5);
+      background-color: darken($light-secondary, 5);
+    }
+
+    .theme--dark & {
+      color: lighten($grey, 5);
+      background-color: lighten($dark-tertiary, 5);
+    }
   }
 }
 

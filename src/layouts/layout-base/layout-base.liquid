@@ -43,14 +43,6 @@
       href="/{% if siteData.environment == 'production' %}{{ manifestCSS['app.css'] }}{% else %}app.css{% endif %}"
     />
 
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-19831966-3"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'UA-19831966-3');
-    </script>
-
     <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.10/webcomponents-bundle.js"></script>
     <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.10/custom-elements-es5-adapter.js"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=URLSearchParams%2CObject.fromEntries"></script>
@@ -65,6 +57,7 @@
     {% include dialog-reset-password/dialog-reset-password.liquid %}
     {% include dialog-advanced-search/dialog-advanced-search.liquid %}
     {% include loading-indicator/loading-indicator.liquid id:"LoadingIndicatorBase" %}
+    {% include cookie-consent/cookie-consent.liquid %}
 
     <script>
       {% for param in cmsConfig %}

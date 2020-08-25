@@ -15,10 +15,14 @@ class HeaderNav extends HTMLElement {
       .getUserStatus()
       .then(isUserSignedIn => {
         if (isUserSignedIn) {
-          auth.queryUser()
+          auth.queryUser().catch(err => {
+            console.log(err)
+          })
         }
       })
-      .catch()
+      .catch(err => {
+        console.log(err)
+      })
   }
 
   bindCustomEvents() {
