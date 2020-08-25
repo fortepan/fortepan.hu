@@ -24,8 +24,11 @@
         <div class="carousel-sidebar__tags">
             <h6>{{ lang[locale].tags }}</h6>
             <p></p>
-            <a class="carousel-sidebar__add-tag">{{ lang[locale].add_tag }}</a>
-            {% include selectize-control/selectize-control.liquid class:"carousel-sidebar__selectize is-hidden" %}
+            <a class="carousel-sidebar__tags__add-tag">{{ lang[locale].add_tag }}</a>
+            <form class="carousel-sidebar__tags__form is-hidden">
+                {% include selectize-control/selectize-control.liquid class:"carousel-sidebar__tags__form__selectize" filter:"cimke_name" %}
+                <button class="button button--medium button--wide carousel-sidebar__tags__form__save">{{ lang[locale].save }}</button>
+            </form>
         </div>
     </div>
 </carousel-sidebar>

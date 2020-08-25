@@ -59,16 +59,19 @@ const search = (params, callback, error) => {
   // then it'll search matches in name, description, orszag_name, cimke_name, and varos_name fields
   // SHOULD means "OR" in elastic
   if (params.q && params.q !== "") {
-    const q = slugify(params.q)
+    // const q = slugify(params.q)
     // query.bool.must.push({ match_phrase: { description_search: `${q}` } })
-    query.bool.must.push({
-      multi_match: {
-        query: `${q}`,
-        fields: ["mid^5", "year^2", "*_search"],
-        type: "most_fields",
-        lenient: true,
-        operator: "and",
-      },
+    const words = params.q.split(", ")
+    words.forEach(word => {
+      query.bool.must.push({
+        multi_match: {
+          query: slugify(word),
+          fields: ["mid^5", "year^2", "*_search"],
+          type: "phrase",
+          lenient: true,
+          operator: "AND",
+        },
+      })
     })
   }
 

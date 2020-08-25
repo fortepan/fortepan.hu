@@ -1,6 +1,4 @@
 import searchAPI from "../../api/search"
-import { trigger, lang } from "../../utils"
-import addTag from "../../api/add-tag"
 
 class SelectizeControl extends HTMLElement {
   constructor() {
@@ -8,10 +6,6 @@ class SelectizeControl extends HTMLElement {
 
     this.render()
     this.bindEvents()
-  }
-
-  set photoId(id) {
-    this.pId = id
   }
 
   addTagNode(val) {
@@ -46,7 +40,7 @@ class SelectizeControl extends HTMLElement {
   }
 
   render() {
-    this.autoSuggestNode = this.querySelector(".selectize-input__autosuggest")
+    this.autosuggestNode = this.querySelector(".selectize-input__autosuggest")
     this.inputNode = this.querySelector("input")
 
     this.inputNodeLabel = document.createElement("div")
@@ -70,7 +64,7 @@ class SelectizeControl extends HTMLElement {
         }
       }
 
-      const selectedNode = this.autoSuggestNode.querySelector(".selectize-input__autosuggest__item.is-selected")
+      const selectedNode = this.autosuggestNode.querySelector(".selectize-input__autosuggest__item.is-selected")
 
       if (e.key !== "ArrowDown" && e.key !== "ArrowUp") {
         this.showAutosuggestNode()
@@ -78,7 +72,7 @@ class SelectizeControl extends HTMLElement {
 
       if (e.key === "ArrowDown" && selectedNode) {
         const nextNode =
-          selectedNode.nextElementSibling || this.autoSuggestNode.querySelector(".selectize-input__autosuggest__item")
+          selectedNode.nextElementSibling || this.autosuggestNode.querySelector(".selectize-input__autosuggest__item")
         selectedNode.classList.remove("is-selected")
         nextNode.classList.add("is-selected")
         this.inputNode.value = nextNode.textContent
@@ -88,7 +82,7 @@ class SelectizeControl extends HTMLElement {
       if (e.key === "ArrowUp" && selectedNode) {
         const previousNode =
           selectedNode.previousElementSibling ||
-          this.autoSuggestNode.querySelector(".selectize-input__autosuggest__item:last-child")
+          this.autosuggestNode.querySelector(".selectize-input__autosuggest__item:last-child")
         selectedNode.classList.remove("is-selected")
         previousNode.classList.add("is-selected")
 
@@ -101,15 +95,6 @@ class SelectizeControl extends HTMLElement {
         this.inputNode.value = ""
         this.resetAutosuggest()
       }
-    })
-
-    this.submitNode = this.querySelector("button")
-    this.submitNode.addEventListener("click", e => {
-      e.preventDefault()
-      this.submit().then(() => {
-        this.reset()
-        trigger("snackbar:show", { message: lang("tags_save_success"), status: "success", autoHide: true })
-      })
     })
   }
 
@@ -125,44 +110,63 @@ class SelectizeControl extends HTMLElement {
     })
   }
 
+  get value() {
+    const tags = []
+    this.querySelectorAll(".selectize-control__tag").forEach(el => {
+      tags.push(el.textContent)
+    })
+    return tags
+  }
+
+  set value(string) {
+    const tags = string.split(", ")
+    tags.forEach(tag => {
+      this.addTagNode(tag)
+    })
+  }
+
+  get form() {
+    return this.inputNode.form
+  }
+
   showAutosuggestNode() {
     if (this.inputNode.value.length > 0) {
       searchAPI.autoSuggest(
         this.inputNode.value,
-        "cimke_name",
+        this.dataset.autosuggestFilter,
         res => {
-          this.autoSuggestNode.classList.add("is-visible")
-          this.autoSuggestNode.innerHTML = ""
+          this.autosuggestNode.classList.add("is-visible")
+          this.autosuggestNode.innerHTML = ""
 
           // add first item with the actual value of the selectize input
-          this.autoSuggestNode.appendChild(this.createAutoSuggestItem(this.inputNode.value))
+          this.autosuggestNode.appendChild(this.createAutosuggestItem(this.inputNode.value))
 
           // add max 4 more items from the autosuggest filter results
           if (res.length > 0) {
             for (let i = 0; i < Math.min(10, res.length); i += 1) {
-              this.autoSuggestNode.appendChild(this.createAutoSuggestItem(res[i]))
+              this.autosuggestNode.appendChild(this.createAutosuggestItem(res[i]))
             }
           }
 
           // select the first item
-          this.autoSuggestNode.querySelector(".selectize-input__autosuggest__item").classList.add("is-selected")
+          this.autosuggestNode.querySelector(".selectize-input__autosuggest__item").classList.add("is-selected")
         },
         error => {
           console.log(error)
-          this.autoSuggestNode.classList.remove("is-visible")
+          this.autosuggestNode.classList.remove("is-visible")
         }
       )
     } else {
-      this.autoSuggestNode.classList.remove("is-visible")
+      this.autosuggestNode.classList.remove("is-visible")
     }
   }
 
   resetAutosuggestNode() {
-    this.autoSuggestNode.innerHTML = ""
-    this.autoSuggestNode.classList.remove("is-visible")
+    this.autosuggestNode.innerHTML = ""
+    this.autosuggestNode.classList.remove("is-visible")
   }
 
-  createAutoSuggestItem(label) {
+  createAutosuggestItem(label) {
     const itemNode = document.createElement("div")
     itemNode.className = "selectize-input__autosuggest__item"
     itemNode.textContent = label
@@ -181,47 +185,6 @@ class SelectizeControl extends HTMLElement {
 
   focus() {
     this.querySelector("input").focus()
-  }
-
-  submit() {
-    return new Promise((resolve, reject) => {
-      const tags = []
-      this.querySelectorAll(".selectize-control__tag").forEach(el => {
-        tags.push(el.textContent)
-      })
-
-      if (tags.length === 0) reject()
-
-      const addTags = () => {
-        return new Promise((res, rej) => {
-          const recursiveTagging = () => {
-            const tag = tags.shift()
-
-            if (tag) {
-              addTag
-                .addTag(tag, this.pId)
-                .then(() => {
-                  recursiveTagging()
-                })
-                .catch(e => {
-                  rej(e)
-                })
-            } else {
-              res()
-            }
-          }
-          recursiveTagging()
-        })
-      }
-
-      addTags()
-        .then(() => {
-          resolve()
-        })
-        .catch(err => {
-          reject(err)
-        })
-    })
   }
 }
 

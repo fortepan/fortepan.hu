@@ -1,4 +1,4 @@
-import { trigger } from "../../utils"
+import { trigger, getURLParams } from "../../utils"
 
 class DialogAdvancedSearch extends HTMLElement {
   constructor() {
@@ -11,34 +11,33 @@ class DialogAdvancedSearch extends HTMLElement {
     document.addEventListener("dialogAdvancedSearch:show", this.show.bind(this))
     document.addEventListener("dialogAdvancedSearch:hide", this.hide.bind(this))
 
-    this.querySelector("button").addEventListener("click", this.search.bind(this))
+    this.searchForm = this.querySelector("form")
+    this.selectizeControl = this.querySelector(".dialog-advanced-search__selectize")
+    this.initForm()
+  }
+
+  initForm() {
+    this.searchForm.querySelector("button").addEventListener("click", this.search.bind(this))
+
+    // reset form submit and submit with Enter
+    this.searchForm.addEventListener("keypress", e => {
+      if (e.key === "Enter") {
+        e.preventDefault()
+      }
+    })
+    this.searchForm.addEventListener("submit", e => {
+      e.preventDefault()
+    })
   }
 
   search() {
-    const advancedSearch = {}
-
-    if (this.querySelector("input[name=keyword]").value !== "")
-      advancedSearch.q = this.querySelector("input[name=keyword]").value
-
-    if (this.querySelector("input[name=country]").value !== "")
-      advancedSearch.country = this.querySelector("input[name=country]").value
-
-    if (this.querySelector("input[name=city]").value !== "")
-      advancedSearch.city = this.querySelector("input[name=city]").value
-
-    if (this.querySelector("input[name=year]").value !== "")
-      advancedSearch.year = this.querySelector("input[name=year]").value
-
-    if (this.querySelector("input[name=donor]").value !== "")
-      advancedSearch.donor = this.querySelector("input[name=donor]").value
-
-    const q = new URLSearchParams(advancedSearch)
+    const q = this.selectizeControl.value.join(", ")
 
     if (window.location.pathname.indexOf("/photos") === -1) {
-      window.location = `/${document.querySelector("body").dataset.lang}/photos/?advancedSearch&${q}`
+      window.location = `/${document.querySelector("body").dataset.lang}/photos/?q=${q}`
     } else {
       trigger("layoutPhotos:historyPushState", {
-        url: `?advancedSearch&${q}`,
+        url: `?q=${q}`,
         resetPhotosGrid: true,
       })
 
@@ -52,7 +51,12 @@ class DialogAdvancedSearch extends HTMLElement {
 
   show() {
     this.classList.add("is-visible")
-    this.querySelector("input").focus()
+    this.selectizeControl.reset()
+    this.selectizeControl.focus()
+
+    if (getURLParams().q && getURLParams().q.indexOf(", ") !== -1) {
+      this.selectizeControl.value = getURLParams().q
+    }
   }
 }
 

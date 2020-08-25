@@ -1,17 +1,23 @@
 import { trigger, getLocale, lang } from "../../utils"
 import auth from "../../api/auth"
+import addTag from "../../api/add-tag"
 
 class CarouselSidebar extends HTMLElement {
   constructor() {
     super()
 
-    this.addTagNode = this.querySelector(".carousel-sidebar__add-tag")
+    this.addTagNode = this.querySelector(".carousel-sidebar__tags__add-tag")
     this.addTagNode.addEventListener("click", e => {
       e.preventDefault()
       trigger("carouselSidebar:showSelectizeControl")
     })
 
     this.bindCustomEvents()
+
+    this.tagsForm = this.querySelector(".carousel-sidebar__tags__form")
+    this.tagsFormSubmit = this.tagsForm.querySelector(".carousel-sidebar__tags__form__save")
+    this.tagsFormSelectize = this.tagsForm.querySelector(".carousel-sidebar__tags__form__selectize")
+    this.initTagsForm()
   }
 
   set bindData(data) {
@@ -120,13 +126,6 @@ class CarouselSidebar extends HTMLElement {
         trigger("layoutPhotos:historyPushState", { url: event.currentTarget.href, resetPhotosGrid: true })
       })
     })
-
-    // reset selectize control
-    this.querySelector(".carousel-sidebar__selectize").reset()
-    this.hideSelectizeControl()
-
-    // eslint-disable-next-line prefer-destructuring
-    this.addTagNode.nextElementSibling.photoId = this.data.uuid[0]
   }
 
   show() {
@@ -141,12 +140,43 @@ class CarouselSidebar extends HTMLElement {
     document.querySelector("body").classList.toggle("hide-carousel-sidebar")
   }
 
+  // tags form
+  initTagsForm() {
+    this.tagsFormSubmit.addEventListener("click", e => {
+      e.preventDefault()
+      this.submitTagsForm()
+        .then(() => {
+          this.tagsFormSelectize.reset()
+          trigger("snackbar:show", { message: lang("tags_save_success"), status: "success", autoHide: true })
+        })
+        .catch(() => {
+          trigger("snackbar:show", { message: lang("tags_save_error"), status: "error", autoHide: true })
+        })
+    })
+
+    // reset form submit and submit with Enter
+    this.tagsForm.addEventListener("keypress", e => {
+      if (e.key === "Enter") {
+        e.preventDefault()
+      }
+    })
+    this.tagsForm.addEventListener("submit", e => {
+      e.preventDefault()
+    })
+
+    // reset selectize control
+    setTimeout(() => {
+      this.tagsFormSelectize.reset()
+      this.hideSelectizeControl()
+    }, 100)
+  }
+
   showSelectizeControl() {
     auth.getUserStatus().then(userIsSignedIn => {
       if (userIsSignedIn) {
         this.addTagNode.classList.add("is-hidden")
-        this.addTagNode.nextElementSibling.classList.remove("is-hidden")
-        this.querySelector(".carousel-sidebar__selectize").focus()
+        this.tagsForm.classList.remove("is-hidden")
+        this.tagsFormSelectize.focus()
       } else {
         trigger("snackbar:show", { message: lang("tags_signin_alert"), status: "error", autoHide: true })
         trigger("dialogSignin:show")
@@ -156,7 +186,45 @@ class CarouselSidebar extends HTMLElement {
 
   hideSelectizeControl() {
     this.addTagNode.classList.remove("is-hidden")
-    this.addTagNode.nextElementSibling.classList.add("is-hidden")
+    this.tagsForm.classList.add("is-hidden")
+  }
+
+  submitTagsForm() {
+    return new Promise((resolve, reject) => {
+      const tags = this.tagsFormSelectize.value
+
+      if (tags.length === 0) reject()
+
+      const addTags = () => {
+        return new Promise((res, rej) => {
+          const recursiveTagging = () => {
+            const tag = tags.shift()
+
+            if (tag) {
+              addTag
+                .addTag(tag, this.data.uuid[0])
+                .then(() => {
+                  recursiveTagging()
+                })
+                .catch(e => {
+                  rej(e)
+                })
+            } else {
+              res()
+            }
+          }
+          recursiveTagging()
+        })
+      }
+
+      addTags()
+        .then(() => {
+          resolve()
+        })
+        .catch(err => {
+          reject(err)
+        })
+    })
   }
 
   bindCustomEvents() {
