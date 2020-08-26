@@ -60,7 +60,12 @@ class SelectizeControl extends HTMLElement {
     this.inputNode.addEventListener("keyup", e => {
       if (e.key === "Enter") {
         if (this.inputNode.value.length > 0) {
+          // if people hit enter and the input field contains text then the text will be converted to a tag node
           this.addTagNode(this.inputNode.value)
+        } else if (this.inputNode.value === "" && this.value.length > 0 && this.form) {
+          // if people hit enter and the input field is empty but the selectize component
+          // already contains some tags then the releted form should be submitted
+          this.form.submit()
         }
       }
 
