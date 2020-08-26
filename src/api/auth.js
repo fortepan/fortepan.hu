@@ -3,10 +3,8 @@ import config from "../config"
 
 const setLoginStatus = isUserSignedIn => {
   if (isUserSignedIn) {
-    trigger("auth:signedIn")
     document.querySelector("body").classList.add("auth-signed-in")
   } else {
-    trigger("auth:signedOut")
     document.querySelector("body").classList.remove("auth-signed-in")
     localStorage.removeItem("auth")
   }
@@ -41,6 +39,7 @@ const signout = async () => {
     xmlHttp.withCredentials = true
     xmlHttp.onload = () => {
       if (xmlHttp.status === 204) {
+        trigger("auth:signedOut")
         setLoginStatus(false)
         resolve()
       } else {
@@ -132,10 +131,6 @@ const requestUserData = id => {
         if (!authData.current_user) authData.current_user = {}
         authData.current_user.id = respData.id
         authData.current_user.name = respData.attributes.name
-        authData.current_user.display_name = respData.attributes.display_name
-        authData.current_user.mail = respData.attributes.mail
-        authData.current_user.created = respData.attributes.created
-        authData.current_user.lang = respData.attributes.langcode
 
         // store the user details
         localStorage.setItem("auth", JSON.stringify(authData))
@@ -143,7 +138,7 @@ const requestUserData = id => {
         // set UI signin status
         setLoginStatus(true)
 
-        resolve()
+        resolve(respData.attributes)
       } else {
         const respData = JSON.parse(xmlHttp.responseText)
         setLoginStatus(false)
@@ -174,25 +169,19 @@ const getUserId = () => {
   })
 }
 
-const queryUser = async () => {
-  // check localstorage auth data
-  const authData = JSON.parse(localStorage.getItem("auth")) || {}
-  let id
-  // if some params are missing from the stored object
-  if (authData && authData.current_user) {
-    // request user data
-    id = await getUserId()
-    await requestUserData(id)
+const querySignedInUser = async () => {
+  let respData
+  const userIsAlreadySignedIn = await getUserStatus()
+  if (userIsAlreadySignedIn) {
+    const id = await getUserId()
+    respData = await requestUserData(id)
+    setLoginStatus(true)
   } else {
-    const userIsAlreadySignedIn = await getUserStatus()
-    if (userIsAlreadySignedIn) {
-      id = await getUserId()
-      await requestUserData(id)
-    } else {
-      // user is not signed in
-      setLoginStatus(false)
-    }
+    // user is not signed in
+    setLoginStatus(false)
   }
+
+  return respData
 }
 
 const signin = body => {
@@ -204,13 +193,10 @@ const signin = body => {
     xmlHttp.onload = () => {
       if (xmlHttp.status === 200) {
         const respData = JSON.parse(xmlHttp.responseText)
+        // store logout_token and auth specific anonym data
         localStorage.setItem("auth", JSON.stringify(respData))
-
-        // query user data after first login as the sign-in response doesn't contain all neccessary user info
-        setTimeout(() => {
-          queryUser()
-          resolve()
-        }, 100)
+        trigger("auth:signedIn")
+        resolve()
       } else {
         const respData = JSON.parse(xmlHttp.responseText)
         reject(respData.message)
@@ -227,5 +213,5 @@ export default {
   getUserStatus,
   getCSRFToken,
   forgot,
-  queryUser,
+  querySignedInUser,
 }

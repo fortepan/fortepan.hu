@@ -11,18 +11,7 @@ class HeaderNav extends HTMLElement {
     this.bindCustomEvents()
     this.bindScroll()
 
-    auth
-      .getUserStatus()
-      .then(isUserSignedIn => {
-        if (isUserSignedIn) {
-          auth.queryUser().catch(err => {
-            console.log(err)
-          })
-        }
-      })
-      .catch(err => {
-        console.log(err)
-      })
+    this.updateProfile()
   }
 
   bindCustomEvents() {
@@ -91,11 +80,12 @@ class HeaderNav extends HTMLElement {
   }
 
   updateProfile() {
-    const authData = JSON.parse(localStorage.getItem("auth"))
-    if (authData && authData.current_user) {
-      this.querySelector("#HeaderProfileName").textContent = authData.current_user.name
-      this.querySelector("#HeaderProfileEmail").textContent = authData.current_user.mail
-    }
+    auth.querySignedInUser().then(userData => {
+      if (userData) {
+        this.querySelector("#HeaderProfileName").textContent = userData.name
+        this.querySelector("#HeaderProfileEmail").textContent = userData.mail
+      }
+    })
   }
 
   initPopup() {
