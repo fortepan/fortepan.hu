@@ -1,10 +1,7 @@
 const loadGoogleAnalytics = () => {
   window.dataLayer = window.dataLayer || []
-  const gtag = (...args) => {
-    window.dataLayer.push(args)
-  }
-  gtag("js", new Date())
-  gtag("config", "UA-19831966-3")
+  window.dataLayer.push({ js: new Date() })
+  window.dataLayer.push({ config: "UA-19831966-3" })
 
   const ga = document.createElement("script")
   ga.async = true
@@ -14,4 +11,6 @@ const loadGoogleAnalytics = () => {
   s.parentNode.insertBefore(ga, s)
 }
 
-document.addEventListener("cookiesAllowed", loadGoogleAnalytics)
+if (localStorage.getItem("allowCookies") === "1") {
+  loadGoogleAnalytics()
+}
