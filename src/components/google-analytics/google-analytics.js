@@ -1,16 +1,19 @@
 const loadGoogleAnalytics = () => {
-  window.dataLayer = window.dataLayer || []
-  window.dataLayer.push({ js: new Date() })
-  window.dataLayer.push({ config: "UA-19831966-3" })
+  window.ga =
+    window.ga ||
+    function(...args) {
+      window.ga.q = window.ga.q || []
+      window.ga.q.push(args)
+    }
+  window.ga.l = +new Date()
+  window.ga("create", "UA-19831966-3", "auto")
+  window.ga("send", "pageview")
 
-  const ga = document.createElement("script")
-  ga.async = true
-  ga.src = "https://www.googletagmanager.com/gtag/js?id=UA-19831966-3"
-
+  const a = document.createElement("script")
+  a.async = true
+  a.src = "https://www.google-analytics.com/analytics.js"
   const s = document.getElementsByTagName("script")[0]
-  s.parentNode.insertBefore(ga, s)
+  s.parentNode.insertBefore(a, s)
 }
 
-if (localStorage.getItem("allowCookies") === "1") {
-  loadGoogleAnalytics()
-}
+document.addEventListener("cookiesAllowed", loadGoogleAnalytics)
