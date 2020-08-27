@@ -1,1 +1,10 @@
-{ "notifications": [] }
+{
+  "notifications": [
+    {
+      "date": "1598479200000",
+      "title": "Első értesítés",
+      "message": "Még van benne egy [link](/photos/) is",
+      "lang": "hu"
+    }
+  ]
+}
