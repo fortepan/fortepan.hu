@@ -62,19 +62,22 @@
   <div class="header-nav__popup header-nav__notifications" id="HeaderNavigationNotifications">
     <h3 class="header-nav__popup__heading">{{ lang[locale].notifications }}</h3>
     <ul class="header-nav__notifications__messages">
-      {% assign notifications = notifications[locale] %}
-      {% if notifications.size == 0 %}
-      <li class="header-nav__notifications__message">{{ lang[locale].notifications_empty }}</li>
-      {% else %}
-      {% for notification in notifications limit:4 %}
-      <li class="header-nav__notifications__message" data-date="{{ notification.date | date: "%s" }}">
+      {% capture now %}{% now %}{% endcapture %}
+      {% assign count = 0 %}
+      {% for notification in notifications %}
+      {% if notification.date < now and notification.lang == locale and count < 4 %}
+      {% assign count = count | plus: 1 %}
+      <li class="header-nav__notifications__message" data-date="{{ notification.date }}">
         <header class="header-nav__notifications__message__header">
           <h5 class="header-nav__notifications__message__title">{{ notification.title }}</h5>
-          <span class="header-nav__notifications__message__date">{{ notification.date | date: "%b %d" }}</span>
+          <span class="header-nav__notifications__message__date">{% date notification.date, locale %}</span>
         </header>
         <p class="header-nav__notifications__message__content">{{ notification.message }}</p>
       </li>
+      {% endif %}
       {% endfor %}
+      {% if count == 0 %}
+      <li class="header-nav__notifications__message">{{ lang[locale].notifications_empty }}</li>
       {% endif %}
     </ul>
   </div>

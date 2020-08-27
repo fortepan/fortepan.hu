@@ -8,6 +8,17 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.setUseGitIgnore(false)
 
   eleventyConfig.addLiquidTag("inlineSVG", inlineSVG)
+  eleventyConfig.addLiquidShortcode("now", () => {
+    return Date.now()
+  })
+  eleventyConfig.addLiquidShortcode("date", (timestamp, locale) => {
+    const dateFormat = new Intl.DateTimeFormat(locale == "hu" ? "hu-HU" : "en-US", {
+      month: "short",
+      day: "2-digit",
+      year: "numeric",
+    })
+    return dateFormat.format(new Date(parseInt(timestamp)))
+  })
 
   return {
     dir: {

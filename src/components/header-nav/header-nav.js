@@ -130,7 +130,7 @@ class HeaderNav extends HTMLElement {
     }
 
     notificationIcon.addEventListener("click", () => {
-      if (document.querySelector("body.cookies-allowed")) {
+      if (document.querySelector("body.cookies-allowed") && lastMessageTimestamp) {
         localStorage.setItem("notificationsLastSeen", lastMessageTimestamp.toString())
       }
       notificationIcon.classList.remove("has-badge")
