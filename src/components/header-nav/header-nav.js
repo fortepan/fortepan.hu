@@ -11,6 +11,8 @@ class HeaderNav extends HTMLElement {
     this.bindCustomEvents()
     this.bindScroll()
 
+    this.initNotifications()
+
     this.updateProfile()
   }
 
@@ -27,6 +29,13 @@ class HeaderNav extends HTMLElement {
       this.togglePopup(
         e.detail.currentTarget,
         this.querySelector("#HeaderNavigationProfile"),
+        e.detail && e.detail.forceHide
+      )
+    })
+    document.addEventListener("headerNav:toggleNotifications", e => {
+      this.togglePopup(
+        e.detail.currentTarget,
+        this.querySelector("#HeaderNavigationNotifications"),
         e.detail && e.detail.forceHide
       )
     })
@@ -104,6 +113,28 @@ class HeaderNav extends HTMLElement {
         }, 200)
       }, 100).bind(this)
     )
+  }
+
+  initNotifications() {
+    const lastSeen = localStorage.getItem("notificationsLastSeen")
+
+    const firstMessage = this.querySelector(".header-nav__notifications__message")
+    const lastMessageTimestamp = firstMessage ? firstMessage.dataset.date : undefined
+
+    const notificationIcon = this.querySelector(".header-nav__notification-icon")
+
+    if (lastSeen < lastMessageTimestamp) {
+      setTimeout(() => {
+        notificationIcon.classList.add("has-badge")
+      }, 500)
+    }
+
+    notificationIcon.addEventListener("click", () => {
+      if (document.querySelector("body.cookies-allowed")) {
+        localStorage.setItem("notificationsLastSeen", lastMessageTimestamp.toString())
+      }
+      notificationIcon.classList.remove("has-badge")
+    })
   }
 }
 window.customElements.define("header-nav", HeaderNav)

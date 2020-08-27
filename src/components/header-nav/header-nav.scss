@@ -75,11 +75,12 @@
     font-size: rem(20px);
     text-transform: uppercase;
     letter-spacing: 2px;
-    transition: opacity 0.4s $ease-out-expo, transform 0.6s $ease-out-expo;
+    overflow: hidden;
 
-    @media screen and (max-width: ($breakpoint-phone - 1px)) {
+    @media screen and (max-width: ($breakpoint-phone-sm - 1px)) {
       opacity: 0;
       pointer-events: none;
+      width: 0;
     }
   }
 }
@@ -149,6 +150,7 @@
   transform-origin: 50% 0;
   white-space: nowrap;
   min-width: rem(200px);
+  max-width: rem(400px);
 
   h6 {
     color: $grey;
@@ -175,6 +177,11 @@
     border-radius: rem(8px);
     box-shadow: 0px 0px 0px 1px rgba($light-base, 0.04) inset, 0px 8px 24px rgba($dark-base, 0.12);
   }
+}
+
+.header-nav__popup__heading {
+  margin: 0;
+  padding: 0 1.5rem;
 }
 
 .header-nav__link {
@@ -337,6 +344,29 @@ body[data-lang="en"] .header-nav__link.lang-en {
   }
 }
 
+.header-nav__notification-icon {
+  position: relative;
+  &::after {
+    content: "";
+    width: rem(10px);
+    height: rem(10px);
+    border-radius: 50%;
+    background-color: $red;
+    position: absolute;
+    right: rem(14px);
+    top: 0.75rem;
+    transform: scale(0);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.6s $ease-out-expo;
+  }
+
+  &.has-badge::after {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 .header-nav__profile-icon {
   display: flex;
   position: relative;
@@ -368,4 +398,57 @@ body[data-lang="en"] .header-nav__link.lang-en {
 
 .auth-signed-in .header-nav .is-hidden-when-signed-in {
   display: none;
+}
+
+.header-nav__notifications {
+  width: 100%;
+  max-height: calc(100vh - #{rem(128px)});
+  overflow: auto;
+
+  .theme--light & {
+    color: $dark-primary;
+  }
+
+  .theme--dark & {
+    color: $light-primary;
+  }
+}
+
+.header-nav__notifications__messages {
+  padding: 0;
+  margin: 0;
+}
+
+.header-nav__notifications__message {
+  list-style-type: none;
+  padding: 1rem 1.5rem;
+  white-space: normal;
+}
+
+.header-nav__notifications__message__header {
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.header-nav__notifications__message__title {
+  margin: 0;
+  padding: 0;
+}
+
+.header-nav__notifications__message__date {
+  margin-left: 1.5rem;
+  font-size: rem(14px);
+  line-height: 1.5rem;
+  color: $grey;
+  white-space: nowrap;
+}
+
+.header-nav__notifications__message__content {
+  white-space: pre-wrap;
+  font-size: rem(14px);
+  line-height: 1.25rem;
+  font-weight: 400;
+  margin: 0.5rem 0 0;
 }

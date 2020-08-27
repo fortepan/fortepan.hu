@@ -1,15 +1,33 @@
 backend:
   name: git-gateway
   branch: master
+local_backend: true
 media_folder: "/src/static/uploads"
 public_folder: "/static/uploads"
 locale: "hu"
 collections:
-  - name: "settings" # Used in routes, e.g., /admin/collections/blog
-    label: "Settings" # Used in the UI
+  - name: "settings"
+    label: "Beállítások"
     files:
       - name: "config"
         label: "Config"
         file: "/src/data/cmsConfig.json"
-        fields: # The fields for each document, usually in front matter
+        fields:
           - { label: Start Date, name: latestDate, widget: date, comment: 'This is a multiline\ncomment' }
+  - name: "content"
+    label: "Tartalom"
+    editor:
+      preview: false
+    files:
+      - name: "notifications"
+        label: "Értesítések"
+        file: "/src/data/notifications.json"
+        fields:
+          - label: "Értesítés"
+            name: "hu"
+            widget: "list"
+            summary: "{{fields.title}} - {{fields.date}}"
+            fields:
+              - { label: Dátum, name: date, widget: datetime }
+              - { label: Cím, name: title, widget: string }
+              - { label: Üzenet, name: message, widget: markdown }
