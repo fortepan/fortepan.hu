@@ -175,3 +175,8 @@ export const getCookie = name => {
 export const eraseCookie = name => {
   document.cookie = `${name}=; Max-Age=-99999999;`
 }
+
+export const validateEmail = email => {
+  const reg = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+.([A-Za-z]{2,4})$/
+  return reg.test(email)
+}

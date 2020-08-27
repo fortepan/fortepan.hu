@@ -1,4 +1,4 @@
-import { trigger } from "../utils"
+import { trigger, validateEmail } from "../utils"
 import config from "../config"
 
 const setLoginStatus = isUserSignedIn => {
@@ -71,14 +71,64 @@ const signup = body => {
   })
 }
 
-const forgot = body => {
+const forgot = val => {
   return new Promise((resolve, reject) => {
+    const body = {
+      data: {
+        type: "user--password-reset",
+        attributes: {},
+      },
+    }
+
+    if (validateEmail(val)) body.data.attributes.mail = val
+    else body.data.attributes.name = val
+
     const xmlHttp = new XMLHttpRequest()
-    xmlHttp.open("POST", `${config.DRUPAL_HOST}/user/password?_format=json`, true)
-    xmlHttp.setRequestHeader("Content-Type", "application/json")
+    xmlHttp.open("POST", `${config.DRUPAL_HOST}/jsonapi/user/password/reset`, true)
+    xmlHttp.setRequestHeader("Content-Type", "application/vnd.api+json")
+    xmlHttp.setRequestHeader("Accept", "application/vnd.api+json")
     xmlHttp.withCredentials = true
     xmlHttp.onload = () => {
-      if (xmlHttp.status === 200) {
+      if (xmlHttp.status === 202) {
+        resolve()
+      } else {
+        const respData = JSON.parse(xmlHttp.responseText)
+        console.log(respData)
+        reject(respData.errors[0].detail)
+      }
+    }
+    xmlHttp.send(JSON.stringify(body))
+  })
+}
+
+const resetPassword = pass => {
+  return new Promise((resolve, reject) => {
+    if (window.location.pathname.indexOf("/user/reset/") === -1) resolve()
+
+    const credentialKeys = ["user", "timestamp", "hash"]
+    const pathArray = window.location.pathname.split("/user/reset/")[1].split("/")
+    const credentials = credentialKeys.reduce((acc, value, i) => {
+      acc[value] = pathArray[i]
+      return acc
+    }, {})
+    credentials.pass = pass
+    const requestUrl = `${config.DRUPAL_HOST}/jsonapi/user/${credentials.user}/password/update`
+    delete credentials.user
+
+    const body = {
+      data: {
+        type: "user--user",
+        attributes: credentials,
+      },
+    }
+
+    const xmlHttp = new XMLHttpRequest()
+    xmlHttp.open("PATCH", requestUrl, true)
+    xmlHttp.setRequestHeader("Content-Type", "application/vnd.api+json")
+    xmlHttp.setRequestHeader("Accept", "application/vnd.api+json")
+    xmlHttp.withCredentials = true
+    xmlHttp.onload = () => {
+      if (xmlHttp.status === 202) {
         resolve()
       } else {
         const respData = JSON.parse(xmlHttp.responseText)
@@ -213,5 +263,6 @@ export default {
   getUserStatus,
   getCSRFToken,
   forgot,
+  resetPassword,
   querySignedInUser,
 }

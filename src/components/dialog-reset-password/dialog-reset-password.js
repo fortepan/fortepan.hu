@@ -6,6 +6,11 @@ class DialogResetPassword extends HTMLElement {
     super()
 
     this.bindCustomEvents()
+
+    // auto show panel
+    if (window.location.pathname.indexOf("/user/reset/") !== -1) {
+      trigger("dialogResetPassword:show")
+    }
   }
 
   bindCustomEvents() {
@@ -17,33 +22,26 @@ class DialogResetPassword extends HTMLElement {
 
   resetPassword(e) {
     e.preventDefault()
-    const credentials = {}
-    credentials.mail = this.querySelector("input[name=email]").value
+    const password = this.querySelector("input[name=password]").value
 
-    trigger("loadingIndicator:show", { id: "LoadingIndicatorBase" })
-    this.classList.add("is-disabled")
+    if (password.length > 0) {
+      trigger("loadingIndicator:show", { id: "LoadingIndicatorBase" })
+      this.classList.add("is-disabled")
 
-    auth
-      .forgot(credentials)
-      .then(() => {
-        trigger("loadingIndicator:hide", { id: "LoadingIndicatorBase" })
-        this.classList.remove("is-disabled")
-        trigger("dialogResetPassword:hide")
-        trigger("snackbar:show", { message: lang("password_forgot_success"), status: "success", autoHide: true })
-      })
-      .catch(statusText => {
-        trigger("loadingIndicator:hide", { id: "LoadingIndicatorBase" })
-        this.classList.remove("is-disabled")
-        trigger("snackbar:show", { message: this.errorMessageHandler(statusText), status: "error", autoHide: true })
-      })
-  }
-
-  errorMessageHandler(text) {
-    const errorMessages = {
-      "Unrecognized username or email address.": lang("password_forgot_error"),
+      auth
+        .resetPassword(password)
+        .then(() => {
+          trigger("loadingIndicator:hide", { id: "LoadingIndicatorBase" })
+          this.classList.remove("is-disabled")
+          trigger("dialogResetPassword:hide")
+          trigger("snackbar:show", { message: lang("password_reset_success"), status: "success", autoHide: true })
+        })
+        .catch(() => {
+          trigger("loadingIndicator:hide", { id: "LoadingIndicatorBase" })
+          this.classList.remove("is-disabled")
+          trigger("snackbar:show", { message: lang("password_reset_error"), status: "error", autoHide: true })
+        })
     }
-
-    return errorMessages[text]
   }
 
   hide() {

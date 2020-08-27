@@ -43,6 +43,6 @@
 
 [[redirects]]
   from = "/en/user/*"
-  to = "/"
+  to = "/en/"
   status = 200
   force = true
