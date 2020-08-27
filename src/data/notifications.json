@@ -3,7 +3,7 @@
     {
       "date": "1598479200000",
       "title": "Első értesítés",
-      "message": "Még van benne egy [link](/photos/) is",
+      "message": "Még van benne egy <a href=\"/photos/\" title=\"\" target=\"_blank\"><strong>link</strong></a> is",
       "lang": "hu"
     }
   ]
