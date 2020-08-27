@@ -2,6 +2,49 @@
 label: Notifications
 hide_body: true
 fields:
-- type: list
-  name: hu
-  label: hu
+- name: notifications
+  type: field_group_list
+  fields:
+  - name: lang
+    type: select
+    default: []
+    config:
+      required: false
+      options:
+      - en
+      - hu
+      source:
+        type: simple
+        section: 
+        file: 
+        path: 
+    label: Language
+  - name: date
+    type: datetime
+    label: Date
+    description: ''
+    config:
+      required: false
+      date_format: 
+      time_format: 
+      display_utc: false
+      export_format: x
+  - name: title
+    type: text
+    config:
+      required: false
+    label: Title
+  - name: message
+    type: textarea
+    default: ''
+    config:
+      required: false
+      wysiwyg: true
+      schema:
+        format: markdown
+    label: Message
+  config:
+    min: 
+    max: 
+    labelField: 
+  label: Notifications
