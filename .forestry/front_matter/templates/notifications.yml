@@ -48,3 +48,5 @@ fields:
     max: 
     labelField: 
   label: Notifications
+pages:
+- src/data/notifications.json
