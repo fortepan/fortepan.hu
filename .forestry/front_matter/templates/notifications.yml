@@ -7,7 +7,7 @@ fields:
   fields:
   - name: lang
     type: select
-    default: []
+    default: hu
     config:
       required: false
       options:
