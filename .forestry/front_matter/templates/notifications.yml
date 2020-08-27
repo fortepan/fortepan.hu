@@ -1,0 +1,7 @@
+---
+label: Notifications
+hide_body: true
+fields:
+- type: list
+  name: hu
+  label: hu
