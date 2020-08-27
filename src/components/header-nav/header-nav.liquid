@@ -64,7 +64,7 @@
     <ul class="header-nav__notifications__messages">
       {% capture now %}{% now %}{% endcapture %}
       {% assign count = 0 %}
-      {% for notification in notifications %}
+      {% for notification in notifications.notifications %}
       {% if notification.date < now and notification.lang == locale and count < 4 %}
       {% assign count = count | plus: 1 %}
       <li class="header-nav__notifications__message" data-date="{{ notification.date }}">
@@ -72,7 +72,7 @@
           <h5 class="header-nav__notifications__message__title">{{ notification.title }}</h5>
           <span class="header-nav__notifications__message__date">{% date notification.date, locale %}</span>
         </header>
-        <p class="header-nav__notifications__message__content">{{ notification.message }}</p>
+        <p class="header-nav__notifications__message__content">{{ notification.message | markdownify }}</p>
       </li>
       {% endif %}
       {% endfor %}
