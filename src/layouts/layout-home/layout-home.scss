@@ -21,13 +21,15 @@
 }
 
 .layout-home__hero__search-wrapper {
-  margin: rem(160px) auto rem(200px);
+  margin: 0 auto;
+  max-width: rem(800px);
+  padding: rem(160px) 0 rem(200px);
   text-align: center;
   position: relative;
   z-index: 1;
 
   @media screen and (max-width: ($breakpoint-phone - 1px)) {
-    margin: rem(120px) auto rem(120px);
+    padding: rem(120px) 0 rem(120px);
   }
 }
 

@@ -80,6 +80,7 @@ class DialogInput extends HTMLElement {
       searchAPI.autoSuggest(
         this.inputNode.value,
         this.inputNode.dataset.autosuggest,
+        10,
         res => {
           this.autoSuggestNode.classList.add("is-visible")
           this.autoSuggestNode.innerHTML = ""
@@ -87,11 +88,11 @@ class DialogInput extends HTMLElement {
           // add first item with the actual value of the selectize input
           this.autoSuggestNode.appendChild(this.createAutoSuggestItem(this.inputNode.value))
 
-          // add max 10 more items from the autosuggest filter results
+          // add items from the autosuggest filter results
           if (res.length > 0) {
-            for (let i = 0; i < Math.min(10, res.length); i += 1) {
-              this.autoSuggestNode.appendChild(this.createAutoSuggestItem(res[i]))
-            }
+            res.forEach(r => {
+              if (r !== this.inputNode.value) this.autoSuggestNode.appendChild(this.createAutoSuggestItem(r))
+            })
           }
 
           // select the first item

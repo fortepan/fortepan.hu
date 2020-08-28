@@ -60,6 +60,14 @@
 .header-nav__search {
   flex: 1;
   padding-left: 2.5rem;
+
+  @media screen and (max-width: ($breakpoint-desktop - 1)) {
+    visibility: hidden;
+  }
+}
+
+.header-nav__search__input-search {
+  max-width: 400px;
 }
 
 .header-nav__logo__link {

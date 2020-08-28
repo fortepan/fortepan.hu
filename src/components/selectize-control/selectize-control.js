@@ -6,6 +6,8 @@ class SelectizeControl extends HTMLElement {
 
     this.render()
     this.bindEvents()
+
+    this.inputTimeout = 0
   }
 
   addTagNode(val) {
@@ -57,22 +59,30 @@ class SelectizeControl extends HTMLElement {
       }
     })
 
-    this.inputNode.addEventListener("keyup", e => {
+    this.inputNode.addEventListener("keypress", e => {
       if (e.key === "Enter") {
-        if (this.inputNode.value.length > 0) {
-          // if people hit enter and the input field contains text then the text will be converted to a tag node
-          this.addTagNode(this.inputNode.value)
-        } else if (this.inputNode.value === "" && this.value.length > 0 && this.form) {
-          // if people hit enter and the input field is empty but the selectize component
-          // already contains some tags then the releted form should be submitted
-          this.form.submit()
+        e.preventDefault()
+        if (this.inputNode.value === "" && this.value.length > 0) {
+          if (this.form) this.form.submit()
+          else if (this.parentNode.submit) this.parentNode.submit()
         }
+      }
+    })
+
+    this.inputNode.addEventListener("keyup", e => {
+      if (e.key === "Enter" && this.inputNode.value.length > 0) {
+        e.preventDefault()
+        // if people hit enter and the input field contains text then the text will be converted to a tag node
+        this.addTagNode(this.inputNode.value)
       }
 
       const selectedNode = this.autosuggestNode.querySelector(".selectize-input__autosuggest__item.is-selected")
 
       if (e.key !== "ArrowDown" && e.key !== "ArrowUp") {
-        this.showAutosuggestNode()
+        clearTimeout(this.inputTimeout)
+        this.inputTimeout = setTimeout(() => {
+          this.showAutosuggestNode()
+        }, 200)
       }
 
       if (e.key === "ArrowDown" && selectedNode) {
@@ -139,6 +149,7 @@ class SelectizeControl extends HTMLElement {
       searchAPI.autoSuggest(
         this.inputNode.value,
         this.dataset.autosuggestFilter,
+        10,
         res => {
           this.autosuggestNode.classList.add("is-visible")
           this.autosuggestNode.innerHTML = ""
@@ -146,11 +157,11 @@ class SelectizeControl extends HTMLElement {
           // add first item with the actual value of the selectize input
           this.autosuggestNode.appendChild(this.createAutosuggestItem(this.inputNode.value))
 
-          // add max 4 more items from the autosuggest filter results
+          // add items from the autosuggest filter results
           if (res.length > 0) {
-            for (let i = 0; i < Math.min(10, res.length); i += 1) {
-              this.autosuggestNode.appendChild(this.createAutosuggestItem(res[i]))
-            }
+            res.forEach(r => {
+              if (r !== this.inputNode.value) this.autosuggestNode.appendChild(this.createAutosuggestItem(r))
+            })
           }
 
           // select the first item

@@ -4,6 +4,8 @@ import config from "../config"
 let autocompleteData = null
 let autocompleteDataLoaded = false
 
+const autosuggestCache = {}
+
 const elasticRequest = (body, callback, error) => {
   const searchHost = `${config.ELASTIC_HOST}/elasticsearch_index_fortepan_media/_search`
 
@@ -193,22 +195,23 @@ const getDonors = (callback, error) => {
   elasticRequest(body, callback, error)
 }
 
-const autoSuggest = (prefix, filter = false, callback, error) => {
+const autoSuggest = (prefix, filter = false, limit, callback, error) => {
   const filterAutoCompleteData = () => {
+    if (autosuggestCache[prefix]) {
+      callback(autosuggestCache[prefix])
+    }
     if (!autocompleteData) error()
     else {
       let filterArray
       if (filter) filterArray = filter.split(",")
-      const res = []
+      let res = []
       Object.keys(autocompleteData).forEach(key => {
         if (!filter || filter.length === 0 || (filterArray && filterArray.indexOf(key) > -1)) {
           const items = autocompleteData[key].filter(keyword => {
             if (slugify(keyword).indexOf(slugify(prefix)) === 0) return true
             return false
           })
-          items.forEach(item => {
-            res.push(item)
-          })
+          res = res.concat(items)
         }
       })
 
@@ -216,8 +219,11 @@ const autoSuggest = (prefix, filter = false, callback, error) => {
         return a.localeCompare(b, "hu", { ignorePunctuation: false })
       })
 
-      const filterDuplucates = keywords => keywords.filter((v, i) => keywords.indexOf(v) === i)
-      const resFiltered = filterDuplucates(resSorted)
+      const filterDuplicates = keywords => keywords.filter((v, i) => keywords.indexOf(v) === i)
+      const resFiltered = filterDuplicates(resSorted)
+      resFiltered.length = resFiltered.length > 10 ? limit : resFiltered.length
+
+      autosuggestCache[prefix] = resFiltered
 
       callback(resFiltered)
     }

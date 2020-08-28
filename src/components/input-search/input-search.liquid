@@ -1,8 +1,7 @@
 <input-search class="input-search {{ class }}">
-    {% if type == "search" %}
-    {% inlineSVG src:"src/static/images/icons/24/icon-search.svg" class:"input-search__icon" %}
-    {% endif %}
-    <input type="{{ type }}" name="search" class="input-search__input" placeholder="{{ lang[locale].search }}" autocomplete="off">
-    <div class="input-search__autosuggest"></div>
-    {% include button-circular/button-circular.liquid icon:"settings" class:"button-circular button-circular--transparent input-search__advanced" trigger:"dialogAdvancedSearch:show" label:lang[locale].advanced_search %}
+{% capture class %}
+selectize-control--search{% if type=="large" %} selectize-control--large{% endif %} input-search__selectize-control
+{% endcapture %}
+    {% include selectize-control/selectize-control.liquid class:class %}
+    {% include button-circular/button-circular.liquid icon:"search" class:"button-circular button-circular--transparent input-search__icon" label:lang[locale].go %}
 </input-search>
