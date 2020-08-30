@@ -128,7 +128,7 @@ const resetPassword = pass => {
     xmlHttp.setRequestHeader("Accept", "application/vnd.api+json")
     xmlHttp.withCredentials = true
     xmlHttp.onload = () => {
-      if (xmlHttp.status === 202) {
+      if (xmlHttp.status === 200) {
         resolve()
       } else {
         const respData = JSON.parse(xmlHttp.responseText)
