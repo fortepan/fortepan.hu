@@ -144,15 +144,10 @@ class CarouselSidebar extends HTMLElement {
   initTagsForm() {
     this.tagsFormSubmit.addEventListener("click", e => {
       e.preventDefault()
-      this.submitTagsForm()
-        .then(() => {
-          this.tagsFormSelectize.reset()
-          trigger("snackbar:show", { message: lang("tags_save_success"), status: "success", autoHide: true })
-        })
-        .catch(() => {
-          trigger("snackbar:show", { message: lang("tags_save_error"), status: "error", autoHide: true })
-        })
+      this.submit()
     })
+
+    this.tagsFormSelectize.form = this
 
     // reset form submit and submit with Enter
     this.tagsForm.addEventListener("keypress", e => {
@@ -189,42 +184,18 @@ class CarouselSidebar extends HTMLElement {
     this.tagsForm.classList.add("is-hidden")
   }
 
-  submitTagsForm() {
-    return new Promise((resolve, reject) => {
-      const tags = this.tagsFormSelectize.value
-
-      if (tags.length === 0) reject()
-
-      const addTags = () => {
-        return new Promise((res, rej) => {
-          const recursiveTagging = () => {
-            const tag = tags.shift()
-
-            if (tag) {
-              addTag
-                .addTag(tag, this.data.uuid[0])
-                .then(() => {
-                  recursiveTagging()
-                })
-                .catch(e => {
-                  rej(e)
-                })
-            } else {
-              res()
-            }
-          }
-          recursiveTagging()
-        })
-      }
-
-      addTags()
+  submit() {
+    const tags = this.tagsFormSelectize.value
+    if (tags.length > 0) {
+      addTag(tags, this.data.mid[0])
         .then(() => {
-          resolve()
+          this.tagsFormSelectize.reset()
+          trigger("snackbar:show", { message: lang("tags_save_success"), status: "success", autoHide: true })
         })
-        .catch(err => {
-          reject(err)
+        .catch(() => {
+          trigger("snackbar:show", { message: lang("tags_save_error"), status: "error", autoHide: true })
         })
-    })
+    }
   }
 
   bindCustomEvents() {
