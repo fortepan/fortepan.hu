@@ -1,3 +1,4 @@
+import throttle from "lodash/throttle"
 import { trigger, getLocale, lang } from "../../utils"
 import auth from "../../api/auth"
 import addTag from "../../api/add-tag"
@@ -18,6 +19,8 @@ class CarouselSidebar extends HTMLElement {
     this.tagsFormSubmit = this.tagsForm.querySelector(".carousel-sidebar__tags__form__save")
     this.tagsFormSelectize = this.tagsForm.querySelector(".carousel-sidebar__tags__form__selectize")
     this.initTagsForm()
+
+    window.addEventListener("resize", throttle(this.toggleOnResize, 200).bind(this))
   }
 
   set bindData(data) {
@@ -130,6 +133,7 @@ class CarouselSidebar extends HTMLElement {
 
   show() {
     document.querySelector("body").classList.remove("hide-carousel-sidebar")
+    this.toggleOnResize()
   }
 
   hide() {
@@ -138,6 +142,11 @@ class CarouselSidebar extends HTMLElement {
 
   toggle() {
     document.querySelector("body").classList.toggle("hide-carousel-sidebar")
+  }
+
+  toggleOnResize() {
+    if (window.innerWidth < 768) this.hide()
+    else this.show()
   }
 
   // tags form

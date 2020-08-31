@@ -1,5 +1,5 @@
 import config from "../../config"
-import { trigger, getURLParams } from "../../utils"
+import { trigger, getURLParams, isTouchDevice } from "../../utils"
 
 class PhotosCarousel extends HTMLElement {
   constructor() {
@@ -11,6 +11,8 @@ class PhotosCarousel extends HTMLElement {
 
     this.slideshowTimeout = null
     this.slideshowIsPlaying = false
+
+    this.touchTimeout = 0
 
     this.bindCustomEvents()
     this.bindEvents()
@@ -107,6 +109,7 @@ class PhotosCarousel extends HTMLElement {
       "photosCarousel:show",
       function() {
         this.classList.add("is-visible")
+        if (isTouchDevice()) this.autoHideControls()
       }.bind(this)
     )
 
@@ -166,14 +169,33 @@ class PhotosCarousel extends HTMLElement {
     }
   }
 
+  showControls() {
+    this.querySelector(".photos-carousel__photos").classList.remove("hide-controls")
+  }
+
+  hideControls() {
+    this.querySelector(".photos-carousel__photos").classList.add("hide-controls")
+  }
+
+  autoHideControls() {
+    this.showControls()
+    clearTimeout(this.touchTimeout)
+    this.touchTimeout = setTimeout(this.hideControls.bind(this), 4000)
+  }
+
   bindEvents() {
     // add photos container hover actions
-    this.querySelector(".photos-carousel__photos").addEventListener("mouseover", e => {
-      e.currentTarget.classList.remove("hide-controls")
-    })
-    this.querySelector(".photos-carousel__photos").addEventListener("mouseout", e => {
-      e.currentTarget.classList.add("hide-controls")
-    })
+
+    if (!isTouchDevice()) {
+      this.querySelector(".photos-carousel__photos").addEventListener("mouseover", e => {
+        e.currentTarget.classList.remove("hide-controls")
+      })
+      this.querySelector(".photos-carousel__photos").addEventListener("mouseout", e => {
+        e.currentTarget.classList.add("hide-controls")
+      })
+    } else {
+      this.querySelector(".photos-carousel__photos").addEventListener("touchstart", this.autoHideControls.bind(this))
+    }
 
     // bind key events
     document.addEventListener(

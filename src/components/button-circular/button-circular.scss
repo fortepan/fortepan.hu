@@ -89,6 +89,8 @@
 
   .theme--dark &--has-background {
     background-color: rgba($light-base, 0.06);
+    backdrop-filter: blur(20px);
+    will-change: opacity, transform;
   }
 
   .theme--dark &--has-background:hover {
@@ -101,16 +103,16 @@
 }
 
 .button-circular--separator-before {
+  .button-circular + & {
+    margin-left: 1rem;
+  }
+
   &::before {
     content: "";
     width: 1px;
     height: 100%;
     position: absolute;
-    left: rem(-12px);
-
-    .button-circular + & {
-      margin-left: rem(24px);
-    }
+    left: -0.5rem;
 
     .theme--light & {
       background-color: rgba($dark-base, 0.06);

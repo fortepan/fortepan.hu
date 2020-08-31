@@ -26,6 +26,7 @@
   left: 0;
   top: rem(80px);
   right: rem(280px);
+  min-width: rem(320px);
   bottom: rem(0px);
   transition: top 0.4s $ease-out-expo, right 0.4s $ease-out-expo, bottom 0.4s $ease-out-expo;
   background-color: $dark-base;
@@ -34,8 +35,16 @@
     top: rem(64px);
   }
 
+  @media screen and (max-width: ($breakpoint-tablet - 1px)) {
+    left: rem(-280px);
+  }
+
   .hide-carousel-sidebar & {
     right: 0;
+
+    @media screen and (max-width: ($breakpoint-tablet - 1px)) {
+      left: 0;
+    }
   }
 
   .play-carousel-slideshow & {
@@ -74,6 +83,13 @@
   right: rem(64px);
   bottom: rem(32px);
   transition: top 0.4s $ease-out-expo, right 0.4s $ease-out-expo, bottom 0.4s $ease-out-expo, left 0.4s $ease-out-expo;
+
+  @media screen and (max-width: ($breakpoint-phone - 1px)) {
+    left: rem(12px);
+    right: rem(12px);
+    top: rem(64px);
+    bottom: rem(32px);
+  }
 
   .photos-carousel__photos.hide-controls & {
     left: rem(12px);
