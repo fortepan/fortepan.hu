@@ -46,3 +46,9 @@
   to = "/en/"
   status = 200
   force = true
+
+[[redirects]]
+  from = "/m/*"
+  to = "http://www.fortepan.hu/m/:splat"
+  status = 200
+  force = true
