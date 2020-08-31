@@ -1,5 +1,4 @@
-import throttle from "lodash/throttle"
-import { trigger, getURLParams } from "../../utils"
+import { trigger, getURLParams, isTouchDevice } from "../../utils"
 
 const YEAR_MIN = 1900
 const YEAR_MAX = 1990
@@ -17,40 +16,20 @@ class Timeline extends HTMLElement {
 
     this.range = 0
 
+    this.addEventListener(isTouchDevice() ? "touchstart" : "mouseover", () => {
+      this.classList.add("is-hovered")
+    })
+
+    this.addEventListener(isTouchDevice() ? "touchend" : "mouseout", () => {
+      this.classList.remove("is-hovered")
+    })
+
     this.classList.remove("is-disabled")
     this.classList.add("is-visible")
     this.resetSlider()
 
     this.initSliderLeft()
     this.initSliderRight()
-
-    // show/hide timeline
-    this.onMouseMove = this.onMouseMove.bind(this)
-    document.addEventListener("mousemove", throttle(this.onMouseMove, 400))
-  }
-
-  onMouseMove(e) {
-    if (!this.classList.contains("is-visible") && !this.classList.contains("is-disabled")) {
-      this.classList.add("is-visible")
-    }
-
-    if (this.timelineTimer) clearTimeout(this.timelineTimer)
-    this.timelineTimer = setTimeout(
-      function() {
-        const bounds = this.getBoundingClientRect()
-        if (
-          !(
-            e.clientX >= bounds.left &&
-            e.clientX <= bounds.right &&
-            e.clientY >= bounds.top &&
-            e.clientY <= bounds.bottom
-          )
-        ) {
-          this.classList.remove("is-visible")
-        }
-      }.bind(this),
-      1000
-    )
   }
 
   disable() {
@@ -131,86 +110,73 @@ class Timeline extends HTMLElement {
     let down = false
     let ox = 0
 
-    this.sliderLeft.addEventListener(
-      "mousedown",
-      function(e) {
-        down = true
-        ox = e.pageX - this.sliderLeft.offsetLeft
-        this.sliderLeft.classList.add("is-active")
-        this.sliderStartDrag()
-      }.bind(this)
-    )
+    this.sliderLeft.addEventListener(isTouchDevice() ? "touchstart" : "mousedown", e => {
+      down = true
+      const px = e.touches ? e.touches[0].pageX : e.pageX
+      ox = px - this.sliderLeft.offsetLeft
+      this.sliderLeft.classList.add("is-active")
+      this.sliderStartDrag()
+    })
 
-    document.addEventListener(
-      "mousemove",
-      function(e) {
-        if (
-          down &&
-          this.sliderLeft.offsetLeft >= 0 &&
-          this.sliderLeft.offsetLeft <= this.sliderRight.offsetLeft - this.sliderLeft.offsetWidth
-        ) {
-          const x = Math.min(Math.max(e.pageX - ox, 0), this.sliderRight.offsetLeft - this.sliderLeft.offsetWidth)
-          this.sliderLeft.style.left = `${x}px`
-          this.sliderSelectedRange.style.left = `${x + this.sliderLeft.offsetWidth}px`
-          this.sliderSelectedRange.style.width = `${this.sliderRight.offsetLeft - x}px`
-          this.calcYearInterval()
-          this.setTimelineRange()
-        }
-      }.bind(this)
-    )
+    document.addEventListener(isTouchDevice() ? "touchmove" : "mousemove", e => {
+      if (
+        down &&
+        this.sliderLeft.offsetLeft >= 0 &&
+        this.sliderLeft.offsetLeft <= this.sliderRight.offsetLeft - this.sliderLeft.offsetWidth
+      ) {
+        const px = e.touches ? e.touches[0].pageX : e.pageX
+        const x = Math.min(Math.max(px - ox, 0), this.sliderRight.offsetLeft - this.sliderLeft.offsetWidth)
+        this.sliderLeft.style.left = `${x}px`
+        this.sliderSelectedRange.style.left = `${x + this.sliderLeft.offsetWidth}px`
+        this.sliderSelectedRange.style.width = `${this.sliderRight.offsetLeft - x}px`
+        this.calcYearInterval()
+        this.setTimelineRange()
+      }
+    })
 
-    document.addEventListener(
-      "mouseup",
-      function() {
-        down = false
-        this.sliderLeft.classList.remove("is-active")
-        this.sliderStopDrag()
-      }.bind(this)
-    )
+    document.addEventListener(isTouchDevice() ? "touchend" : "mouseup", () => {
+      down = false
+      this.sliderLeft.classList.remove("is-active")
+      this.sliderStopDrag()
+    })
   }
 
   initSliderRight() {
     let down = false
     let ox
 
-    this.sliderRight.addEventListener(
-      "mousedown",
-      function(e) {
-        down = true
-        ox = e.pageX - this.sliderRight.offsetLeft
-        this.sliderRight.classList.add("is-active")
-        this.sliderStartDrag()
-      }.bind(this)
-    )
+    this.sliderRight.addEventListener(isTouchDevice() ? "touchstart" : "mousedown", e => {
+      down = true
+      const px = e.touches ? e.touches[0].pageX : e.pageX
+      ox = px - this.sliderRight.offsetLeft
+      this.sliderRight.classList.add("is-active")
+      this.sliderStartDrag()
+    })
 
-    this.sliderRight.addEventListener(
-      "mouseup",
-      function() {
-        down = false
-        this.sliderRight.classList.remove("is-active")
-        this.sliderStopDrag()
-      }.bind(this)
-    )
+    this.sliderRight.addEventListener(isTouchDevice() ? "touchend" : "mouseup", () => {
+      down = false
+      this.sliderRight.classList.remove("is-active")
+      this.sliderStopDrag()
+    })
 
-    document.addEventListener(
-      "mousemove",
-      function(e) {
-        if (
-          down &&
-          this.sliderRight.offsetLeft >= this.sliderLeft.offsetLeft + this.sliderLeft.offsetWidth &&
-          this.sliderRight.offsetLeft <= this.timelineSlider.offsetWidth - this.sliderRight.offsetWidth
-        ) {
-          const x = Math.max(
-            Math.min(e.pageX - ox, this.timelineSlider.offsetWidth - this.sliderRight.offsetWidth),
-            this.sliderLeft.offsetLeft + this.sliderLeft.offsetWidth
-          )
-          this.sliderRight.style.left = `${x}px`
-          this.sliderSelectedRange.style.width = `${this.sliderRight.offsetLeft - this.sliderLeft.offsetLeft}px`
-          this.calcYearInterval()
-          this.setTimelineRange()
-        }
-      }.bind(this)
-    )
+    document.addEventListener(isTouchDevice() ? "touchmove" : "mousemove", e => {
+      const px = e.touches ? e.touches[0].pageX : e.pageX
+
+      if (
+        down &&
+        this.sliderRight.offsetLeft >= this.sliderLeft.offsetLeft + this.sliderLeft.offsetWidth &&
+        this.sliderRight.offsetLeft <= this.timelineSlider.offsetWidth - this.sliderRight.offsetWidth
+      ) {
+        const x = Math.max(
+          Math.min(px - ox, this.timelineSlider.offsetWidth - this.sliderRight.offsetWidth),
+          this.sliderLeft.offsetLeft + this.sliderLeft.offsetWidth
+        )
+        this.sliderRight.style.left = `${x}px`
+        this.sliderSelectedRange.style.width = `${this.sliderRight.offsetLeft - this.sliderLeft.offsetLeft}px`
+        this.calcYearInterval()
+        this.setTimelineRange()
+      }
+    })
   }
 }
 window.customElements.define("photos-timeline", Timeline)

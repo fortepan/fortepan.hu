@@ -1,7 +1,7 @@
 .photos-timeline {
   display: block;
   position: absolute;
-  bottom: rem(40px);
+  bottom: rem(24px);
   left: 50%;
   width: calc(100% - 48px);
   max-width: rem(480px);
@@ -24,7 +24,7 @@
       height 0.6s $ease-out-expo 0.4s;
   }
 
-  &:hover {
+  &.is-hovered {
     height: 128px;
     transition: transform 0.3s $ease-out-expo, opacity 0.3s $ease-out-expo, left 0.5s $ease-out-expo,
       height 0.6s $ease-out-expo;
@@ -66,7 +66,7 @@
   opacity: 0;
   transition: opacity 0.3s $ease-out-expo 0.4s;
 
-  .photos-timeline:hover & {
+  .photos-timeline.is-hovered & {
     opacity: 1;
     transition-duration: 0.6s;
     transition-delay: 0.2s;
@@ -78,7 +78,7 @@
   transition: opacity 0.15s $ease-out-expo 0.4s;
   line-height: 1rem;
 
-  .photos-timeline:hover & {
+  .photos-timeline.is-hovered & {
     opacity: 0.4;
     transition-duration: 0.6s;
     transition-delay: 0.2s;
@@ -107,6 +107,7 @@
   overflow: hidden;
   box-sizing: border-box;
   padding-top: rem(10px);
+  user-select: none;
 
   .is-used & {
     transition: none;
