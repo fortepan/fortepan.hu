@@ -64,6 +64,34 @@
   white-space: nowrap;
 }
 
+.selectize-control__placeholder {
+  display: block;
+  user-select: none;
+  pointer-events: none;
+  position: absolute;
+  left: 0.75rem;
+  right: 4rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: rem(13px);
+  line-height: 1rem;
+  color: grey;
+  opacity: 0.6;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  .selectize-control:not(.is-empty) & {
+    opacity: 0;
+  }
+}
+
+.selectize-control--large .selectize-control__placeholder {
+  font-size: rem(18px);
+  line-height: 1.25rem;
+  left: 1rem;
+}
+
 .selectize-control__tag {
   display: inline-block;
   font-size: rem(13px);
@@ -154,7 +182,7 @@
   width: 100%;
   left: 0;
   padding: 0.5rem 0;
-  z-index: 1;
+  z-index: 10;
   box-sizing: border-box;
   opacity: 0;
   pointer-events: none;

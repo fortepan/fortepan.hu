@@ -27,6 +27,7 @@ class SelectizeControl extends HTMLElement {
       close.addEventListener("click", evt => {
         evt.preventDefault()
         tagNode.parentNode.removeChild(tagNode)
+        this.togglePlaceholder()
       })
       tagNode.appendChild(close)
     }
@@ -34,6 +35,7 @@ class SelectizeControl extends HTMLElement {
     this.resetAutosuggestNode()
     this.inputNode.value = ""
     this.resizeInput()
+    this.togglePlaceholder()
   }
 
   resizeInput() {
@@ -48,6 +50,12 @@ class SelectizeControl extends HTMLElement {
     this.inputNodeLabel = document.createElement("div")
     this.inputNodeLabel.className = "selectize-control__input hide"
     this.appendChild(this.inputNodeLabel)
+
+    this.inputNode.addEventListener("blur", () => {
+      setTimeout(() => {
+        this.togglePlaceholder()
+      }, 300)
+    })
 
     this.inputNode.addEventListener("input", this.resizeInput.bind(this))
 
@@ -110,6 +118,8 @@ class SelectizeControl extends HTMLElement {
         this.inputNode.value = ""
         this.resetAutosuggest()
       }
+
+      this.togglePlaceholder()
     })
   }
 
@@ -138,10 +148,20 @@ class SelectizeControl extends HTMLElement {
     tags.forEach(tag => {
       this.addTagNode(tag)
     })
+
+    this.togglePlaceholder()
   }
 
   get form() {
     return this.inputNode.form
+  }
+
+  togglePlaceholder() {
+    if (this.inputNode.value.length === 0 && this.value.length === 0) {
+      this.classList.add("is-empty")
+    } else {
+      this.classList.remove("is-empty")
+    }
   }
 
   showAutosuggestNode() {

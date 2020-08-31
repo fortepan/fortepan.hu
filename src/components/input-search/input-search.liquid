@@ -2,6 +2,6 @@
 {% capture class %}
 selectize-control--search{% if type=="large" %} selectize-control--large{% endif %} input-search__selectize-control
 {% endcapture %}
-    {% include selectize-control/selectize-control.liquid class:class %}
+    {% include selectize-control/selectize-control.liquid class:class placeholder:lang[locale].search_more %}
     {% include button-circular/button-circular.liquid icon:"search" class:"button-circular button-circular--transparent input-search__icon" label:lang[locale].go %}
 </input-search>

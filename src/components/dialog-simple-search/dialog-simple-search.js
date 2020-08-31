@@ -8,10 +8,20 @@ class DialogSimpleSearch extends HTMLElement {
 
     this.bindCustomEvents()
     this.bindEvents()
+
+    this.hideTimeout = 0
   }
 
   bindEvents() {
     window.addEventListener("resize", throttle(this.onWindowResize, 200).bind(this))
+
+    this.inputNode.addEventListener("blur", () => {
+      this.hide()
+    })
+
+    this.inputNode.addEventListener("focus", () => {
+      clearTimeout(this.hideTimeout)
+    })
   }
 
   bindCustomEvents() {
@@ -26,7 +36,9 @@ class DialogSimpleSearch extends HTMLElement {
   }
 
   hide() {
-    this.classList.remove("is-visible")
+    this.hideTimeout = setTimeout(() => {
+      this.classList.remove("is-visible")
+    }, 200)
   }
 
   toggle() {
