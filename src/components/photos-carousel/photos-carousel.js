@@ -48,10 +48,10 @@ class PhotosCarousel extends HTMLElement {
       photo.imageSrc = `${config.PHOTO_SOURCE}1600/fortepan_${id}.jpg`
       photo.classList.add("is-active")
       trigger("loadingIndicator:show", { id: "LoadingIndicatorCarousel" })
-      photo.loadCallback = function() {
+      photo.loadCallback = () => {
         trigger("loadingIndicator:hide", { id: "LoadingIndicatorCarousel" })
         this.stepSlideshow()
-      }.bind(this)
+      }
       document.querySelector(".photos-carousel__photos__all").appendChild(photo)
     } else if (photo.loaded) {
       trigger("loadingIndicator:hide", { id: "LoadingIndicatorCarousel" })
@@ -97,46 +97,43 @@ class PhotosCarousel extends HTMLElement {
     document.addEventListener("photosCarousel:playSlideshow", this.playSlideshow.bind(this))
     document.addEventListener("photosCarousel:pauseSlideshow", this.pauseSlideshow.bind(this))
 
-    document.addEventListener(
-      "photosCarousel:showPhoto",
-      function(e) {
-        this.currentImageMeta = e.detail
-        this.showPhoto()
-      }.bind(this)
-    )
+    document.addEventListener("photosCarousel:showPhoto", e => {
+      this.currentImageMeta = e.detail
+      this.showPhoto()
+    })
 
-    document.addEventListener(
-      "photosCarousel:show",
-      function() {
-        this.classList.add("is-visible")
-        if (isTouchDevice()) this.autoHideControls()
-      }.bind(this)
-    )
+    document.addEventListener("photosCarousel:show", () => {
+      if (isTouchDevice() && !this.classList.contains("is-visible")) {
+        this.autoHideControls()
+      }
+      if (window.innerWidth < 768)
+        setTimeout(() => {
+          trigger("carouselSidebar:hide")
+        }, 300)
+      this.classList.add("is-visible")
+    })
 
-    document.addEventListener(
-      "photosCarousel:hide",
-      function() {
-        // pause slideshow if the slideshow is playing
-        if (document.querySelector("body").classList.contains("play-carousel-slideshow")) {
-          this.pauseSlideshow()
-        } else {
-          // hide all photos
-          this.hideAllPhotos()
+    document.addEventListener("photosCarousel:hide", () => {
+      // pause slideshow if the slideshow is playing
+      if (document.querySelector("body").classList.contains("play-carousel-slideshow")) {
+        this.pauseSlideshow()
+      } else {
+        // hide all photos
+        this.hideAllPhotos()
 
-          // hide dialogs
-          trigger("dialogShare:hide")
-          trigger("dialogDownload:hide")
+        // hide dialogs
+        trigger("dialogShare:hide")
+        trigger("dialogDownload:hide")
 
-          // hide carousel
-          this.classList.remove("is-visible")
+        // hide carousel
+        this.classList.remove("is-visible")
 
-          // load all photos if there's only one photo loaded in the carousel
-          if (!(document.querySelectorAll(".photos-thumbnail").length > 1) && getURLParams().id > 0) {
-            trigger("layoutPhotos:historyPushState", { url: "?q=", resetPhotosGrid: true })
-          }
+        // load all photos if there's only one photo loaded in the carousel
+        if (!(document.querySelectorAll(".photos-thumbnail").length > 1) && getURLParams().id > 0) {
+          trigger("layoutPhotos:historyPushState", { url: "?q=", resetPhotosGrid: true })
         }
-      }.bind(this)
-    )
+      }
+    })
   }
 
   pauseSlideshow() {
@@ -198,34 +195,31 @@ class PhotosCarousel extends HTMLElement {
     }
 
     // bind key events
-    document.addEventListener(
-      "keydown",
-      function(e) {
-        // if carousel is not visible then keyboard actions shouldn't work
-        if (!this.classList.contains("is-visible")) return
+    document.addEventListener("keydown", e => {
+      // if carousel is not visible then keyboard actions shouldn't work
+      if (!this.classList.contains("is-visible")) return
 
-        // if an input is in focused state, keyboard actions shouldn't work
-        const { activeElement } = document
-        const inputs = ["input", "select", "button", "textarea"]
-        if (activeElement && inputs.indexOf(activeElement.tagName.toLowerCase()) !== -1) return
+      // if an input is in focused state, keyboard actions shouldn't work
+      const { activeElement } = document
+      const inputs = ["input", "select", "button", "textarea"]
+      if (activeElement && inputs.indexOf(activeElement.tagName.toLowerCase()) !== -1) return
 
-        switch (e.key) {
-          case "Escape":
-            trigger("photosCarousel:hide")
-            break
-          case " ":
-            this.toggleSlideshow()
-            break
-          case "ArrowLeft":
-            trigger("layoutPhotos:showPrevPhoto")
-            break
-          case "ArrowRight":
-            trigger("layoutPhotos:showNextPhoto")
-            break
-          default:
-        }
-      }.bind(this)
-    )
+      switch (e.key) {
+        case "Escape":
+          trigger("photosCarousel:hide")
+          break
+        case " ":
+          this.toggleSlideshow()
+          break
+        case "ArrowLeft":
+          trigger("layoutPhotos:showPrevPhoto")
+          break
+        case "ArrowRight":
+          trigger("layoutPhotos:showNextPhoto")
+          break
+        default:
+      }
+    })
   }
 }
 window.customElements.define("photos-carousel", PhotosCarousel)

@@ -20,7 +20,7 @@ class CarouselSidebar extends HTMLElement {
     this.tagsFormSelectize = this.tagsForm.querySelector(".carousel-sidebar__tags__form__selectize")
     this.initTagsForm()
 
-    window.addEventListener("resize", throttle(this.toggleOnResize, 200).bind(this))
+    window.addEventListener("resize", throttle(this.toggleOnResize, 400).bind(this))
   }
 
   set bindData(data) {
