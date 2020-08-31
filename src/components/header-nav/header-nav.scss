@@ -63,6 +63,8 @@
 
   @media screen and (max-width: ($breakpoint-desktop - 1)) {
     visibility: hidden;
+    width: 0;
+    padding: 0;
   }
 }
 
