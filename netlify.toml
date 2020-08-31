@@ -49,6 +49,6 @@
 
 [[redirects]]
   from = "/m/*"
-  to = "http://www.fortepan.hu/m/:splat"
+  to = "/.netlify/functions/mobile-proxy/m/:splat"
   status = 200
   force = true
