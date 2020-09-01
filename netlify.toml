@@ -52,3 +52,9 @@
   to = "/.netlify/functions/mobile-proxy/m/:splat"
   status = 200
   force = true
+
+[[redirects]]
+  from = "_photo/display/*"
+  to = "https://fortepan.download/_photo/1600/fortepan_:splat"
+  status = 200
+  force = true
