@@ -8,6 +8,8 @@ class HeaderNav extends HTMLElement {
     this.navTimer = 0
 
     this.initPopup()
+    window.addEventListener("resize", throttle(this.resizePopup.bind(this), 200))
+
     this.bindCustomEvents()
     this.bindScroll()
 
@@ -19,25 +21,19 @@ class HeaderNav extends HTMLElement {
   bindCustomEvents() {
     // bind listeners
     document.addEventListener("headerNav:toggleMenu", e => {
-      this.togglePopup(
-        e.detail.currentTarget,
-        this.querySelector("#HeaderNavigationMenu"),
-        e.detail && e.detail.forceHide
-      )
+      this.activeNavItem = e.detail.currentTarget
+      this.activePopup = this.querySelector("#HeaderNavigationMenu")
+      this.togglePopup(e.detail && e.detail.forceHide)
     })
     document.addEventListener("headerNav:toggleProfile", e => {
-      this.togglePopup(
-        e.detail.currentTarget,
-        this.querySelector("#HeaderNavigationProfile"),
-        e.detail && e.detail.forceHide
-      )
+      this.activeNavItem = e.detail.currentTarget
+      this.activePopup = this.querySelector("#HeaderNavigationProfile")
+      this.togglePopup(e.detail && e.detail.forceHide)
     })
     document.addEventListener("headerNav:toggleNotifications", e => {
-      this.togglePopup(
-        e.detail.currentTarget,
-        this.querySelector("#HeaderNavigationNotifications"),
-        e.detail && e.detail.forceHide
-      )
+      this.activeNavItem = e.detail.currentTarget
+      this.activePopup = this.querySelector("#HeaderNavigationNotifications")
+      this.togglePopup(e.detail && e.detail.forceHide)
     })
     document.addEventListener("photosCarousel:show", this.addShadow.bind(this))
     document.addEventListener("photosCarousel:hide", this.removeShadow.bind(this))
@@ -51,13 +47,22 @@ class HeaderNav extends HTMLElement {
     })
   }
 
-  togglePopup(itemNode, popupNode, forceHide = false) {
-    const itemRect = itemNode.getBoundingClientRect()
+  resizePopup() {
+    if (this.activePopup && this.activeNavItem) {
+      if (window.innerWidth < 480) {
+        this.activePopup.style.left = ""
+      } else {
+        const rect = this.activeNavItem.getBoundingClientRect()
+        this.activePopup.style.left = `${rect.x + rect.width / 2}px`
+      }
+    }
+  }
+
+  togglePopup(forceHide = false) {
     this.querySelectorAll(".header-nav__popup").forEach(node => {
-      if (node === popupNode && !forceHide) {
-        // eslint-disable-next-line no-param-reassign
-        node.style.left = `${itemRect.x + itemRect.width / 2}px`
+      if (node === this.activePopup && !forceHide) {
         node.classList.add("is-visible")
+        this.resizePopup()
       } else {
         node.classList.remove("is-visible")
       }
@@ -75,16 +80,13 @@ class HeaderNav extends HTMLElement {
   bindScroll() {
     const scrollView = document.querySelector(".js-header-watchscroll")
     if (scrollView) {
-      scrollView.addEventListener(
-        "scroll",
-        function() {
-          if (scrollView.scrollTop > 0) {
-            this.classList.add("has-shadow")
-          } else {
-            this.classList.remove("has-shadow")
-          }
-        }.bind(this)
-      )
+      scrollView.addEventListener("scroll", () => {
+        if (scrollView.scrollTop > 0) {
+          this.classList.add("has-shadow")
+        } else {
+          this.classList.remove("has-shadow")
+        }
+      })
     }
   }
 
