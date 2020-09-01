@@ -24,8 +24,6 @@ class Timeline extends HTMLElement {
       this.classList.remove("is-hovered")
     })
 
-    this.classList.remove("is-disabled")
-    this.classList.add("is-visible")
     this.resetSlider()
 
     this.initSliderLeft()
@@ -77,6 +75,9 @@ class Timeline extends HTMLElement {
     this.setRange()
     this.setTimelineRange()
     this.fixSlider()
+
+    this.classList.remove("is-disabled")
+    this.classList.add("is-visible")
   }
 
   set reset({ start = YEAR_MIN, end = YEAR_MAX }) {
