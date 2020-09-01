@@ -18,7 +18,7 @@ class SelectizeControl extends HTMLElement {
     if (tags.indexOf(val) === -1) {
       const tagNode = document.createElement("div")
       tagNode.className = "selectize-control__tag"
-      tagNode.textContent = val
+      tagNode.textContent = val.trim()
       this.inputNode.parentElement.insertBefore(tagNode, this.inputNode)
 
       const close = document.createElement("a")
@@ -39,7 +39,7 @@ class SelectizeControl extends HTMLElement {
   }
 
   resizeInput() {
-    this.inputNodeLabel.textContent = this.inputNode.value
+    this.inputNodeLabel.textContent = this.inputNode.value.replace(/ /g, "&nbsp;")
     this.inputNode.style.width = `${Math.max(4, this.inputNodeLabel.offsetWidth + 4)}px`
   }
 
@@ -64,6 +64,16 @@ class SelectizeControl extends HTMLElement {
         if (this.inputNode.previousElementSibling) {
           this.inputNode.parentElement.removeChild(this.inputNode.previousElementSibling)
         }
+      }
+
+      if (e.key === "," && this.inputNode.value.length > 0) {
+        e.preventDefault()
+        // if people hit comma and the input field contains text then the text will be converted to a tag node
+        this.addTagNode(this.inputNode.value)
+      }
+
+      if (e.key === " " && this.inputNode.value.length === 0) {
+        e.preventDefault()
       }
     })
 
