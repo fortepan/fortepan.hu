@@ -72,7 +72,7 @@ class SelectizeControl extends HTMLElement {
         this.addTagNode(this.inputNode.value)
       }
 
-      if (e.key === " " && this.inputNode.value.length === 0) {
+      if ((e.key === " " || e.key === ",") && this.inputNode.value.length === 0) {
         e.preventDefault()
       }
     })
