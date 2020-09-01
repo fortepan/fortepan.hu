@@ -34,6 +34,11 @@ import "./layouts/layout-home/layout-home"
 import "./layouts/layout-photos/layout-photos"
 import "./layouts/layout-donors/layout-donors"
 
+// redirect calls from fortepan.eu
+if (window.location.hostname.indexOf("fortepan.eu") > -1) {
+  window.location.href = window.location.href.replace("fortepan.eu", "fortepan.hu")
+}
+
 ready(() => {
   document.querySelectorAll("[data-trigger]").forEach(n => {
     n.addEventListener(isTouchDevice() ? "touchstart" : "click", e => {
