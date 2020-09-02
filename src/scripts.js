@@ -49,7 +49,7 @@ if (window.location.pathname === "/" || window.location.pathname === "/advanced-
     image_id: "id",
     img: "id",
     donors: "donor",
-    tags: "tag",
+    tags: "q",
     "AdvancedSearch[tag]": "tag",
     "AdvancedSearch[country]": "country",
     "AdvancedSearch[city]": "city",
