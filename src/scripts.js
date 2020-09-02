@@ -34,9 +34,13 @@ import "./layouts/layout-home/layout-home"
 import "./layouts/layout-photos/layout-photos"
 import "./layouts/layout-donors/layout-donors"
 
-// redirect calls from fortepan.eu
-if (window.location.hostname.indexOf("fortepan.eu") > -1) {
-  window.location.href = window.location.href.replace("fortepan.eu", "fortepan.hu")
+// redirect calls from fortepan.eu and beta.fortepan.hu
+const redirectDomains = ["fortepan.eu", "beta.fortepan.hu"]
+// eslint-disable-next-line no-restricted-syntax
+for (const domain in redirectDomains) {
+  if (window.location.hostname.indexOf(domain) > -1) {
+    window.location.href = window.location.href.replace(domain, "fortepan.hu")
+  }
 }
 
 ready(() => {
