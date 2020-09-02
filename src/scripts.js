@@ -1,4 +1,4 @@
-import { ready, isTouchDevice, trigger } from "./utils"
+import { ready, isTouchDevice, trigger, getURLParams } from "./utils"
 
 // CUSTOM ELEMENTS
 // Global elements
@@ -36,11 +36,30 @@ import "./layouts/layout-donors/layout-donors"
 
 // redirect calls from fortepan.eu and beta.fortepan.hu
 const redirectDomains = ["fortepan.eu", "beta.fortepan.hu"]
-// eslint-disable-next-line no-restricted-syntax
-for (const domain in redirectDomains) {
+redirectDomains.forEach(domain => {
   if (window.location.hostname.indexOf(domain) > -1) {
     window.location.href = window.location.href.replace(domain, "fortepan.hu")
   }
+})
+
+// redirect old search params
+if (window.location.pathname === "/" || window.location.pathname === "/advanced-search") {
+  const urlParams = getURLParams()
+  const transformParams = {
+    image_id: "id",
+    donors: "donor",
+    "AdvancedSearch[tag]": "tag",
+    "AdvancedSearch[country]": "country",
+    "AdvancedSearch[city]": "city",
+    search: "q",
+  }
+  const newParams = {}
+  Object.keys(urlParams).forEach(key => {
+    const newKey = transformParams[key] || key
+    newParams[newKey] = urlParams[key]
+  })
+  const q = new URLSearchParams(newParams).toString()
+  window.location.href = `/hu/photos/?${q}`
 }
 
 ready(() => {
