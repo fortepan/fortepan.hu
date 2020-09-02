@@ -43,8 +43,12 @@ redirectDomains.forEach(domain => {
 })
 
 // redirect old search params
-if (window.location.pathname === "/" || window.location.pathname === "/advanced-search") {
+if (
+  (window.location.pathname === "/" || window.location.pathname === "/advanced-search") &&
+  window.location.search.length > 0
+) {
   const urlParams = getURLParams()
+
   const transformParams = {
     image_id: "id",
     img: "id",
