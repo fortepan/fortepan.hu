@@ -47,7 +47,9 @@ if (window.location.pathname === "/" || window.location.pathname === "/advanced-
   const urlParams = getURLParams()
   const transformParams = {
     image_id: "id",
+    img: "id",
     donors: "donor",
+    tags: "tag",
     "AdvancedSearch[tag]": "tag",
     "AdvancedSearch[country]": "country",
     "AdvancedSearch[city]": "city",

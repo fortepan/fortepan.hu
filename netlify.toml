@@ -48,6 +48,12 @@
   force = true
 
 [[redirects]]
+  from = "/advanced-search*"
+  to = "/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
   from = "/m/*"
   to = "/.netlify/functions/mobile-proxy/m/:splat"
   status = 200
@@ -58,3 +64,4 @@
   to = "https://fortepan.download/_photo/480/fortepan_:splat"
   status = 200
   force = true
+
