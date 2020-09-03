@@ -23,3 +23,16 @@
   content: "";
   flex-grow: 999999999;
 }
+
+.layout-photos__bottom-actions {
+  padding: 2rem;
+  text-align: center;
+}
+
+.layout-photos__bottom-actions.is-hidden {
+  display: none;
+}
+
+.layout-photos__load-more {
+  cursor: pointer;
+}

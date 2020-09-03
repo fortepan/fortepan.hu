@@ -19,6 +19,13 @@ class LayoutPhotos extends HTMLElement {
     this.onScroll = this.onScroll.bind(this)
     this.addEventListener("scroll", throttle(this.onScroll, 200))
 
+    // init load more button
+    this.querySelector(".layout-photos__load-more").addEventListener("click", e => {
+      e.currentTarget.classList.add("is-hidden")
+      this.thumbnailsLoading = true
+      this.loadPhotos()
+    })
+
     // History API
     // Custom event to load content and update page meta tag
     document.addEventListener("layoutPhotos:historyPushState", e => {
@@ -37,11 +44,12 @@ class LayoutPhotos extends HTMLElement {
     // resize thumbnails when window gets resized
     window.addEventListener(
       "resize",
-      throttle(function() {
+      throttle(() => {
         this.querySelectorAll(".photos-thumbnail").forEach(thumbnail => {
           thumbnail.resize()
         })
-      }, 1000).bind(this)
+        this.toggleLoadMoreButton()
+      }, 500).bind(this)
     )
   }
 
@@ -62,6 +70,19 @@ class LayoutPhotos extends HTMLElement {
     this.querySelectorAll(".photos-thumbnail.is-loaded:not(.is-visible)").forEach(thumbnail => {
       thumbnail.show()
     })
+  }
+
+  toggleLoadMoreButton() {
+    const bottomActions = this.querySelector(".layout-photos__bottom-actions")
+    if (
+      this.thumbnailsCount % config.THUMBNAILS_QUERY_LIMIT === 0 &&
+      this.thumbnailsCount > 0 &&
+      this.offsetHeight - this.scrollHeight >= 0
+    ) {
+      bottomActions.classList.remove("is-hidden")
+    } else {
+      bottomActions.classList.add("is-hidden")
+    }
   }
 
   loadPhotos() {
@@ -110,6 +131,7 @@ class LayoutPhotos extends HTMLElement {
             this.thumbnailsLoading = false
             trigger("loadingIndicator:hide", { id: "LoadingIndicatorBase" })
             this.showAllLoadedThumbnails()
+            this.toggleLoadMoreButton()
             resolve()
           })
         },
@@ -150,64 +172,50 @@ class LayoutPhotos extends HTMLElement {
   bindCustomEvents() {
     // Bind custom events
     // select next photo and open carousel
-    document.addEventListener(
-      "layoutPhotos:showNextPhoto",
-      function() {
-        let next = this.selectedThumbnail.nextElementSibling
-        if (next) {
-          trigger("photosCarousel:hidePhotos")
-          next.click()
-        } else if (this.thumbnailsCount % config.THUMBNAILS_QUERY_LIMIT === 0 && this.thumbnailsCount > 0) {
-          this.thumbnailsLoading = true
-          this.loadPhotos().then(
-            function() {
-              next = this.selectedThumbnail.nextElementSibling
-              if (next) {
-                trigger("photosCarousel:hidePhotos")
-                next.click()
-              }
-            }.bind(this)
-          )
-        }
-      }.bind(this)
-    )
+    document.addEventListener("layoutPhotos:showNextPhoto", () => {
+      let next = this.selectedThumbnail.nextElementSibling
+      if (next) {
+        trigger("photosCarousel:hidePhotos")
+        next.click()
+      } else if (this.thumbnailsCount % config.THUMBNAILS_QUERY_LIMIT === 0 && this.thumbnailsCount > 0) {
+        this.thumbnailsLoading = true
+        this.loadPhotos().then(() => {
+          next = this.selectedThumbnail.nextElementSibling
+          if (next) {
+            trigger("photosCarousel:hidePhotos")
+            next.click()
+          }
+        })
+      }
+    })
 
     // select previous photo and open carousel
-    document.addEventListener(
-      "layoutPhotos:showPrevPhoto",
-      function() {
-        const prev = this.selectedThumbnail.previousElementSibling
-        if (prev) {
-          trigger("photosCarousel:hidePhotos")
-          prev.click()
-        }
-      }.bind(this)
-    )
+    document.addEventListener("layoutPhotos:showPrevPhoto", () => {
+      const prev = this.selectedThumbnail.previousElementSibling
+      if (prev) {
+        trigger("photosCarousel:hidePhotos")
+        prev.click()
+      }
+    })
 
     // set new selected thumbnail
-    document.addEventListener(
-      "layoutPhotos:selectThumbnail",
-      function(e) {
-        if (e.detail && e.detail.node) {
-          if (this.selectedThumbnail) this.selectedThumbnail.classList.remove("is-selected")
-          this.selectedThumbnail = e.detail.node
-          this.selectedThumbnail.classList.add("is-selected")
-        }
-      }.bind(this)
-    )
+    document.addEventListener("layoutPhotos:selectThumbnail", e => {
+      if (e.detail && e.detail.node) {
+        if (this.selectedThumbnail) this.selectedThumbnail.classList.remove("is-selected")
+        this.selectedThumbnail = e.detail.node
+        this.selectedThumbnail.classList.add("is-selected")
+      }
+    })
 
     // when carousel gets closed...
-    document.addEventListener(
-      "photosCarousel:hide",
-      function() {
-        // ...scroll to thumbnail if it's not in the viewport
-        if (this.selectedThumbnail) {
-          if (!isElementInViewport(this.selectedThumbnail.querySelector(".photos-thumbnail__image"))) {
-            this.scrollTop = this.selectedThumbnail.offsetTop - 16 - document.querySelector(".header-nav").offsetHeight
-          }
+    document.addEventListener("photosCarousel:hide", () => {
+      // ...scroll to thumbnail if it's not in the viewport
+      if (this.selectedThumbnail) {
+        if (!isElementInViewport(this.selectedThumbnail.querySelector(".photos-thumbnail__image"))) {
+          this.scrollTop = this.selectedThumbnail.offsetTop - 16 - document.querySelector(".header-nav").offsetHeight
         }
-      }.bind(this)
-    )
+      }
+    })
   }
 }
 window.customElements.define("layout-photos", LayoutPhotos)

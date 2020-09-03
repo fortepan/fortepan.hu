@@ -5,6 +5,9 @@ layout: layout-base/layout-base.liquid
 <layout-photos class="layout-photos scrollview js-header-watchscroll">
   {% include photos-title/photos-title.liquid %}
   <div class="layout-photos__grid"></div>
+  <div class="layout-photos__bottom-actions is-hidden">
+    <div class="button button--secondary button--inline layout-photos__load-more">{{ lang[locale].load_more }}</div>
+  </div>
 </layout-photos>
 
 {% include photos-carousel/photos-carousel.liquid %}
