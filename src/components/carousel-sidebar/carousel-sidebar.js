@@ -20,7 +20,7 @@ class CarouselSidebar extends HTMLElement {
     this.tagsFormSelectize = this.tagsForm.querySelector(".carousel-sidebar__tags__form__selectize")
     this.initTagsForm()
 
-    window.addEventListener("resize", throttle(this.toggleOnResize, 400).bind(this))
+    window.addEventListener("resize", throttle(this.toggleOnResize.bind(this), 400))
   }
 
   set bindData(data) {
@@ -133,7 +133,6 @@ class CarouselSidebar extends HTMLElement {
 
   show() {
     document.querySelector("body").classList.remove("hide-carousel-sidebar")
-    this.toggleOnResize()
   }
 
   hide() {
@@ -146,7 +145,7 @@ class CarouselSidebar extends HTMLElement {
 
   toggleOnResize() {
     if (window.innerWidth < 768) this.hide()
-    else this.show()
+    else if (!document.querySelector("body").classList.contains("play-carousel-slideshow")) this.show()
   }
 
   // tags form
