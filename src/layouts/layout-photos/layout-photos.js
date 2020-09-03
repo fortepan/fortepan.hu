@@ -56,7 +56,7 @@ class LayoutPhotos extends HTMLElement {
   onScroll() {
     // auto-load new items when scrolling reaches the bottom of the page
     if (
-      this.scrollTop + this.offsetHeight >= this.scrollHeight &&
+      this.scrollTop + this.offsetHeight >= this.scrollHeight - 150 &&
       !this.thumbnailsLoading &&
       this.thumbnailsCount % config.THUMBNAILS_QUERY_LIMIT === 0 &&
       this.thumbnailsCount > 0
