@@ -15,10 +15,11 @@ class SelectizeControl extends HTMLElement {
     this.querySelectorAll(".selectize-control__tag").forEach(el => {
       tags.push(el.textContent)
     })
-    if (tags.indexOf(val) === -1) {
+    const v = val.trim()
+    if (tags.indexOf(v) === -1 && val !== "") {
       const tagNode = document.createElement("div")
       tagNode.className = "selectize-control__tag"
-      tagNode.textContent = val.trim()
+      tagNode.textContent = v
       this.inputNode.parentElement.insertBefore(tagNode, this.inputNode)
 
       const close = document.createElement("a")
@@ -131,6 +132,11 @@ class SelectizeControl extends HTMLElement {
 
       this.togglePlaceholder()
     })
+
+    this.inputNode.addEventListener("paste", e => {
+      e.preventDefault()
+      this.value = e.clipboardData.getData("Text")
+    })
   }
 
   bindEvents() {
@@ -154,7 +160,7 @@ class SelectizeControl extends HTMLElement {
   }
 
   set value(string) {
-    const tags = string.split(", ")
+    const tags = string.split(",")
     tags.forEach(tag => {
       this.addTagNode(tag)
     })
