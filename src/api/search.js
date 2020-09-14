@@ -67,11 +67,12 @@ const search = (params, callback, error) => {
     words.forEach(word => {
       query.bool.must.push({
         multi_match: {
-          query: slugify(word),
+          query: `${slugify(word)}`,
           fields: ["mid^5", "year^2", "*_search"],
-          type: "phrase",
+          type: "bool_prefix",
           lenient: true,
           operator: "AND",
+          tie_breaker: 0.3,
         },
       })
     })
