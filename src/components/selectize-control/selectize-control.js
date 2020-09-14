@@ -44,6 +44,16 @@ class SelectizeControl extends HTMLElement {
     this.inputNode.style.width = `${Math.max(4, this.inputNodeLabel.offsetWidth + 4)}px`
   }
 
+  scrollToAutosuggestNode(node) {
+    console.log(node.offsetTop, this.autosuggestNode.offsetHeight, this.autosuggestNode.scrollTop)
+    if (
+      node.offsetTop - this.autosuggestNode.scrollTop > this.autosuggestNode.offsetHeight ||
+      node.offsetTop < this.autosuggestNode.scrollTop
+    ) {
+      this.autosuggestNode.scrollTop = node.offsetTop - 10
+    }
+  }
+
   render() {
     this.autosuggestNode = this.querySelector(".selectize-input__autosuggest")
     this.inputNode = this.querySelector("input")
@@ -109,7 +119,13 @@ class SelectizeControl extends HTMLElement {
           selectedNode.nextElementSibling || this.autosuggestNode.querySelector(".selectize-input__autosuggest__item")
         selectedNode.classList.remove("is-selected")
         nextNode.classList.add("is-selected")
+
+        // move cursor to the end of input value
         this.inputNode.value = nextNode.textContent
+
+        // scroll to the selected autosuggest item
+        this.scrollToAutosuggestNode(nextNode)
+
         this.resizeInput()
       }
 
@@ -122,6 +138,10 @@ class SelectizeControl extends HTMLElement {
 
         // move cursor to the end of input value
         this.inputNode.value = previousNode.textContent
+
+        // scroll to the selected autosuggest item
+        this.scrollToAutosuggestNode(previousNode)
+
         this.resizeInput()
       }
 

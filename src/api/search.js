@@ -221,7 +221,7 @@ const autoSuggest = (prefix, filter = false, limit, callback, error) => {
 
       const filterDuplicates = keywords => keywords.filter((v, i) => keywords.indexOf(v) === i)
       const resFiltered = filterDuplicates(resSorted)
-      resFiltered.length = resFiltered.length > 10 ? limit : resFiltered.length
+      // resFiltered.length = resFiltered.length > 10 ? limit : resFiltered.length
 
       autosuggestCache[prefix] = resFiltered
 

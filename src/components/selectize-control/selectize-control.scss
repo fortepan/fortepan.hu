@@ -191,6 +191,8 @@
   border-radius: 0.25rem;
   box-shadow: 0 rem(12px) rem(24px) 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
   font-size: rem(14px);
+  max-height: rem(300px);
+  overflow: auto;
 
   &.is-visible {
     opacity: 1;
