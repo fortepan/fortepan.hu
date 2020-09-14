@@ -100,6 +100,7 @@
   padding: 0.25rem 0.5rem;
   border-radius: rem(2px);
   margin-right: 0.25rem;
+  user-select: none;
 
   .theme--light & {
     background-color: $light-base;
