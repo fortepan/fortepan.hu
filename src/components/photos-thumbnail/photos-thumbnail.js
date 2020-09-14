@@ -60,7 +60,7 @@ class PhotosThumbnail extends HTMLElement {
     const h = window.innerWidth < 640 ? (THUMBNAIL_HEIGHT * 2) / 3 : THUMBNAIL_HEIGHT
     if (!this.naturalWidth) return
     i.style.height = `${h}px`
-    const w = (this.naturalWidth / this.naturalHeight) * h
+    const w = Math.min(240, (this.naturalWidth / this.naturalHeight) * h)
     this.style.flex = `${w}`
     this.style.minWidth = `${w}px`
   }
