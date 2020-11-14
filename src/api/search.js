@@ -71,8 +71,8 @@ const search = (params, callback, error) => {
           fields: ["mid^5", "year^2", "*_search"],
           type: "bool_prefix",
           lenient: true,
-          operator: "AND",
-          tie_breaker: 0.3,
+          operator: "and",
+          tie_breaker: 0.8,
         },
       })
     })

@@ -79,6 +79,7 @@ class PhotosCarousel extends HTMLElement {
     this.setCarouselBackground()
     this.loadPhoto()
     this.initPager()
+    this.showControls()
 
     document.querySelector(".carousel-sidebar").bindData = this.currentImageMeta
     document.querySelector(".dialog-download").bindData = this.currentImageMeta
@@ -183,16 +184,22 @@ class PhotosCarousel extends HTMLElement {
   bindEvents() {
     // add photos container hover actions
 
-    if (!isTouchDevice()) {
-      this.querySelector(".photos-carousel__photos").addEventListener("mouseover", e => {
+    this.querySelector(".photos-carousel__photos").addEventListener("mouseover", e => {
+      if (this.slideshowIsPlaying) {
         e.currentTarget.classList.remove("hide-controls")
-      })
-      this.querySelector(".photos-carousel__photos").addEventListener("mouseout", e => {
+      }
+    })
+    this.querySelector(".photos-carousel__photos").addEventListener("mouseout", e => {
+      if (this.slideshowIsPlaying) {
         e.currentTarget.classList.add("hide-controls")
-      })
-    } else {
-      this.querySelector(".photos-carousel__photos").addEventListener("touchstart", this.autoHideControls.bind(this))
-    }
+      }
+    })
+
+    this.querySelector(".photos-carousel__photos").addEventListener("touchstart", () => {
+      if (this.slideshowIsPlaying) {
+        this.autoHideControls.bind(this)
+      }
+    })
 
     // bind key events
     document.addEventListener("keydown", e => {
