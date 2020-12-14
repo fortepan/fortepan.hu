@@ -48,14 +48,16 @@ class CarouselSidebar extends HTMLElement {
         })
       }
       if (locationArray.length > 0) {
-        this.querySelector(".carousel-sidebar__location").style.display = "block"
+        this.querySelector(".carousel-sidebar__location h5").style.display = "block"
         this.querySelector(".carousel-sidebar__location h5").innerHTML = locationArray.join(",<br/>")
       } else {
-        this.querySelector(".carousel-sidebar__location").style.display = "none"
+        this.querySelector(".carousel-sidebar__location h5").style.display = "none"
       }
+
+      console.log(this.data.description)
       this.querySelector(".carousel-sidebar__description").innerHTML = this.data.description
         ? this.data.description
-        : ""
+        : `something`
 
       if (this.data.cimke_name) {
         this.querySelector(".carousel-sidebar__tags p").innerHTML = this.data.cimke_name

@@ -75,6 +75,12 @@
   line-height: rem(20px);
 }
 
+.carousel-sidebar__description__empty {
+  color: $grey;
+  opacity: 0.6;
+  user-select: none;
+}
+
 .carousel-sidebar__tags {
   font-size: rem(12px);
   line-height: rem(20px);

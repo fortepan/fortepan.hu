@@ -1,6 +1,6 @@
 import throttle from "lodash/throttle"
 import auth from "../../api/auth"
-
+import siteData from "../../data/siteData"
 class HeaderNav extends HTMLElement {
   constructor() {
     super()
@@ -14,6 +14,8 @@ class HeaderNav extends HTMLElement {
     this.bindScroll()
 
     this.initNotifications()
+
+    this.initLangSwitcher()
 
     this.updateProfile()
   }
@@ -96,6 +98,19 @@ class HeaderNav extends HTMLElement {
         this.querySelector("#HeaderProfileName").textContent = userData.name
         this.querySelector("#HeaderProfileEmail").textContent = userData.mail
       }
+    })
+  }
+
+  initLangSwitcher() {
+    this.querySelectorAll(".header-nav__link__lang").forEach(lang => {
+      lang.addEventListener("click", e => {
+        e.preventDefault()
+        const l = lang.dataset.lang
+        document.location.href = document.location.href
+          .split("/")
+          .map(s => (Object.keys(siteData.locales).indexOf(s) > -1 ? l : s))
+          .join("/")
+      })
     })
   }
 
