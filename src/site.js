@@ -1,4 +1,16 @@
-import { ready, isTouchDevice, trigger, getURLParams } from "./utils"
+// import CSS
+import "./scss/styles.scss"
+
+import { ready, isTouchDevice, trigger } from "./js/utils"
+
+// Redirects to old site urls (if needed)
+import "./js/redirects"
+
+// Stimulus config to automatically require component and layout controller js files
+import "./js/stimulus"
+
+// Init GA event handling
+import "./js/google-analytics"
 
 // CUSTOM ELEMENTS
 // Global elements
@@ -27,46 +39,10 @@ import "./components/toggle-theme/toggle-theme"
 import "./components/selectize-control/selectize-control"
 import "./components/cookie-consent/cookie-consent"
 
-import "./components/google-analytics/google-analytics"
-
 // Layouts and layout elements
 import "./layouts/layout-home/layout-home"
 import "./layouts/layout-photos/layout-photos"
 import "./layouts/layout-donors/layout-donors"
-
-// redirect calls from fortepan.eu and beta.fortepan.hu
-const redirectDomains = ["fortepan.eu", "beta.fortepan.hu"]
-redirectDomains.forEach(domain => {
-  if (window.location.hostname.indexOf(domain) > -1) {
-    window.location.href = window.location.href.replace(domain, "fortepan.hu")
-  }
-})
-
-// redirect old search params
-if (
-  (window.location.pathname === "/" || window.location.pathname === "/advanced-search") &&
-  window.location.search.length > 0
-) {
-  const urlParams = getURLParams()
-
-  const transformParams = {
-    image_id: "id",
-    img: "id",
-    donors: "donor",
-    tags: "q",
-    "AdvancedSearch[tag]": "tag",
-    "AdvancedSearch[country]": "country",
-    "AdvancedSearch[city]": "city",
-    search: "q",
-  }
-  const newParams = {}
-  Object.keys(urlParams).forEach(key => {
-    const newKey = transformParams[key] || key
-    newParams[newKey] = urlParams[key]
-  })
-  const q = new URLSearchParams(newParams).toString()
-  window.location.href = `/hu/photos/?${q}`
-}
 
 ready(() => {
   document.querySelectorAll("[data-trigger]").forEach(n => {

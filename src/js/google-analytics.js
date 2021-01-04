@@ -34,4 +34,6 @@ const GA = {
 
 document.addEventListener("analytics:trackEvent", GA.trackEvent)
 document.addEventListener("analytics:trackPageView", GA.trackPageView)
+
+// GA tracking is only allowed when users approve it
 document.addEventListener("cookiesAllowed", GA.init)

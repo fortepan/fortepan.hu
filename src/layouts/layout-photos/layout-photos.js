@@ -1,6 +1,6 @@
 import throttle from "lodash/throttle"
-import config from "../../config"
-import { lang, trigger, getURLParams, isElementInViewport } from "../../utils"
+import config from "../../data/siteConfig"
+import { lang, trigger, getURLParams, isElementInViewport } from "../../js/utils"
 import searchAPI from "../../api/search"
 
 class LayoutPhotos extends HTMLElement {

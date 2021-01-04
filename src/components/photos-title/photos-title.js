@@ -1,4 +1,4 @@
-import { lang, getURLParams, numberWithCommas } from "../../utils"
+import { lang, getURLParams, numberWithCommas } from "../../js/utils"
 
 class PhotosTitle extends HTMLElement {
   constuctor() {

@@ -1,5 +1,5 @@
-import config from "../../config"
-import { lang } from "../../utils"
+import config from "../../data/siteConfig"
+import { lang } from "../../js/utils"
 
 class DialogDownload extends HTMLElement {
   constructor() {

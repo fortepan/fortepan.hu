@@ -1,12 +1,21 @@
 const inlineSVG = require("./plugins/inlineSVG")
+const htmlmin = require("html-minifier")
 
 module.exports = function(eleventyConfig) {
-  eleventyConfig.addPassthroughCopy("src/images")
-  eleventyConfig.addPassthroughCopy({ "src/static": "/" })
-  eleventyConfig.addPassthroughCopy({ admin: "/admin/" })
-  eleventyConfig.addPassthroughCopy({ "node_modules/@webcomponents/webcomponentsjs": "/webcomponents-polyfill" })
+  // Disable .gitignore and use eleventy's own ignore file instead
   eleventyConfig.setUseGitIgnore(false)
 
+  // Watch the compiled assets for changes
+  eleventyConfig.addWatchTarget("./_compiled-assets/")
+
+  // Copy assets
+  eleventyConfig.addPassthroughCopy({ "_compiled-assets": "/" })
+  eleventyConfig.addPassthroughCopy({ "src/static/images": "/images/" })
+  eleventyConfig.addPassthroughCopy({ "src/static/uploads": "/uploads/" })
+  eleventyConfig.addPassthroughCopy({ "src/static/": "/" })
+  eleventyConfig.addPassthroughCopy({ "node_modules/@webcomponents/webcomponentsjs": "/webcomponents-polyfill" })
+
+  // Define custom liquid tags and shortcodes
   eleventyConfig.addLiquidTag("inlineSVG", inlineSVG)
   eleventyConfig.addLiquidShortcode("now", () => {
     return Date.now()
@@ -20,6 +29,23 @@ module.exports = function(eleventyConfig) {
     return dateFormat.format(new Date(parseInt(timestamp)))
   })
 
+  // Minify html in production
+  if (process.env.ENV === "production") {
+    eleventyConfig.addTransform("htmlmin", (content, outputPath) => {
+      if (outputPath.endsWith(".html")) {
+        const minified = htmlmin.minify(content, {
+          collapseInlineTagWhitespace: false,
+          collapseWhitespace: true,
+          removeComments: true,
+          sortClassName: true,
+          useShortDoctype: true,
+        })
+        return minified
+      }
+      return content
+    })
+  }
+
   return {
     dir: {
       input: "src",
@@ -29,7 +55,7 @@ module.exports = function(eleventyConfig) {
       includes: "components",
     },
     passthroughFileCopy: true,
-    templateFormats: ["liquid", "md", "html", "yml"],
     htmlTemplateEngine: "liquid",
+    templateFormats: ["liquid", "md", "html", "yml"],
   }
 }

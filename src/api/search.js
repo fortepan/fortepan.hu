@@ -1,5 +1,5 @@
-import { slugify, getLocale } from "../utils"
-import config from "../config"
+import { slugify, getLocale } from "../js/utils"
+import config from "../data/siteConfig"
 
 let autocompleteData = null
 let autocompleteDataLoaded = false

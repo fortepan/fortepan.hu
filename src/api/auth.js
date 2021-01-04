@@ -1,5 +1,5 @@
-import { trigger, validateEmail } from "../utils"
-import config from "../config"
+import { trigger, validateEmail } from "../js/utils"
+import config from "../data/siteConfig"
 
 const setLoginStatus = isUserSignedIn => {
   if (isUserSignedIn) {

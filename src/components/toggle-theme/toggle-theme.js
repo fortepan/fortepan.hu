@@ -1,5 +1,5 @@
-import config from "../../config"
-import { ready } from "../../utils"
+import config from "../../data/siteConfig"
+import { ready } from "../../js/utils"
 
 let theme = config.DEFAULT_THEME
 

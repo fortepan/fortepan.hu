@@ -1,4 +1,7 @@
-export default {
+module.exports = {
+  ENV: process.env.ENV,
+  SITE: "https://www.fortepan.hu",
+  SITE_DEV: "http://localhost:8888",
   DRUPAL_HOST: "https://drupal.admin.fortepan.hu",
   ELASTIC_HOST: "https://es.admin.fortepan.hu",
   PHOTO_SOURCE: "https://fortepan.download/_photo/",
@@ -12,4 +15,8 @@ export default {
   BREAKPOINT_DESKTOP_LG: 1220,
   CAROUSEL_SLIDESHOW_DELAY: 4000,
   DEFAULT_THEME: "light",
+  LOCALES: {
+    hu: "Magyar",
+    en: "English",
+  },
 }

@@ -1,4 +1,4 @@
-import { copyToClipboard, trigger } from "../../utils"
+import { copyToClipboard, trigger } from "../../js/utils"
 
 class DialogShare extends HTMLElement {
   constructor() {

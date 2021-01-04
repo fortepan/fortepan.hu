@@ -10,10 +10,10 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="fragment" content="!">
 
-    {% if siteData.environment == 'production' %}
-      {% assign site_url = siteData.site %}
+    {% if siteConfig.ENV == 'production' %}
+      {% assign site_url = siteConfig.SITE %}
     {% else %}
-      {% assign site_url = siteData.site_dev %}
+      {% assign site_url = siteConfig.SITE_DEV %}
     {% endif %}
 
 
@@ -40,7 +40,7 @@
     <link rel="stylesheet" href="https://use.typekit.net/shi7abw.css" />
     <link
       rel="stylesheet"
-      href="/{% if siteData.environment == 'production' %}{{ manifestCSS['app.css'] }}{% else %}app.css{% endif %}"
+      href="/main.css?{{ cacheBust.mainCss }}"
     />
 
     <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.10/webcomponents-bundle.js"></script>
@@ -64,6 +64,6 @@
       window.{{param[0]}} = "{{param[1]}}";
       {% endfor %}
     </script>
-    <script src="/{% if siteData.environment == 'production' %}{{ manifestJS['_dist/app.js'] | replace: '_dist/','' }}{% else %}app.js{% endif %}"></script>
+    <script src="/main.js?{{ cacheBust.mainJs }}"></script>
   </body>
 </html>

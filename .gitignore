@@ -4,6 +4,9 @@ node_modules/
 # dotenv environment variables file
 .env
 
+# webpack build output
+_compiled-assets
+
 # eleventy.js build output
 _dist
 src/data/manifest*

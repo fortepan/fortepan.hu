@@ -1,6 +1,7 @@
 import throttle from "lodash/throttle"
 import auth from "../../api/auth"
-import siteData from "../../data/siteData"
+import siteConfig from "../../data/siteConfig"
+
 class HeaderNav extends HTMLElement {
   constructor() {
     super()
@@ -108,7 +109,7 @@ class HeaderNav extends HTMLElement {
         const l = lang.dataset.lang
         document.location.href = document.location.href
           .split("/")
-          .map(s => (Object.keys(siteData.locales).indexOf(s) > -1 ? l : s))
+          .map(s => (Object.keys(siteConfig.LOCALES).indexOf(s) > -1 ? l : s))
           .join("/")
       })
     })

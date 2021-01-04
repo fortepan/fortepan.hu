@@ -5,6 +5,7 @@
     "es6": true
   },
   "rules": {
-    "class-methods-use-this": "off"
+    "class-methods-use-this": "off",
+    "no-param-reassign": [2, { "props": false }]
   }
 }

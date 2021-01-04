@@ -1,5 +1,5 @@
 import throttle from "lodash/throttle"
-import config from "../../config"
+import config from "../../data/siteConfig"
 
 class DialogSimpleSearch extends HTMLElement {
   constructor() {

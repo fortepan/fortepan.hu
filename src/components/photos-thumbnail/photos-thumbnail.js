@@ -1,5 +1,5 @@
-import config from "../../config"
-import { lang, trigger, setPageMeta, getLocale } from "../../utils"
+import config from "../../data/siteConfig"
+import { lang, trigger, setPageMeta, getLocale } from "../../js/utils"
 
 const THUMBNAIL_HEIGHT = 160
 

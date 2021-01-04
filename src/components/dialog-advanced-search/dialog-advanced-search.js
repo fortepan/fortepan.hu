@@ -1,4 +1,4 @@
-import { trigger, getURLParams } from "../../utils"
+import { trigger, getURLParams } from "../../js/utils"
 
 class DialogAdvancedSearch extends HTMLElement {
   constructor() {

@@ -1,4 +1,4 @@
-import { isTouchDevice } from "../../utils"
+import { isTouchDevice } from "../../js/utils"
 
 class CarouselPhoto extends HTMLElement {
   connectedCallback() {

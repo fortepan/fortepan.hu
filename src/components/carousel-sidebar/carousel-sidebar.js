@@ -1,5 +1,5 @@
 import throttle from "lodash/throttle"
-import { trigger, getLocale, lang } from "../../utils"
+import { trigger, getLocale, lang } from "../../js/utils"
 import auth from "../../api/auth"
 import addTag from "../../api/add-tag"
 

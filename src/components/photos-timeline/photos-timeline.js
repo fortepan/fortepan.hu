@@ -1,4 +1,4 @@
-import { trigger, getURLParams, isTouchDevice } from "../../utils"
+import { trigger, getURLParams, isTouchDevice } from "../../js/utils"
 
 const YEAR_MIN = 1900
 const YEAR_MAX = 1990

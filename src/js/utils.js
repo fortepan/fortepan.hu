@@ -1,4 +1,4 @@
-import langData from "./data/lang"
+import langData from "../data/lang"
 
 export const getLocale = () => {
   return document.querySelector("body").dataset.lang

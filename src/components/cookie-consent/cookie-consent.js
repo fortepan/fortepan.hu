@@ -1,4 +1,4 @@
-import { trigger } from "../../utils"
+import { trigger } from "../../js/utils"
 
 class CookieConsent extends HTMLElement {
   constructor() {

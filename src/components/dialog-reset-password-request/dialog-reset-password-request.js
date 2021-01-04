@@ -1,4 +1,4 @@
-import { trigger, lang } from "../../utils"
+import { trigger, lang } from "../../js/utils"
 import auth from "../../api/auth"
 
 class DialogResetPasswordRequest extends HTMLElement {

@@ -1,4 +1,4 @@
-import config from "../config"
+import config from "../data/siteConfig"
 
 export default (tags, photoId) => {
   return new Promise((resolve, reject) => {

@@ -1,3 +1,6 @@
-**/*.scss
-**/*.js
-src/static
+/dist/
+/node_modules/
+/src/static/google73cdc61cc2289b36.html
+
+.DS_Store
+Thumbs.db

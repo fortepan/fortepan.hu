@@ -1,5 +1,5 @@
-import config from "../../config"
-import { trigger, getURLParams, isTouchDevice } from "../../utils"
+import config from "../../data/siteConfig"
+import { trigger, getURLParams, isTouchDevice } from "../../js/utils"
 
 class PhotosCarousel extends HTMLElement {
   constructor() {
