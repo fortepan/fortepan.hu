@@ -16,7 +16,6 @@ const elasticRequest = (body, callback, error) => {
   xmlHttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
   xmlHttp.onload = () => {
     if (xmlHttp.status === 200) {
-      console.log(xmlHttp.responseText)
       callback(JSON.parse(xmlHttp.responseText))
     } else {
       error(xmlHttp.statusText)
