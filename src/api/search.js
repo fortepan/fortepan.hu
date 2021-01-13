@@ -16,6 +16,7 @@ const elasticRequest = (body, callback, error) => {
   xmlHttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
   xmlHttp.onload = () => {
     if (xmlHttp.status === 200) {
+      console.log(xmlHttp.responseText)
       callback(JSON.parse(xmlHttp.responseText))
     } else {
       error(xmlHttp.statusText)
@@ -32,7 +33,21 @@ const search = (params, callback, error) => {
     },
   }
 
-  const sort = [{ year: { order: "asc" } }, { created: { order: "desc" } }, { mid: { order: "desc" } }]
+  const sort = [
+    { year: { order: "asc" } },
+    {
+      _script: {
+        type: "string",
+        script: {
+          lang: "painless",
+          source:
+            "DateTimeFormatter df = DateTimeFormatter.ofPattern('yyyy-MM-dd'); return doc['created'].size()==0 ? '1970-01-01' : df.format(doc['created'].value);",
+        },
+        order: "desc",
+      },
+    },
+    { mid: { order: "desc" } },
+  ]
 
   const range = {
     range: {
