@@ -1,6 +1,7 @@
 import throttle from "lodash/throttle"
 import auth from "../../api/auth"
 import siteConfig from "../../data/siteConfig"
+import { globalSettings } from "../../js/utils"
 
 class HeaderNav extends HTMLElement {
   constructor() {
@@ -148,7 +149,7 @@ class HeaderNav extends HTMLElement {
     }
 
     notificationIcon.addEventListener("click", () => {
-      if (document.querySelector("body.cookies-allowed") && lastMessageTimestamp) {
+      if (globalSettings.getItem("cookiesAllowed") && lastMessageTimestamp) {
         localStorage.setItem("notificationsLastSeen", lastMessageTimestamp.toString())
       }
       notificationIcon.classList.remove("has-badge")

@@ -14,7 +14,6 @@ import "./js/google-analytics"
 
 // CUSTOM ELEMENTS
 // Global elements
-import "./components/background-icon/background-icon"
 import "./components/carousel-photo/carousel-photo"
 import "./components/carousel-sidebar/carousel-sidebar"
 import "./components/dialog-advanced-search/dialog-advanced-search"
@@ -37,7 +36,6 @@ import "./components/photos-title/photos-title"
 import "./components/snackbar/snackbar"
 import "./components/toggle-theme/toggle-theme"
 import "./components/selectize-control/selectize-control"
-import "./components/cookie-consent/cookie-consent"
 
 // Layouts and layout elements
 import "./layouts/layout-home/layout-home"

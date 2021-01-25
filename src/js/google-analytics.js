@@ -1,3 +1,14 @@
+/**
+ * GA Helper
+ *
+ * You can trigger the following events from any components
+ * by using the trigger() method from utils
+ *
+ * trigger("analytics:trackPageview")
+ * trigger("analytics:trackEvent", {eventCategory, eventAction, eventLabel})
+ *
+ */
+
 const GA = {
   init: () => {
     // pollute window
@@ -32,8 +43,11 @@ const GA = {
   },
 }
 
+/** Custom event listeners */
+
 document.addEventListener("analytics:trackEvent", GA.trackEvent)
 document.addEventListener("analytics:trackPageView", GA.trackPageView)
 
-// GA tracking is only allowed when users approve it
-document.addEventListener("cookiesAllowed", GA.init)
+/** GA tracking is only allowed when users approve it with the cookie consent */
+
+document.addEventListener("cookieConsent:cookiesAllowed", GA.init)

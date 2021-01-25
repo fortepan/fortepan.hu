@@ -48,7 +48,7 @@ module.exports = {
       },
     ],
   },
-  // Any `import`s from `node_modules` will compiled in to a `vendor.js` file.
+
   optimization: {
     minimizer:
       process.env.ENV === "production"

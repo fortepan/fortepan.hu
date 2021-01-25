@@ -180,3 +180,16 @@ export const validateEmail = email => {
   const reg = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+.([A-Za-z]{2,4})$/
   return reg.test(email)
 }
+
+const globalSettingsStorage = {}
+export const globalSettings = {
+  setItem: (key, value) => {
+    globalSettingsStorage[key] = value
+  },
+  getItem: key => {
+    return globalSettingsStorage[key]
+  },
+  removeItem: key => {
+    delete globalSettingsStorage[key]
+  },
+}
