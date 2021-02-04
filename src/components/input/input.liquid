@@ -1,0 +1,17 @@
+<div class=input-wrapper {{ class }}" data-controller="input {% unless autosuggest == null %}autosuggest{% endunless %}">
+  <label for="{{ name }}" data-input-target="label" class="input-wrapper__label">{{ label }}</label>
+  <input class="input-wrapper__input" 
+    name="{{ name }}" 
+    type="{{ type }}" 
+    placeholder="{{ label }}"
+    data-input-target="input"
+    data-action="keyup->input#keyup {% unless autosuggest == null %}keyup->autosuggest#keyup{% endunless %}"
+    {% unless autosuggest == null %}
+    data-autosuggest="{{ autosuggest }}"
+    data-autosuggest-target="input"
+    {% endunless %}
+  />
+  {% unless autosuggest == null %}
+  <div class="autosuggest" data-autosuggest-target="autosuggest"></div>
+  {% endunless %}
+</div>

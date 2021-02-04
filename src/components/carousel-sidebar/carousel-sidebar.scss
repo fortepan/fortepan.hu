@@ -27,7 +27,7 @@
   }
 
   h5,
-  h6 {
+  h6:not(.carousel-sidebar__tags-title) {
     margin: 0;
     padding: 0;
   }
@@ -55,13 +55,14 @@
 }
 
 .carousel-sidebar__id,
-.carousel-sidebar__year {
+.carousel-sidebar__year,
+.carousel-sidebar__tags-title {
   width: 50%;
   margin-top: rem(24px);
+  margin-bottom: 0;
 }
 
 .carousel-sidebar__donor,
-.carousel-sidebar__tags,
 .carousel-sidebar__location,
 .carousel-sidebar__photographer {
   width: 100%;
@@ -82,18 +83,13 @@
 }
 
 .carousel-sidebar__tags {
+  margin: 0;
   font-size: rem(12px);
   line-height: rem(20px);
+  font-weight: normal;
 
-  > p {
-    margin: 0;
-    font-size: rem(12px);
-    font-weight: normal;
-    line-height: rem(20px);
-
-    a {
-      font-weight: normal;
-    }
+  a {
+    font-weight: 400;
   }
 }
 
@@ -101,40 +97,4 @@
   color: $grey;
   opacity: 0.6;
   user-select: none;
-}
-
-.carousel-sidebar a.carousel-sidebar__tags__add-tag {
-  display: block;
-  font-weight: bold;
-  color: $red;
-  cursor: pointer;
-  line-height: 1rem;
-  border-bottom: none;
-  margin-top: 0.5rem;
-
-  &::before {
-    content: "";
-    width: 1rem;
-    height: 1rem;
-    display: inline-block;
-    margin-right: 0.25rem;
-    background: svg-load("static/images/icons/16/icon-add.svg");
-    vertical-align: text-bottom;
-  }
-
-  &.is-hidden {
-    display: none;
-  }
-}
-
-.carousel-sidebar__tags__form {
-  display: block;
-
-  &.is-hidden {
-    display: none;
-  }
-}
-
-body:not(.auth-signed-in) .carousel-sidebar__tags__form {
-  display: none;
 }

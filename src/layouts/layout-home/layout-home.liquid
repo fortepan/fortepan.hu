@@ -4,15 +4,15 @@ layout: layout-base/layout-base.liquid
 
 {% include header-nav/header-nav.liquid hide_search:true header_class:"header-nav--transparent" %}
 
-<layout-home class="layout-home scrollview js-header-watchscroll">
+<div class="layout-home scrollview js-header-watchscroll" data-controller="layout-home">
   <section class="layout-home__hero">
-    <div class="layout-home__hero__background"></div>
+    <div class="layout-home__hero__background" data-layout-home-target="heroBg"></div>
     <div class="layout-home__hero__search-wrapper">
-      {% include input-search/input-search.liquid class:"layout-home__search__input" type:"large" %}
+      {% include search/search.liquid class:"layout-home__search__input" type:"large" %}
       {% if locale == "hu" %}
-      <div class="layout-home__hero__total h3">Összesen <a href="/{{ locale }}/photos/"><span></span> fénykép</a></div>
+      <div class="layout-home__hero__total h3" data-layout-home-target="total">Összesen <a href="/{{ locale }}/photos/"><span data-layout-home-target="totalVal"></span> fénykép</a></div>
       {% else %}
-      <div class="layout-home__hero__total h3"><a href="/{{ locale }}/photos/"><span></span> photos</a> in total</div>
+      <div class="layout-home__hero__total h3" data-layout-home-target="total"><a href="/{{ locale }}/photos/"><span data-layout-home-target="totalVal"></span> photos</a> in total</div>
       {% endif %}
     </div>
     <div class="layout-home__hero__content">
@@ -21,4 +21,4 @@ layout: layout-base/layout-base.liquid
     </div>
   </section>
   {% include footer/footer.liquid %}
-</layout-home>
+</div>

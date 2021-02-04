@@ -47,7 +47,7 @@
     <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.2.10/custom-elements-es5-adapter.js"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=URLSearchParams%2CObject.fromEntries"></script>
   </head>
-  <body itemscope itemtype="http://schema.org/WebPage" data-lang="{{ locale }}">
+  <body itemscope itemtype="http://schema.org/WebPage" data-lang="{{ locale }}" data-controller="theme">
     <main>
     {{ content }}
     </main>
@@ -55,9 +55,10 @@
     {% include dialog-signup/dialog-signup.liquid %}
     {% include dialog-reset-password/dialog-reset-password.liquid %}
     {% include dialog-reset-password-request/dialog-reset-password-request.liquid %}
-    {% include loading-indicator/loading-indicator.liquid id:"LoadingIndicatorBase" %}
+    {% include loader/loader.liquid id:"LoaderBase" %}
     {% include cookie-consent/cookie-consent.liquid %}
     {% include dialog-simple-search/dialog-simple-search.liquid %}
+    {% include snackbar/snackbar.liquid %}
 
     <script>
       {% for param in cmsConfig %}

@@ -1,7 +1,23 @@
-<selectize-control class="selectize-control is-empty {{ class }}" data-autosuggest-filter="{{ filter }}">
+<div class="selectize-control is-empty {{ class }}"
+  data-controller="selectize-control autosuggest"
+  data-action="click->selectize-control#focus"
+  {{ stimulusTarget }}
+>
     <div class="selectize-input">
-        <input class="selectize-control__input" type="text" />
-        <span class="selectize-control__placeholder">{{ placeholder }}</span>
+        <input class="selectize-control__input" type="text" 
+            data-selectize-control-target="input" 
+            data-autosuggest="{{ filter }}"
+            data-autosuggest-target="input"
+            data-action="blur->selectize-control#blur
+                         input->selectize-control#resizeInput
+                         keydown->selectize-control#keydown
+                         keyup->selectize-control#keyup
+                         keyup->autosuggest#keyup
+                         keypress->selectize-control#keypress
+                         paste->selectize-control#paste"
+        />
+        <span class="selectize-control__placeholder" data-selectize-control-target="inputLabel">{{ placeholder }}</span>
     </div>
-    <div class="selectize-input__autosuggest"></div>
-</selectize-control>
+    <div class="autosuggest" data-autosuggest-target="autosuggest"></div>
+    <div class="selectize-control__input hide" data-selectize-control-target="fakeInput"></div>
+</div>

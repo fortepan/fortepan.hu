@@ -1,7 +1,0 @@
-<dialog-input class="dialog-input {{ class }}">
-  <label for="{{ name }}">{{ label }}</label>
-  <input class="input" name="{{ name }}" type="{{ type }}" placeholder="{{ label }}" {% unless autosuggest == null %}data-autosuggest="{{ autosuggest }}"{% endunless %}/>
-  {% unless autosuggest == null %}
-  <div class="dialog-input__autosuggest"></div>
-  {% endunless %}
-</dialog-input>

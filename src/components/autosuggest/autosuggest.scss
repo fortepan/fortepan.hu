@@ -1,20 +1,4 @@
-.dialog-input {
-  display: block;
-  position: relative;
-
-  label {
-    opacity: 0;
-    transform: translateY(8px);
-    transition: opacity 0.3s $ease-out-expo, transform 0.3s $ease-out-expo;
-
-    &.is-visible {
-      opacity: 1;
-      transform: translateY(0px);
-    }
-  }
-}
-
-.dialog-input__autosuggest {
+.autosuggest {
   position: absolute;
   width: 100%;
   left: 0;
@@ -45,7 +29,7 @@
   }
 }
 
-.dialog-input__autosuggest__item {
+.autosuggest__item {
   display: block;
   color: inherit;
   text-align: left;

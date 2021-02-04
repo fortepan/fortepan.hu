@@ -1,4 +1,4 @@
-.loading-indicator {
+.loader {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -50,7 +50,7 @@
   }
 }
 
-.loading-indicator__anim {
+.loader__anim {
   position: relative;
   height: 40px;
   width: 40px;

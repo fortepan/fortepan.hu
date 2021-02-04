@@ -2,16 +2,27 @@
 layout: layout-base/layout-base.liquid
 ---
 
-<layout-photos class="layout-photos scrollview js-header-watchscroll">
+<div class="layout-photos scrollview js-header-watchscroll" 
+     data-controller="layout-photos" 
+     data-action="scroll->layout-photos#onScroll 
+                  resize@window->layout-photos#resizeThumbnails
+                  popstate@window->layout-photos#onPopState
+                  layoutPhotos:historyPushState@document->layout-photos#historyPushState
+                  layoutPhotos:showNextPhoto@document->layout-photos#showNextPhotoInCarousel
+                  layoutPhotos:showPrevPhoto@document->layout-photos#showPrevPhotoInCarousel
+                  layoutPhotos:selectThumbnail@document->layout-photos#selectThumbnail
+                  photosCarousel:hide@document->layout-photos#scrollToSelectedThumbnail"
+>
   {% include photos-title/photos-title.liquid %}
-  <div class="layout-photos__grid"></div>
-  <div class="layout-photos__bottom-actions is-hidden">
-    <div class="button button--secondary button--inline layout-photos__load-more">{{ lang[locale].load_more }}</div>
+  <div class="layout-photos__grid" data-layout-photos-target="grid"></div>
+  <div class="layout-photos__bottom-actions is-hidden" data-layout-photos-target="bottomActions">
+    <div class="button button--secondary button--inline layout-photos__load-more" data-action="layout-photos#loadMorePhotos">{{ lang[locale].load_more }}</div>
   </div>
-</layout-photos>
+</div>
 
+{% include photos-thumbnail/photos-thumbnail-template.liquid %}
 {% include photos-carousel/photos-carousel.liquid %}
 {% include header-nav/header-nav.liquid %}
-{% include photos-timeline/photos-timeline.liquid %}
+{% include timeline/timeline.liquid %}
 {% include dialog-download/dialog-download.liquid %}
 {% include dialog-share/dialog-share.liquid %}

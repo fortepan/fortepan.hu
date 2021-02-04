@@ -3,10 +3,10 @@
       {% include button-circular/button-circular.liquid icon:"close" id:"DialogSignupClose" trigger:"dialogSignup:hide" label:lang[locale].close class:"dialog__close" %}
       <h3 class="dialog__title">{{ lang[locale].signup }}</h3>
       <div class="dialog__form">
-        {% include dialog-input/dialog-input.liquid type:"text" name:"name" label:lang[locale].username %}
-        {% include dialog-input/dialog-input.liquid type:"email" name:"email" label:lang[locale].email %}
-        {% include dialog-input/dialog-input.liquid type:"password" name:"password" label:lang[locale].password %}
-        <a href="#" class="dialog__link dialog__link--small" data-trigger="dialogSignin:show|dialogSignup:hide">{{ lang[locale].signin_long }} →</a>
+        {% include input/input.liquid type:"text" name:"name" label:lang[locale].username %}
+        {% include input/input.liquid type:"email" name:"email" label:lang[locale].email %}
+        {% include input/input.liquid type:"password" name:"password" label:lang[locale].password %}
+        <a href="#" class="dialog__link dialog__link--small">{{ lang[locale].signin_long }} →</a>
         <button class="button button--primary dialog__button">{{ lang[locale].signup }}</button>
       </div>
   </div>

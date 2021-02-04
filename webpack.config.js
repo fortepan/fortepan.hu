@@ -16,6 +16,7 @@ module.exports = {
     library: "SITE",
     path: path.resolve(__dirname, "_compiled-assets"),
   },
+  devtool: "source-map",
   module: {
     rules: [
       {

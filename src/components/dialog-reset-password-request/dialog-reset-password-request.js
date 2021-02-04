@@ -20,19 +20,19 @@ class DialogResetPasswordRequest extends HTMLElement {
     const email = this.querySelector("input[name=email]").value
 
     if (email.length > 0) {
-      trigger("loadingIndicator:show", { id: "LoadingIndicatorBase" })
+      trigger("loader:show", { id: "loaderBase" })
       this.classList.add("is-disabled")
 
       auth
         .forgot(email)
         .then(() => {
-          trigger("loadingIndicator:hide", { id: "LoadingIndicatorBase" })
+          trigger("loader:hide", { id: "loaderBase" })
           this.classList.remove("is-disabled")
           trigger("dialogResetPasswordRequest:hide")
           trigger("snackbar:show", { message: lang("password_forgot_success"), status: "success", autoHide: true })
         })
         .catch(statusText => {
-          trigger("loadingIndicator:hide", { id: "LoadingIndicatorBase" })
+          trigger("loader:hide", { id: "loaderBase" })
           this.classList.remove("is-disabled")
           trigger("snackbar:show", { message: this.errorMessageHandler(statusText), status: "error", autoHide: true })
         })

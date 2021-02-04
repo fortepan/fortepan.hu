@@ -21,7 +21,7 @@ class DialogSignin extends HTMLElement {
     credentials.name = this.querySelector("input[name=name]").value
     credentials.pass = this.querySelector("input[name=password]").value
 
-    trigger("loadingIndicator:show", { id: "LoadingIndicatorBase" })
+    trigger("loader:show", { id: "loaderBase" })
     this.classList.add("is-disabled")
 
     auth
@@ -41,13 +41,13 @@ class DialogSignin extends HTMLElement {
 
   error(statusText) {
     this.classList.remove("is-disabled")
-    trigger("loadingIndicator:hide", { id: "LoadingIndicatorBase" })
+    trigger("loader:hide", { id: "loaderBase" })
     trigger("snackbar:show", { message: this.errorMessageHandler(statusText), status: "error", autoHide: true })
   }
 
   success() {
     this.classList.remove("is-disabled")
-    trigger("loadingIndicator:hide", { id: "LoadingIndicatorBase" })
+    trigger("loader:hide", { id: "loaderBase" })
     trigger("dialogSignin:hide")
     trigger("snackbar:show", { message: lang("user_signin_success"), status: "success", autoHide: true })
   }

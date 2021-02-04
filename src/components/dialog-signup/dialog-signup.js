@@ -22,7 +22,7 @@ class DialogSignup extends HTMLElement {
     credentials.mail = { value: this.querySelector("input[name=email]").value }
     credentials.pass = { value: this.querySelector("input[name=password]").value }
 
-    trigger("loadingIndicator:show", { id: "LoadingIndicatorBase" })
+    trigger("loader:show", { id: "loaderBase" })
     this.classList.add("is-disabled")
 
     auth
@@ -72,13 +72,13 @@ class DialogSignup extends HTMLElement {
   }
 
   error(statusText) {
-    trigger("loadingIndicator:hide", { id: "LoadingIndicatorBase" })
+    trigger("loader:hide", { id: "loaderBase" })
     this.classList.remove("is-disabled")
     trigger("snackbar:show", { message: this.errorMessageHandler(statusText), status: "error", autoHide: true })
   }
 
   success() {
-    trigger("loadingIndicator:hide", { id: "LoadingIndicatorBase" })
+    trigger("loader:hide", { id: "loaderBase" })
     this.classList.remove("is-disabled")
     trigger("snackbar:show", { message: lang("user_signup_success"), status: "success", autoHide: true })
     trigger("dialogSignup:hide")
