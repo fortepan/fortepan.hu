@@ -1,5 +1,5 @@
 ---
-layout: layout-article/layout-article.liquid
+layout: article/article.liquid
 title: Adatvédelem
 permalink: "/hu/privacy/"
 hide_search: true

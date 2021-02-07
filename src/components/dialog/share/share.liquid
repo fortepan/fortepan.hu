@@ -1,0 +1,32 @@
+<div class="dialog dialog-share" 
+     data-controller="dialog--share"
+     data-action="dialogs:hide@document->dialog--share#hide
+                   dialogShare:show@document->dialog--share#show
+                   dialogShare:hide@document->dialog--share#hide"
+>
+  <div class="dialog__wrapper">
+      <div class="button-circular dialog__close"
+           data-action="click->dialog--share#hide"
+      >
+        {% inlineSVG src:"src/static/images/icons/24/icon-close.svg" class:"button-circular__icon" %}
+        <div class="button-circular__label">{{ lang[locale].close }}</div>
+      </div>
+
+      <h3 class="dialog__title">{{ lang[locale].share }}</h3>
+
+      <p class="dialog__content">
+          <h5 class="dialog__content__action">
+            <a href="#" data-action="click->dialog--share#shareOnFacebook">{% inlineSVG src:"src/static/images/icons/24/icon-facebook.svg" %}{{ lang[locale].share_facebook }}</a>
+          </h5>
+          <h5 class="dialog__content__action">
+            <a href="#" data-action="click->dialog--share#shareOnTwitter">{% inlineSVG src:"src/static/images/icons/24/icon-twitter.svg" %}{{ lang[locale].share_twitter }}</a>
+          </h5>
+          <h5 class="dialog__content__action">
+            <a href="#" data-action="click->dialog--share#shareByEmail">{% inlineSVG src:"src/static/images/icons/24/icon-email.svg" %}{{ lang[locale].share_email }}</a>
+          </h5>
+          <h5 class="dialog__content__action">
+            <a href="#" data-action="click->dialog--share#shareLink">{% inlineSVG src:"src/static/images/icons/24/icon-link.svg" %}{{ lang[locale].copy_link }}</a>
+          </h5>
+      </p>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+.article {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  padding: rem(64px) rem(32px) 0;
+  box-sizing: border-box;
+
+  @media screen and (max-width: ($breakpoint-tablet - 1px)) {
+    padding: rem(80px) rem(20px) 0;
+  }
+}
+
+.article__content {
+  position: relative;
+  max-width: rem(800px);
+  margin: 0 auto;
+}

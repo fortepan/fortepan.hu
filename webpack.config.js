@@ -16,6 +16,7 @@ module.exports = {
     library: "SITE",
     path: path.resolve(__dirname, "_compiled-assets"),
   },
+  devtool: "source-map",
   module: {
     rules: [
       {
@@ -48,7 +49,7 @@ module.exports = {
       },
     ],
   },
-  // Any `import`s from `node_modules` will compiled in to a `vendor.js` file.
+
   optimization: {
     minimizer:
       process.env.ENV === "production"

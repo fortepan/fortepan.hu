@@ -1,0 +1,9 @@
+<template id="photos-thumbnail">
+    <div class="photos-thumbnail is-hidden" data-controller="photos--thumbnail" data-action="click->photos--thumbnail#clicked">
+        <div class="photos-thumbnail__image" data-photos--thumbnail-target="container">
+            <img alt="" draggable="false" data-photos--thumbnail-target="image"/>
+        </div>
+        <div class="photos-thumbnail__meta photos-thumbnail__meta--location" data-photos--thumbnail-target="location"></div>
+        <div class="photos-thumbnail__meta photos-thumbnail__meta--description" data-photos--thumbnail-target="description"></div>
+    </div>
+</template>

@@ -1,0 +1,11 @@
+.search {
+  display: block;
+  position: relative;
+}
+
+.search__icon {
+  position: absolute;
+  right: rem(12px);
+  top: 50%;
+  transform: translateY(-50%);
+}

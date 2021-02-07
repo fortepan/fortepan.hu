@@ -1,0 +1,16 @@
+<div class="search {{ class }}" 
+  data-controller="search" 
+  data-action="search:setValue@document->search#setValue
+               search:clear@document->search#clear"
+>
+    <form data-search-target="form">
+    {% capture class %}
+    selectize-control--search{% if type=="large" %} selectize-control--large{% endif %} search__selectize-control
+    {% endcapture %}
+    {% include selectize-control/selectize-control.liquid class:class placeholder:lang[locale].search_more stimulus_target:'data-search-target="input"' %}
+    <div class="button-circular button-circular--transparent search__icon" data-search-target="icon" data-action="click->search#submit">
+        {% inlineSVG src:"src/static/images/icons/24/icon-search.svg" class:"button-circular__icon" %}
+        <div class="button-circular__label">{{ lang[locale].go }}</div>
+    </div>
+    </form>
+</div>

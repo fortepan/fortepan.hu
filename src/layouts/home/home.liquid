@@ -1,0 +1,24 @@
+---
+layout: base/base.liquid
+---
+
+{% include header-nav/header-nav.liquid hide_search:true header_class:"header-nav--transparent" %}
+
+<div class="home scrollview" data-controller="home">
+  <section class="home__hero">
+    <div class="home__hero__background" data-home-target="heroBg"></div>
+    <div class="home__hero__search-wrapper">
+      {% include search/search.liquid class:"home__search__input" type:"large" %}
+      {% if locale == "hu" %}
+      <div class="home__hero__total h3" data-home-target="total">Összesen <a href="/{{ locale }}/photos/"><span data-home-target="totalVal"></span> fénykép</a></div>
+      {% else %}
+      <div class="home__hero__total h3" data-home-target="total"><a href="/{{ locale }}/photos/"><span data-home-target="totalVal"></span> photos</a> in total</div>
+      {% endif %}
+    </div>
+    <div class="home__hero__content">
+      <h3 class="home__hero__headline">{{ description }}</h3>
+      <div class="home__hero__text">{{ content }}</div>
+    </div>
+  </section>
+  {% include footer/footer.liquid %}
+</div>

@@ -1,0 +1,40 @@
+<div class="dialog dialog-signup" 
+     data-controller="dialog--signup"
+     data-action="dialogs:hide@document->dialog--signup#hide
+                   dialogSignup:show@document->dialog--signup#show
+                   dialogSignup:hide@document->dialog--signup#hide"
+>
+  <div class="dialog__wrapper">
+      <div class="button-circular dialog__close"
+           data-action="click->dialog--signup#hide"
+      >
+        {% inlineSVG src:"src/static/images/icons/24/icon-close.svg" class:"button-circular__icon" %}
+        <div class="button-circular__label">{{ lang[locale].close }}</div>
+      </div>
+
+      <h3 class="dialog__title">{{ lang[locale].signup }}</h3>
+
+      <form class="dialog__form" data-dialog--signup-target="form">
+        {% include input/input.liquid 
+                   type:"text"
+                   name:"name"
+                   label:lang[locale].username
+                   stimulus_target:'data-dialog--signup-target="name"'
+        %}
+        {% include input/input.liquid 
+                   type:"email"
+                   name:"email"
+                   label:lang[locale].email 
+                   stimulus_target:'data-dialog--signup-target="email"'
+        %}
+        {% include input/input.liquid 
+                   type:"password"
+                   name:"password"
+                   label:lang[locale].password
+                   stimulus_target:'data-dialog--signup-target="password"'
+        %}
+        <a href="#" class="dialog__link dialog__link--small" data-action="dialog--signup#showSigninDialog">{{ lang[locale].signin_long }} →</a>
+        <button class="button button--primary dialog__button" data-action="dialog--signup#submit">{{ lang[locale].signup }}</button>
+      </form>
+  </div>
+</div>

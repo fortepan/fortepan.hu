@@ -1,0 +1,60 @@
+.donors {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.donors__group {
+  width: 33.33%;
+  box-sizing: border-box;
+  padding-right: rem(24px);
+  margin-bottom: rem(48px);
+
+  @media screen and (max-width: ($breakpoint-tablet - 1px)) {
+    width: 50%;
+  }
+}
+
+.donors__donor {
+  display: block;
+  text-decoration: none;
+  @include font-heading-demi();
+  font-size: rem(18px);
+  line-height: rem(20px);
+
+  & + & {
+    margin-top: rem(12px);
+  }
+}
+
+.donors__donor__name {
+  transition: color 0.3s $ease-out-expo;
+
+  .theme--light & {
+    color: $dark-base;
+  }
+
+  .theme--dark & {
+    color: $light-base;
+  }
+
+  .donors__donor:hover & {
+    color: $red;
+  }
+}
+
+.donors__donor__doc-count {
+  padding-left: rem(4px);
+  transition: color 0.3s $ease-out-expo;
+
+  .theme--light & {
+    color: $grey;
+  }
+
+  .theme--dark & {
+    color: $grey;
+  }
+
+  .donors__donor:hover & {
+    color: $red;
+  }
+}

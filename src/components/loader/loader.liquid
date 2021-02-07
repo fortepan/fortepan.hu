@@ -1,0 +1,8 @@
+<div {% if id %}id="{{ id }}"{% endif %}
+     class="loader {{ class }}"
+     data-controller="loader"
+     data-action="loader:show@document->loader#show
+                  loader:hide@document->loader#hide"
+>
+    <div class="loader__anim"><span></span></div>
+</div>

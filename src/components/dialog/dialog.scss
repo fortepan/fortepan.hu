@@ -6,9 +6,10 @@
   width: 100%;
   height: 100%;
   opacity: 0;
-  box-sizing: border-box;
+  visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.6s $ease-out-expo;
+  box-sizing: border-box;
+  transition: opacity 0.6s $ease-out-expo, visibility 0s linear 0.6s;
   background-color: rgba($dark-base, 0.6);
   padding: 5rem 1.5rem;
   overflow: auto;
@@ -20,6 +21,8 @@
   will-change: opacity;
 
   &.is-visible {
+    transition: opacity 0.6s $ease-out-expo, visibility 0s linear;
+    visibility: visible;
     opacity: 1;
     pointer-events: initial;
   }

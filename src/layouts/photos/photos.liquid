@@ -1,0 +1,28 @@
+---
+layout: base/base.liquid
+---
+
+<div class="photos scrollview" 
+     data-controller="photos" 
+     data-action="scroll->photos#onScroll 
+                  resize@window->photos#resizeThumbnails
+                  popstate@window->photos#onPopState
+                  photos:historyPushState@document->photos#historyPushState
+                  photos:showNextPhoto@document->photos#showNextPhotoInCarousel
+                  photos:showPrevPhoto@document->photos#showPrevPhotoInCarousel
+                  photos:selectThumbnail@document->photos#selectThumbnail
+                  photosCarousel:hide@document->photos#scrollToSelectedThumbnail"
+>
+  {% include ./title/title.liquid %}
+  <div class="photos__grid" data-photos-target="grid"></div>
+  <div class="photos__bottom-actions is-hidden" data-photos-target="bottomActions">
+    <div class="button button--secondary button--inline photos__load-more" data-action="photos#loadMorePhotos">{{ lang[locale].load_more }}</div>
+  </div>
+</div>
+
+{% include ./thumbnail/thumbnail-template.liquid %}
+{% include ./carousel/carousel.liquid %}
+{% include header-nav/header-nav.liquid %}
+{% include ./timeline/timeline.liquid %}
+{% include dialog/download/download.liquid %}
+{% include dialog/share/share.liquid %}

@@ -1,5 +1,5 @@
 ---
-layout: layout-article/layout-article.liquid
+layout: article/article.liquid
 title: Rólunk
 permalink: "/hu/about-us/"
 hide_search: true

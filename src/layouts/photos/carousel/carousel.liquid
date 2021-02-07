@@ -1,0 +1,66 @@
+<div class="photos-carousel" 
+     data-controller="photos--carousel" 
+     data-action="keydown@document->photos--carousel#boundKeydownListener
+                  mouseover->photos--carousel#showControls
+                  mouseout->photos--carousel#hideControls
+                  touchstart->photos--carousel#autoHideControls
+                  photosCarousel:playSlideshow@document->photos--carousel#playSlideshow
+                  photosCarousel:pauseSlideshow@document->photos--carousel#pauseSlideshow
+                  photosCarousel:showPhoto@document->photos--carousel#showPhoto
+                  photosCarousel:show@document->photos--carousel#show
+                  photosCarousel:hide@document->photos--carousel#hide"
+>
+    <div class="photos-carousel__photos hide-controls theme--dark" data-photos--carousel-target="photosContainer">
+        <div class="photos-carousel__photos__background">
+            <div class="photos-carousel__photos__background-image" data-photos--carousel-target="background"></div>
+        </div>
+
+        {% include loader/loader.liquid class:"photos-carousel__photos__loader is-delayed" id:"loaderCarousel" %}
+        
+        <div class="button-circular button-circular--has-background photos-carousel__photos__pager photos-carousel__photos__pager--left disable"
+          data-photos--carousel-target="pager"
+          data-action="click->photos--carousel#showPrevPhoto">
+            {% inlineSVG src:"src/static/images/icons/24/icon-previous.svg" class:"button-circular__icon" %}
+            <div class="button-circular__label">{{ lang[locale].prev }}</div>
+        </div>
+
+        <div class="button-circular button-circular--has-background photos-carousel__photos__pager photos-carousel__photos__pager--right disable"
+          data-photos--carousel-target="pager"
+          data-action="click->photos--carousel#showNextPhoto">
+            {% inlineSVG src:"src/static/images/icons/24/icon-next.svg" class:"button-circular__icon" %}
+            <div class="button-circular__label">{{ lang[locale].next }}</div>
+        </div>
+
+        <div class="photos-carousel__photos__all" data-photos--carousel-target="photos"></div>
+
+        <div class="photos-carousel__photos__actions" data-photos--carousel-target="actions">
+            <div class="button-circular" data-action="click->photos--carousel#hide">
+                {% inlineSVG src:"src/static/images/icons/24/icon-close.svg" class:"button-circular__icon" %}
+                <div class="button-circular__label">{{ lang[locale].close }}</div>
+            </div>
+            <div class="photos-carousel__photos__actions__group">
+                <div id="SlideshowPlay" class="button-circular" data-action="click->photos--carousel#playSlideshow">
+                    {% inlineSVG src:"src/static/images/icons/24/icon-play.svg" class:"button-circular__icon" %}
+                    <div class="button-circular__label">{{ lang[locale].slideshow }}</div>
+                </div>
+                <div id="SlideshowPause" class="button-circular" data-action="click->photos--carousel#pauseSlideshow">
+                    {% inlineSVG src:"src/static/images/icons/24/icon-pause.svg" class:"button-circular__icon" %}
+                    <div class="button-circular__label">{{ lang[locale].slideshow }}</div>
+                </div>
+                <div class="button-circular" data-action="click->photos--carousel#downloadImage">
+                    {% inlineSVG src:"src/static/images/icons/24/icon-download.svg" class:"button-circular__icon" %}
+                    <div class="button-circular__label">{{ lang[locale].download }}</div>
+                </div>
+                <div class="button-circular" data-action="click->photos--carousel#shareImage">
+                    {% inlineSVG src:"src/static/images/icons/24/icon-share.svg" class:"button-circular__icon" %}
+                    <div class="button-circular__label">{{ lang[locale].share }}</div>
+                </div>
+                <div class="button-circular" data-action="click->photos--carousel#toggleSidebar">
+                    {% inlineSVG src:"src/static/images/icons/24/icon-sidebar.svg" class:"button-circular__icon" %}
+                    <div class="button-circular__label">{{ lang[locale].details }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include ./carousel/sidebar/sidebar.liquid %}
+</div>

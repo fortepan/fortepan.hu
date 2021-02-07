@@ -1,0 +1,15 @@
+.dialog-advanced-search .dialog__wrapper {
+  max-width: rem(640px);
+}
+
+.dialog-advanced-search__form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.dialog-advanced-search__button {
+  width: auto;
+  cursor: pointer;
+  min-width: 25%;
+}
