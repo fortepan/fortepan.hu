@@ -83,4 +83,10 @@ export default class extends Controller {
     this.element.classList.add("is-visible")
     this.nameTarget.focus()
   }
+
+  showSigninDialog(e) {
+    e.preventDefault()
+    trigger("dialogSignup:hide")
+    trigger("dialogSignin:show")
+  }
 }

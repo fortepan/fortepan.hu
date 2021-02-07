@@ -65,8 +65,15 @@ export default class extends Controller {
     this.nameTarget.focus()
   }
 
-  showPasswordRequestDialog() {
+  showPasswordRequestDialog(e) {
+    e.preventDefault()
     trigger("dialogs:hide")
     trigger("dialogResetPasswordRequest:show")
+  }
+
+  showSignupDialog(e) {
+    e.preventDefault()
+    trigger("dialogs:hide")
+    trigger("dialogSignup:show")
   }
 }
