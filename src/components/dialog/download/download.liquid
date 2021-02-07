@@ -1,0 +1,17 @@
+<div class="dialog dialog-download" 
+     data-controller="dialog--download"
+     data-action="dialogs:hide@document->dialog--download#hide
+                   dialogDownload:show@document->dialog--download#show
+                   dialogDownload:hide@document->dialog--download#hide
+                   dialogDownload:downloadImage@document->dialog--download#downloadImage">
+  <div class="dialog__wrapper">
+      <div class="button-circular dialog__close"
+           data-action="click->dialog--download#hide"
+      >
+        {% inlineSVG src:"src/static/images/icons/24/icon-close.svg" class:"button-circular__icon" %}
+        <div class="button-circular__label">{{ lang[locale].close }}</div>
+      </div>
+      <h3 class="dialog__title">{{ lang[locale].download }}</h3>
+      <p class="dialog__content" data-dialog--download-target="content"></p>
+  </div>
+</div>

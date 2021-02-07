@@ -1,0 +1,56 @@
+<div class="carousel-sidebar scrollview" 
+     data-controller="photos--carousel--sidebar"
+     data-action="resize@window->photos--carousel--sidebar#toggleOnResize
+                  carouselSidebar:init@document->photos--carousel--sidebar#init
+                  carouselSidebar:show@document->photos--carousel--sidebar#show
+                  carouselSidebar:hide@document->photos--carousel--sidebar#hide
+                  carouselSidebar:toggle@document->photos--carousel--sidebar#toggle"
+>
+    <div class="carousel-sidebar__content">
+        <div class="carousel-sidebar__description">
+            <h6>{{ lang[locale].description }}</h6>
+            <h5 data-photos--carousel--sidebar-target="location"></h5>
+            <div class="carousel-sidebar__description" data-photos--carousel--sidebar-target="description"></div>
+        </div>
+        <div class="carousel-sidebar__year">
+            <h6>{{ lang[locale].year }}</h6>
+            <h5 data-photos--carousel--sidebar-target="year"></h5>
+        </div>
+        <div class="carousel-sidebar__id">
+            <h6>{{ lang[locale].picture_id }}</h6>
+            <h5 data-photos--carousel--sidebar-target="mid"></h5>
+        </div>
+        <div class="carousel-sidebar__donor">
+            <h6>{{ lang[locale].donor }}</h6>
+            <h5 data-photos--carousel--sidebar-target="donor"></h5>
+        </div>
+        <div class="carousel-sidebar__photographer">
+            <h6>{{ lang[locale].photographer }}</h6>
+            <h5 data-photos--carousel--sidebar-target="author"></h5>
+        </div>
+        
+        <div class="carousel-add-tags" 
+             data-controller="photos--carousel--sidebar--add-tags"
+             data-action="photosCarousel:hide@document->photos--carousel--sidebar--add-tags#hideForm
+             photosCarousel:showPhoto@document->photos--carousel--sidebar--add-tags#getPendingTags
+             auth:signedOut@document->photos--carousel--sidebar--add-tags#hideForm">
+            <h6 class="carousel-sidebar__tags-title">{{ lang[locale].tags }}</h6>
+            <p class="carousel-sidebar__tags" data-photos--carousel--sidebar-target="tags" data-photos--carousel--sidebar--add-tags-target="tags"></p>
+            <div class="carousel-add-tags__add"
+               data-photos--carousel--sidebar--add-tags-target="addButton"
+               data-action="click->photos--carousel--sidebar--add-tags#showForm"
+            >{{ lang[locale].add_tag }}</div>
+            <form class="carousel-add-tags__form is-hidden" data-photos--carousel--sidebar--add-tags-target="form">
+                {% include selectize-control/selectize-control.liquid 
+                            class:'carousel-sidebar__tags__form__selectize'
+                            filter:'cimke_name'
+                            stimulus_target:'data-photos--carousel--sidebar--add-tags-target="input"' 
+                %}
+                <button class="button button--primary button--medium button--wide carousel-add-tags__save" 
+                        data-photos--carousel--sidebar--add-tags-target="submitButton"
+                        data-action="click->photos--carousel--sidebar--add-tags#submit"
+                >{{ lang[locale].save }}</button>
+            </form>
+        </div>
+    </div>
+</div>

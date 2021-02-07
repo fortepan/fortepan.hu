@@ -1,7 +1,7 @@
 const inlineSVG = require("./plugins/inlineSVG")
 const htmlmin = require("html-minifier")
 
-module.exports = function(eleventyConfig) {
+module.exports = eleventyConfig => {
   // Disable .gitignore and use eleventy's own ignore file instead
   eleventyConfig.setUseGitIgnore(false)
 

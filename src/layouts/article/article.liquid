@@ -1,0 +1,16 @@
+---
+layout: base/base.liquid
+---
+
+<div class="article scrollview" data-controller="scrollview" data-action="scroll->scrollview#handleScroll">
+  <section class="article__content">
+  <h1>{{ title }}</h1>
+  {{ content }}
+  </section>
+  {% include footer/footer.liquid %}
+  
+</div>
+
+{% include background-icon/background-icon.liquid %}
+{% include header-nav/header-nav.liquid %}
+

@@ -1,267 +1,233 @@
 import { trigger, validateEmail } from "../js/utils"
 import config from "../data/siteConfig"
+import { setAppState, removeAppState } from "../js/app"
 
 const setLoginStatus = isUserSignedIn => {
   if (isUserSignedIn) {
-    document.querySelector("body").classList.add("auth-signed-in")
+    setAppState("auth-signed-in")
   } else {
-    document.querySelector("body").classList.remove("auth-signed-in")
+    removeAppState("auth-signed-in")
     localStorage.removeItem("auth")
   }
 }
 
-const getCSRFToken = () => {
-  return new Promise((resolve, reject) => {
-    const xmlHttp = new XMLHttpRequest()
-    xmlHttp.open("GET", `${config.DRUPAL_HOST}/session/token`, true)
-    xmlHttp.setRequestHeader("Content-Type", "application/vnd.api+json")
-    xmlHttp.setRequestHeader("Accept", "application/vnd.api+json")
-    xmlHttp.withCredentials = true
-    xmlHttp.onload = () => {
-      if (xmlHttp.status === 200) {
-        resolve(xmlHttp.responseText)
-      } else {
-        const respData = JSON.parse(xmlHttp.responseText)
-        reject(respData.message)
-      }
-    }
-    xmlHttp.send()
+const signin = async body => {
+  const url = `${config.DRUPAL_HOST}/user/login?_format=json`
+
+  const resp = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: body ? JSON.stringify(body) : null,
   })
+
+  const respData = await resp.json()
+  if (resp.status === 200) {
+    localStorage.setItem("auth", JSON.stringify(respData))
+    trigger("auth:signedIn")
+  } else {
+    throw respData.message
+  }
 }
 
 const signout = async () => {
-  return new Promise((resolve, reject) => {
-    const authData = JSON.parse(localStorage.getItem("auth")) || {}
-    const xmlHttp = new XMLHttpRequest()
-    xmlHttp.open("POST", `${config.DRUPAL_HOST}/user/logout?_format=json&token=${authData.logout_token}`, true)
-    xmlHttp.setRequestHeader("Content-Type", "application/json")
-    xmlHttp.setRequestHeader("X-CSRF-Token", authData.csrf_token)
-    xmlHttp.withCredentials = true
-    xmlHttp.onload = () => {
-      if (xmlHttp.status === 204) {
-        trigger("auth:signedOut")
-        setLoginStatus(false)
-        resolve()
-      } else {
-        const respData = JSON.parse(xmlHttp.responseText)
-        reject(respData.message.replace(/(?:\r\n|\r|\n)/g, "<br />"))
-      }
-    }
-    xmlHttp.error = err => {
-      reject(err)
-    }
-    xmlHttp.send()
+  const authData = JSON.parse(localStorage.getItem("auth")) || {}
+  const url = `${config.DRUPAL_HOST}/user/logout?_format=json&token=${authData.logout_token}`
+
+  const resp = await fetch(url, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRF-Token": authData.csrf_token,
+    },
   })
-}
 
-const signup = body => {
-  return new Promise((resolve, reject) => {
-    const xmlHttp = new XMLHttpRequest()
-    xmlHttp.open("POST", `${config.DRUPAL_HOST}/user/register?_format=json`, true)
-    xmlHttp.setRequestHeader("Content-Type", "application/json")
-    xmlHttp.onload = () => {
-      if (xmlHttp.status === 200) {
-        resolve(JSON.parse(xmlHttp.responseText))
-      } else {
-        const respData = JSON.parse(xmlHttp.responseText)
-        reject(respData.message.replace(/(?:\r\n|\r|\n)/g, "<br />"))
-      }
-    }
-    xmlHttp.send(JSON.stringify(body))
-  })
-}
-
-const forgot = val => {
-  return new Promise((resolve, reject) => {
-    const body = {
-      data: {
-        type: "user--password-reset",
-        attributes: {},
-      },
-    }
-
-    if (validateEmail(val)) body.data.attributes.mail = val
-    else body.data.attributes.name = val
-
-    const xmlHttp = new XMLHttpRequest()
-    xmlHttp.open("POST", `${config.DRUPAL_HOST}/jsonapi/user/password/reset`, true)
-    xmlHttp.setRequestHeader("Content-Type", "application/vnd.api+json")
-    xmlHttp.setRequestHeader("Accept", "application/vnd.api+json")
-    xmlHttp.withCredentials = true
-    xmlHttp.onload = () => {
-      if (xmlHttp.status === 202) {
-        resolve()
-      } else {
-        const respData = JSON.parse(xmlHttp.responseText)
-        console.log(respData)
-        reject(respData.errors[0].detail)
-      }
-    }
-    xmlHttp.send(JSON.stringify(body))
-  })
-}
-
-const resetPassword = pass => {
-  return new Promise((resolve, reject) => {
-    if (window.location.pathname.indexOf("/user/reset/") === -1) resolve()
-
-    const credentialKeys = ["user", "timestamp", "hash"]
-    const pathArray = window.location.pathname.split("/user/reset/")[1].split("/")
-    const credentials = credentialKeys.reduce((acc, value, i) => {
-      acc[value] = pathArray[i]
-      return acc
-    }, {})
-    credentials.pass = pass
-    const requestUrl = `${config.DRUPAL_HOST}/jsonapi/user/${credentials.user}/password/update`
-    delete credentials.user
-
-    const body = {
-      data: {
-        type: "user--user",
-        attributes: credentials,
-      },
-    }
-
-    const xmlHttp = new XMLHttpRequest()
-    xmlHttp.open("PATCH", requestUrl, true)
-    xmlHttp.setRequestHeader("Content-Type", "application/vnd.api+json")
-    xmlHttp.setRequestHeader("Accept", "application/vnd.api+json")
-    xmlHttp.withCredentials = true
-    xmlHttp.onload = () => {
-      if (xmlHttp.status === 200) {
-        resolve()
-      } else {
-        const respData = JSON.parse(xmlHttp.responseText)
-        reject(respData.message)
-      }
-    }
-    xmlHttp.send(JSON.stringify(body))
-  })
-}
-
-const getUserStatus = () => {
-  return new Promise((resolve, reject) => {
-    const xmlHttp = new XMLHttpRequest()
-    xmlHttp.open("GET", `${config.DRUPAL_HOST}/user/login_status?_format=json`, true)
-    xmlHttp.setRequestHeader("Content-Type", "application/json")
-    xmlHttp.withCredentials = true
-    xmlHttp.onload = () => {
-      if (xmlHttp.status === 200) {
-        if (xmlHttp.responseText === "1") {
-          setLoginStatus(true)
-          resolve(true)
-        } else {
-          setLoginStatus(false)
-          resolve(false)
-        }
-      } else {
-        const respData = JSON.parse(xmlHttp.responseText)
-        reject(respData.message)
-      }
-    }
-    xmlHttp.send()
-  })
-}
-
-const requestUserData = id => {
-  return new Promise((resolve, reject) => {
-    // check localstorage auth data
-    const authData = JSON.parse(localStorage.getItem("auth")) || {}
-
-    const xmlHttp = new XMLHttpRequest()
-    xmlHttp.open("GET", `${config.DRUPAL_HOST}/jsonapi/user/user/${id}`, true)
-    xmlHttp.setRequestHeader("Content-Type", "application/vnd.api+json")
-    xmlHttp.setRequestHeader("Accept", "application/vnd.api+json")
-    xmlHttp.withCredentials = true
-    xmlHttp.onload = () => {
-      if (xmlHttp.status === 200) {
-        const respData = JSON.parse(xmlHttp.responseText).data
-
-        // if user id is present in the response
-        if (!authData.current_user) authData.current_user = {}
-        authData.current_user.id = respData.id
-        authData.current_user.name = respData.attributes.name
-
-        // store the user details
-        localStorage.setItem("auth", JSON.stringify(authData))
-
-        // set UI signin status
-        setLoginStatus(true)
-
-        resolve(respData.attributes)
-      } else {
-        const respData = JSON.parse(xmlHttp.responseText)
-        setLoginStatus(false)
-        reject(respData.message)
-      }
-    }
-    xmlHttp.send()
-  })
-}
-
-const getUserId = () => {
-  return new Promise((resolve, reject) => {
-    const xmlHttp = new XMLHttpRequest()
-    xmlHttp.open("GET", `${config.DRUPAL_HOST}/jsonapi`, true)
-    xmlHttp.setRequestHeader("Content-Type", "application/vnd.api+json")
-    xmlHttp.setRequestHeader("Accept", "application/vnd.api+json")
-    xmlHttp.withCredentials = true
-    xmlHttp.onload = () => {
-      if (xmlHttp.status === 200) {
-        const respData = JSON.parse(xmlHttp.responseText)
-        resolve(respData.meta.links.me.meta.id)
-      } else {
-        const respData = JSON.parse(xmlHttp.responseText)
-        reject(respData.message)
-      }
-    }
-    xmlHttp.send()
-  })
-}
-
-const querySignedInUser = async () => {
-  let respData
-  const userIsAlreadySignedIn = await getUserStatus()
-  if (userIsAlreadySignedIn) {
-    const id = await getUserId()
-    respData = await requestUserData(id)
-    setLoginStatus(true)
-  } else {
-    // user is not signed in
+  if (resp.status === 204) {
+    trigger("auth:signedOut")
     setLoginStatus(false)
+  }
+}
+
+const signup = async body => {
+  const url = `${config.DRUPAL_HOST}/user/register?_format=json`
+
+  const resp = await fetch(url, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  })
+
+  const respData = await resp.json()
+  if (resp.status === 200) {
+    return respData
+  }
+
+  throw respData.message.replace(/(?:\r\n|\r|\n)/g, "<br />")
+}
+
+const forgot = async val => {
+  const body = {
+    data: {
+      type: "user--password-reset",
+      attributes: {},
+    },
+  }
+
+  if (validateEmail(val)) body.data.attributes.mail = val
+  else body.data.attributes.name = val
+
+  const url = `${config.DRUPAL_HOST}/jsonapi/user/password/reset`
+  const resp = await fetch(url, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/vnd.api+json",
+      Accept: "application/vnd.api+json",
+    },
+    body: JSON.stringify(body),
+  })
+
+  const respData = resp.json()
+  if (resp.status !== 202) {
+    throw Error(respData.errors[0].detail)
   }
 
   return respData
 }
 
-const signin = body => {
-  return new Promise((resolve, reject) => {
-    const xmlHttp = new XMLHttpRequest()
-    xmlHttp.open("POST", `${config.DRUPAL_HOST}/user/login?_format=json`, true)
-    xmlHttp.setRequestHeader("Content-Type", "application/json")
-    xmlHttp.withCredentials = true
-    xmlHttp.onload = () => {
-      if (xmlHttp.status === 200) {
-        const respData = JSON.parse(xmlHttp.responseText)
-        // store logout_token and auth specific anonym data
-        localStorage.setItem("auth", JSON.stringify(respData))
-        trigger("auth:signedIn")
-        resolve()
-      } else {
-        const respData = JSON.parse(xmlHttp.responseText)
-        reject(respData.message)
-      }
-    }
-    xmlHttp.send(body ? JSON.stringify(body) : null)
+const resetPassword = async pass => {
+  if (window.location.pathname.indexOf("/user/reset/") === -1) throw Error()
+
+  const credentialKeys = ["user", "timestamp", "hash"]
+  const pathArray = window.location.pathname.split("/user/reset/")[1].split("/")
+  const credentials = credentialKeys.reduce((acc, value, i) => {
+    acc[value] = pathArray[i]
+    return acc
+  }, {})
+  credentials.pass = pass
+  const url = `${config.DRUPAL_HOST}/jsonapi/user/${credentials.user}/password/update`
+  delete credentials.user
+
+  const body = {
+    data: {
+      type: "user--user",
+      attributes: credentials,
+    },
+  }
+
+  const resp = await fetch(url, {
+    method: "PATCH",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/vnd.api+json",
+      Accept: "application/vnd.api+json",
+    },
+    body: JSON.stringify(body),
   })
+
+  const respData = resp.json()
+  if (resp.status === 200) {
+    return respData
+  }
+
+  throw Error(respData.message)
+}
+
+const getUserStatus = async () => {
+  const url = `${config.DRUPAL_HOST}/user/login_status?_format=json`
+  const resp = await fetch(url, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+
+  const respBody = await resp.text()
+  const signedIn = resp.status === 200 && respBody === "1"
+  setLoginStatus(signedIn)
+  return signedIn
+}
+
+const requestUserData = async id => {
+  // check localstorage auth data
+  const url = `${config.DRUPAL_HOST}/jsonapi/user/user/${id}`
+  const resp = await fetch(url, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/vnd.api+json",
+      Accept: "application/vnd.api+json",
+    },
+  })
+
+  return resp
+}
+
+const getUserId = async () => {
+  const url = `${config.DRUPAL_HOST}/jsonapi`
+  const resp = await fetch(url, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/vnd.api+json",
+      Accept: "application/vnd.api+json",
+    },
+  })
+
+  const respData = await resp.json()
+  if (resp.status === 200) {
+    return respData.meta.links.me.meta.id
+  }
+
+  throw respData.message
+}
+
+const querySignedInUser = async () => {
+  const authData = JSON.parse(localStorage.getItem("auth")) || {}
+
+  const userIsAlreadySignedIn = await getUserStatus()
+
+  if (userIsAlreadySignedIn) {
+    setLoginStatus(true)
+
+    // TODO
+    // currently the server not returns user related date due to CORS error
+    /* const id = await getUserId()
+    const resp = await requestUserData(id)
+    const respData = await resp.json()
+
+    if (resp.status === 200) {
+      if (!authData.current_user) authData.current_user = {}
+
+      authData.current_user.id = respData.data.id
+      authData.current_user.name = respData.data.attributes.name
+
+      // store the user details
+      localStorage.setItem("auth", JSON.stringify(authData))
+      setLoginStatus(true)
+      return respData
+    }
+
+    setLoginStatus(false)
+    throw respData */
+  } else {
+    // user is not signed in
+    setLoginStatus(false)
+  }
 }
 
 export default {
   signin,
-  signup,
   signout,
+  signup,
   getUserStatus,
-  getCSRFToken,
   forgot,
   resetPassword,
   querySignedInUser,

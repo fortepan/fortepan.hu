@@ -1,5 +1,5 @@
 ---
-layout: layout-photos/layout-photos.liquid
+layout: photos/photos.liquid
 title: Fotók
 permalink: /hu/photos/
 ---

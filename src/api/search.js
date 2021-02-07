@@ -1,7 +1,7 @@
 import { slugify, getLocale } from "../js/utils"
 import config from "../data/siteConfig"
 
-// transform and localize the Elastic server response
+// simplify and localize the Elastic server response
 const transformResults = resp => {
   const l = getLocale()
   const r = {
@@ -36,9 +36,6 @@ const elasticRequest = async data => {
   const url = `${config.ELASTIC_HOST}/elasticsearch_index_fortepan_media/_search`
   const resp = await fetch(url, {
     method: "POST",
-    mode: "cors",
-    cache: "no-cache",
-    credentials: "same-origin",
     headers: {
       Authorization: `Basic ${btoa("fortepan:fortepan")}`,
       "Content-Type": "application/json;charset=UTF-8",

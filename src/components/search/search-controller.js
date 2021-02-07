@@ -1,6 +1,6 @@
 import { Controller } from "stimulus"
 
-import { trigger } from "../../js/utils"
+import { trigger, getLocale } from "../../js/utils"
 
 export default class extends Controller {
   static get targets() {
@@ -17,15 +17,15 @@ export default class extends Controller {
     const q = `?q=${this.inputTarget.selectizeControl.value.join(", ")}`
 
     if (window.location.pathname.indexOf("/photos") === -1) {
-      window.location = `/${document.querySelector("body").dataset.lang}/photos/${q}`
+      window.location = `/${getLocale()}/photos/${q}`
     } else {
-      trigger("layoutPhotos:historyPushState", {
+      trigger("photos:historyPushState", {
         url: q,
         resetPhotosGrid: true,
       })
 
       this.inputTarget.selectizeControl.blur()
-      trigger("dialogSimpleSearch:hide")
+      trigger("dialogSearch:hide")
     }
   }
 

@@ -1,16 +1,15 @@
 import { Controller } from "stimulus"
 
 import config from "../../data/siteConfig"
+import { setAppState, removeAppState } from "../../js/app"
 
-export default class CookieConsent extends Controller {
+export default class extends Controller {
   connect() {
     this.theme = config.DEFAULT_THEME
 
     this.loadStateFromLocalStorage()
     this.saveStateToLocalStorage()
     this.setTheme(this.theme)
-
-    document.addEventListener("toggleTheme", this.toggleTheme.bind(this))
   }
 
   loadStateFromLocalStorage() {
@@ -18,8 +17,8 @@ export default class CookieConsent extends Controller {
   }
 
   setTheme(newTheme) {
-    this.element.classList.remove(`theme--${this.theme}`)
-    this.element.classList.add(`theme--${newTheme}`)
+    removeAppState(`theme--${this.theme}`)
+    setAppState(`theme--${newTheme}`)
     this.theme = newTheme
   }
 

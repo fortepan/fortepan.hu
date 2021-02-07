@@ -1,0 +1,38 @@
+.photos {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  padding: rem(104px) rem(24px) rem(96px);
+  box-sizing: border-box;
+
+  @media screen and (max-width: ($breakpoint-desktop - 1px)) {
+    padding: rem(88px) rem(8px) rem(96px);
+  }
+}
+
+.photos__grid {
+  max-width: rem(1080px);
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.photos__grid::after {
+  content: "";
+  flex-grow: 999999999;
+}
+
+.photos__bottom-actions {
+  padding: 2rem;
+  text-align: center;
+}
+
+.photos__bottom-actions.is-hidden {
+  display: none;
+}
+
+.photos__load-more {
+  cursor: pointer;
+}

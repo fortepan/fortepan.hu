@@ -5,21 +5,13 @@ export const getLocale = () => {
 }
 
 export const lang = key => {
-  const l = langData[document.querySelector("body").dataset.lang]
+  const l = langData[getLocale()]
   const val = l[key] ? l[key] : key
   return val.replace(/(?:\r\n|\r|\n)/g, "<br/>")
 }
 
 export const isTouchDevice = () => {
   return "ontouchstart" in window || window.navigator.maxTouchPoints > 0 || window.navigator.msMaxTouchPoints > 0
-}
-
-export const ready = fn => {
-  if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
-    fn()
-  } else {
-    document.addEventListener("DOMContentLoaded", fn)
-  }
 }
 
 export const trigger = (eventId, obj = {}, scope = document) => {
@@ -104,7 +96,7 @@ export const setPageMeta = (title, description, imgSrc) => {
   }
 }
 
-export const onClassChange = function(node, callback) {
+export const onClassChange = (node, callback) => {
   const classObserver = new window.MutationObserver(() => {
     callback(node)
   })
