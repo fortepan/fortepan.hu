@@ -1,0 +1,16 @@
+---
+layout: base/base.liquid
+---
+
+<div class="lists scrollview" data-controller="lists">
+  <div class="layout-heading lists__heading">
+    <h1 class="lists__title">{{ lang[locale].lists }}</h1>
+    <h5 class="lists__subtitle">
+      <span>0</span>
+      <span>{{ lang[locale].list }}</span>
+    </h5> 
+  </div>
+</div>
+
+{% include header-nav/header-nav %}
+{% include dialog/share/share %}

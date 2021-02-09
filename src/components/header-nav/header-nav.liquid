@@ -108,6 +108,7 @@
       <span class="header-nav__link__small" data-header-nav-target="profileEmail"></span>
     </a>
     {% endcomment %}
+    <a href="/{{ locale }}/lists/" class="header-nav__link header-nav__link--top is-visible-when-signed-in" id="HeaderLists">{{ lang[locale].lists }}</a>
     <a href="#" class="header-nav__link header-nav__link--top header-nav__link--separator-after is-visible-when-signed-in" data-action="click->header-nav#signOut">{{ lang[locale].signout }}</a>
     <h6>{{ lang[locale].settings }}</h6>
     <a href="#" class="header-nav__link header-nav__link--top" data-controller="theme" data-action="click->header-nav#toggleTheme theme:toggleTheme@document->theme#toggleTheme">
