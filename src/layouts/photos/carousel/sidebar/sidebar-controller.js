@@ -73,7 +73,6 @@ export default class extends Controller {
     this.element.querySelectorAll(".carousel-sidebar a:not([class])").forEach(anchorNode => {
       anchorNode.addEventListener("click", event => {
         event.preventDefault()
-        trigger("photosCarousel:hide")
         trigger("photos:historyPushState", { url: event.currentTarget.href, resetPhotosGrid: true })
       })
     })
