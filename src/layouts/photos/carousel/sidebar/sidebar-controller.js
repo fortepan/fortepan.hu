@@ -39,15 +39,18 @@ export default class extends Controller {
 
     const locationArray = ["country", "city", "place"].map(val => convertToHref(val)).filter(Boolean)
 
+    this.locationTarget.innerHTML = ""
     if (locationArray.length > 0) {
       this.locationTarget.innerHTML = locationArray.join(",<br/>")
       this.locationTarget.parentNode.style.display = "block"
     }
+
+    this.descriptionTarget.innerHTML = ""
     if (data.description) {
       this.descriptionTarget.innerHTML = data.description
-      this.locationTarget.parentNode.style.display = "block"
+      this.descriptionTarget.parentNode.style.display = "block"
     } else if (locationArray.length === 0) {
-      this.locationTarget.parentNode.style.display = "none"
+      this.descriptionTarget.parentNode.style.display = "none"
     }
 
     if (data.tags) {
