@@ -1,4 +1,4 @@
-<div class="input-wrapper {{ class }}" data-controller="input{% unless autosuggest == null %} autosuggest{% endunless %}">
+<div class="input-wrapper {{ class }}" data-controller="input{% unless autosuggest == null %} autosuggest{% endunless %}" {{ stimulus_wrapper_target }}>
   <label for="{{ name }}" data-input-target="label" class="input-wrapper__label">{{ label }}</label>
   <input class="input-wrapper__input" 
     name="{{ name }}" 

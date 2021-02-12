@@ -10,7 +10,16 @@ layout: base/base.liquid
       <span>{{ lang[locale].list }}</span>
     </h5> 
   </div>
+  <div class="lists__grid" data-lists-target="grid"></div>
 </div>
 
+<template id="listsItem">
+<div class="lists__item" data-lists-target="item" data-action="click->lists#">
+  <div class="lists__item__photo"></div>
+  <h3 class="lists__item__title"></h3>
+  <div class="lists__item__date-added"></div> 
+</div>
+</template>
+
+{% include carousel/carousel %}
 {% include header-nav/header-nav %}
-{% include dialog/share/share %}

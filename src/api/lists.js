@@ -1,101 +1,113 @@
 import config from "../data/siteConfig"
 
-const createList = name => {
-  return new Promise((resolve, reject) => {
-    const data = {
-      data: {
-        type: "taxonomy_term--private",
-        attributes: {
-          name,
-        },
+const createList = async name => {
+  const authData = JSON.parse(localStorage.getItem("auth")) || {}
+  const data = {
+    data: {
+      type: "taxonomy_term--private",
+      attributes: {
+        name,
       },
-    }
-
-    const xmlHttp = new XMLHttpRequest()
-    const authData = JSON.parse(localStorage.getItem("auth")) || {}
-    xmlHttp.open("POST", `${config.DRUPAL_HOST}/jsonapi/taxonomy_term/private`, true)
-    xmlHttp.setRequestHeader("Content-Type", "application/vnd.api+json")
-    xmlHttp.setRequestHeader("Accept", "application/vnd.api+json")
-    xmlHttp.setRequestHeader("X-CSRF-Token", authData.csrf_token)
-    xmlHttp.withCredentials = true
-    xmlHttp.onload = () => {
-      if (xmlHttp.status === 200) {
-        resolve(JSON.parse(xmlHttp.responseText))
-      } else {
-        reject()
-      }
-    }
-    xmlHttp.send(JSON.stringify(data))
+    },
+  }
+  const url = `${config.DRUPAL_HOST}/jsonapi/taxonomy_term/private`
+  const resp = await fetch(url, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/vnd.api+json",
+      Accept: "application/vnd.api+json",
+      "X-CSRF-Token": authData.csrf_token,
+    },
+    body: JSON.stringify(data),
   })
+
+  const respData = await resp.json()
+  return respData.data.attributes.drupal_internal__tid
 }
 
-const addToList = (photoId, listId) => {
-  return new Promise((resolve, reject) => {
-    const data = {
-      cimke: tags,
-      image: photoId,
-    }
-
-    const xmlHttp = new XMLHttpRequest()
-    xmlHttp.open("POST", `${config.DRUPAL_HOST}/fortepan/${listId}/${photoId}`, true)
-    xmlHttp.setRequestHeader("Content-Type", "application/json")
-    xmlHttp.setRequestHeader("Accept", "application/json")
-    xmlHttp.withCredentials = true
-    xmlHttp.onload = () => {
-      if (xmlHttp.status === 200) {
-        resolve()
-      } else {
-        reject()
-      }
-    }
-    xmlHttp.send(JSON.stringify(data))
+const deleteList = async listId => {
+  const authData = JSON.parse(localStorage.getItem("auth")) || {}
+  const url = `${config.DRUPAL_HOST}/jsonapi/taxonomy_term/${listId}`
+  const resp = await fetch(url, {
+    method: "DELETE",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/vnd.api+json",
+      Accept: "application/vnd.api+json",
+      "X-CSRF-Token": authData.csrf_token,
+    },
   })
+
+  const respData = await resp.json()
+  return respData
 }
 
-const deleteFromList = (photoId, listId) => {
-  return new Promise((resolve, reject) => {
-    const data = {
-      cimke: tags,
-      image: photoId,
-    }
-
-    const xmlHttp = new XMLHttpRequest()
-    xmlHttp.open("DELETE", `${config.DRUPAL_HOST}/fortepan/lists`, true)
-    xmlHttp.setRequestHeader("Content-Type", "application/json")
-    xmlHttp.setRequestHeader("Accept", "application/json")
-    xmlHttp.withCredentials = true
-    xmlHttp.onload = () => {
-      if (xmlHttp.status === 200) {
-        resolve()
-      } else {
-        reject()
-      }
-    }
-    xmlHttp.send(JSON.stringify(data))
+const addToList = async (photoId, listId) => {
+  const url = `${config.DRUPAL_HOST}/fortepan/flag/${photoId}/${listId}`
+  const resp = await fetch(url, {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
   })
+
+  const respData = await resp.json()
+  return respData
 }
 
-const getLists = () => {
-  return new Promise((resolve, reject) => {
-    const xmlHttp = new XMLHttpRequest()
-    xmlHttp.open("GET", `${config.DRUPAL_HOST}/fortepan/lists`, true)
-    xmlHttp.setRequestHeader("Content-Type", "application/json")
-    xmlHttp.setRequestHeader("Accept", "application/json")
-    xmlHttp.withCredentials = true
-    xmlHttp.onload = () => {
-      if (xmlHttp.status === 200) {
-        resolve(JSON.parse(xmlHttp.responseText))
-      } else {
-        reject()
-      }
-    }
-    xmlHttp.send()
+const deleteFromList = async (photoId, listId) => {
+  const url = `${config.DRUPAL_HOST}/fortepan/unflag/${photoId}/${listId}`
+  const resp = await fetch(url, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
   })
+
+  const respData = await resp.json()
+  return respData
+}
+
+const getLists = async () => {
+  const url = `${config.DRUPAL_HOST}/fortepan/lists`
+  const resp = await fetch(url, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  })
+
+  const respData = await resp.json()
+  return respData.listak
+}
+
+const getList = async id => {
+  const url = `${config.DRUPAL_HOST}/fortepan/flags/${id}/created/desc`
+  const resp = await fetch(url, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  })
+
+  const respData = await resp.json()
+  return respData
 }
 
 export default {
   createList,
+  deleteList,
   addToList,
   deleteFromList,
   getLists,
+  getList,
 }

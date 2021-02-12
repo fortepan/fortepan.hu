@@ -30,10 +30,15 @@
   force = true
 
 [[redirects]]
+  from = "/:lang/lists/*"
+  to = "/:lang/lists/"
+  status = 200
+  force = true
+
+[[redirects]]
   from = "/hu/"
   to = "/"
   status = 200
-  force = true
 
 [[redirects]]
   from = "/hu/user/*"

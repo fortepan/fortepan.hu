@@ -1,0 +1,34 @@
+<div class="dialog dialog-bookmark" 
+     data-controller="dialog--bookmark"
+     data-action="dialogs:hide@document->dialog--bookmark#hide
+                   dialogBookmark:show@document->dialog--bookmark#show
+                   dialogBookmark:hide@document->dialog--bookmark#hide"
+>
+  <div class="dialog__wrapper">
+      <div class="button-circular dialog__close"
+           data-action="click->dialog--bookmark#hide"
+      >
+        {% inlineSVG src:"src/static/images/icons/24/icon-close.svg" class:"button-circular__icon" %}
+        <div class="button-circular__label">{{ lang[locale].close }}</div>
+      </div>
+
+      <h3 class="dialog__title">{{ lang[locale].bookmarks }}</h3>
+
+      <form class="dialog__form" data-dialog--bookmark-target="form">
+        {% include select/select.liquid 
+                   label:lang[locale].bookmark_choose
+                   stimulus_target:'data-dialog--bookmark-target="select"'
+                   stimulus_action:'change->dialog--bookmark#toggleInput'
+        %}
+        {% include input/input.liquid 
+                   type:"text"
+                   name:"name"
+                   label:lang[locale].bookmark_new_name
+                   stimulus_wrapper_target:'data-dialog--bookmark-target="name"'
+                   class:"dialog-bookmark__input"
+        %}
+        
+        <button class="button button--primary dialog__button" data-action="dialog--bookmark#submit">{{ lang[locale].save }}</button>
+      </form>
+  </div>
+</div>
