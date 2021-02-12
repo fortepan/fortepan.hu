@@ -18,7 +18,7 @@ layout: base/base.liquid
                   photoManager:photoSelected@document->photos#selectThumbnail
                   timeline:yearSelected@document->photos#onYearSelected"
 >
-  {% include ./title/title.liquid %}
+  {% include ./title/title %}
   <div class="photos__grid" data-photos-target="grid"></div>
   <div class="photos__bottom-actions is-hidden" data-photos-target="bottomActions">
     <div class="button button--secondary button--inline photos__load-more" data-action="photos#loadMorePhotos">{{ lang[locale].load_more }}</div>

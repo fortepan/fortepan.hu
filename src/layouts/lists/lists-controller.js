@@ -1,12 +1,14 @@
 import { Controller } from "stimulus"
-import listAPI from "../../api/lists"
+import listsAPI from "../../api/lists"
+import searchAPI from "../../api/search"
 
 export default class extends Controller {
   connect() {
     /*listAPI.createList("test").then(resp => {
       console.log(resp)
     })*/
-    listAPI.getLists().then(res => {
+
+    listsAPI.getLists().then(res => {
       console.log(res)
     })
   }

@@ -3,7 +3,6 @@ import { Controller } from "stimulus"
 import { appState } from "../../js/app"
 import { trigger, lang } from "../../js/utils"
 import photoManager from "../../js/photo-manager"
-import auth from "../../api/auth"
 import tagsAPI from "../../api/tags"
 
 export default class extends Controller {
@@ -22,16 +21,14 @@ export default class extends Controller {
   }
 
   showForm() {
-    auth.getUserStatus().then(userIsSignedIn => {
-      if (userIsSignedIn) {
-        this.addButtonTarget.classList.add("is-hidden")
-        this.formTarget.classList.remove("is-hidden")
-        this.inputTarget.selectizeControl.focus()
-      } else {
-        trigger("snackbar:show", { message: lang("tags_signin_alert"), status: "error", autoHide: true })
-        trigger("dialogSignin:show")
-      }
-    })
+    if (appState("auth-signed-in")) {
+      this.addButtonTarget.classList.add("is-hidden")
+      this.formTarget.classList.remove("is-hidden")
+      this.inputTarget.selectizeControl.focus()
+    } else {
+      trigger("snackbar:show", { message: lang("tags_signin_alert"), status: "error", autoHide: true })
+      trigger("dialogSignin:show")
+    }
   }
 
   async getPendingTags() {

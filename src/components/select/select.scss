@@ -1,0 +1,49 @@
+.select-wrapper {
+  display: block;
+  position: relative;
+}
+
+.select-wrapper__label {
+  display: block;
+  font-size: rem(13px);
+  font-weight: 500;
+  line-height: 1rem;
+  color: $grey;
+  margin-bottom: 0.5rem;
+  margin-top: 1rem;
+}
+
+.select-wrapper__select {
+  display: block;
+  box-sizing: border-box;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: inherit;
+  width: 100%;
+  margin: 0;
+  padding: 0.5rem 1rem;
+  height: 3rem;
+  -webkit-appearance: none;
+  font-size: 1rem;
+  line-height: 2rem;
+  border-radius: 0.25rem;
+  transition: transform 0.6s $ease-out-expo, opacity 0.3s $ease-out-expo, background-color 0.3s $ease-out-expo,
+    box-shadow 0.3s $ease-out-expo;
+
+  &::-webkit-search-decoration {
+    display: none;
+  }
+
+  .theme--light & {
+    background-color: $light-base;
+    color: $dark-base;
+    box-shadow: 0px 0px 0px 1px rgba($dark-base, 0.08) inset;
+  }
+
+  .theme--dark & {
+    background-color: $dark-base;
+    color: $light-base;
+    box-shadow: 0px 0px 0px 1px rgba($light-base, 0) inset;
+  }
+}
