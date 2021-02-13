@@ -60,8 +60,20 @@
   force = true
 
 [[redirects]]
-  from = "_photo/display/*"
+  from = "/_photo/display/*"
   to = "https://fortepan.download/_photo/480/fortepan_:splat"
   status = 200
   force = true
 
+
+[[redirects]]
+  from = "/_photo/download/*"
+  to = "https://fortepan.download/_photo/download/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/_photo/68x68/*"
+  to = "https://fortepan.download/_photo/240/fortepan_:splat"
+  status = 200
+  force = true
