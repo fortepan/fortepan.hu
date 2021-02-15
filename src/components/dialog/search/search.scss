@@ -1,15 +1,17 @@
-.dialog-advanced-search .dialog__wrapper {
+.dialog-search .dialog__wrapper {
   max-width: rem(640px);
 }
 
-.dialog-advanced-search__form {
+.dialog-search__form {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  margin-top: 2rem;
 }
 
-.dialog-advanced-search__button {
+.dialog-search__button {
   width: auto;
   cursor: pointer;
   min-width: 25%;
+  margin-top: 1rem;
 }

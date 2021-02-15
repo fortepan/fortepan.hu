@@ -103,6 +103,11 @@ export default class extends Controller {
     trigger("dialogSignup:show")
   }
 
+  showSearchDialog(e) {
+    e.preventDefault()
+    trigger("dialogSearch:show")
+  }
+
   toggleTheme(e) {
     e.preventDefault()
     trigger("theme:toggleTheme")

@@ -10,7 +10,9 @@ export default class extends Controller {
     this.formTarget.submit = this.submit.bind(this)
   }
 
-  submit() {
+  submit(e) {
+    if (e) e.preventDefault()
+
     const q = this.inputTarget.selectizeControl.value.join(", ")
 
     if (window.location.pathname.indexOf("/photos") === -1) {
@@ -21,7 +23,7 @@ export default class extends Controller {
         resetPhotosGrid: true,
       })
 
-      trigger("dialogAdvancedSearch:hide")
+      trigger("dialogSearch:hide")
     }
   }
 
