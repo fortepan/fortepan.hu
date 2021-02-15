@@ -14,17 +14,20 @@ const transformResults = resp => {
       // eslint-disable-next-line no-underscore-dangle
       const h = hit._source
       const item = {}
+
       item.year = h.year
       item.mid = h.mid
       item.uuid = h.uuid
       item.created = h.created
       item.description = h.description
+      item.searchAfter = hit.sort
       item.donor = l === "hu" ? h.adomanyozo_name : h.adomanyozo_en
       item.author = l === "hu" ? h.szerzo_name : h.szerzo_en
       item.tags = l === "hu" ? h.cimke_name : h.cimke_en
       item.country = l === "hu" ? h.orszag_name : h.orszag_en
       item.city = l === "hu" ? h.varos_name : h.varos_en
       item.place = l === "hu" ? h.helyszin_name : h.helyszin_en
+
       r.items.push(item)
     })
   }
@@ -98,10 +101,7 @@ const search = params => {
 
     // if query (search term) exists
     // then it'll search matches in name, description, orszag_name, cimke_name, and varos_name fields
-    // SHOULD means "OR" in elastic
     if (params.q && params.q !== "") {
-      // const q = slugify(params.q)
-      // query.bool.must.push({ match_phrase: { description_search: `${q}` } })
       const words = params.q.split(", ")
       words.forEach(word => {
         query.bool.must.push({
@@ -170,6 +170,7 @@ const search = params => {
     if (params.id) {
       const id = slugify(params.id)
       query.bool.must.push({ term: { mid: `${id}` } })
+      params.search_after = [slugify(params.year), slugify(params.created), slugify(params.id)]
     }
 
     // if there's a year range defined (advanced search / range filter)
@@ -179,17 +180,20 @@ const search = params => {
       if (params.year_to) y.lte = params.year_to
       range.range.year = y
     }
-
     // if there's a range set
     query.bool.must.push(range)
 
-    // request 30 items from the Elastic server
     const body = {
-      from: params.from || 0,
       size: params.size || 30,
       sort,
       track_total_hits: true,
       query,
+    }
+
+    if (params.search_after) {
+      body.search_after = params.search_after
+    } else {
+      body.from = params.from || 0
     }
 
     elasticRequest(body)
