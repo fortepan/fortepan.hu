@@ -1,0 +1,31 @@
+<div class="photos-timeline" 
+  data-controller="timeline" 
+  data-timeline-target="timeline"
+  data-action="timeline:disable@document->timeline#disable
+               timeline:reset@document->timeline#resetSlider"
+>
+    <h3 class="photos-timeline__title" data-timeline-target="title">{{ lang[locale].timeline }}</h3>
+    <div class="photos-timeline__range caption" data-timeline-target="range">1900 - 1990</div>
+    <div class="photos-timeline__slider__container" data-timeline-target="slider">
+        <div class="photos-timeline__slider" 
+          data-timeline-target="sliderKnob sliderLeft"
+          data-action="touchstart->timeline#sliderStartDrag
+                       mousedown->timeline#sliderStartDrag
+                       touchmove@document->timeline#sliderLeftMoved
+                       mousemove@document->timeline#sliderLeftMoved
+                       touchend@document->timeline#sliderStopDrag
+                       mouseup@document->timeline#sliderStopDrag"
+        >1900</div>
+        <div class="photos-timeline__slider-selected-range" data-timeline-target="selectedRange">
+        </div>
+        <div class="photos-timeline__slider" 
+        data-timeline-target="sliderKnob sliderRight"
+        data-action="touchstart->timeline#sliderStartDrag
+                       mousedown->timeline#sliderStartDrag
+                       touchmove@document->timeline#sliderRightMoved
+                       mousemove@document->timeline#sliderRightMoved
+                       touchend@document->timeline#sliderStopDrag
+                       mouseup@document->timeline#sliderStopDrag"
+        >1944</div>
+    </div>
+</div>

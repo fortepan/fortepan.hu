@@ -1,6 +1,6 @@
 import { Controller } from "stimulus"
-import { trigger, getURLParams } from "../../../js/utils"
-import { setAppState, removeAppState } from "../../../js/app"
+import { trigger, getURLParams } from "../../js/utils"
+import { setAppState, removeAppState } from "../../js/app"
 
 const YEAR_MIN = 1900
 const YEAR_MAX = 1990
