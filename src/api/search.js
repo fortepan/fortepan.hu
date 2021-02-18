@@ -196,6 +196,18 @@ const search = params => {
       body.from = params.from || 0
     }
 
+    if (params && params.from === 0) {
+      body.aggs = {
+        years: {
+          terms: {
+            field: "year",
+            size: 100000,
+            order: { _key: "asc" },
+          },
+        },
+      }
+    }
+
     elasticRequest(body)
       .then(resp => {
         resolve(transformResults(resp))
