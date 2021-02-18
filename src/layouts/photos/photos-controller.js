@@ -124,6 +124,12 @@ export default class extends Controller {
       size: config.THUMBNAILS_QUERY_LIMIT,
       from: this.thumbnailsCount,
     }
+
+    if (this.thumbnailsCount > 0) {
+      delete defaultParams.from
+      defaultParams.search_after = this.gridTarget.children[this.thumbnailsCount - 1].itemData.searchAfter
+    }
+
     const urlParams = getURLParams()
 
     // merge default params with query params
