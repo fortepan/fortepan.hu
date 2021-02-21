@@ -2,6 +2,7 @@ import { Controller } from "stimulus"
 
 import config from "../../../data/siteConfig"
 import { lang, trigger, setPageMeta } from "../../../js/utils"
+import photoManager from "../../../js/photo-manager"
 
 const THUMBNAIL_HEIGHT = 160
 export default class extends Controller {
@@ -21,7 +22,7 @@ export default class extends Controller {
   }
 
   clicked() {
-    const data = this.element.itemData
+    const data = photoManager.getPhotoDataByID(this.element.photoId)
 
     // select thumbnail in photos list
     trigger("photos:selectThumbnail", { node: this.element })
@@ -56,7 +57,7 @@ export default class extends Controller {
 
   // set thumbnail meta data
   applyThumbnailData() {
-    const data = this.element.itemData
+    const data = photoManager.getPhotoDataByID(this.element.photoId)
     const locationArray = [data.year, data.city, data.place]
     if (!data.city && !data.place && data.country) locationArray.push(data.country)
     this.locationTarget.textContent = locationArray.filter(Boolean).join(" · ")
@@ -65,7 +66,7 @@ export default class extends Controller {
 
   // load thumbnail image
   loadThumbnailImage() {
-    const data = this.element.itemData
+    const data = photoManager.getPhotoDataByID(this.element.photoId)
 
     this.imageTarget.addEventListener("load", () => {
       this.naturalWidth = this.imageTarget.naturalWidth

@@ -65,7 +65,7 @@ export default class extends Controller {
   }
 
   loadPhoto() {
-    const id = selectedThumbnail.itemData.mid
+    const id = selectedThumbnail.photoId
     let photo = this.element.querySelector(`#Fortepan-${id}`)
     if (!photo) {
       photo = document.createElement("div")

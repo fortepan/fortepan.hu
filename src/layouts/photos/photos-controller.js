@@ -4,6 +4,7 @@ import throttle from "lodash/throttle"
 import config from "../../data/siteConfig"
 import { lang, trigger, getURLParams, isElementInViewport } from "../../js/utils"
 import searchAPI from "../../api/search"
+import photoManager from "../../js/photo-manager"
 
 export default class extends Controller {
   static get targets() {
@@ -90,8 +91,7 @@ export default class extends Controller {
       thumbnail.index = Array.prototype.indexOf.call(thumbnail.parentElement.children, thumbnail) + 1
 
       // apply thumnail data to node
-      // eslint-disable-next-line no-underscore-dangle
-      thumbnail.itemData = item
+      thumbnail.photoId = item.mid
 
       // observe when the thumbnail class attribute changes and contains 'is-loaded'
       const thumbnailLoadingPromise = new Promise(res => {
@@ -122,12 +122,12 @@ export default class extends Controller {
     const params = {}
     const defaultParams = {
       size: config.THUMBNAILS_QUERY_LIMIT,
-      from: this.thumbnailsCount,
     }
 
     if (this.thumbnailsCount > 0) {
-      delete defaultParams.from
-      defaultParams.search_after = this.gridTarget.children[this.thumbnailsCount - 1].itemData.searchAfter
+      defaultParams.search_after = photoManager.getLastPhotoData().search_after
+    } else {
+      defaultParams.from = 0
     }
 
     const urlParams = getURLParams()
@@ -158,8 +158,8 @@ export default class extends Controller {
       trigger("loader:show", { id: "loaderBase" })
     }, 10)
 
-    // search for photos
-    const respData = await searchAPI.search(params)
+    // request loading photos through the photoManager module
+    const respData = await photoManager.loadPhotoData(params)
 
     // generate thumbnails
     this.generateThumbnailsFromData(respData)
@@ -180,6 +180,8 @@ export default class extends Controller {
       }
       this.scrollTop = 0
       this.thumbnailsCount = 0
+
+      trigger("photos:contextChanged")
     }
 
     // load photos then...
