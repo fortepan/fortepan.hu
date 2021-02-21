@@ -3,6 +3,7 @@ import { Controller } from "stimulus"
 import config from "../../../data/siteConfig"
 import { trigger, getURLParams, isTouchDevice } from "../../../js/utils"
 import { selectedThumbnail, removeAppState, appState } from "../../../js/app"
+import photoManager from "../../../js/photo-manager"
 
 export default class extends Controller {
   static get targets() {
@@ -65,7 +66,7 @@ export default class extends Controller {
   }
 
   loadPhoto() {
-    const id = selectedThumbnail.photoId
+    const id = photoManager.getSelectedPhotoId()
     let photo = this.element.querySelector(`#Fortepan-${id}`)
     if (!photo) {
       photo = document.createElement("div")

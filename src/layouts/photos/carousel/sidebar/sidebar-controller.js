@@ -17,12 +17,8 @@ export default class extends Controller {
     this.toggleOnResize = throttle(this.toggleOnResize.bind(this), 400)
   }
 
-  get selectedThumbnail() {
-    return document.querySelector(".photos-thumbnail.is-selected")
-  }
-
   init() {
-    const data = photoManager.getPhotoDataByID(this.selectedThumbnail.photoId)
+    const data = photoManager.getSelectedPhotoData()
 
     // fill template with data
 

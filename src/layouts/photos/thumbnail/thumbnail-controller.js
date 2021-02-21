@@ -22,7 +22,7 @@ export default class extends Controller {
   }
 
   clicked() {
-    const data = photoManager.getPhotoDataByID(this.element.photoId)
+    const { data } = photoManager.setSelectedPhoto(this.element.photoId)
 
     // select thumbnail in photos list
     trigger("photos:selectThumbnail", { node: this.element })

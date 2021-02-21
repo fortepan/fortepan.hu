@@ -31,38 +31,51 @@ const loadPhotoData = async params => {
 }
 
 const getPhotoDataByID = id => {
-  let data = {}
+  let data = null
   if (photoData.result && photoData.result.items && photoData.result.items.length) {
     data = photoData.result.items.find(element => element.mid === id)
     if (!data) {
-      // TODO load the picture
+      // TODO: load the picture if context allows
     }
   }
   return data
 }
 
 const getFirstPhotoData = () => {
-  let data = {}
   if (photoData.result && photoData.result.items && photoData.result.items.length) {
-    data = photoData.result.items[0]
+    return this.photoData.result.items[0]
   }
-  return data
+  return null
 }
 
 const getLastPhotoData = () => {
-  let data = {}
   if (photoData.result && photoData.result.items && photoData.result.items.length) {
-    data = photoData.result.items[photoData.result.items.length - 1]
+    return photoData.result.items[photoData.result.items.length - 1]
   }
-  return data
+  return null
+}
+
+const getSelectedPhotoId = () => {
+  return photoData.selectedId
+}
+
+const getSelectedPhotoData = () => {
+  return photoData.selectedItem
+}
+
+const setSelectedPhoto = id => {
+  photoData.selectedId = id
+  photoData.selectedItem = getPhotoDataByID(id)
+  return { id: photoData.selectedId, data: photoData.selectedItem }
 }
 
 const clearPhotoData = () => {
   // if the context of the search has changed flush the cached searsh results
   delete photoData.context
   delete photoData.result
+  delete photoData.selectedId
+  delete photoData.selectedItem
 }
-
 document.addEventListener("photos:contextChanged", clearPhotoData)
 
 export default {
@@ -70,5 +83,8 @@ export default {
   getPhotoDataByID,
   getFirstPhotoData,
   getLastPhotoData,
+  getSelectedPhotoId,
+  getSelectedPhotoData,
+  setSelectedPhoto,
   clearPhotoData,
 }

@@ -1,6 +1,6 @@
 import { Controller } from "stimulus"
 
-import { selectedThumbnail, appState } from "../../../../../js/app"
+import { appState } from "../../../../../js/app"
 import { trigger, lang } from "../../../../../js/utils"
 import photoManager from "../../../../../js/photo-manager"
 import auth from "../../../../../api/auth"
@@ -36,7 +36,7 @@ export default class extends Controller {
 
   async getPendingTags() {
     if (appState("auth-signed-in")) {
-      const data = photoManager.getPhotoDataByID(selectedThumbnail.photoId)
+      const data = photoManager.getSelectedPhotoData()
       const pendingTags = await tagsAPI.getPendingTags(data.mid[0])
       console.log(pendingTags)
     }
@@ -50,7 +50,7 @@ export default class extends Controller {
   submit(e) {
     if (e) e.preventDefault()
     const tags = this.inputTarget.selectizeControl.value
-    const data = photoManager.getPhotoDataByID(selectedThumbnail.photoId)
+    const data = photoManager.getSelectedPhotoData()
 
     if (tags.length > 0) {
       tagsAPI

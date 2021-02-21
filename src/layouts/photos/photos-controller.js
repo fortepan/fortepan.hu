@@ -3,7 +3,6 @@ import { Controller } from "stimulus"
 import throttle from "lodash/throttle"
 import config from "../../data/siteConfig"
 import { lang, trigger, getURLParams, isElementInViewport } from "../../js/utils"
-import searchAPI from "../../api/search"
 import photoManager from "../../js/photo-manager"
 
 export default class extends Controller {
