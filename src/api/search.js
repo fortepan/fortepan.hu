@@ -20,7 +20,7 @@ const transformResults = resp => {
       item.uuid = h.uuid
       item.created = h.created
       item.description = h.description
-      item.searchAfter = hit.sort
+      item.search_after = hit.sort
       item.donor = l === "hu" ? h.adomanyozo_name : h.adomanyozo_en
       item.author = l === "hu" ? h.szerzo_name : h.szerzo_en
       item.tags = l === "hu" ? h.cimke_name : h.cimke_en
@@ -170,7 +170,9 @@ const search = params => {
     if (params.id) {
       const id = slugify(params.id)
       query.bool.must.push({ term: { mid: `${id}` } })
-      params.search_after = [slugify(params.year), slugify(params.created), slugify(params.id)]
+      if (params.year && params.created) {
+        params.search_after = [slugify(params.year), slugify(params.created), slugify(params.id)]
+      }
     }
 
     // if there's a year range defined (advanced search / range filter)
@@ -194,18 +196,6 @@ const search = params => {
       body.search_after = params.search_after
     } else {
       body.from = params.from || 0
-    }
-
-    if (params && params.from === 0) {
-      body.aggs = {
-        years: {
-          terms: {
-            field: "year",
-            size: 100000,
-            order: { _key: "asc" },
-          },
-        },
-      }
     }
 
     elasticRequest(body)
@@ -342,10 +332,35 @@ const getDataById = array => {
   })
 }
 
+const getAggregatedYears = () => {
+  return new Promise((resolve, reject) => {
+    const body = {
+      aggs: {
+        years: {
+          terms: {
+            field: "year",
+            size: 100000,
+            order: { _key: "asc" },
+          },
+        },
+      },
+    }
+
+    elasticRequest(body)
+      .then(resp => {
+        resolve(resp)
+      })
+      .catch(err => {
+        reject(err)
+      })
+  })
+}
+
 export default {
   search,
   getTotal,
   getDonators,
   getRandom,
   getDataById,
+  getAggregatedYears,
 }
