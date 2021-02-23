@@ -7,7 +7,7 @@ const YEAR_MAX = 1990
 
 export default class extends Controller {
   static get targets() {
-    return ["title", "range", "slider", "selectedRange", "sliderKnob", "sliderYear"]
+    return ["title", "range", "slider", "selectedRange", "sliderKnob", "sliderLeft", "sliderRight"]
   }
 
   connect() {
@@ -36,7 +36,8 @@ export default class extends Controller {
    */
   setURLParams() {
     const urlParams = getURLParams()
-    urlParams.year = this.yearStart
+    urlParams.year_from = this.yearStart
+    urlParams.year_to = this.yearEnd
     const url = `?${Object.entries(urlParams)
       .map(([key, val]) => `${key}=${val}`)
       .join("&")}`
@@ -44,29 +45,33 @@ export default class extends Controller {
   }
 
   setRange() {
-    this.range = this.sliderTarget.offsetWidth - this.sliderYearTarget.offsetWidth
+    this.range = this.sliderTarget.offsetWidth - this.sliderLeftTarget.offsetWidth - this.sliderRightTarget.offsetWidth
   }
 
   getRange() {
-    return { from: YEAR_MIN, to: this.year }
+    return { from: this.yearStart, to: this.yearEnd }
   }
 
   setTimelineRange() {
-    this.rangeTarget.textContent = this.year
-    this.sliderYearTarget.textContent = this.year
+    this.rangeTarget.textContent = `${this.yearStart} — ${this.yearEnd}`
+    this.sliderLeftTarget.textContent = this.yearStart
+    this.sliderRightTarget.textContent = this.yearEnd
   }
 
   fixSlider() {
-    const start = ((this.year - YEAR_MIN) / (YEAR_MAX - YEAR_MIN)) * this.range
-    this.sliderYearTarget.style.left = `${start}px`
-    this.selectedRangeTarget.style.width = `${start + this.sliderYearTarget.offsetWidth}px`
-    this.selectedRangeTarget.style.left = `${start}px`
+    const start = ((this.yearStart - YEAR_MIN) / (YEAR_MAX - YEAR_MIN)) * this.range
+    const end = ((this.yearEnd - YEAR_MIN) / (YEAR_MAX - YEAR_MIN)) * this.range
+    this.sliderLeftTarget.style.left = `${start}px`
+    this.sliderRightTarget.style.left = `${end + this.sliderLeftTarget.offsetWidth}px`
+    this.selectedRangeTarget.style.left = `${start + this.sliderLeftTarget.offsetWidth}px`
+    this.selectedRangeTarget.style.width = `${end - start}px`
   }
 
   resetSlider() {
     const urlParams = getURLParams()
 
-    this.year = urlParams.year || YEAR_MIN
+    this.yearStart = urlParams.year_from || YEAR_MIN
+    this.yearEnd = urlParams.year_to || YEAR_MAX
 
     this.setRange()
     this.setTimelineRange()
@@ -75,8 +80,7 @@ export default class extends Controller {
     this.enable()
   }
 
-  calcYear() {
-    return
+  calcYearRange() {
     this.yearStart = YEAR_MIN + Math.round((this.sliderLeftTarget.offsetLeft / this.range) * (YEAR_MAX - YEAR_MIN))
     this.yearEnd =
       YEAR_MIN +
@@ -111,20 +115,40 @@ export default class extends Controller {
     }
   }
 
-  sliderYearMoved(e) {
+  sliderLeftMoved(e) {
     if (
-      this.sliderDragged === this.sliderYearTarget &&
-      this.sliderYearTarget.offsetLeft >= 0 // &&
-      // this.sliderYearTarget.offsetLeft <= this.sliderRightTarget.offsetLeft - this.sliderYearTarget.offsetWidth
+      this.sliderDragged === this.sliderLeftTarget &&
+      this.sliderLeftTarget.offsetLeft >= 0 &&
+      this.sliderLeftTarget.offsetLeft <= this.sliderRightTarget.offsetLeft - this.sliderLeftTarget.offsetWidth
     ) {
       const px = e.touches ? e.touches[0].pageX : e.pageX
       const x = Math.min(
         Math.max(px - this.sliderDragStartX, 0),
-        this.sliderRightTarget.offsetLeft - this.sliderYearTarget.offsetWidth
+        this.sliderRightTarget.offsetLeft - this.sliderLeftTarget.offsetWidth
       )
-      this.sliderYearTarget.style.left = `${x}px`
-      this.selectedRangeTarget.style.left = `${x + this.sliderYearTarget.offsetWidth}px`
+      this.sliderLeftTarget.style.left = `${x}px`
+      this.selectedRangeTarget.style.left = `${x + this.sliderLeftTarget.offsetWidth}px`
       this.selectedRangeTarget.style.width = `${this.sliderRightTarget.offsetLeft - x}px`
+
+      this.calcYearRange()
+      this.setTimelineRange()
+    }
+  }
+
+  sliderRightMoved(e) {
+    const px = e.touches ? e.touches[0].pageX : e.pageX
+
+    if (
+      this.sliderDragged === this.sliderRightTarget &&
+      this.sliderRightTarget.offsetLeft >= this.sliderLeftTarget.offsetLeft + this.sliderLeftTarget.offsetWidth &&
+      this.sliderRightTarget.offsetLeft <= this.sliderTarget.offsetWidth - this.sliderRightTarget.offsetWidth
+    ) {
+      const x = Math.max(
+        Math.min(px - this.sliderDragStartX, this.sliderTarget.offsetWidth - this.sliderRightTarget.offsetWidth),
+        this.sliderLeftTarget.offsetLeft + this.sliderLeftTarget.offsetWidth
+      )
+      this.sliderRightTarget.style.left = `${x}px`
+      this.selectedRangeTarget.style.width = `${this.sliderRightTarget.offsetLeft - this.sliderLeftTarget.offsetLeft}px`
 
       this.calcYearRange()
       this.setTimelineRange()
