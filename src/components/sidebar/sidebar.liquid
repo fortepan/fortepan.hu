@@ -30,25 +30,25 @@
         </div>
         
         <div class="carousel-add-tags" 
-             data-controller="sidebar--add-tags"
-             data-action="photosCarousel:hide@document->sidebar--add-tags#hideForm
-             photosCarousel:showPhoto@document->sidebar--add-tags#getPendingTags
-             auth:signedOut@document->sidebar--add-tags#hideForm">
+             data-controller="add-tags"
+             data-action="photosCarousel:hide@document->add-tags#hideForm
+             photosCarousel:showPhoto@document->add-tags#getPendingTags
+             auth:signedOut@document->add-tags#hideForm">
             <h6 class="carousel-sidebar__tags-title">{{ lang[locale].tags }}</h6>
-            <p class="carousel-sidebar__tags" data-sidebar-target="tags" data-sidebar--add-tags-target="tags"></p>
+            <p class="carousel-sidebar__tags" data-sidebar-target="tags" data-add-tags-target="tags"></p>
             <div class="carousel-add-tags__add"
-               data-sidebar--add-tags-target="addButton"
-               data-action="click->sidebar--add-tags#showForm"
+               data-add-tags-target="addButton"
+               data-action="click->add-tags#showForm"
             >{{ lang[locale].add_tag }}</div>
-            <form class="carousel-add-tags__form is-hidden" data-sidebar--add-tags-target="form">
+            <form class="carousel-add-tags__form is-hidden" data-add-tags-target="form">
                 {% include selectize-control/selectize-control.liquid 
                             class:'carousel-sidebar__tags__form__selectize'
                             filter:'cimke_name'
-                            stimulus_target:'data-sidebar--add-tags-target="input"' 
+                            stimulus_target:'data-add-tags-target="input"' 
                 %}
                 <button class="button button--primary button--medium button--wide carousel-add-tags__save" 
-                        data-sidebar--add-tags-target="submitButton"
-                        data-action="click->sidebar--add-tags#submit"
+                        data-add-tags-target="submitButton"
+                        data-action="click->add-tags#submit"
                 >{{ lang[locale].save }}</button>
             </form>
         </div>

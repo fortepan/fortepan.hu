@@ -158,7 +158,9 @@ export default class extends Controller {
     }, 10)
 
     // request loading photos through the photoManager module
-    photoManager.loadPhotoData(params)
+    const respData = await photoManager.loadPhotoData(params, true)
+
+    this.generateThumbnailsFromData(respData)
   }
 
   // event listener for photoManager:load
@@ -193,7 +195,8 @@ export default class extends Controller {
       // open carousel if @id parameter is present in the url's query string
       if (getURLParams().id > 0) {
         // show carousel with an image
-        trigger("photosCarousel:showPhoto", { data: photoManager.getPhotoDataByID(getURLParams().id) })
+        const { data } = photoManager.setSelectedPhoto(getURLParams().id)
+        trigger("photosCarousel:showPhoto", { data: data })
       } else {
         trigger("photosCarousel:hide")
       }

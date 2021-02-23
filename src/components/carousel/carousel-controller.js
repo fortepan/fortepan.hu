@@ -2,7 +2,7 @@ import { Controller } from "stimulus"
 
 import config from "../../data/siteConfig"
 import { trigger, getURLParams, isTouchDevice } from "../../js/utils"
-import { setAppState, selectedThumbnail, removeAppState, appState } from "../../js/app"
+import { setAppState, removeAppState, appState } from "../../js/app"
 import photoManager from "../../js/photo-manager"
 
 export default class extends Controller {
@@ -57,8 +57,8 @@ export default class extends Controller {
     }
   }
 
-  setCarouselBackground() {
-    this.backgroundTarget.style.backgroundImage = `url(${selectedThumbnail.querySelector("img").currentSrc})`
+  setCarouselBackground(id) {
+    this.backgroundTarget.style.backgroundImage = `url(${config.PHOTO_SOURCE}240/fortepan_${id}.jpg)`
     this.backgroundTarget.classList.remove("fade-in")
     setTimeout(() => {
       this.backgroundTarget.classList.add("fade-in")
@@ -104,7 +104,7 @@ export default class extends Controller {
 
     if (id) {
       this.hideAllPhotos()
-      this.setCarouselBackground()
+      this.setCarouselBackground(id)
       this.loadPhoto(id)
       this.togglePager()
       this.showControls(null, true)

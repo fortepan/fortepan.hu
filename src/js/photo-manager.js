@@ -4,7 +4,7 @@ import searchAPI from "../api/search"
 // creating a context object to store the latest request parameters and results
 const photoData = {}
 
-const loadPhotoData = async params => {
+const loadPhotoData = async (params, silent) => {
   // saving the last search context
   photoData.context = params
 
@@ -29,8 +29,10 @@ const loadPhotoData = async params => {
 
   const result = { items: photoData.result.latestItems, total: photoData.result.total }
 
-  // dispatch an event that new photos have been loaded in the search context
-  trigger("photoManager:load", result)
+  if (!silent) {
+    // dispatch an event that new photos have been loaded in the search context
+    trigger("photoManager:load", result)
+  }
 
   return result
 }
@@ -38,7 +40,7 @@ const loadPhotoData = async params => {
 const getPhotoDataByID = id => {
   let data = null
   if (photoData.result && photoData.result.items && photoData.result.items.length) {
-    data = photoData.result.items.find(element => element.mid === id)
+    data = photoData.result.items.find(item => parseInt(item.mid, 10) === parseInt(id, 10))
     if (!data) {
       // TODO: load the picture if context allows
     }
@@ -48,7 +50,7 @@ const getPhotoDataByID = id => {
 
 const getPhotoIndexByID = id => {
   if (photoData.result && photoData.result.items && photoData.result.items.length) {
-    return photoData.result.items.findIndex(element => element.mid === id)
+    return photoData.result.items.findIndex(item => parseInt(item.mid, 10) === parseInt(id, 10))
   }
   return -1
 }
