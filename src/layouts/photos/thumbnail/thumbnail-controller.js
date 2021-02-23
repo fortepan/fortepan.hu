@@ -25,10 +25,10 @@ export default class extends Controller {
     const { data } = photoManager.setSelectedPhoto(this.element.photoId)
 
     // select thumbnail in photos list
-    trigger("photos:selectThumbnail", { node: this.element })
+    trigger("photos:selectThumbnail", { index: photoManager.getSelectedPhotoIndex() })
 
     // Load photo in Carousel
-    trigger("photosCarousel:showPhoto")
+    trigger("photosCarousel:showPhoto", { data: data })
 
     // set html page meta for social sharing
     setPageMeta(

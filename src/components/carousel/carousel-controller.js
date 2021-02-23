@@ -1,9 +1,9 @@
 import { Controller } from "stimulus"
 
-import config from "../../../data/siteConfig"
-import { trigger, getURLParams, isTouchDevice } from "../../../js/utils"
-import { selectedThumbnail, removeAppState, appState } from "../../../js/app"
-import photoManager from "../../../js/photo-manager"
+import config from "../../data/siteConfig"
+import { trigger, getURLParams, isTouchDevice } from "../../js/utils"
+import { setAppState, selectedThumbnail, removeAppState, appState } from "../../js/app"
+import photoManager from "../../js/photo-manager"
 
 export default class extends Controller {
   static get targets() {
@@ -52,7 +52,7 @@ export default class extends Controller {
     if (this.slideshowIsPlaying) {
       clearTimeout(this.slideshowTimeout)
       this.slideshowTimeout = setTimeout(() => {
-        trigger("photos:showNextPhoto")
+        this.showNextPhoto()
       }, config.CAROUSEL_SLIDESHOW_DELAY)
     }
   }
@@ -65,13 +65,12 @@ export default class extends Controller {
     }, 20)
   }
 
-  loadPhoto() {
-    const id = photoManager.getSelectedPhotoId()
+  loadPhoto(id) {
     let photo = this.element.querySelector(`#Fortepan-${id}`)
     if (!photo) {
       photo = document.createElement("div")
       photo.dataset.controller = "image-loader"
-      photo.setAttribute("data-photos--carousel-target", "photo")
+      photo.setAttribute("data-carousel-target", "photo")
       photo.className = "image-loader"
       photo.id = `Fortepan-${id}`
 
@@ -100,25 +99,38 @@ export default class extends Controller {
     })
   }
 
-  showPhoto() {
-    this.hideAllPhotos()
-    this.setCarouselBackground()
-    this.loadPhoto()
-    this.togglePager()
-    this.showControls(null, true)
+  showPhoto(e, photoId) {
+    const id = e && e.detail && e.detail.data ? e.detail.data.mid : photoId
 
-    trigger("carouselSidebar:init")
-    trigger("dialogDownload:init")
-    trigger("dialogShare:init")
-    trigger("photosCarousel:show")
+    if (id) {
+      this.hideAllPhotos()
+      this.setCarouselBackground()
+      this.loadPhoto(id)
+      this.togglePager()
+      this.showControls(null, true)
+
+      trigger("carouselSidebar:init")
+      trigger("dialogDownload:init")
+      trigger("dialogShare:init")
+      trigger("photosCarousel:show")
+    }
   }
 
   showNextPhoto() {
-    trigger("photos:showNextPhoto")
+    // select the next photo in the current context (or load more is neccessary)
+    photoManager.selectNextPhoto().then(() => {
+      this.hideAllPhotos()
+      this.showPhoto(null, photoManager.getSelectedPhotoId())
+      trigger("photos:selectThumbnail", { index: photoManager.getSelectedPhotoIndex() })
+    })
   }
 
   showPrevPhoto() {
-    trigger("photos:showPrevPhoto")
+    // select the next previous in the current context (or load more if neccessary)
+    photoManager.selectPrevPhoto().then(() => {
+      this.hideAllPhotos()
+      this.showPhoto(null, photoManager.getSelectedPhotoId())
+    })
   }
 
   hideAllPhotos() {
@@ -135,22 +147,22 @@ export default class extends Controller {
   }
 
   get slideshowIsPlaying() {
-    appState("play-carousel-slideshow")
+    return appState("play-carousel-slideshow")
   }
 
   get sidebarIsHidden() {
-    appState("hide-carousel-sidebar")
+    return appState("hide-carousel-sidebar")
   }
 
   playSlideshow() {
-    addAppState("play-carousel-slideshow")
+    setAppState("play-carousel-slideshow")
 
     // store sidebar visibility
     trigger("carouselSidebar:hide")
 
     // start slideshow
     this.slideshowTimeout = setTimeout(() => {
-      trigger("photos:showNextPhoto")
+      this.showNextPhoto()
     }, config.CAROUSEL_SLIDESHOW_DELAY)
   }
 
@@ -204,10 +216,10 @@ export default class extends Controller {
         this.toggleSlideshow()
         break
       case "ArrowLeft":
-        trigger("photos:showPrevPhoto")
+        this.showPrevPhoto()
         break
       case "ArrowRight":
-        trigger("photos:showNextPhoto")
+        this.showNextPhoto()
         break
       default:
     }

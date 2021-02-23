@@ -1,4 +1,4 @@
-import { trigger, getURLParams } from "./utils"
+import { trigger } from "./utils"
 import searchAPI from "../api/search"
 
 // creating a context object to store the latest request parameters and results
@@ -27,7 +27,12 @@ const loadPhotoData = async params => {
     photoData.result.total = resp.total
   }
 
-  return { items: photoData.result.latestItems, total: photoData.result.total }
+  const result = { items: photoData.result.latestItems, total: photoData.result.total }
+
+  // dispatch an event that new photos have been loaded in the search context
+  trigger("photoManager:load", result)
+
+  return result
 }
 
 const getPhotoDataByID = id => {
@@ -39,6 +44,32 @@ const getPhotoDataByID = id => {
     }
   }
   return data
+}
+
+const getPhotoIndexByID = id => {
+  if (photoData.result && photoData.result.items && photoData.result.items.length) {
+    return photoData.result.items.findIndex(element => element.mid === id)
+  }
+  return -1
+}
+
+const getSelectedPhotoId = () => {
+  return photoData.selectedId
+}
+
+const getSelectedPhotoData = () => {
+  return photoData.selectedItem
+}
+
+const getSelectedPhotoIndex = () => {
+  return photoData.selectedIndex
+}
+
+const setSelectedPhoto = id => {
+  photoData.selectedId = id
+  photoData.selectedItem = getPhotoDataByID(id)
+  photoData.selectedIndex = getPhotoIndexByID(id)
+  return { id: photoData.selectedId, data: photoData.selectedItem }
 }
 
 const getFirstPhotoData = () => {
@@ -55,18 +86,48 @@ const getLastPhotoData = () => {
   return null
 }
 
-const getSelectedPhotoId = () => {
-  return photoData.selectedId
+const selectNextPhoto = async () => {
+  if (photoData.selectedIndex !== -1) {
+    const nextIndex = photoData.selectedIndex + 1
+
+    if (nextIndex <= photoData.result.items.length - 1) {
+      const data = photoData.result.items[photoData.selectedIndex + 1]
+      setSelectedPhoto(data.mid)
+
+      // dispatching a new event when the next photo is selected
+      trigger("photoManager:nextSelected", {
+        id: getSelectedPhotoId(),
+        data: getSelectedPhotoData(),
+        index: getSelectedPhotoIndex(),
+      })
+    } else if (
+      nextIndex > photoData.result.items.length - 1 &&
+      photoData.result.items.length < photoData.result.total
+    ) {
+      // if there's more photos in the search context that haven't been loaded yet
+      // load a new set of max 40 photos, and try selecting the next photo again
+      const params = photoData.context
+      params.search_after = getLastPhotoData().search_after
+
+      await loadPhotoData(params)
+
+      selectNextPhoto()
+    }
+  }
 }
 
-const getSelectedPhotoData = () => {
-  return photoData.selectedItem
-}
+const selectPrevPhoto = async () => {
+  if (photoData.selectedIndex !== -1) {
+    const data = photoData.result.items[Math.max(0, photoData.selectedIndex - 1)]
+    setSelectedPhoto(data.mid)
 
-const setSelectedPhoto = id => {
-  photoData.selectedId = id
-  photoData.selectedItem = getPhotoDataByID(id)
-  return { id: photoData.selectedId, data: photoData.selectedItem }
+    // dispatching a new event when the prev photo is selected
+    trigger("photoManager:prevSelected", {
+      id: getSelectedPhotoId(),
+      data: getSelectedPhotoData(),
+      index: getSelectedPhotoIndex(),
+    })
+  }
 }
 
 const clearPhotoData = () => {
@@ -75,16 +136,20 @@ const clearPhotoData = () => {
   delete photoData.result
   delete photoData.selectedId
   delete photoData.selectedItem
+  delete photoData.selectedIndex
 }
 document.addEventListener("photos:contextChanged", clearPhotoData)
 
 export default {
   loadPhotoData,
-  getPhotoDataByID,
-  getFirstPhotoData,
-  getLastPhotoData,
   getSelectedPhotoId,
   getSelectedPhotoData,
+  getSelectedPhotoIndex,
   setSelectedPhoto,
+  getPhotoDataByID,
+  selectNextPhoto,
+  selectPrevPhoto,
+  getFirstPhotoData,
+  getLastPhotoData,
   clearPhotoData,
 }

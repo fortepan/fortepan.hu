@@ -1,10 +1,10 @@
 import { Controller } from "stimulus"
 
-import { appState } from "../../../../../js/app"
-import { trigger, lang } from "../../../../../js/utils"
-import photoManager from "../../../../../js/photo-manager"
-import auth from "../../../../../api/auth"
-import tagsAPI from "../../../../../api/tags"
+import { appState } from "../../js/app"
+import { trigger, lang } from "../../js/utils"
+import photoManager from "../../js/photo-manager"
+import auth from "../../api/auth"
+import tagsAPI from "../../api/tags"
 
 export default class extends Controller {
   static get targets() {

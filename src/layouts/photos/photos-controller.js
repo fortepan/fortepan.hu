@@ -158,10 +158,15 @@ export default class extends Controller {
     }, 10)
 
     // request loading photos through the photoManager module
-    const respData = await photoManager.loadPhotoData(params)
+    photoManager.loadPhotoData(params)
+  }
 
-    // generate thumbnails
-    this.generateThumbnailsFromData(respData)
+  // event listener for photoManager:load
+  onPhotoDataLoaded(e) {
+    if (e && e.detail && e.detail) {
+      // generate thumbnails
+      this.generateThumbnailsFromData(e.detail)
+    }
   }
 
   // Custom event to load content and update page meta tag
@@ -188,7 +193,7 @@ export default class extends Controller {
       // open carousel if @id parameter is present in the url's query string
       if (getURLParams().id > 0) {
         // show carousel with an image
-        if (document.querySelector(".photos-thumbnail")) document.querySelector(".photos-thumbnail").click()
+        trigger("photosCarousel:showPhoto", { data: photoManager.getPhotoDataByID(getURLParams().id) })
       } else {
         trigger("photosCarousel:hide")
       }
@@ -199,44 +204,16 @@ export default class extends Controller {
     if (e) trigger("analytics:trackPageView")
   }
 
-  // The carousel communicates with the photos page through events and
-  // and the next/prev pagers trigger these actions below:
-
-  // Show next photo in carousel
-  showNextPhotoInCarousel() {
-    let next = this.selectedThumbnail.nextElementSibling
-    if (next) {
-      trigger("photosCarousel:hidePhotos")
-      next.click()
-    } else if (this.thumbnailsCount % config.THUMBNAILS_QUERY_LIMIT === 0 && this.thumbnailsCount > 0) {
-      this.thumbnailsLoading = true
-      this.loadPhotos().then(() => {
-        next = this.selectedThumbnail.nextElementSibling
-        if (next) {
-          trigger("photosCarousel:hidePhotos")
-          next.click()
-        }
-      })
-    }
-  }
-
-  // Show previous photo in carousel
-  showPrevPhotoInCarousel() {
-    const prev = this.selectedThumbnail.previousElementSibling
-    if (prev) {
-      trigger("photosCarousel:hidePhotos")
-      prev.click()
-    }
-  }
-
   // Set a thumbnail's selected state
   selectThumbnail(e) {
-    if (e.detail && e.detail.node) {
+    if (e.detail && e.detail.index !== -1 && e.detail.index !== undefined) {
       // change status of the currently selected thumbnail
       if (this.selectedThumbnail) this.selectedThumbnail.classList.remove("is-selected")
 
+      const element = this.element.querySelectorAll(".photos-thumbnail")[e.detail.index]
+
       // set a new selected thumbnail based on event data
-      this.selectedThumbnail = e.detail.node
+      this.selectedThumbnail = element
       this.selectedThumbnail.classList.add("is-selected")
     }
   }

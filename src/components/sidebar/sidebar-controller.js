@@ -1,9 +1,9 @@
 import { Controller } from "stimulus"
 
 import throttle from "lodash/throttle"
-import { trigger } from "../../../../js/utils"
-import { setAppState, removeAppState, toggleAppState, appState } from "../../../../js/app"
-import photoManager from "../../../../js/photo-manager"
+import { trigger } from "../../js/utils"
+import { setAppState, removeAppState, toggleAppState, appState } from "../../js/app"
+import photoManager from "../../js/photo-manager"
 
 export default class extends Controller {
   static get targets() {
