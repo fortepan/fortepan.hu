@@ -9,6 +9,11 @@ const transformResults = resp => {
     items: [],
   }
 
+  // adding the aggregated years (photo count per all year in search range) to the results
+  if (resp.aggregations && resp.aggregations.years && resp.aggregations.years.buckets) {
+    r.years = resp.aggregations.years.buckets
+  }
+
   if (resp.hits.hits.length > 0) {
     resp.hits.hits.forEach(hit => {
       // eslint-disable-next-line no-underscore-dangle
@@ -196,6 +201,18 @@ const search = params => {
       body.search_after = params.search_after
     } else {
       body.from = params.from || 0
+    }
+
+    if (params.from === 0) {
+      body.aggs = {
+        years: {
+          terms: {
+            field: "year",
+            size: 100000,
+            order: { _key: "asc" },
+          },
+        },
+      }
     }
 
     elasticRequest(body)

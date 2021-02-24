@@ -27,7 +27,12 @@ const loadPhotoData = async (params, silent) => {
     photoData.result.total = resp.total
   }
 
-  const result = { items: photoData.result.latestItems, total: photoData.result.total }
+  // storing the aggregated years (photo count per all year in search range) in the results
+  if (resp.years) {
+    photoData.result.years = resp.years
+  }
+
+  const result = { items: photoData.result.latestItems, total: photoData.result.total, years: photoData.result.years }
 
   if (!silent) {
     // dispatch an event that new photos have been loaded in the search context
