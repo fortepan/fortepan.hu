@@ -2,8 +2,9 @@ import { Controller } from "stimulus"
 
 import searchAPI from "../../api/search"
 import { numberWithCommas } from "../../js/utils"
+import config from "../../data/siteConfig"
 
-const bgIds = [50563, 52724, 54176, 54178, 55558, 55617, 58473, 60057, 60155, 60490, 71299, 71443, 71955, 78498, 78835]
+let bgIds = [50563, 52724, 54176, 54178, 55558, 55617, 58473, 60057, 60155, 60490, 71299, 71443, 71955, 78498, 78835]
 
 export default class extends Controller {
   static get targets() {
@@ -11,6 +12,10 @@ export default class extends Controller {
   }
 
   connect() {
+    if (this.heroBgTarget.dataset.bgId) {
+      bgIds = this.heroBgTarget.dataset.bgId.split(",")
+    }
+
     this.loadBackgroundImage()
     this.getTotalItemsNumber()
   }
@@ -28,7 +33,7 @@ export default class extends Controller {
     img.addEventListener("load", onLoad.bind(this))
 
     const id = bgIds[Math.floor(Math.random() * bgIds.length)]
-    img.src = `/uploads/${id}.jpg`
+    img.src = `${config.PHOTO_SOURCE}1600/fortepan_${id}.jpg`
   }
 
   /**
