@@ -11,7 +11,7 @@ announcement:
     - label: 100 Kedvenc
       style: primary
       url: /hu/photos/?q=Kereki%20S%C3%A1ndor,%20best%20of
-    - label: Az összes Kereki fotó
+    - label: Az összes Kereki-fotó
       style: light-transparent
       url: /hu/photos/?q=Kereki%20S%C3%A1ndor
 ---
