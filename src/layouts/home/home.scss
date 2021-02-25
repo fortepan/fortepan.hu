@@ -56,15 +56,51 @@
 .home__announcement__actions {
   display: flex;
   flex-wrap: wrap;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
 
   a {
-    margin-top: 0.5rem;
+    margin-top: 1rem;
+
+    @media screen and (max-width: ($breakpoint-phone - 1px)) {
+      width: 100%;
+      text-align: center;
+    }
   }
 
-  a:not(:first-child) {
-    margin-left: 0.5rem;
+  a:not(:last-child) {
+    margin-right: 0.5rem;
     color: $light-base;
+
+    @media screen and (max-width: ($breakpoint-phone - 1px)) {
+      margin-right: 0rem;
+    }
+  }
+}
+
+.home__hero__background {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  bottom: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transform: scale(1.2);
+  transition: all 1.5s $ease-out-expo;
+
+  &.is-visible {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 50%;
+    bottom: 0;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.36) 0%, rgba(0, 0, 0, 0) 100%);
   }
 }
 
@@ -76,9 +112,13 @@
   text-align: center;
   position: relative;
   z-index: 1;
+}
 
-  @media screen and (max-width: ($breakpoint-phone - 1px)) {
-    padding: rem(120px) 0 rem(120px);
+.home__content {
+  padding: 0 2rem;
+
+  @media screen and (max-width: ($breakpoint-desktop - 1px)) {
+    padding: 0 rem(20px);
   }
 }
 
@@ -119,34 +159,7 @@
   }
 }
 
-.home__hero__background {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  bottom: 0;
-  background-size: cover;
-  background-position: center;
-  opacity: 0;
-  transform: scale(1.2);
-  transition: all 1.5s $ease-out-expo;
-
-  &.is-visible {
-    opacity: 0.5;
-    transform: scale(1);
-  }
-
-  &::after {
-    content: "";
-    position: absolute;
-    width: 100%;
-    height: 50%;
-    bottom: 0;
-    background: linear-gradient(0deg, rgba(0, 0, 0, 0.36) 0%, rgba(0, 0, 0, 0) 100%);
-  }
-}
-
-.home__hero__content {
+.home__intro {
   border-top: rem(8px) solid $red;
   position: relative;
   padding: rem(48px) 0;
@@ -164,13 +177,13 @@
   }
 }
 
-.home__hero__headline {
+.home__intro__headline {
   font-size: rem(24px);
   flex: 0 0 50%;
   padding: 0 rem(20px);
 }
 
-.home__hero__text {
+.home__intro__text {
   padding: rem(12px) rem(20px);
 
   p {
