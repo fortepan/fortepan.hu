@@ -2,12 +2,14 @@
 
 {% if role == "timeline" %}
 
-<div class="photos-timeline" 
+<div class="photos-timeline photos-timeline--carousel" 
   data-controller="timeline" 
   data-timeline-target="timeline"
   data-action="timeline:disable@document->timeline#disable
-               timeline:reset@document->timeline#resetSlider"
+               timeline:reset@document->timeline#resetSlider
+               photoManager:photoSelected@document->timeline#setSlider"
 >
+    <div class="photos-timeline__range-background" data-timeline-target="rangeBackground"></div>
     <h3 class="photos-timeline__title" data-timeline-target="title">{{ lang[locale].timeline }}</h3>
     <div class="photos-timeline__range caption" data-timeline-target="range">1900</div>
     <div class="photos-timeline__slider__container" data-timeline-target="slider">
@@ -19,7 +21,10 @@
                        mousemove@document->timeline#sliderYearMoved
                        touchend@document->timeline#sliderStopDrag
                        mouseup@document->timeline#sliderStopDrag"
-        >1900</div>
+        >
+          <span data-timeline-target="sliderYearLabel">1900</span>
+          <div class="button-circular__label" data-timeline-target="sliderYearCount"></div>
+        </div>
         <div class="photos-timeline__slider-selected-range" data-timeline-target="selectedRange">
         </div>
     </div>

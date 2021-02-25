@@ -88,7 +88,7 @@
   left: rem(64px);
   top: rem(64px);
   right: rem(64px);
-  bottom: rem(32px);
+  bottom: rem(24px+40px+24px);
   transition: top 0.4s $ease-out-expo, right 0.4s $ease-out-expo, bottom 0.4s $ease-out-expo, left 0.4s $ease-out-expo;
 
   @media screen and (max-width: ($breakpoint-phone - 1px)) {

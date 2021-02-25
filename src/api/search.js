@@ -11,7 +11,12 @@ const transformResults = resp => {
 
   // adding the aggregated years (photo count per all year in search range) to the results
   if (resp.aggregations && resp.aggregations.years && resp.aggregations.years.buckets) {
-    r.years = resp.aggregations.years.buckets
+    r.years = []
+    resp.aggregations.years.buckets.forEach(year => {
+      if (year.key > 0) {
+        r.years.push({ year: year.key, count: year.doc_count })
+      }
+    })
   }
 
   if (resp.hits.hits.length > 0) {
@@ -64,8 +69,11 @@ const search = params => {
       },
     }
 
+    const sortOrder = params && params.reverseOrder ? "desc" : "asc"
+    const sortOrderIverse = params && params.reverseOrder ? "asc" : "desc"
+
     const sort = [
-      { year: { order: "asc" } },
+      { year: { order: sortOrder } },
       {
         _script: {
           type: "string",
@@ -74,10 +82,10 @@ const search = params => {
             source:
               "DateTimeFormatter df = DateTimeFormatter.ofPattern('yyyy-MM-dd'); return doc['created'].size()==0 ? '1970-01-01' : df.format(doc['created'].value);",
           },
-          order: "desc",
+          order: sortOrderIverse,
         },
       },
-      { mid: { order: "asc" } },
+      { mid: { order: sortOrder } },
     ]
 
     const range = {
@@ -365,7 +373,7 @@ const getAggregatedYears = () => {
 
     elasticRequest(body)
       .then(resp => {
-        resolve(resp)
+        resolve(transformResults(resp))
       })
       .catch(err => {
         reject(err)

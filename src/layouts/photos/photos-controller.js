@@ -116,23 +116,28 @@ export default class extends Controller {
   }
 
   // async function that loads thumbnail data based on the search query
-  async loadPhotos() {
+  async loadPhotos(context) {
     // get default and seatch query params
     const params = {}
-    const defaultParams = {
-      size: config.THUMBNAILS_QUERY_LIMIT,
-    }
 
-    if (this.thumbnailsCount > 0) {
-      defaultParams.search_after = photoManager.getLastPhotoData().search_after
+    if (context) {
+      Object.assign(params, context)
     } else {
-      defaultParams.from = 0
+      const defaultParams = {
+        size: config.THUMBNAILS_QUERY_LIMIT,
+      }
+
+      if (this.thumbnailsCount > 0) {
+        defaultParams.search_after = photoManager.getLastPhotoData().search_after
+      } else {
+        defaultParams.from = 0
+      }
+
+      const urlParams = getURLParams()
+
+      // merge default params with query params
+      Object.assign(params, defaultParams, urlParams)
     }
-
-    const urlParams = getURLParams()
-
-    // merge default params with query params
-    Object.assign(params, defaultParams, urlParams)
 
     // init timeline with the reqested url query params
     trigger("timeline:reset")
@@ -177,17 +182,23 @@ export default class extends Controller {
     this.onPopState(e)
   }
 
+  resetPhotosGrid() {
+    // Empty photosNode and reset counters
+    while (this.gridTarget.firstChild) {
+      this.gridTarget.firstChild.remove()
+    }
+    this.scrollTop = 0
+    this.thumbnailsCount = 0
+  }
+
   // Load new photos when address bar url changes
   onPopState(e) {
     // Empty photosNode and reset counters when resetPhotosGrid parameter is set
     if ((e && e.detail && e.detail.resetPhotosGrid === true) || (e && e.type)) {
-      while (this.gridTarget.firstChild) {
-        this.gridTarget.firstChild.remove()
-      }
-      this.scrollTop = 0
-      this.thumbnailsCount = 0
+      this.resetPhotosGrid()
 
-      trigger("photos:contextChanged")
+      // clear all stored photo data as the search context changed completely
+      photoManager.clearAllData()
     }
 
     // load photos then...
@@ -198,7 +209,7 @@ export default class extends Controller {
         const { data } = photoManager.setSelectedPhoto(getURLParams().id)
         trigger("photosCarousel:showPhoto", { data: data })
       } else {
-        trigger("photosCarousel:hide")
+        trigger("photosCarousel:close")
       }
     })
 
@@ -228,6 +239,30 @@ export default class extends Controller {
       if (!isElementInViewport(this.selectedThumbnail.querySelector(".photos-thumbnail__image"))) {
         this.scrollTop = this.selectedThumbnail.offsetTop - 16 - document.querySelector(".header-nav").offsetHeight
       }
+    }
+  }
+
+  // event listener to photoManager:cacheCleared
+  onPhotoCacheCleared(e) {
+    if (e && e.detail && e.detail.context) {
+      this.needToReload = true
+
+      this.latestContext = e.detail.context
+      if (this.latestContext.id) delete this.latestContext.id
+      if (this.latestContext.search_after) delete this.latestContext.search_after
+      this.latestContext.from = 0
+    }
+  }
+
+  // event listener to photoCarousel:closed
+  onCarouselClosed() {
+    if (this.needToReload && this.latestContext) {
+      this.resetPhotosGrid()
+      this.loadPhotos(this.latestContext)
+
+      delete this.needToReload
+    } else {
+      this.scrollToSelectedThumbnail()
     }
   }
 }

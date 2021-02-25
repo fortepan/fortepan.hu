@@ -9,10 +9,11 @@ layout: base/base.liquid
                   popstate@window->photos#onPopState
                   photos:historyPushState@document->photos#historyPushState
                   photos:selectThumbnail@document->photos#selectThumbnail
+                  photosCarousel:hide@document->photos#onCarouselClosed
                   photoManager:nextSelected@document->photos#selectThumbnail
                   photoManager:prevSelected@document->photos#selectThumbnail
-                  photosCarousel:hide@document->photos#scrollToSelectedThumbnail
-                  photoManager:load@document->photos#onPhotoDataLoaded"
+                  photoManager:load@document->photos#onPhotoDataLoaded
+                  photoManager:cacheCleared@document->photos#onPhotoCacheCleared"
 >
   {% include ./title/title.liquid %}
   <div class="photos__grid" data-photos-target="grid"></div>

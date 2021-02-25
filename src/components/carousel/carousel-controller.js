@@ -40,10 +40,7 @@ export default class extends Controller {
       // hide carousel
       this.element.classList.remove("is-visible")
 
-      // load all photos if there's only one photo loaded in the carousel
-      if (!(document.querySelectorAll(".photos-thumbnail").length > 1) && getURLParams().id > 0) {
-        trigger("photos:historyPushState", { url: "?q=", resetPhotosGrid: true })
-      }
+      trigger("photosCarousel:hide")
     }
   }
 
@@ -117,9 +114,8 @@ export default class extends Controller {
   }
 
   showNextPhoto() {
-    // select the next photo in the current context (or load more is neccessary)
+    // select the next photo in the current context (or load more if neccessary)
     photoManager.selectNextPhoto().then(() => {
-      this.hideAllPhotos()
       this.showPhoto(null, photoManager.getSelectedPhotoId())
       trigger("photos:selectThumbnail", { index: photoManager.getSelectedPhotoIndex() })
     })
@@ -128,9 +124,19 @@ export default class extends Controller {
   showPrevPhoto() {
     // select the next previous in the current context (or load more if neccessary)
     photoManager.selectPrevPhoto().then(() => {
-      this.hideAllPhotos()
       this.showPhoto(null, photoManager.getSelectedPhotoId())
     })
+  }
+
+  // event listener for timeline:yearSelected
+  selectPhotoByYear(e) {
+    if (e && e.detail && e.detail.year) {
+      // select the first photo of a given year (or load them if neccessary)
+      photoManager.selectFirstPhotoInYear(e.detail.year).then(() => {
+        this.showPhoto(null, photoManager.getSelectedPhotoId())
+        // trigger("photos:selectThumbnail", { index: photoManager.getSelectedPhotoIndex() })
+      })
+    }
   }
 
   hideAllPhotos() {
@@ -210,7 +216,7 @@ export default class extends Controller {
 
     switch (e.key) {
       case "Escape":
-        trigger("photosCarousel:hide")
+        this.hide()
         break
       case " ":
         this.toggleSlideshow()

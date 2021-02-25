@@ -58,6 +58,22 @@
       background-color: rgba($light-base, 0.08);
     }
   }
+
+  &.photos-timeline--carousel {
+    padding: 0;
+    border: none;
+    height: rem(40px);
+    box-shadow: none;
+    background-color: transparent;
+    border-radius: none;
+    overflow: visible;
+    z-index: 10;
+
+    &:before {
+      content: none;
+      display: none;
+    }
+  }
 }
 
 .photos-timeline__title {
@@ -91,6 +107,13 @@
   width: calc(100% - 32px);
   left: rem(16px);
   bottom: rem(12px);
+
+  .photos-timeline--carousel & {
+    bottom: 0;
+    left: 0;
+    width: auto;
+    right: 0;
+  }
 }
 
 .photos-timeline__slider {
@@ -98,19 +121,18 @@
   width: rem(40px);
   height: rem(40px);
   border-radius: 50%;
-  transition: left 0.4s $ease-out-expo, background-color 0.3s $ease-out-expo;
+  transition: left 0.4s $ease-out-expo, background-color 0.3s $ease-out-expo, border-color 0.3s $ease-out-expo;
   cursor: pointer;
   @include font-heading-bold();
   font-size: rem(11px);
   line-height: 16px;
   text-align: center;
-  overflow: hidden;
   box-sizing: border-box;
   padding-top: rem(10px);
   user-select: none;
 
   .is-used & {
-    transition: none;
+    transition: background-color 0.3s $ease-out-expo, border-color 0.3s $ease-out-expo;
   }
 
   &:hover,
@@ -124,6 +146,12 @@
       color: $light-base;
       background-color: $red;
     }
+
+    &.is-empty {
+      border-color: $grey;
+      color: $grey;
+      background-color: transparent;
+    }
   }
 
   .theme--light & {
@@ -136,6 +164,58 @@
     color: $red;
     border: 2px solid $red;
     background-color: $dark-secondary;
+  }
+
+  .photos-timeline--carousel & {
+    background-color: transparent;
+  }
+}
+
+.button-circular__label {
+  .photos-timeline__slider & {
+    position: absolute;
+    z-index: 100;
+    left: 50%;
+    top: -100%;
+
+    &::before {
+      position: absolute;
+      bottom: rem(-4px);
+      margin: auto;
+      left: calc(50% - 8px);
+      border-bottom: 0;
+      border-top: rem(6px) solid transparent;
+    }
+
+    .theme--light &::before {
+      border-top-color: $dark-base;
+    }
+
+    .theme--dark &::before {
+      border-top-color: $light-base;
+    }
+  }
+
+  .photos-timeline__slider:hover &,
+  .photos-timeline__slider.is-active & {
+    visibility: visible;
+    opacity: 1;
+    transform: translate(-50%, 0px);
+    transition: transform 0.4s $ease-out-expo, opacity 0.4s $ease-out-expo, visibility 0s linear 0s,
+      background-color 0.4s $ease-out-expo;
+
+    &::before {
+      transition: opacity 0.4s $ease-out-expo, border-color 0.4s $ease-out-expo;
+      opacity: 1;
+    }
+  }
+
+  .photos-timeline__slider.is-empty & {
+    background-color: $grey;
+
+    &::before {
+      border-top-color: $grey;
+    }
   }
 }
 
@@ -156,5 +236,27 @@
 
   .theme--dark & {
     background-color: $red;
+  }
+}
+
+.photos-timeline__range-background {
+  display: block;
+  position: absolute;
+  left: rem(40px);
+  right: 0;
+  bottom: rem(19px);
+  height: 2px;
+  transition: left 0.4s $ease-out-expo, width 0.4s $ease-out-expo;
+
+  .photos-timeline.is-used & {
+    transition: none;
+  }
+
+  .theme--light & {
+    background-color: rgba($dark-base, 0.08);
+  }
+
+  .theme--dark & {
+    background-color: rgba($light-base, 0.08);
   }
 }
