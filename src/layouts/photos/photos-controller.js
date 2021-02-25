@@ -226,9 +226,11 @@ export default class extends Controller {
 
       const element = this.element.querySelectorAll(".photos-thumbnail")[e.detail.index]
 
-      // set a new selected thumbnail based on event data
-      this.selectedThumbnail = element
-      this.selectedThumbnail.classList.add("is-selected")
+      if (element) {
+        // set a new selected thumbnail based on event data
+        this.selectedThumbnail = element
+        this.selectedThumbnail.classList.add("is-selected")
+      }
     }
   }
 
