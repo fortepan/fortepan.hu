@@ -122,9 +122,22 @@ export default class extends Controller {
     removeAppState("disable--selection")
 
     // check if selected year (this.year) has photos at all (not already loaded)
-    // and if not, jump back to the last selected year
+    // and if not, jump to the closest year that has
     if (!photoManager.getYearsInContext().find(item => item.year === this.year)) {
-      this.year = this.sliderDragStartYear
+      let closestMatch = -1
+      photoManager.getYearsInContext().forEach(item => {
+        if (Math.abs(this.year - item.year) < Math.abs(this.year - closestMatch)) {
+          closestMatch = item.year
+        }
+      })
+
+      if (closestMatch > -1) {
+        this.year = closestMatch
+      } else {
+        // if for some reason the above fails fall back to the last stored year
+        this.year = this.sliderDragStartYear
+      }
+
       this.setTimelineLabels()
     }
 
