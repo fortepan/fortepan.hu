@@ -6,9 +6,9 @@ announcement:
   visible: true
   title: "Sándor <b>Kereki</b>"
   caption: New Collection
-  blurb: "Sándor Kereki was born in Budapest in 1952 and started photographing at the age of 16. On his images, grotesque as well as emotional scenes come to life from the everyday life of socialist Hungary in the 70s. <b>After fifty years</b> he decided to pulish his images that depict the world of a street photographer focusing primarily on people, special figures and odd characters. From the thousands of negatives taken by him over ten years, we selected 1,850 photographs for Fortepan and we also recommend to <b>check out our hundred favorite Kereki photos.</b>"
+  blurb: "Sándor Kereki was born in Budapest in 1952 and started photographing at the age of 16. On his images, grotesque as well as emotional scenes come to life from the everyday life of socialist Hungary in the 70s. After fifty years he decided to pulish his images that depict the world of a street photographer focusing primarily on people, special figures and odd characters. From the thousands of negatives taken by him over ten years, we selected 1,850 photographs for Fortepan and we also recommend to check out our hundred favorite Kereki photos."
   actions:
-    - label: 100 Favorites
+    - label: 100 favorites
       style: primary
       url: /en/photos/?q=Kereki%20S%C3%A1ndor,%20best%20of
     - label: All Kereki photos

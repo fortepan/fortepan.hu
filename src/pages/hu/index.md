@@ -6,9 +6,9 @@ announcement:
   visible: true
   title: "<b>Kereki</b> Sándor"
   caption: Új gyűjtemény
-  blurb: "Kereki Sándor 1952-ben született Budapesten és 16 évesen kezdett el fényképezni. Képein egyszerre groteszk és érzelmes jelenetek elevenednek meg a 70-es évek mindennapjaiból. <b>Ötven év után előkerült</b> fotói egy eddig ismeretlen színt hoznak a Fortepanba, az elsősorban emberekre, figurákra, karakterekre fókuszáló street-fotós világát. A tíz év alatt készült többezer negatív kockájából 1850 fotót választottunk ki a Fortepanra és a <b>száz kedvenc Kereki-fotónkat külön is ajánljuk.</b>"
+  blurb: "Kereki Sándor 1952-ben született Budapesten és 16 évesen kezdett el fényképezni. Képein egyszerre groteszk és érzelmes jelenetek elevenednek meg a 70-es évek mindennapjaiból. Ötven év után előkerült fotói egy eddig ismeretlen színt hoznak a Fortepanba, az elsősorban emberekre, figurákra, karakterekre fókuszáló street-fotós világát. A tíz év alatt készült többezer negatív kockájából 1850 fotót választottunk ki a Fortepanra és a száz kedvenc Kereki-fotónkat külön is ajánljuk."
   actions:
-    - label: 100 Kedvenc
+    - label: 100 kedvenc
       style: primary
       url: /hu/photos/?q=Kereki%20S%C3%A1ndor,%20best%20of
     - label: Az összes Kereki-fotó
