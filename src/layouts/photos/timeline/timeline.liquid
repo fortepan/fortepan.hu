@@ -2,7 +2,11 @@
   data-controller="photos--timeline" 
   data-photos-target="timeline"
   data-action="timeline:disable@document->photos--timeline#disable
-               timeline:reset@document->photos--timeline#resetSlider"
+               timeline:reset@document->photos--timeline#resetSlider
+               mouseover->photos--timeline#expand
+               mouseout->photos--timeline#collapse
+               touchstart->photos--timeline#expand
+               touchend->photos--timeline#collapse"
 >
     <h3 class="photos-timeline__title" data-photos--timeline-target="title">{{ lang[locale].timeline }}</h3>
     <div class="photos-timeline__range caption" data-photos--timeline-target="range">1900 - 1990</div>

@@ -2,7 +2,7 @@ import { Controller } from "stimulus"
 
 import config from "../../../data/siteConfig"
 import { trigger, getURLParams, isTouchDevice } from "../../../js/utils"
-import { selectedThumbnail, removeAppState, appState } from "../../../js/app"
+import { selectedThumbnail, removeAppState, appState, setAppState } from "../../../js/app"
 
 export default class extends Controller {
   static get targets() {
@@ -134,15 +134,15 @@ export default class extends Controller {
   }
 
   get slideshowIsPlaying() {
-    appState("play-carousel-slideshow")
+    return appState("play-carousel-slideshow")
   }
 
   get sidebarIsHidden() {
-    appState("hide-carousel-sidebar")
+    return appState("hide-carousel-sidebar")
   }
 
   playSlideshow() {
-    addAppState("play-carousel-slideshow")
+    setAppState("play-carousel-slideshow")
 
     // store sidebar visibility
     trigger("carouselSidebar:hide")

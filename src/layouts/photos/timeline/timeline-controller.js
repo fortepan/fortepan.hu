@@ -31,6 +31,14 @@ export default class extends Controller {
     this.element.classList.add("is-disabled")
   }
 
+  expand() {
+    this.element.classList.add("is-hovered")
+  }
+
+  collapse() {
+    this.element.classList.remove("is-hovered")
+  }
+
   /**
    * Change the address bar url params based on the timeline's range
    */
