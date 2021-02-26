@@ -1,7 +1,7 @@
 import { Controller } from "stimulus"
 
 import config from "../../../data/siteConfig"
-import { lang, trigger, setPageMeta } from "../../../js/utils"
+import { trigger } from "../../../js/utils"
 import photoManager from "../../../js/photo-manager"
 
 const THUMBNAIL_HEIGHT = 160
