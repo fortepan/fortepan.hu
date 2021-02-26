@@ -27,21 +27,16 @@ export default class extends Controller {
   }
 
   hide() {
-    // pause slideshow if the slideshow is playing
-    if (this.slideshowIsPlaying) {
-      this.pauseSlideshow()
-    } else {
-      // hide all photos
-      this.hideAllPhotos()
+    // hide all photos
+    this.hideAllPhotos()
 
-      // hide dialogs
-      trigger("dialogs:hide")
+    // hide dialogs
+    trigger("dialogs:hide")
 
-      // hide carousel
-      this.element.classList.remove("is-visible")
+    // hide carousel
+    this.element.classList.remove("is-visible")
 
-      trigger("photosCarousel:hide")
-    }
+    trigger("photosCarousel:hide")
   }
 
   stepSlideshow() {
@@ -204,6 +199,15 @@ export default class extends Controller {
     }
   }
 
+  onCloseClicked() {
+    // pause slideshow if the slideshow is playing
+    if (this.slideshowIsPlaying) {
+      this.pauseSlideshow()
+    } else {
+      this.hide()
+    }
+  }
+
   // bind key events
   boundKeydownListener(e) {
     // if carousel is not visible then keyboard actions shouldn't work
@@ -216,7 +220,7 @@ export default class extends Controller {
 
     switch (e.key) {
       case "Escape":
-        this.hide()
+        this.onCloseClicked()
         break
       case " ":
         this.toggleSlideshow()

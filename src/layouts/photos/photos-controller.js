@@ -206,8 +206,8 @@ export default class extends Controller {
       // open carousel if @id parameter is present in the url's query string
       if (getURLParams().id > 0) {
         // show carousel with an image
-        const { data } = photoManager.selectPhotoById(getURLParams().id)
-        trigger("photosCarousel:showPhoto", { data: data })
+        const photoData = photoManager.selectPhotoById(getURLParams().id)
+        trigger("photosCarousel:showPhoto", { data: photoData.data })
       } else {
         trigger("photosCarousel:close")
       }
@@ -258,12 +258,18 @@ export default class extends Controller {
 
   // event listener to photoCarousel:closed
   onCarouselClosed() {
-    if (this.needToReload && this.latestContext) {
+    if (getURLParams().id > 0) {
+      // load all photos if there's only one photo loaded in the carousel
+      trigger("photos:historyPushState", { url: "?q=", resetPhotosGrid: true })
+    } else if (this.needToReload && this.latestContext) {
+      // or else if the photogrid containts photos in a nonlinear way because of previous cache change
+      // load the context again from scratch
       this.resetPhotosGrid()
       this.loadPhotos(this.latestContext)
 
       delete this.needToReload
     } else {
+      // or just scroll to the selected thumbnail
       this.scrollToSelectedThumbnail()
     }
   }
