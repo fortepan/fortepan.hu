@@ -41,7 +41,8 @@
   @include font-heading-demi;
   font-weight: 500;
 
-  b {
+  b,
+  strong {
     @include font-heading-bold;
   }
 }

@@ -1,27 +1,27 @@
 ---
 new_page_extension: md
 auto_deploy: false
-admin_path: ''
-webhook_url: 
+admin_path: ""
+webhook_url:
 sections:
-- type: document
-  path: src/data/notifications.json
-  label: Notifications
-- type: document
-  path: src/data/cmsConfig.json
-  label: Config
-- type: directory
-  path: src/pages
-  label: Pages
-  create: all
-  match: "**/*.md"
-  exclude: src/pages/**/*(photos|donors).md
-- type: document
-  path: src/data/lang.json
-  label: Dictionary
+  - type: document
+    path: src/data/notifications.json
+    label: Notifications
+  - type: document
+    path: src/data/cmsConfig.json
+    label: Config
+  - type: directory
+    path: src/pages
+    label: Pages
+    create: all
+    match: "**/*-cms.md"
+    exclude: src/pages/**/*(photos|donors).md
+  - type: document
+    path: src/data/lang.json
+    label: Dictionary
 upload_dir: src/static/uploads
 public_path: "/images/uploads"
-front_matter_path: ''
+front_matter_path: ""
 use_front_matter_path: false
 file_template: ":filename:"
 build:
