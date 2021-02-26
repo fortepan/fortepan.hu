@@ -104,7 +104,6 @@ export default class extends Controller {
     this.setCarouselBackground()
     this.loadPhoto()
     this.togglePager()
-    this.showControls(null, true)
 
     trigger("carouselSidebar:init")
     trigger("dialogDownload:init")
@@ -129,6 +128,9 @@ export default class extends Controller {
   pauseSlideshow() {
     removeAppState("play-carousel-slideshow")
 
+    // show controls
+    this.showControls(null, true)
+
     if (!this.sidebarIsHidden) trigger("carouselSidebar:show")
     clearTimeout(this.slideshowTimeout)
   }
@@ -146,6 +148,9 @@ export default class extends Controller {
 
     // store sidebar visibility
     trigger("carouselSidebar:hide")
+
+    // hide controls
+    this.autoHideControls()
 
     // start slideshow
     this.slideshowTimeout = setTimeout(() => {
@@ -181,7 +186,7 @@ export default class extends Controller {
     if (this.slideshowIsPlaying) {
       this.showControls()
       clearTimeout(this.touchTimeout)
-      this.touchTimeout = setTimeout(this.hideControls.bind(this), 4000)
+      this.touchTimeout = setTimeout(this.hideControls.bind(this), 2000)
     }
   }
 

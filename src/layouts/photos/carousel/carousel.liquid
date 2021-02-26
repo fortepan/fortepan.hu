@@ -1,8 +1,7 @@
 <div class="photos-carousel" 
      data-controller="photos--carousel" 
      data-action="keydown@document->photos--carousel#boundKeydownListener
-                  mouseover->photos--carousel#showControls
-                  mouseout->photos--carousel#hideControls
+                  mousemove->photos--carousel#autoHideControls
                   touchstart->photos--carousel#autoHideControls
                   photosCarousel:playSlideshow@document->photos--carousel#playSlideshow
                   photosCarousel:pauseSlideshow@document->photos--carousel#pauseSlideshow
@@ -10,7 +9,7 @@
                   photosCarousel:show@document->photos--carousel#show
                   photosCarousel:hide@document->photos--carousel#hide"
 >
-    <div class="photos-carousel__photos hide-controls theme--dark" data-photos--carousel-target="photosContainer">
+    <div class="photos-carousel__photos theme--dark" data-photos--carousel-target="photosContainer">
         <div class="photos-carousel__photos__background">
             <div class="photos-carousel__photos__background-image" data-photos--carousel-target="background"></div>
         </div>
