@@ -14,6 +14,7 @@ fields:
   label: permalink
   hidden: false
 pages:
+- src/pages/en/about-us-cms.md
 - src/pages/en/privacy-cms.md
 - src/pages/hu/about-us-cms.md
 - src/pages/hu/privacy-cms.md
