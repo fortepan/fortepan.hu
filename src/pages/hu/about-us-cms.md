@@ -3,8 +3,8 @@ layout: article/article.liquid
 title: Rólunk
 permalink: "/hu/about-us/"
 hide_search: true
----
 
+---
 ### A Fortepan egy szabad felhasználású, közösségi fotóarchívum, ahol több mint százezer archív fényképet böngészhet és tölthet le ingyenesen, jó minőségben.
 
 > A képek FORTEPAN / X.Y. adományozó megjelöléssel bármilyen célra szabadon közölhetők. Kérjük, minden esetben tüntesse fel a kép pontos forrását, hisz ezzel viszonozza az eredeti tulajdonos önzetlenségét!
