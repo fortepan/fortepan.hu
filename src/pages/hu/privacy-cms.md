@@ -3,8 +3,8 @@ layout: article/article.liquid
 title: Adatvédelem
 permalink: "/hu/privacy/"
 hide_search: true
----
 
+---
 ### Adatvédelmi tájékoztató és a honlap használatával kapcsolatos tudnivalók
 
 A Fortepan mint adatkezelő tiszteletben tartja a honlapját látogatók adatainak biztonságát.
