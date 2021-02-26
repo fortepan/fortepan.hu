@@ -16,6 +16,9 @@ sections:
   create: all
   match: "**/*-cms.md"
   exclude: src/pages/**/*(photos|donors).md
+  templates:
+  - article
+  - home
 - type: document
   path: src/data/lang.json
   label: Dictionary
