@@ -87,7 +87,7 @@ export default class extends Controller {
   togglePager() {
     // keep pager disabled if there's only one photo thumbnail in the photos list
     this.pagerTargets.forEach(pager => {
-      pager.classList.toggle("disable", document.querySelectorAll(".photos-thumbnail").length === 1)
+      pager.classList.toggle("disable", photoManager.getTotalPhotoCountInContext() === 1)
     })
   }
 
@@ -129,7 +129,7 @@ export default class extends Controller {
       // select the first photo of a given year (or load them if neccessary)
       photoManager.selectFirstPhotoOfYear(e.detail.year).then(() => {
         this.showPhoto(null, photoManager.getSelectedPhotoId())
-        // trigger("photos:selectThumbnail", { index: photoManager.getSelectedPhotoIndex() })
+        trigger("photos:selectThumbnail", { index: photoManager.getSelectedPhotoIndex() })
       })
     }
   }

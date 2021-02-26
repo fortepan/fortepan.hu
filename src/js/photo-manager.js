@@ -49,8 +49,14 @@ const loadPhotoData = async (params, silent, lockContext) => {
   if (!lockContext && resp.years) {
     // load the total aggregated years if id is present
     if (params.id && resp.years.length === 1) {
-      const yearsResp = await searchAPI.getAggregatedYears()
-      photoData.result.years = yearsResp.years
+      const contextParams = {}
+      Object.assign(contextParams, params)
+      delete contextParams.id
+
+      const contextResp = await searchAPI.search(contextParams)
+
+      photoData.result.years = contextResp.years
+      photoData.result.total = contextResp.total
     } else {
       photoData.result.years = resp.years
     }
@@ -278,16 +284,6 @@ const getLastYearInContext = () => {
   return { year: 0, count: 0 }
 }
 
-const clearPhotoCache = () => {
-  // if the year of the search has changed flush the cached search results
-  delete photoData.result.items
-
-  const params = {}
-  Object.assign(params, photoData.context)
-
-  trigger("photoManager:cacheCleared", { context: params })
-}
-
 const selectFirstPhotoOfYear = async y => {
   const data = photoData.result.items.find(item => parseInt(item.year, 10) === parseInt(y, 10))
 
@@ -331,6 +327,20 @@ const selectFirstPhotoOfYear = async y => {
   }
 }
 
+const getTotalPhotoCountInContext = () => {
+  return photoData.result.total
+}
+
+const clearPhotoCache = () => {
+  // if the year of the search has changed flush the cached search results
+  delete photoData.result.items
+
+  const params = {}
+  Object.assign(params, photoData.context)
+
+  trigger("photoManager:cacheCleared", { context: params })
+}
+
 const clearAllData = () => {
   // if the context of the search has changed destroy all photo data
   delete photoData.context
@@ -357,6 +367,7 @@ export default {
   getFirstYearInContext,
   getLastYearInContext,
   selectFirstPhotoOfYear,
+  getTotalPhotoCountInContext,
   clearPhotoCache,
   clearAllData,
 }
