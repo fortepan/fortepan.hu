@@ -132,7 +132,7 @@ export default class extends Controller {
   selectPhotoByYear(e) {
     if (e && e.detail && e.detail.year) {
       // select the first photo of a given year (or load them if neccessary)
-      photoManager.selectFirstPhotoInYear(e.detail.year).then(() => {
+      photoManager.selectFirstPhotoOfYear(e.detail.year).then(() => {
         this.showPhoto(null, photoManager.getSelectedPhotoId())
         // trigger("photos:selectThumbnail", { index: photoManager.getSelectedPhotoIndex() })
       })

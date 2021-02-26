@@ -22,20 +22,13 @@ export default class extends Controller {
   }
 
   clicked() {
-    const { data } = photoManager.setSelectedPhoto(this.element.photoId)
+    const { data } = photoManager.selectPhotoById(this.element.photoId)
 
     // select thumbnail in photos list
     trigger("photos:selectThumbnail", { index: photoManager.getSelectedPhotoIndex() })
 
     // Load photo in Carousel
     trigger("photosCarousel:showPhoto", { data: data })
-
-    // set html page meta for social sharing
-    setPageMeta(
-      `#${data.mid}`,
-      `${data.description ? `${data.description} — ` : ""}${lang("donor")}: ${data.donor} (${data.year})`,
-      `${config.PHOTO_SOURCE}${data.mid}.jpg`
-    )
   }
 
   // resize thumbnail when the browser window gets resized

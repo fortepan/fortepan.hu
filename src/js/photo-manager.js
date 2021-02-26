@@ -1,4 +1,5 @@
-import { trigger } from "./utils"
+import config from "../data/siteConfig"
+import { lang, trigger, setPageMeta } from "./utils"
 import searchAPI from "../api/search"
 
 // creating a context object to store the latest request parameters and results
@@ -92,12 +93,21 @@ const getSelectedPhotoIndex = () => {
   return photoData.selectedIndex
 }
 
-const setSelectedPhoto = id => {
+const selectPhotoById = id => {
   photoData.selectedId = id
   photoData.selectedItem = getPhotoDataByID(id)
   photoData.selectedIndex = getPhotoIndexByID(id)
 
   const result = { id: photoData.selectedId, data: photoData.selectedItem, index: photoData.selectedIndex }
+
+  // set html page meta for social sharing
+  setPageMeta(
+    `#${result.data.mid}`,
+    `${result.data.description ? `${result.data.description} — ` : ""}${lang("donor")}: ${result.data.donor} (${
+      result.data.year
+    })`,
+    `${config.PHOTO_SOURCE}${result.data.mid}.jpg`
+  )
 
   trigger("photoManager:photoSelected", result)
 
@@ -140,7 +150,7 @@ const selectNextPhoto = async () => {
 
     if (nextIndex < photoData.result.items.length) {
       const data = photoData.result.items[nextIndex]
-      setSelectedPhoto(data.mid)
+      selectPhotoById(data.mid)
 
       // dispatching a new event when the next photo is selected
       trigger("photoManager:nextSelected", {
@@ -165,7 +175,7 @@ const selectNextPhoto = async () => {
 
       if (result.items && result.items.length) {
         // select the first photo in the newly loaded and appended set
-        setSelectedPhoto(result.items[0].mid)
+        selectPhotoById(result.items[0].mid)
 
         // dispatching a new event when the next photo is selected
         trigger("photoManager:nextSelected", {
@@ -201,7 +211,7 @@ const selectPrevPhoto = async () => {
     if (prevIndex >= 0) {
       const data = photoData.result.items[prevIndex]
       // select the proper photo
-      setSelectedPhoto(data.mid)
+      selectPhotoById(data.mid)
 
       // dispatching a new event when the prev photo is selected
       trigger("photoManager:prevSelected", {
@@ -228,7 +238,7 @@ const selectPrevPhoto = async () => {
 
       if (result.items && result.items.length) {
         // select the last photo in the newly loaded and prepended set
-        setSelectedPhoto(result.items[result.items.length - 1].mid)
+        selectPhotoById(result.items[result.items.length - 1].mid)
 
         // dispatching a new event when the prev photo is selected
         trigger("photoManager:prevSelected", {
@@ -278,13 +288,13 @@ const clearPhotoCache = () => {
   trigger("photoManager:cacheCleared", { context: params })
 }
 
-const selectFirstPhotoInYear = async y => {
+const selectFirstPhotoOfYear = async y => {
   const data = photoData.result.items.find(item => parseInt(item.year, 10) === parseInt(y, 10))
 
   // check if we have the photo data loaded for the given year
   if (data) {
     // if we have the photo data
-    setSelectedPhoto(data.mid)
+    selectPhotoById(data.mid)
 
     // dispatching a new event when the next photo is selected
     trigger("photoManager:firstInYearSelected", {
@@ -317,7 +327,7 @@ const selectFirstPhotoInYear = async y => {
 
     await loadPhotoData(params, false, lockContext)
 
-    selectFirstPhotoInYear(y)
+    selectFirstPhotoOfYear(y)
   }
 }
 
@@ -337,7 +347,7 @@ export default {
   getSelectedPhotoId,
   getSelectedPhotoData,
   getSelectedPhotoIndex,
-  setSelectedPhoto,
+  selectPhotoById,
   getPhotoDataByID,
   selectNextPhoto,
   selectPrevPhoto,
@@ -346,7 +356,7 @@ export default {
   getYearsInContext,
   getFirstYearInContext,
   getLastYearInContext,
-  selectFirstPhotoInYear,
+  selectFirstPhotoOfYear,
   clearPhotoCache,
   clearAllData,
 }
