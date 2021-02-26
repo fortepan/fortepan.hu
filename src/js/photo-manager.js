@@ -284,6 +284,16 @@ const getLastYearInContext = () => {
   return { year: 0, count: 0 }
 }
 
+const clearPhotoCache = () => {
+  // if the year of the search has changed flush the cached search results
+  delete photoData.result.items
+
+  const params = {}
+  Object.assign(params, photoData.context)
+
+  trigger("photoManager:cacheCleared", { context: params })
+}
+
 const selectFirstPhotoOfYear = async y => {
   const data = photoData.result.items.find(item => parseInt(item.year, 10) === parseInt(y, 10))
 
@@ -329,16 +339,6 @@ const selectFirstPhotoOfYear = async y => {
 
 const getTotalPhotoCountInContext = () => {
   return photoData.result.total
-}
-
-const clearPhotoCache = () => {
-  // if the year of the search has changed flush the cached search results
-  delete photoData.result.items
-
-  const params = {}
-  Object.assign(params, photoData.context)
-
-  trigger("photoManager:cacheCleared", { context: params })
 }
 
 const clearAllData = () => {
