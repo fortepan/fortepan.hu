@@ -14,5 +14,67 @@ fields:
   name: permalink
   label: permalink
   hidden: true
+- name: announcement
+  type: field_group
+  config: {}
+  fields:
+  - name: title
+    type: text
+    config:
+      required: false
+    label: Title
+  - name: caption
+    type: text
+    config:
+      required: false
+    label: Caption
+  - name: cover_image
+    type: text
+    config:
+      required: false
+    label: Cover image
+  - name: blurb
+    type: textarea
+    default: ''
+    config:
+      required: false
+      wysiwyg: true
+      schema:
+        format: html
+    label: Blurb
+  - name: actions
+    type: field_group_list
+    fields:
+    - name: label
+      type: text
+      config:
+        required: false
+      label: Label
+    - name: style
+      type: select
+      default: primary
+      config:
+        required: false
+        options:
+        - primary
+        - light-transparent
+        - secondary
+        source:
+          type: simple
+          section: 
+          file: 
+          path: 
+      label: Style
+    - name: url
+      type: text
+      config:
+        required: false
+      label: URL
+    config:
+      min: 
+      max: 
+      labelField: 
+    label: Actions
+  label: Announcement
 pages:
 - src/pages/hu/index.md
