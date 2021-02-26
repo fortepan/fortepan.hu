@@ -8,8 +8,8 @@ fields:
   hidden: true
 - type: text
   name: title
-  label: title
-  hidden: true
+  label: Title
+  hidden: false
 - type: text
   name: permalink
   label: permalink
