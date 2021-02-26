@@ -5,7 +5,7 @@ permalink: "/"
 announcement:
   title: "<b>Kereki</b> Sándor"
   caption: Új gyűjtemény
-  cover_image: "205758"
+  cover_image: "205952"
   blurb: Kereki Sándor 1952-ben született Budapesten és 16 évesen kezdett el fényképezni.
     Képein egyszerre groteszk és érzelmes jelenetek elevenednek meg a 70-es évek mindennapjaiból.
     Ötven év után előkerült fotói egy eddig ismeretlen színt hoznak a Fortepanba,
