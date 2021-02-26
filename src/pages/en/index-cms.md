@@ -5,7 +5,7 @@ permalink: "/en/"
 announcement:
   title: Sándor <b>Kereki</b>
   caption: New Collection
-  cover_image: "205447"
+  cover_image: "205758"
   blurb: Sándor Kereki was born in Budapest in 1952 and started photographing at the
     age of 16. On his images, grotesque as well as emotional scenes come to life from
     the everyday life of socialist Hungary in the 70s. After fifty years he decided
