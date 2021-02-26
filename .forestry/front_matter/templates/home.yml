@@ -19,9 +19,13 @@ fields:
   config: {}
   fields:
   - name: title
-    type: text
+    type: textarea
+    default: ''
     config:
       required: false
+      wysiwyg: true
+      schema:
+        format: html
     label: Title
   - name: caption
     type: text
