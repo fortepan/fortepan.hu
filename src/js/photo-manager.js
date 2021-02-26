@@ -14,7 +14,7 @@ const loadPhotoData = async (params, silent, lockContext) => {
 
   // storing the items so it can be accessed later
   if (!photoData.result) {
-    photoData.result = resp
+    photoData.result = {}
   }
 
   if (photoData.result.items) {
@@ -30,7 +30,7 @@ const loadPhotoData = async (params, silent, lockContext) => {
       photoData.result.items = photoData.result.items.concat(resp.items)
     }
   } else if (resp.items) {
-    photoData.result.items = resp.items
+    photoData.result.items = [].concat(resp.items)
   } else {
     photoData.result.items = []
   }
@@ -138,7 +138,7 @@ const selectNextPhoto = async () => {
     // if no match continue on
     const nextIndex = photoData.selectedIndex + 1
 
-    if (nextIndex <= photoData.result.items.length - 1) {
+    if (nextIndex < photoData.result.items.length) {
       const data = photoData.result.items[nextIndex]
       setSelectedPhoto(data.mid)
 
