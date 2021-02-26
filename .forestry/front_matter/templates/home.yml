@@ -81,5 +81,4 @@ fields:
     label: Actions
   label: Announcement
 pages:
-- src/pages/en/index.md
-- src/pages/hu/index.md
+- src/pages/hu/index-cms.md
