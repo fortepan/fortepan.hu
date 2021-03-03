@@ -210,7 +210,7 @@
     opacity: 1;
     transform: translate(-50%, 0px);
     transition: transform 0.4s $ease-out-expo, opacity 0.4s $ease-out-expo, visibility 0s linear 0s,
-      background-color 0.4s $ease-out-expo;
+      background-color 0.4s $ease-out-expo, color 0.4s $ease-out-expo;
 
     &::before {
       transition: opacity 0.4s $ease-out-expo, border-color 0.4s $ease-out-expo;
@@ -218,14 +218,22 @@
     }
   }
 
-  .photos-timeline__slider.is-empty &,
+  .theme--light .is-empty & {
+    color: rgba($light-base, 0.4);
+  }
+
+  .theme--dark .is-empty & {
+    color: rgba($dark-base, 0.4);
+  }
+
+  /* .photos-timeline__slider.is-empty &,
   .photos-timeline__year-indicator.is-empty & {
     background-color: $grey;
 
     &::before {
       border-top-color: $grey;
     }
-  }
+  } */
 
   & .count {
     @include font-heading-demi();

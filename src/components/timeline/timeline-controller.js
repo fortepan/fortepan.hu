@@ -268,12 +268,10 @@ export default class extends Controller {
     // and if not, grey out the slider
     if (photoManager.getYearsInContext().find(item => item.year === year)) {
       this.yearIndicatorTarget.classList.remove("is-empty")
-      this.yearIndicatorLabelTarget.innerHTML = `${year} <span class="count">(${
-        photoManager.getYearsInContext().find(item => item.year === year).count
-      })</span>`
+      this.yearIndicatorLabelTarget.innerHTML = `${year}`
     } else {
       this.yearIndicatorTarget.classList.add("is-empty")
-      this.yearIndicatorLabelTarget.innerHTML = `${year} <span class="count">(0)</span>`
+      this.yearIndicatorLabelTarget.innerHTML = `${year}`
     }
   }
 }
