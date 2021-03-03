@@ -59,13 +59,13 @@
     }
   }
 
-  &.photos-timeline--carousel {
+  &.photos-timeline--progress {
     padding: 0;
     border: none;
     height: rem(40px);
     box-shadow: none;
     background-color: transparent;
-    border-radius: none;
+    border-radius: 0;
     overflow: visible;
     z-index: 10;
 
@@ -108,11 +108,12 @@
   left: rem(16px);
   bottom: rem(12px);
 
-  .photos-timeline--carousel & {
+  .photos-timeline--progress & {
     bottom: 0;
-    left: 0;
+    left: rem(44px);
     width: auto;
-    right: 0;
+    right: rem(44px);
+    cursor: pointer;
   }
 }
 
@@ -166,13 +167,14 @@
     background-color: $dark-secondary;
   }
 
-  .photos-timeline--carousel & {
+  .photos-timeline--progress & {
     background-color: transparent;
   }
 }
 
 .button-circular__label {
-  .photos-timeline__slider & {
+  .photos-timeline__slider &,
+  .photos-timeline__year-indicator & {
     position: absolute;
     z-index: 100;
     left: 50%;
@@ -196,8 +198,14 @@
     }
   }
 
+  .photos-timeline__year-indicator & {
+    top: auto;
+    bottom: rem(24px);
+  }
+
   .photos-timeline__slider:hover &,
-  .photos-timeline__slider.is-active & {
+  .photos-timeline__slider.is-active &,
+  .photos-timeline__year-indicator.is-hover & {
     visibility: visible;
     opacity: 1;
     transform: translate(-50%, 0px);
@@ -210,12 +218,18 @@
     }
   }
 
-  .photos-timeline__slider.is-empty & {
+  .photos-timeline__slider.is-empty &,
+  .photos-timeline__year-indicator.is-empty & {
     background-color: $grey;
 
     &::before {
       border-top-color: $grey;
     }
+  }
+
+  & .count {
+    @include font-heading-demi();
+    opacity: 0.5;
   }
 }
 
@@ -258,5 +272,79 @@
 
   .theme--dark & {
     background-color: rgba($light-base, 0.08);
+  }
+}
+
+.photos-timeline__year-label {
+  position: absolute;
+  width: rem(44px);
+  height: rem(44px);
+  top: 0;
+  left: 0;
+  cursor: pointer;
+  @include font-heading-bold();
+  font-size: rem(11px);
+  line-height: 16px;
+  text-align: center;
+  box-sizing: border-box;
+  padding-top: rem(12px);
+  user-select: none;
+  transition: color 0.3s $ease-out-expo;
+
+  .theme--light & {
+    color: rgba($dark-base, 0.12);
+  }
+
+  .theme--dark & {
+    color: rgba($light-base, 0.12);
+  }
+
+  .theme--light &:hover,
+  .theme--dark &:hover {
+    color: $red;
+  }
+
+  &.photos-timeline__year-label--yearEnd {
+    left: auto;
+    right: 0;
+  }
+}
+
+.photos-timeline__year-indicator {
+  position: absolute;
+  top: rem(20px);
+
+  cursor: pointer;
+  @include font-heading-bold();
+  font-size: rem(11px);
+
+  &:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: rem(-5px);
+    left: rem(-1px);
+    width: rem(2px);
+    height: rem(10px);
+    background-color: $red;
+    border-radius: rem(1px);
+
+    opacity: 0;
+    transform: scale(0);
+
+    transition: opacity 0.3s $ease-out-expo, transform 0.3s $ease-out-expo;
+  }
+
+  .theme--light &.is-grey:before {
+    background-color: $light-secondary;
+  }
+
+  .theme--dark &.is-grey:before {
+    background-color: $dark-secondary;
+  }
+
+  &.is-hover:before {
+    opacity: 1;
+    transform: none;
   }
 }

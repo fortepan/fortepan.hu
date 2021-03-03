@@ -1,7 +1,7 @@
 import { Controller } from "stimulus"
 
 import config from "../../data/siteConfig"
-import { trigger, getURLParams, isTouchDevice } from "../../js/utils"
+import { trigger, isTouchDevice } from "../../js/utils"
 import { setAppState, removeAppState, appState } from "../../js/app"
 import photoManager from "../../js/photo-manager"
 
