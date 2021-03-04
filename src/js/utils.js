@@ -14,9 +14,10 @@ export const isTouchDevice = () => {
   return "ontouchstart" in window || window.navigator.maxTouchPoints > 0 || window.navigator.msMaxTouchPoints > 0
 }
 
-export const trigger = (eventId, obj = {}, scope = document) => {
+export const trigger = (eventId, obj = {}, scope = document, doBubble = false) => {
   const event = new CustomEvent(eventId, {
     detail: obj,
+    bubbles: doBubble,
   })
   scope.dispatchEvent(event)
 }
