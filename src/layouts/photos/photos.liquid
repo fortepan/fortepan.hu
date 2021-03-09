@@ -2,9 +2,9 @@
 layout: base/base.liquid
 ---
 
-<div class="photos scrollview" 
-     data-controller="photos" 
-     data-action="scroll->photos#onScroll 
+<div class="photos scrollview"
+     data-controller="photos"
+     data-action="scroll->photos#onScroll
                   resize@window->photos#resizeThumbnails
                   popstate@window->photos#onPopState
                   photos:historyPushState@document->photos#historyPushState
@@ -13,7 +13,9 @@ layout: base/base.liquid
                   photoManager:nextSelected@document->photos#selectThumbnail
                   photoManager:prevSelected@document->photos#selectThumbnail
                   photoManager:load@document->photos#onPhotoDataLoaded
-                  photoManager:cacheCleared@document->photos#onPhotoCacheCleared"
+                  photoManager:cacheCleared@document->photos#onPhotoCacheCleared
+                  photoManager:photoSelected@document->photos#selectThumbnail
+                  timeline:yearSelected@document->photos#onYearSelected"
 >
   {% include ./title/title.liquid %}
   <div class="photos__grid" data-photos-target="grid"></div>
@@ -25,6 +27,6 @@ layout: base/base.liquid
 {% include ./thumbnail/thumbnail-template.liquid %}
 {% include carousel/carousel.liquid %}
 {% include header-nav/header-nav.liquid %}
-{% include timeline/timeline.liquid %}
+{% include timeline/timeline.liquid role:"timeline" id:"photosTimeline" %}
 {% include dialog/download/download.liquid %}
 {% include dialog/share/share.liquid %}

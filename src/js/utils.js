@@ -137,7 +137,7 @@ export const copyToClipboard = (textToCopy, type) => {
 
 export const isElementInViewport = el => {
   if (el) {
-    const top = document.querySelector(".header") ? document.querySelector(".header").offsetHeight : 0
+    const top = document.querySelector(".header-nav") ? document.querySelector(".header-nav").offsetHeight : 0
     const bounds = el.getBoundingClientRect()
     return bounds.top >= top && bounds.bottom <= window.innerHeight
   }

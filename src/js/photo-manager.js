@@ -24,7 +24,7 @@ const loadPhotoData = async (params, silent, lockContext) => {
       resp.items.forEach(item => {
         photoData.result.items.unshift(item)
       })
-      // then everse the order back to store later as a normal set
+      // then reverse the order back to store later as a normal set
       resp.items.reverse()
     } else {
       // add the new results to the end
@@ -70,6 +70,10 @@ const loadPhotoData = async (params, silent, lockContext) => {
   }
 
   return result
+}
+
+const hasData = () => {
+  return photoData.result && photoData.result.items && photoData.result.items.length
 }
 
 const getPhotoDataByID = id => {
@@ -134,6 +138,29 @@ const getLastPhotoData = () => {
   return null
 }
 
+// load more photos without changing the current search context
+const loadMorePhotoDataInContext = async (insertBefore = false) => {
+  const params = {}
+
+  if (insertBefore) {
+    params.search_after = getFirstPhotoData().search_after
+    params.reverseOrder = true
+  } else {
+    params.search_after = getLastPhotoData().search_after
+  }
+
+  Object.assign(params, photoData.context)
+
+  // remove the id if it was present
+  if (params.id > 0) delete params.id
+
+  const lockContext = true
+
+  const result = await loadPhotoData(params, false, lockContext)
+
+  return result
+}
+
 const selectNextPhoto = async () => {
   if (photoData.selectedIndex !== -1) {
     // check first if we reached the absolute last picture of the current search context
@@ -167,17 +194,7 @@ const selectNextPhoto = async () => {
     } else {
       // if there's more photos in the search context that haven't been loaded yet
       // load a new set of max 40 photos, and try selecting the next photo again
-      const params = {
-        search_after: getLastPhotoData().search_after,
-      }
-      Object.assign(params, photoData.context)
-
-      // remove the id if it was present
-      if (params.id > 0) delete params.id
-
-      const lockContext = true
-
-      const result = await loadPhotoData(params, false, lockContext)
+      const result = await loadMorePhotoDataInContext()
 
       if (result.items && result.items.length) {
         // select the first photo in the newly loaded and appended set
@@ -228,19 +245,8 @@ const selectPrevPhoto = async () => {
     } else {
       // if there's more photos in the search context that haven't been loaded yet
       // load a new set of previous max 40 photos, and try selecting the prev photo again
-
-      const params = {
-        search_after: getFirstPhotoData().search_after,
-        reverseOrder: true,
-      }
-      Object.assign(params, photoData.context)
-
-      // remove the id if it was present
-      if (params.id > 0) delete params.id
-
-      const lockContext = true
-
-      const result = await loadPhotoData(params, false, lockContext)
+      const insertBefore = true
+      const result = await loadMorePhotoDataInContext(insertBefore)
 
       if (result.items && result.items.length) {
         // select the last photo in the newly loaded and prepended set
@@ -294,11 +300,23 @@ const clearPhotoCache = () => {
   trigger("photoManager:cacheCleared", { context: params })
 }
 
-const selectFirstPhotoOfYear = async y => {
-  const data = photoData.result.items.find(item => parseInt(item.year, 10) === parseInt(y, 10))
+const hasPhotoDataOfYear = y => {
+  if (
+    photoData.result &&
+    photoData.result.items &&
+    photoData.result.items.length &&
+    photoData.result.items.find(item => parseInt(item.year, 10) === parseInt(y, 10))
+  ) {
+    return true
+  }
+  return false
+}
 
-  // check if we have the photo data loaded for the given year
-  if (data) {
+const getFirstPhotoOfYear = async (y, selectAfterLoad = true) => {
+  if (hasPhotoDataOfYear(y)) {
+    // check if we have the photo data loaded for the given year
+    const data = photoData.result.items.find(item => parseInt(item.year, 10) === parseInt(y, 10))
+
     // if we have the photo data
     selectPhotoById(data.mid)
 
@@ -308,37 +326,74 @@ const selectFirstPhotoOfYear = async y => {
       data: getSelectedPhotoData(),
       index: getSelectedPhotoIndex(),
     })
-  } else {
-    // load the photo data for the year
-    // first, clear the loaded photo data cahce fors (with keeping the current search context)
-    clearPhotoCache()
 
-    // then prepeare the search parameters in the given context
-    // get default and search query params
-    const params = {
-      from: 0,
-      year: y,
-    }
-    Object.assign(params, photoData.context)
-
-    // remove the id if it was present
-    if (params.id > 0) delete params.id
-
-    // delete the search after param if it was copied over from the default context
-    if (params.search_after) delete params.search_after
-
-    // lock the previous context, so this search won't overwrite it
-    // (we just need the first picture of a given year in the same search context)
-    const lockContext = true
-
-    await loadPhotoData(params, false, lockContext)
-
-    selectFirstPhotoOfYear(y)
+    return true
   }
+
+  // if no photo data loaded for the given year
+  // load the photo data for the year
+  // first, clear the loaded photo data cahce fors (with keeping the current search context)
+  clearPhotoCache()
+
+  /*
+    1. load the first image of the given year...
+  */
+  const params = {
+    from: 0,
+    year: y,
+  }
+  Object.assign(params, photoData.context)
+
+  // remove the id if it was present
+  if (params.id > 0) delete params.id
+  // delete the search after param if it was copied over from the default context
+  if (params.search_after) delete params.search_after
+
+  params.size = config.THUMBNAILS_QUERY_LIMIT
+
+  // lock the previous context, so this search won't overwrite it
+  // (we just need the first picture of a given year in the same search context)
+  const silent = true
+  const lockContext = true
+
+  // load the photos in silent mode (no event dispatched)
+  let resp = await loadPhotoData(params, silent, lockContext)
+  let latestItems = [].concat(resp.items)
+
+  /*
+    2. then, based on the first image data load the rest of the set according to the default query limit
+  */
+  if (latestItems.length !== -1 && latestItems.length < config.THUMBNAILS_QUERY_LIMIT) {
+    delete params.from
+    delete params.year
+    params.size = config.THUMBNAILS_QUERY_LIMIT - latestItems.length
+    params.search_after = latestItems[latestItems.length - 1].search_after
+
+    // load the remaining photos in silent mode (no event dispatched)
+    resp = await loadPhotoData(params, silent, lockContext)
+    latestItems = [].concat(latestItems, resp.items)
+  }
+
+  // dispatch an event that new photos have been loaded in the search context
+  trigger("photoManager:load", { items: latestItems, total: photoData.result.total, years: photoData.result.years })
+
+  if (selectAfterLoad) {
+    return getFirstPhotoOfYear(y, selectAfterLoad)
+  }
+
+  return true
 }
 
 const getTotalPhotoCountInContext = () => {
   return photoData.result.total
+}
+
+const getLatestSearchContext = () => {
+  // create a copy of the objext to avoid modification elsewhere
+  const context = {}
+  Object.assign(context, photoData.context)
+
+  return context
 }
 
 const clearAllData = () => {
@@ -354,11 +409,13 @@ const clearAllData = () => {
 
 export default {
   loadPhotoData,
+  hasData,
   getSelectedPhotoId,
   getSelectedPhotoData,
   getSelectedPhotoIndex,
   selectPhotoById,
   getPhotoDataByID,
+  loadMorePhotoDataInContext,
   selectNextPhoto,
   selectPrevPhoto,
   getFirstPhotoData,
@@ -366,8 +423,10 @@ export default {
   getYearsInContext,
   getFirstYearInContext,
   getLastYearInContext,
-  selectFirstPhotoOfYear,
+  hasPhotoDataOfYear,
+  getFirstPhotoOfYear,
   getTotalPhotoCountInContext,
+  getLatestSearchContext,
   clearPhotoCache,
   clearAllData,
 }

@@ -1,5 +1,5 @@
-<div class="photos-carousel" 
-     data-controller="carousel" 
+<div class="photos-carousel"
+     data-controller="carousel"
      data-action="keydown@document->carousel#boundKeydownListener
                   mouseover->carousel#showControls
                   mouseout->carousel#hideControls
@@ -17,7 +17,7 @@
         </div>
 
         {% include loader/loader.liquid class:"photos-carousel__photos__loader is-delayed" id:"loaderCarousel" %}
-        
+
         <div class="button-circular button-circular--has-background photos-carousel__photos__pager photos-carousel__photos__pager--left disable"
           data-carousel-target="pager"
           data-action="click->carousel#showPrevPhoto">
@@ -63,7 +63,7 @@
             </div>
         </div>
 
-        {% include timeline/timeline.liquid role:"timeline" %}
+        {% include timeline/timeline.liquid role:"timeline" id:"carouselTimeline" %}
 
     </div>
     {% include sidebar/sidebar.liquid %}

@@ -125,9 +125,9 @@ export default class extends Controller {
 
   // event listener for timeline:yearSelected
   selectPhotoByYear(e) {
-    if (e && e.detail && e.detail.year) {
+    if (e && e.detail && e.detail.dispatcher && e.detail.dispatcher.id === "carouselTimeline" && e.detail.year) {
       // select the first photo of a given year (or load them if neccessary)
-      photoManager.selectFirstPhotoOfYear(e.detail.year).then(() => {
+      photoManager.getFirstPhotoOfYear(e.detail.year).then(() => {
         this.showPhoto(null, photoManager.getSelectedPhotoId())
         trigger("photos:selectThumbnail", { index: photoManager.getSelectedPhotoIndex() })
       })

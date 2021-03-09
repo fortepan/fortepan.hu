@@ -34,7 +34,7 @@ export default class extends Controller {
     this.timelineOver = false
 
     // init component
-    this.resetSlider()
+    this.resetSlider(null, false)
   }
 
   enable() {
@@ -47,12 +47,23 @@ export default class extends Controller {
     this.element.classList.add("is-disabled")
   }
 
-  // event listener for photoManager:photoSelected
-  setSlider() {
-    if (photoManager.getSelectedPhotoId()) {
+  setSlider(e) {
+    if (photoManager.hasData()) {
       this.yearStart = photoManager.getFirstYearInContext().year
       this.yearEnd = photoManager.getLastYearInContext().year
-      this.year = parseInt(photoManager.getSelectedPhotoData().year, 10)
+
+      if (e && e.type === "photos:yearChanged" && e.detail && e.detail.year) {
+        // when it is a listener for photos:yearChanged
+        // where the parameter year should be passed
+        this.year = parseInt(e.detail.year, 10)
+      } else if (photoManager.getSelectedPhotoId()) {
+        // if there is a selected photo (event listener for photoManager:photoSelected)
+        this.year = parseInt(photoManager.getSelectedPhotoData().year, 10)
+      } else {
+        // this function is called even if there isn't any photo selected (as part of the reset chain),
+        // in which case...
+        this.year = this.yearStart
+      }
 
       this.setRange()
       this.setTimelineLabels()
@@ -99,9 +110,9 @@ export default class extends Controller {
       (start + this.sliderYearTarget.offsetWidth)}px`
   }
 
-  resetSlider() {
+  resetSlider(e, enable = true) {
     this.setSlider()
-    this.enable()
+    if (enable) this.enable()
   }
 
   calcYear() {
@@ -136,7 +147,7 @@ export default class extends Controller {
     this.setTimelineLabels()
 
     if ((this.sliderDragged && this.year !== this.sliderDragStartYear) || !this.sliderDragged) {
-      trigger("timeline:yearSelected", { year: this.year })
+      trigger("timeline:yearSelected", { year: this.year, dispatcher: this.element })
     }
   }
 

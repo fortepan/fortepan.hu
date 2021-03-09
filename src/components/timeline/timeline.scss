@@ -59,7 +59,7 @@
     }
   }
 
-  &.photos-timeline--progress {
+  .photos-carousel &.photos-timeline--progress {
     padding: 0;
     border: none;
     height: rem(40px);
