@@ -37,8 +37,9 @@ export default class extends Controller {
     if (
       !this.thumbnailsLoading &&
       this.thumbnailsCount > 0 &&
-      (this.element.scrollTop + this.element.offsetHeight >= this.element.scrollHeight - 150 ||
-        this.element.scrollTop <= 0)
+      ((this.element.scrollTop + this.element.offsetHeight >= this.element.scrollHeight - 150 &&
+        !photoManager.getLastPhotoDataInContext()) ||
+        (this.element.scrollTop <= 0 && !photoManager.getFirstPhotoDataInContext()))
     ) {
       this.thumbnailsLoading = true
       const insertBefore = this.element.scrollTop <= 0
@@ -56,22 +57,41 @@ export default class extends Controller {
 
   calcYearOfViewport() {
     let year = -1
+    const thumbnails = this.element.querySelectorAll(".photos-thumbnail")
     if (!this.yearInViewPort) this.yearInViewPort = parseInt(photoManager.getFirstPhotoData().year, 10)
 
-    this.element.querySelectorAll(".photos-thumbnail").forEach(item => {
-      if (
-        item.offsetTop > this.element.scrollTop + document.querySelector(".header-nav").offsetHeight + 16 &&
-        year === -1
-      ) {
-        year = item.year
-        if (year !== this.yearInViewPort) {
-          this.yearInViewPort = year
-
-          // dispatches a custom event if the year has changed
-          trigger("photos:yearChanged", { year: this.yearInViewPort })
+    if (
+      this.element.scrollTop <= thumbnails[0].offsetTop + document.querySelector(".header-nav").offsetHeight + 16 &&
+      thumbnails[0].classList.contains("is-loaded", "is-visible") &&
+      photoManager.getFirstPhotoDataInContext()
+    ) {
+      // if we scrolled to the top
+      year = thumbnails[0].year
+    } else if (
+      this.element.scrollTop + this.element.offsetHeight >= this.element.scrollHeight - 100 &&
+      thumbnails[thumbnails.length - 1].classList.contains("is-loaded", "is-visible") &&
+      photoManager.getLastPhotoDataInContext()
+    ) {
+      // if we scrolled to the bottom
+      year = thumbnails[thumbnails.length - 1].year
+    } else {
+      // if we are in-between the top and the bottom
+      thumbnails.forEach(item => {
+        if (
+          item.offsetTop > this.element.scrollTop + document.querySelector(".header-nav").offsetHeight + 16 &&
+          year === -1
+        ) {
+          year = item.year
         }
-      }
-    })
+      })
+    }
+
+    if (year !== this.yearInViewPort) {
+      this.yearInViewPort = year
+
+      // dispatches a custom event if the year has changed
+      trigger("photos:yearChanged", { year: this.yearInViewPort })
+    }
   }
 
   // show all loaded thumbnailnails at once
