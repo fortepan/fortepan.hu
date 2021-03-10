@@ -61,16 +61,16 @@ export default class extends Controller {
     if (!this.yearInViewPort) this.yearInViewPort = parseInt(photoManager.getFirstPhotoData().year, 10)
 
     if (
+      photoManager.getFirstPhotoDataInContext() &&
       this.element.scrollTop <= thumbnails[0].offsetTop + document.querySelector(".header-nav").offsetHeight + 16 &&
-      thumbnails[0].classList.contains("is-loaded", "is-visible") &&
-      photoManager.getFirstPhotoDataInContext()
+      thumbnails[0].classList.contains("is-loaded", "is-visible")
     ) {
       // if we scrolled to the top
       year = thumbnails[0].year
     } else if (
+      photoManager.getLastPhotoDataInContext() &&
       this.element.scrollTop + this.element.offsetHeight >= this.element.scrollHeight - 100 &&
-      thumbnails[thumbnails.length - 1].classList.contains("is-loaded", "is-visible") &&
-      photoManager.getLastPhotoDataInContext()
+      thumbnails[thumbnails.length - 1].classList.contains("is-loaded", "is-visible")
     ) {
       // if we scrolled to the bottom
       year = thumbnails[thumbnails.length - 1].year
@@ -344,7 +344,11 @@ export default class extends Controller {
   // event listener for timeline:yearSelected
   onYearSelected(e) {
     if (e && e.detail && e.detail.dispatcher && e.detail.dispatcher.id === "photosTimeline" && e.detail.year) {
-      this.selectedThumbnail = null
+      if (this.selectedThumbnail) {
+        this.selectedThumbnail.classList.remove("is-selected")
+        this.selectedThumbnail = null
+      }
+
       let selectAfterLoad = true
 
       // show loader based on if we have any data for the given year

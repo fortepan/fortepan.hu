@@ -162,14 +162,16 @@ const loadMorePhotoDataInContext = async (insertBefore = false) => {
 }
 
 const getLastPhotoDataInContext = () => {
-  // check if we have the data of the absolute last picture of the current search context
-  // look for the photo data of the last year
-  const end = photoData.result.items.filter(
-    item => parseInt(item.year, 10) === parseInt(photoData.result.years[photoData.result.years.length - 1].year, 10)
-  )
+  if (hasData()) {
+    // check if we have the data of the absolute last picture of the current search context
+    // look for the photo data of the last year
+    const end = photoData.result.items.filter(
+      item => parseInt(item.year, 10) === parseInt(photoData.result.years[photoData.result.years.length - 1].year, 10)
+    )
 
-  if (end && end.length === photoData.result.years[photoData.result.years.length - 1].count) {
-    return { id: end[end.length - 1].mid, data: end[end.length - 1] }
+    if (end && end.length === photoData.result.years[photoData.result.years.length - 1].count) {
+      return { id: end[end.length - 1].mid, data: end[end.length - 1] }
+    }
   }
 
   return null
@@ -221,14 +223,16 @@ const selectNextPhoto = async () => {
 }
 
 const getFirstPhotoDataInContext = () => {
-  // check if we have the data of the absolute first picture of the current search context
-  // look for the photo data of the first year
-  const start = photoData.result.items.filter(
-    item => parseInt(item.year, 10) === parseInt(photoData.result.years[0].year, 10)
-  )
+  if (hasData()) {
+    // check if we have the data of the absolute first picture of the current search context
+    // look for the photo data of the first year
+    const start = photoData.result.items.filter(
+      item => parseInt(item.year, 10) === parseInt(photoData.result.years[0].year, 10)
+    )
 
-  if (start && start.length === photoData.result.years[0].count) {
-    return { id: start[0].mid, data: start[0] }
+    if (start && start.length === photoData.result.years[0].count) {
+      return { id: start[0].mid, data: start[0] }
+    }
   }
 
   return null
@@ -323,7 +327,10 @@ const hasPhotoDataOfYear = y => {
     photoData.result &&
     photoData.result.items &&
     photoData.result.items.length &&
-    photoData.result.items.find(item => parseInt(item.year, 10) === parseInt(y, 10))
+    photoData.result.items.find(item => parseInt(item.year, 10) === parseInt(y, 10)) &&
+    // strict check: we should have all of the year's data
+    photoData.result.items.filter(item => parseInt(item.year, 10) === parseInt(y, 10)).length ===
+      photoData.result.years.find(item => parseInt(item.year, 10) === parseInt(y, 10)).count
   ) {
     return true
   }
