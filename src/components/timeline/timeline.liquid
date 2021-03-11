@@ -1,5 +1,3 @@
-{% if role == "timeline" %}
-
 <div {% if id %}id="{{ id }}" {% endif %}class="photos-timeline photos-timeline--progress"
   data-controller="timeline"
   data-action="timeline:disable@document->timeline#disable
@@ -45,39 +43,3 @@
         </div>
     </div>
 </div>
-
-{% else %}
-
-<div {% if id %}id="{{ id }}" {% endif %}class="photos-timeline"
-  data-controller="timeline--filter"
-  data-timeline--filter-target="timeline"
-  data-action="timeline:disable@document->timeline--filter#disable
-               timeline:reset@document->timeline--filter#resetSlider"
->
-    <h3 class="photos-timeline__title" data-timeline--filter-target="title">{{ lang[locale].timeline }}</h3>
-    <div class="photos-timeline__range caption" data-timeline--filter-target="range">1900 - 1990</div>
-    <div class="photos-timeline__slider__container" data-timeline--filter-target="slider">
-        <div class="photos-timeline__slider"
-          data-timeline--filter-target="sliderKnob sliderLeft"
-          data-action="touchstart->timeline--filter#sliderStartDrag
-                       mousedown->timeline--filter#sliderStartDrag
-                       touchmove@document->timeline--filter#sliderLeftMoved
-                       mousemove@document->timeline--filter#sliderLeftMoved
-                       touchend@document->timeline--filter#sliderStopDrag
-                       mouseup@document->timeline--filter#sliderStopDrag"
-        >1900</div>
-        <div class="photos-timeline__slider-selected-range" data-timeline--filter-target="selectedRange">
-        </div>
-        <div class="photos-timeline__slider"
-        data-timeline--filter-target="sliderKnob sliderRight"
-        data-action="touchstart->timeline--filter#sliderStartDrag
-                       mousedown->timeline--filter#sliderStartDrag
-                       touchmove@document->timeline--filter#sliderRightMoved
-                       mousemove@document->timeline--filter#sliderRightMoved
-                       touchend@document->timeline--filter#sliderStopDrag
-                       mouseup@document->timeline--filter#sliderStopDrag"
-        >1990</div>
-    </div>
-</div>
-
-{% endif %}
