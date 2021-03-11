@@ -240,9 +240,10 @@ export default class extends Controller {
 
   // event listener for photoManager:load
   onPhotoDataLoaded(e) {
-    if (e && e.detail && e.detail) {
+    if (e && e.detail) {
+      const insertBefore = e.detail.reverseOrder
       // generate thumbnails
-      this.generateThumbnailsFromData(e.detail)
+      this.generateThumbnailsFromData(e.detail, insertBefore)
     }
   }
 
