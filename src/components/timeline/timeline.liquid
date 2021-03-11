@@ -1,12 +1,11 @@
-<div {% if id %}id="{{ id }}" {% endif %}class="photos-timeline photos-timeline--progress"
+<div {% if id %}id="{{ id }}" {% endif %}class="photos-timeline"
   data-controller="timeline"
-  data-action="timeline:disable@document->timeline#disable
+  data-action="resize@window->timeline#onResize
+               timeline:disable@document->timeline#disable
                timeline:reset@document->timeline#resetSlider
                photoManager:photoSelected@document->timeline#setSlider
                photos:yearChanged@document->timeline#setSlider"
 >
-    <h3 class="photos-timeline__title" data-timeline-target="title">{{ lang[locale].timeline }}</h3>
-    <div class="photos-timeline__range caption" data-timeline-target="range">1900</div>
     <div class="photos-timeline__year-label photos-timeline__year-label--yearStart"
       data-timeline-target="yearLabel yearStart"
       data-action="click->timeline#jumpToStart"
@@ -21,7 +20,7 @@
                    mouseleave->timeline#onTimelineOut
                    click->timeline#seek"
     >
-        <div class="photos-timeline__range-background" data-timeline-target="rangeBackground"></div>
+        <div class="photos-timeline__range-background"></div>
         <div class="photos-timeline__year-indicator"
           data-timeline-target="yearIndicator"
         >

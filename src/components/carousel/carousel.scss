@@ -24,7 +24,7 @@
 .photos-carousel__photos {
   position: absolute;
   left: 0;
-  top: rem(80px);
+  top: rem(80px + 64px);
   right: rem(280px);
   min-width: rem(320px);
   bottom: rem(0px);
@@ -32,7 +32,7 @@
   background-color: $dark-base;
 
   @media screen and (max-width: ($breakpoint-desktop - 1px)) {
-    top: rem(64px);
+    top: rem(64px + 48px);
   }
 
   @media screen and (max-width: ($breakpoint-tablet - 1px)) {

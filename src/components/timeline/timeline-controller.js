@@ -1,14 +1,11 @@
 import { Controller } from "stimulus"
-import { trigger } from "../../js/utils"
+import { getURLParams, trigger } from "../../js/utils"
 import { setAppState, removeAppState } from "../../js/app"
 import photoManager from "../../js/photo-manager"
 
 export default class extends Controller {
   static get targets() {
     return [
-      "title",
-      "range",
-      "rangeBackground",
       "slider",
       "selectedRange",
       "yearStart",
@@ -23,7 +20,7 @@ export default class extends Controller {
   }
 
   connect() {
-    this.range = 0 // distance between the two knobs
+    this.range = 0
 
     // slider status
     this.sliderDragged = null
@@ -66,8 +63,8 @@ export default class extends Controller {
       }
 
       this.setRange()
-      this.setTimelineLabels()
       this.fixSlider()
+      this.setTimelineLabels()
     }
   }
 
@@ -80,7 +77,6 @@ export default class extends Controller {
   }
 
   setTimelineLabels() {
-    this.rangeTarget.textContent = this.year
     this.sliderYearLabelTarget.textContent = this.year
 
     // check if selected year (this.year) has photos at all (not already loaded)
@@ -105,9 +101,6 @@ export default class extends Controller {
     this.sliderYearTarget.style.left = `${start}px`
     this.selectedRangeTarget.style.left = `0px`
     this.selectedRangeTarget.style.width = `${start}px`
-    this.rangeBackgroundTarget.style.left = `${start + this.sliderYearTarget.offsetWidth}px`
-    this.rangeBackgroundTarget.style.width = `${this.sliderTarget.offsetWidth -
-      (start + this.sliderYearTarget.offsetWidth)}px`
   }
 
   resetSlider(e, enable = true) {
@@ -147,7 +140,12 @@ export default class extends Controller {
     this.setTimelineLabels()
 
     if ((this.sliderDragged && this.year !== this.sliderDragStartYear) || !this.sliderDragged) {
-      trigger("timeline:yearSelected", { year: this.year, dispatcher: this.element })
+      // if we are in a year context, let's clear the context
+      if (getURLParams().year > 0 || getURLParams().id > 0) {
+        trigger("photos:historyPushState", { url: "?q=", resetPhotosGrid: true, jumpToYearAfter: this.year })
+      } else {
+        trigger("timeline:yearSelected", { year: this.year })
+      }
     }
   }
 
@@ -188,9 +186,6 @@ export default class extends Controller {
       this.sliderYearTarget.style.left = `${x}px`
       this.selectedRangeTarget.style.left = `0px`
       this.selectedRangeTarget.style.width = `${x}px`
-      this.rangeBackgroundTarget.style.left = `${x + this.sliderYearTarget.offsetWidth}px`
-      this.rangeBackgroundTarget.style.width = `${this.sliderTarget.offsetWidth -
-        (x + this.sliderYearTarget.offsetWidth)}px`
 
       this.calcYear()
       this.setTimelineLabels()
@@ -284,5 +279,12 @@ export default class extends Controller {
       this.yearIndicatorTarget.classList.add("is-empty")
       this.yearIndicatorLabelTarget.innerHTML = `${year}`
     }
+  }
+
+  onResize() {
+    this.calcYear()
+    this.setRange()
+    this.fixSlider()
+    this.setTimelineLabels()
   }
 }

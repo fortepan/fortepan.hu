@@ -8,7 +8,17 @@ const photoData = {}
 const loadPhotoData = async (params, silent, lockContext) => {
   // saving the last search context
   if (!lockContext) {
-    photoData.context = params
+    photoData.context = {}
+
+    // copy the params instead of just referencing the params object with direct assignment
+    Object.assign(photoData.context, params)
+
+    // remove the reverse order flag to not to mistakenly save in to the cached context
+    // (can cause trubles with requests with lockContext)
+    delete photoData.context.reverseOrder
+
+    // delete the id flag as it also messes up loading more pics of the context
+    delete photoData.context.id
   }
 
   const resp = await searchAPI.search(params)
@@ -46,17 +56,20 @@ const loadPhotoData = async (params, silent, lockContext) => {
 
   // storing the aggregated years (photo count per all year in search range) in the results
   // -- only once per search context
-  if (!lockContext && resp.years) {
-    // load the total aggregated years if id is present
-    if (params.id && resp.years.length === 1) {
+  if (!photoData.result.years || !photoData.result.total || (!lockContext && resp.years)) {
+    // load the total aggregated years if id or year is present (in wich case there's only one year loaded)
+    if (resp.years.length <= 1) {
       const contextParams = {}
       Object.assign(contextParams, params)
       delete contextParams.id
+      delete contextParams.year
 
       const contextResp = await searchAPI.search(contextParams)
 
       photoData.result.years = contextResp.years
-      photoData.result.total = contextResp.total
+      if (!photoData.result.total || !params.year) {
+        photoData.result.total = contextResp.total
+      }
     } else {
       photoData.result.years = resp.years
     }
@@ -168,13 +181,16 @@ const loadMorePhotoDataInContext = async (insertBefore = false) => {
 
 const getLastPhotoDataInContext = () => {
   if (hasData()) {
+    const lastYear =
+      photoData.context && photoData.context.year > 0
+        ? photoData.result.years.find(item => parseInt(item.year, 10) === parseInt(photoData.context.year, 10))
+        : photoData.result.years[photoData.result.years.length - 1]
+
     // check if we have the data of the absolute last picture of the current search context
     // look for the photo data of the last year
-    const end = photoData.result.items.filter(
-      item => parseInt(item.year, 10) === parseInt(photoData.result.years[photoData.result.years.length - 1].year, 10)
-    )
+    const end = photoData.result.items.filter(item => parseInt(item.year, 10) === parseInt(lastYear.year, 10))
 
-    if (end && end.length === photoData.result.years[photoData.result.years.length - 1].count) {
+    if (end && end.length === lastYear.count) {
       return { id: end[end.length - 1].mid, data: end[end.length - 1] }
     }
   }
@@ -229,15 +245,23 @@ const selectNextPhoto = async () => {
 
 const getFirstPhotoDataInContext = () => {
   if (hasData()) {
+    const firstYear =
+      photoData.context && photoData.context.year > 0
+        ? photoData.result.years.find(item => parseInt(item.year, 10) === parseInt(photoData.context.year, 10))
+        : photoData.result.years[0]
+
     // check if we have the data of the absolute first picture of the current search context
     // look for the photo data of the first year
-    const start = photoData.result.items.filter(
-      item => parseInt(item.year, 10) === parseInt(photoData.result.years[0].year, 10)
-    )
+    const start = photoData.result.items.filter(item => parseInt(item.year, 10) === parseInt(firstYear.year, 10))
 
-    if (start && start.length === photoData.result.years[0].count) {
+    if (
+      (photoData.context && photoData.context.year && start && start.length) ||
+      (start && start.length === firstYear.count)
+    ) {
       return { id: start[0].mid, data: start[0] }
     }
+
+    return null
   }
 
   return null
@@ -318,13 +342,15 @@ const getLastYearInContext = () => {
 }
 
 const clearPhotoCache = () => {
-  // if the year of the search has changed flush the cached search results
-  delete photoData.result.items
+  if (photoData && photoData.result) {
+    // if the year of the search has changed flush the cached search results
+    delete photoData.result.items
 
-  const params = {}
-  Object.assign(params, photoData.context)
+    const params = {}
+    Object.assign(params, photoData.context)
 
-  trigger("photoManager:cacheCleared", { context: params })
+    trigger("photoManager:cacheCleared", { context: params })
+  }
 }
 
 const hasPhotoDataOfYear = (y, matchAll = false) => {

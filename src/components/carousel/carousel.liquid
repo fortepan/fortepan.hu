@@ -9,7 +9,7 @@
                   photosCarousel:showPhoto@document->carousel#showPhoto
                   photosCarousel:show@document->carousel#show
                   photosCarousel:close@document->carousel#hide
-                  timeline:yearSelected@document->carousel#selectPhotoByYear"
+                  timeline:yearSelected@document->carousel#onYearSelected"
 >
     <div class="photos-carousel__photos hide-controls theme--dark" data-carousel-target="photosContainer">
         <div class="photos-carousel__photos__background">
@@ -62,8 +62,6 @@
                 </div>
             </div>
         </div>
-
-        {% include timeline/timeline.liquid id:"carouselTimeline" %}
 
     </div>
     {% include sidebar/sidebar.liquid %}
