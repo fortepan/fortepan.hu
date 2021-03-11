@@ -62,7 +62,12 @@ const loadPhotoData = async (params, silent, lockContext) => {
     }
   }
 
-  const result = { items: photoData.result.latestItems, total: photoData.result.total, years: photoData.result.years }
+  const result = {
+    items: photoData.result.latestItems,
+    total: photoData.result.total,
+    years: photoData.result.years,
+    reverseOrder: params && params.reverseOrder,
+  }
 
   if (!silent) {
     // dispatch an event that new photos have been loaded in the search context
@@ -322,15 +327,17 @@ const clearPhotoCache = () => {
   trigger("photoManager:cacheCleared", { context: params })
 }
 
-const hasPhotoDataOfYear = y => {
+const hasPhotoDataOfYear = (y, matchAll = false) => {
   if (
     photoData.result &&
     photoData.result.items &&
     photoData.result.items.length &&
     photoData.result.items.find(item => parseInt(item.year, 10) === parseInt(y, 10)) &&
-    // strict check: we should have all of the year's data
-    photoData.result.items.filter(item => parseInt(item.year, 10) === parseInt(y, 10)).length ===
-      photoData.result.years.find(item => parseInt(item.year, 10) === parseInt(y, 10)).count
+    // strict check: should we have all of the year's data?
+    (!matchAll ||
+      (matchAll &&
+        photoData.result.items.filter(item => parseInt(item.year, 10) === parseInt(y, 10)).length ===
+          photoData.result.years.find(item => parseInt(item.year, 10) === parseInt(y, 10)).count))
   ) {
     return true
   }
@@ -400,10 +407,15 @@ const getFirstPhotoOfYear = async (y, selectAfterLoad = true) => {
   }
 
   // dispatch an event that new photos have been loaded in the search context
-  trigger("photoManager:load", { items: latestItems, total: photoData.result.total, years: photoData.result.years })
+  trigger("photoManager:load", {
+    items: latestItems,
+    total: photoData.result.total,
+    years: photoData.result.years,
+    reverseOrder: params && params.reverseOrder,
+  })
 
   if (selectAfterLoad) {
-    return getFirstPhotoOfYear(y, selectAfterLoad)
+    await getFirstPhotoOfYear(y, selectAfterLoad)
   }
 
   return true
