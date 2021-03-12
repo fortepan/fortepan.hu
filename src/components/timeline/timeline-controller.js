@@ -96,11 +96,11 @@ export default class extends Controller {
   }
 
   fixSlider() {
-    const start = ((this.year - this.yearStart) / (this.yearEnd - this.yearStart)) * this.range
+    const start = Math.round(((this.year - this.yearStart) / (this.yearEnd - this.yearStart)) * this.range)
 
     this.sliderYearTarget.style.left = `${start}px`
     this.selectedRangeTarget.style.left = `0px`
-    this.selectedRangeTarget.style.width = `${start}px`
+    this.selectedRangeTarget.style.width = `${start + 2}px`
   }
 
   resetSlider(e, enable = true) {
@@ -233,12 +233,6 @@ export default class extends Controller {
         // if the cursor is not over the slider knob
         this.yearIndicatorTarget.classList.add("is-hover")
 
-        if (px > knobBounds.right) {
-          this.yearIndicatorTarget.classList.add("is-grey")
-        } else {
-          this.yearIndicatorTarget.classList.remove("is-grey")
-        }
-
         const x = Math.min(
           Math.max(px - this.sliderTarget.getBoundingClientRect().left, 0),
           this.sliderTarget.offsetWidth
@@ -286,5 +280,15 @@ export default class extends Controller {
     this.setRange()
     this.fixSlider()
     this.setTimelineLabels()
+  }
+
+  toggleShadow(e) {
+    if (e && e.type === "photosCarousel:showPhoto") {
+      this.element.classList.add("has-shadow")
+    }
+
+    if (e && e.type === "photosCarousel:hide") {
+      this.element.classList.remove("has-shadow")
+    }
   }
 }

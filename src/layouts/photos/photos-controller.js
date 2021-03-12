@@ -56,12 +56,19 @@ export default class extends Controller {
   }
 
   calcYearOfViewport() {
+    if (this.lockYearOnScroll) {
+      delete this.lockYearOnScroll
+      return
+    }
+
     let year = -1
     const thumbnails = this.element.querySelectorAll(".photos-thumbnail")
     const viewportOffsetTop =
       document.querySelector(".header-nav").offsetHeight + document.querySelector(".photos-timeline").offsetHeight + 8
 
-    if (!this.yearInViewPort) this.yearInViewPort = parseInt(photoManager.getFirstPhotoData().year, 10)
+    if (!this.yearInViewPort && photoManager.getFirstPhotoData()) {
+      this.yearInViewPort = parseInt(photoManager.getFirstPhotoData().year, 10)
+    }
 
     if (
       photoManager.getFirstPhotoDataInContext() &&
@@ -321,7 +328,7 @@ export default class extends Controller {
     }
   }
 
-  scrollToSelectedThumbnail() {
+  scrollToSelectedThumbnail(lockYearOnScroll = false) {
     // scroll to thumbnail if it's not in the viewport
     if (this.selectedThumbnail) {
       if (!isElementInViewport(this.selectedThumbnail.querySelector(".photos-thumbnail__image"))) {
@@ -332,9 +339,11 @@ export default class extends Controller {
 
         this.element.scrollTop = this.selectedThumbnail.offsetTop - viewportOffsetTop
 
-        // reset first the year in viewport to force a new calculation
-        delete this.yearInViewPort
-        this.calcYearOfViewport()
+        if (!lockYearOnScroll) {
+          // reset first the year in viewport to force a new calculation
+          delete this.yearInViewPort
+          this.calcYearOfViewport()
+        }
       }
     }
   }
@@ -376,7 +385,10 @@ export default class extends Controller {
         selectAfterLoad = false
       }
       photoManager.getFirstPhotoOfYear(e.detail.year, selectAfterLoad).then(() => {
-        this.scrollToSelectedThumbnail()
+        if (selectAfterLoad) {
+          this.lockYearOnScroll = true
+          this.scrollToSelectedThumbnail(this.lockYearOnScroll)
+        }
       })
     }
   }

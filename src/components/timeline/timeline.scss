@@ -9,7 +9,7 @@
   opacity: 0;
   pointer-events: none;
   user-select: none;
-  z-index: 700;
+  z-index: 70;
   transition: transform 0.8s $ease-out-expo, opacity 0.8s $ease-out-expo;
 
   @media screen and (max-width: ($breakpoint-desktop - 1px)) {
@@ -17,9 +17,26 @@
     height: rem(48px);
   }
 
+  &:hover {
+    z-index: 700;
+  }
+
   &.is-visible {
     opacity: 1;
     pointer-events: initial;
+  }
+
+  &.has-shadow {
+    &:after {
+      display: block;
+      position: absolute;
+      content: "";
+      left: 0;
+      right: 0;
+      bottom: rem(-12px);
+      height: rem(12px);
+      background: linear-gradient(0deg, rgba($dark-base, 0) 0%, rgba($dark-base, 0.06) 100%);
+    }
   }
 
   .theme--light & {
@@ -46,14 +63,13 @@
   position: absolute;
   top: calc(50% - 1.75rem / 2);
   height: rem(28px);
-  padding: 0 rem(8px);
+  padding: 0 rem(12px);
   border-radius: 4px;
   transition: left 0.4s $ease-out-expo, background-color 0.3s $ease-out-expo;
   cursor: pointer;
   @include font-heading-bold();
   font-size: rem(16px);
   line-height: rem(28px);
-  text-align: center;
   box-sizing: border-box;
   user-select: none;
 
@@ -61,6 +77,8 @@
     top: calc(50% - 1.625rem / 2);
     height: rem(26px);
     line-height: rem(26px);
+    font-size: rem(14px);
+    padding: 0 rem(10px);
   }
 
   .is-used & {
@@ -101,7 +119,7 @@
     top: -100%;
     line-height: 1.5;
 
-    &::before {
+    &:before {
       position: absolute;
       bottom: rem(-4px);
       margin: auto;
@@ -110,11 +128,11 @@
       border-top: rem(6px) solid transparent;
     }
 
-    .theme--light &::before {
+    .theme--light &:before {
       border-top-color: $dark-base;
     }
 
-    .theme--dark &::before {
+    .theme--dark &:before {
       border-top-color: $light-base;
     }
   }

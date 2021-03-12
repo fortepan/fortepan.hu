@@ -4,7 +4,9 @@
                timeline:disable@document->timeline#disable
                timeline:reset@document->timeline#resetSlider
                photoManager:photoSelected@document->timeline#setSlider
-               photos:yearChanged@document->timeline#setSlider"
+               photos:yearChanged@document->timeline#setSlider
+               photosCarousel:showPhoto@document->timeline#toggleShadow
+               photosCarousel:hide@document->timeline#toggleShadow"
 >
     <div class="photos-timeline__year-label photos-timeline__year-label--yearStart"
       data-timeline-target="yearLabel yearStart"
@@ -24,7 +26,7 @@
         <div class="photos-timeline__year-indicator"
           data-timeline-target="yearIndicator"
         >
-          <div class="button-circular__label" data-timeline-target="yearIndicatorLabel">1900 <span class="count">(0)</span></div>
+          <div class="button-circular__label" data-timeline-target="yearIndicatorLabel"></div>
         </div>
         <div class="photos-timeline__slider"
           data-timeline-target="sliderKnob sliderYear"
