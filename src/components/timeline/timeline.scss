@@ -9,16 +9,11 @@
   opacity: 0;
   pointer-events: none;
   user-select: none;
-  z-index: 70;
   transition: transform 0.8s $ease-out-expo, opacity 0.8s $ease-out-expo;
 
   @media screen and (max-width: ($breakpoint-desktop - 1px)) {
     top: rem(48px + 2 * 8px);
     height: rem(48px);
-  }
-
-  &:hover {
-    z-index: 700;
   }
 
   &.is-visible {

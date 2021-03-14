@@ -1,4 +1,4 @@
-<div class="header-nav {{ header_class }}" 
+<div class="header-nav {{ header_class }}"
      data-controller="header-nav"
      data-action="mousemove@document->header-nav#hidePopups
      headerNav:refreshProfile@document->header-nav#checkIfUserIsSignedIn"
@@ -95,7 +95,7 @@
     </a>
     <h6>{{ lang[locale].language }}</h6>
     {% for l in siteConfig.LOCALES %}
-    <a class="header-nav__link header-nav__link--top header-nav__link__lang lang-{{ l[0] }}" 
+    <a class="header-nav__link header-nav__link--top header-nav__link__lang lang-{{ l[0] }}"
        data-lang="{{ l[0] }}"
        href="/{{ l[0] }}/"
        data-action="click->header-nav#switchLocale">
@@ -112,8 +112,8 @@
       {% for notification in notifications.notifications %}
       {% if notification.date < now and notification.lang == locale and count < 4 %}
       {% assign count = count | plus: 1 %}
-      <li class="header-nav__notifications__message" 
-          data-header-nav-target="notification" 
+      <li class="header-nav__notifications__message"
+          data-header-nav-target="notification"
           data-date="{{ notification.date }}"
       >
         <header class="header-nav__notifications__message__header">
@@ -129,4 +129,8 @@
       {% endif %}
     </ul>
   </div>
+
+  {% if hasTimeline %}
+  {% include timeline/timeline.liquid %}
+  {% endif %}
 </div>

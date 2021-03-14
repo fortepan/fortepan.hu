@@ -161,6 +161,7 @@
   white-space: nowrap;
   min-width: rem(200px);
   max-width: rem(400px);
+  z-index: 700;
 
   @media screen and (max-width: ($breakpoint-phone-sm - 1px)) {
     width: calc(100vw - 2rem);
