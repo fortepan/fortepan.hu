@@ -12,17 +12,22 @@
     transform 0.6s $ease-out-expo;
   user-select: none;
 
+  .play-carousel-slideshow & {
+    transform: translateY(-9rem);
+  }
+
   @media screen and (max-width: ($breakpoint-desktop - 1px)) {
     padding: rem(8px);
+
+    .play-carousel-slideshow & {
+      transform: translateY(-7rem);
+    }
   }
 
   &.has-shadow {
     box-shadow: 0px 0px 20px rgba($dark-base, 0.16), 0px 0px 1px rgba($dark-base, 0.16);
   }
 
-  .play-carousel-slideshow & {
-    transform: translateY(-100%);
-  }
 
   .theme--light & {
     background-color: $light-base;

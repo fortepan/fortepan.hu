@@ -6,7 +6,7 @@
   width: rem(280px);
   height: 100%;
   box-sizing: border-box;
-  transition: transform 0.4s $ease-out-expo, opacity 0.2s ease-out;
+  transition: transform 0.4s $ease-out-expo, top 0.4s $ease-out-expo, opacity 0.2s ease-out;
 
   @media screen and (max-width: ($breakpoint-desktop - 1px)) {
     top: rem(64px + 48px);
@@ -46,6 +46,10 @@
       color: $red;
       border-bottom-color: $red;
     }
+  }
+
+  .play-carousel-slideshow & {
+    top: 0;
   }
 }
 

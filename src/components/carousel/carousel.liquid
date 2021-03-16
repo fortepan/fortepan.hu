@@ -1,8 +1,7 @@
 <div class="photos-carousel"
      data-controller="carousel"
      data-action="keydown@document->carousel#boundKeydownListener
-                  mouseover->carousel#showControls
-                  mouseout->carousel#hideControls
+                  mousemove@document->carousel#showControls
                   touchstart->carousel#autoHideControls
                   photosCarousel:playSlideshow@document->carousel#playSlideshow
                   photosCarousel:pauseSlideshow@document->carousel#pauseSlideshow

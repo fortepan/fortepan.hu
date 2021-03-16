@@ -1,7 +1,7 @@
 import { Controller } from "stimulus"
 
 import config from "../../data/siteConfig"
-import { trigger, isTouchDevice } from "../../js/utils"
+import { trigger } from "../../js/utils"
 import { setAppState, removeAppState, appState } from "../../js/app"
 import photoManager from "../../js/photo-manager"
 
@@ -16,9 +16,8 @@ export default class extends Controller {
   }
 
   show() {
-    if (isTouchDevice() && !this.element.classList.contains("is-visible")) {
-      this.autoHideControls()
-    }
+    this.showControls(null, true)
+
     if (window.innerWidth < 768)
       setTimeout(() => {
         trigger("carouselSidebar:hide")
@@ -99,12 +98,14 @@ export default class extends Controller {
       this.setCarouselBackground(id)
       this.loadPhoto(id)
       this.togglePager()
-      this.showControls(null, true)
 
       trigger("carouselSidebar:init")
       trigger("dialogDownload:init")
       trigger("dialogShare:init")
-      trigger("photosCarousel:show")
+
+      if (!this.element.classList.contains("is-visible")) {
+        this.show()
+      }
     }
   }
 
@@ -145,6 +146,8 @@ export default class extends Controller {
 
     if (!this.sidebarIsHidden) trigger("carouselSidebar:show")
     clearTimeout(this.slideshowTimeout)
+
+    this.showControls(null, true)
   }
 
   get slideshowIsPlaying() {
@@ -179,20 +182,49 @@ export default class extends Controller {
     trigger("carouselSidebar:toggle")
   }
 
+  isMouseRightOverControls(e) {
+    if (e && (e.touches || (e.pageX && e.pageY))) {
+      const targets = this.photosContainerTarget.querySelectorAll(".button-circular")
+      const page = {
+        x: e.touches ? e.touches[0].pageX : e.pageX,
+        y: e.touches ? e.touches[0].pageY : e.pageY,
+      }
+      let overlap = false
+
+      // check if mouse is over _any_ of the targets
+      targets.forEach(item => {
+        if (!overlap) {
+          const bounds = item.getBoundingClientRect()
+          if (page.x >= bounds.left && page.x <= bounds.right && page.y >= bounds.top && page.y <= bounds.bottom) {
+            overlap = true
+          }
+        }
+      })
+      return overlap
+    }
+    return false
+  }
+
   showControls(e, force = false) {
-    if (this.slideshowIsPlaying || force) {
+    if (this.element.classList.contains("is-visible") || force) {
       this.photosContainerTarget.classList.remove("hide-controls")
+
+      clearTimeout(this.touchTimeout)
+
+      if (!e || (e && !this.isMouseRightOverControls(e))) {
+        this.touchTimeout = setTimeout(this.hideControls.bind(this), 4000)
+      }
     }
   }
 
   hideControls(e, force = false) {
-    if (this.slideshowIsPlaying || force) {
+    if (this.element.classList.contains("is-visible") || force) {
       this.photosContainerTarget.classList.add("hide-controls")
     }
   }
 
   autoHideControls() {
-    if (this.slideshowIsPlaying) {
+    if (this.element.classList.contains("is-visible")) {
       this.showControls()
       clearTimeout(this.touchTimeout)
       this.touchTimeout = setTimeout(this.hideControls.bind(this), 4000)
