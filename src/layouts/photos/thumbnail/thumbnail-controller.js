@@ -22,13 +22,13 @@ export default class extends Controller {
   }
 
   clicked() {
-    const { data } = photoManager.selectPhotoById(this.element.photoId)
+    const selectedPhoto = photoManager.selectPhotoById(this.element.photoId)
 
     // select thumbnail in photos list
     trigger("photos:selectThumbnail", { index: photoManager.getSelectedPhotoIndex() })
 
     // Load photo in Carousel
-    trigger("photosCarousel:showPhoto", { data: data })
+    trigger("photosCarousel:showPhoto", { data: selectedPhoto.data })
   }
 
   // resize thumbnail when the browser window gets resized
