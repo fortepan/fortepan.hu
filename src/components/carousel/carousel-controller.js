@@ -76,8 +76,9 @@ export default class extends Controller {
 
       this.photosTarget.appendChild(photo)
     } else if (photo.imageLoaded) {
-      trigger("loader:hide", { id: "loaderCarousel" })
       photo.classList.add("is-active")
+      trigger("loader:hide", { id: "loaderCarousel" })
+      this.stepSlideshow()
     } else {
       trigger("loader:show", { id: "loaderCarousel" })
     }
