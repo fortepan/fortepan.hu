@@ -286,13 +286,15 @@ export default class extends Controller {
         // open carousel if @id parameter is present in the url's query string
         if (getURLParams().id > 0) {
           // load the next photos to fill up the grid in the background
-          photoManager.loadMorePhotoDataInContext().then(result => {
-            this.generateThumbnailsFromData(result)
-          })
+          if (this.thumbnailsCount < 2) {
+            photoManager.loadMorePhotoDataInContext().then(result => {
+              this.generateThumbnailsFromData(result)
+            })
+          }
 
           // show carousel with an image
-          const photoData = photoManager.selectPhotoById(getURLParams().id)
-          trigger("photosCarousel:showPhoto", { data: photoData.data })
+          const selectedPhoto = photoManager.selectPhotoById(getURLParams().id)
+          trigger("photosCarousel:showPhoto", { data: selectedPhoto.data })
         } else {
           trigger("photosCarousel:close")
         }
