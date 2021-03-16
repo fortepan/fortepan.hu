@@ -122,6 +122,7 @@ export default class extends Controller {
     // select the next previous in the current context (or load more if neccessary)
     photoManager.selectPrevPhoto().then(() => {
       this.showPhoto(null, photoManager.getSelectedPhotoId())
+      trigger("photos:selectThumbnail", { index: photoManager.getSelectedPhotoIndex() })
     })
   }
 
