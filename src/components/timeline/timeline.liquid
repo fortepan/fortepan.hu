@@ -1,0 +1,46 @@
+<div {% if id %}id="{{ id }}" {% endif %}class="photos-timeline"
+  data-controller="timeline"
+  data-action="resize@window->timeline#onResize
+               timeline:disable@document->timeline#disable
+               timeline:reset@document->timeline#resetSlider
+               photoManager:photoSelected@document->timeline#setSlider
+               photos:yearChanged@document->timeline#setSlider
+               photosCarousel:showPhoto@document->timeline#toggleShadow
+               photosCarousel:hide@document->timeline#toggleShadow"
+>
+    <div class="photos-timeline__year-label photos-timeline__year-label--yearStart"
+      data-timeline-target="yearLabel yearStart"
+      data-action="click->timeline#jumpToStart"
+    ></div>
+    <div class="photos-timeline__year-label photos-timeline__year-label--yearEnd"
+      data-timeline-target="yearLabel yearEnd"
+      data-action="click->timeline#jumpToEnd"
+    ></div>
+    <div class="photos-timeline__slider__container" data-timeline-target="slider"
+      data-action="mouseenter->timeline#onTimelineOver
+                   mousemove@document->timeline#onTimelineMove
+                   mouseleave->timeline#onTimelineOut
+                   click->timeline#seek"
+    >
+        <div class="photos-timeline__range-background"></div>
+        <div class="photos-timeline__year-indicator"
+          data-timeline-target="yearIndicator"
+        >
+          <div class="button-circular__label" data-timeline-target="yearIndicatorLabel"></div>
+        </div>
+        <div class="photos-timeline__slider"
+          data-timeline-target="sliderKnob sliderYear"
+          data-action="touchstart->timeline#sliderStartDrag
+                       mousedown->timeline#sliderStartDrag
+                       touchmove@document->timeline#sliderMoved
+                       mousemove@document->timeline#sliderMoved
+                       touchend@document->timeline#sliderStopDrag
+                       mouseup@document->timeline#sliderStopDrag"
+        >
+          <span data-timeline-target="sliderYearLabel">1900</span>
+          <div class="button-circular__label" data-timeline-target="sliderYearCount"></div>
+        </div>
+        <div class="photos-timeline__slider-selected-range" data-timeline-target="selectedRange">
+        </div>
+    </div>
+</div>

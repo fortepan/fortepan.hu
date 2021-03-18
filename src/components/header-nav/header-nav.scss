@@ -12,16 +12,20 @@
     transform 0.6s $ease-out-expo;
   user-select: none;
 
+  .play-carousel-slideshow & {
+    transform: translateY(-8rem);
+  }
+
   @media screen and (max-width: ($breakpoint-desktop - 1px)) {
     padding: rem(8px);
+
+    .play-carousel-slideshow & {
+      transform: translateY(-7rem);
+    }
   }
 
   &.has-shadow {
     box-shadow: 0px 0px 20px rgba($dark-base, 0.16), 0px 0px 1px rgba($dark-base, 0.16);
-  }
-
-  .play-carousel-slideshow & {
-    transform: translateY(-100%);
   }
 
   .theme--light & {
@@ -65,6 +69,10 @@
     visibility: hidden;
     width: 0;
     padding: 0;
+  }
+
+  &:hover {
+    z-index: 10;
   }
 }
 
@@ -161,6 +169,7 @@
   white-space: nowrap;
   min-width: rem(200px);
   max-width: rem(400px);
+  z-index: 700;
 
   @media screen and (max-width: ($breakpoint-phone-sm - 1px)) {
     width: calc(100vw - 2rem);

@@ -74,11 +74,14 @@ export default class extends Controller {
 
   autoHideNavShadowOnScroll() {
     const scrollview = document.querySelector(".scrollview")
+
     if (scrollview) {
       scrollview.addEventListener(
         "scroll",
         throttle(() => {
-          if (scrollview.scrollTop > 0) {
+          const timeline = document.querySelector(".photos-timeline")
+
+          if (scrollview.scrollTop > 0 && !timeline) {
             this.element.classList.add("has-shadow")
           } else {
             this.element.classList.remove("has-shadow")
