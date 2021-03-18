@@ -61,43 +61,48 @@ export default class extends Controller {
       return
     }
 
-    let year = -1
-    const thumbnails = this.element.querySelectorAll(".photos-thumbnail")
-    const viewportOffsetTop =
-      document.querySelector(".header-nav").offsetHeight + document.querySelector(".photos-timeline").offsetHeight + 8
+    // don't set the year if the carousel is open and it is controlling the timeline component
+    const carouselElement = document.querySelector(".photos-carousel")
 
-    if (!this.yearInViewPort && photoManager.getFirstPhotoData()) {
-      this.yearInViewPort = parseInt(photoManager.getFirstPhotoData().year, 10)
-    }
+    if (!carouselElement || (carouselElement && !carouselElement.classList.contains("is-visible"))) {
+      let year = -1
+      const thumbnails = this.element.querySelectorAll(".photos-thumbnail")
+      const viewportOffsetTop =
+        document.querySelector(".header-nav").offsetHeight + document.querySelector(".photos-timeline").offsetHeight + 8
 
-    if (
-      photoManager.getFirstPhotoDataInContext() &&
-      this.element.scrollTop <= thumbnails[0].offsetTop + viewportOffsetTop &&
-      thumbnails[0].classList.contains("is-loaded", "is-visible")
-    ) {
-      // if we scrolled to the top
-      year = thumbnails[0].year
-    } else if (
-      photoManager.getLastPhotoDataInContext() &&
-      this.element.scrollTop + this.element.offsetHeight >= this.element.scrollHeight - 100 &&
-      thumbnails[thumbnails.length - 1].classList.contains("is-loaded", "is-visible")
-    ) {
-      // if we scrolled to the bottom
-      year = thumbnails[thumbnails.length - 1].year
-    } else {
-      // if we are in-between the top and the bottom
-      thumbnails.forEach(item => {
-        if (item.offsetTop > this.element.scrollTop + viewportOffsetTop && year === -1) {
-          year = item.year
-        }
-      })
-    }
+      if (!this.yearInViewPort && photoManager.getFirstPhotoData()) {
+        this.yearInViewPort = parseInt(photoManager.getFirstPhotoData().year, 10)
+      }
 
-    if (year !== this.yearInViewPort) {
-      this.yearInViewPort = year
+      if (
+        photoManager.getFirstPhotoDataInContext() &&
+        this.element.scrollTop <= thumbnails[0].offsetTop + viewportOffsetTop &&
+        thumbnails[0].classList.contains("is-loaded", "is-visible")
+      ) {
+        // if we scrolled to the top
+        year = thumbnails[0].year
+      } else if (
+        photoManager.getLastPhotoDataInContext() &&
+        this.element.scrollTop + this.element.offsetHeight >= this.element.scrollHeight - 100 &&
+        thumbnails[thumbnails.length - 1].classList.contains("is-loaded", "is-visible")
+      ) {
+        // if we scrolled to the bottom
+        year = thumbnails[thumbnails.length - 1].year
+      } else {
+        // if we are in-between the top and the bottom
+        thumbnails.forEach(item => {
+          if (item.offsetTop > this.element.scrollTop + viewportOffsetTop && year === -1) {
+            year = item.year
+          }
+        })
+      }
 
-      // dispatches a custom event if the year has changed
-      trigger("photos:yearChanged", { year: this.yearInViewPort })
+      if (year !== this.yearInViewPort) {
+        this.yearInViewPort = year
+
+        // dispatches a custom event if the year has changed
+        trigger("photos:yearChanged", { year: this.yearInViewPort })
+      }
     }
   }
 
@@ -377,18 +382,24 @@ export default class extends Controller {
         this.selectedThumbnail = null
       }
 
+      // set a flag if we need to select the next photo in the year
+      // this only applies if we don't need to load a new set but the photo data is already loaded
       let selectAfterLoad = true
 
       // show loader based on if we have any data for the given year
       if (!photoManager.hasPhotoDataOfYear(e.detail.year)) {
         trigger("loader:show", { id: "loaderBase" })
 
-        // select and scroll to photo
+        // set the select after load flag to flase (to load a new set without selection)
         selectAfterLoad = false
       }
+
       photoManager.getFirstPhotoOfYear(e.detail.year, selectAfterLoad).then(() => {
         if (selectAfterLoad) {
+          // avoid setting the year again when we scroll
+          // (it has been set already, and we should avoid jumping of the timeline slider)
           this.lockYearOnScroll = true
+
           this.scrollToSelectedThumbnail(this.lockYearOnScroll)
         }
       })
