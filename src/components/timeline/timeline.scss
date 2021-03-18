@@ -108,6 +108,7 @@
 .button-circular__label {
   .photos-timeline__slider &,
   .photos-timeline__year-indicator & {
+    @include font-heading-demi();
     position: absolute;
     z-index: 9999;
     left: 50%;
