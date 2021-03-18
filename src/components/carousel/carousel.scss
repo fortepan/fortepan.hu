@@ -9,7 +9,7 @@
   transition: background-color 0.2s $ease-out-expo, color 0.2s $ease-out-expo;
 
   .theme--light & {
-    background-color: $light-base;
+    background-color: $light-secondary;
   }
 
   .theme--dark & {
@@ -24,7 +24,7 @@
 .photos-carousel__photos {
   position: absolute;
   left: 0;
-  top: rem(80px + 64px);
+  top: rem(80px + 48px);
   right: rem(280px);
   min-width: rem(320px);
   bottom: rem(0px);

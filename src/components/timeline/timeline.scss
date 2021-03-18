@@ -4,7 +4,7 @@
   top: rem(48px + 2 * 16px);
   left: 0;
   right: 0;
-  height: rem(64px);
+  height: rem(48px);
   box-sizing: border-box;
   opacity: 0;
   pointer-events: none;
@@ -13,7 +13,6 @@
 
   @media screen and (max-width: ($breakpoint-desktop - 1px)) {
     top: rem(48px + 2 * 8px);
-    height: rem(48px);
   }
 
   &.is-visible {
@@ -56,25 +55,17 @@
 
 .photos-timeline__slider {
   position: absolute;
-  top: calc(50% - 1.75rem / 2);
-  height: rem(28px);
-  padding: 0 rem(12px);
+  top: calc(50% - 1.625rem / 2);
+  height: rem(26px);
+  padding: 0 rem(10px);
   border-radius: 4px;
   transition: left 0.4s $ease-out-expo, background-color 0.3s $ease-out-expo;
   cursor: pointer;
   @include font-heading-bold();
-  font-size: rem(16px);
-  line-height: rem(28px);
+  font-size: rem(14px);
+  line-height: rem(26px);
   box-sizing: border-box;
   user-select: none;
-
-  @media screen and (max-width: ($breakpoint-desktop - 1px)) {
-    top: calc(50% - 1.625rem / 2);
-    height: rem(26px);
-    line-height: rem(26px);
-    font-size: rem(14px);
-    padding: 0 rem(10px);
-  }
 
   .is-used & {
     transition: background-color 0.3s $ease-out-expo, border-color 0.3s $ease-out-expo;
@@ -224,15 +215,11 @@
   cursor: pointer;
   @include font-heading-bold();
   font-size: rem(11px);
-  line-height: rem(64px);
+  line-height: rem(48px);
   text-align: center;
   box-sizing: border-box;
   user-select: none;
   transition: color 0.3s $ease-out-expo;
-
-  @media screen and (max-width: ($breakpoint-desktop - 1px)) {
-    line-height: rem(48px);
-  }
 
   .theme--light & {
     color: $dark-base;
