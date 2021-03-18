@@ -31,7 +31,7 @@ const transformResults = resp => {
       item.created = h.created
       item.description = h.description
       item.search_after = hit.sort
-      item.donor = l === "hu" ? h.adomanyozo_name : h.adomanyozo_en
+      item.donor = h.adomanyozo_name
       item.author = l === "hu" ? h.szerzo_name : h.szerzo_en
       item.tags = l === "hu" ? h.cimke_name : h.cimke_en
       item.country = l === "hu" ? h.orszag_name : h.orszag_en
