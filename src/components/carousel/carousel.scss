@@ -9,7 +9,7 @@
   transition: background-color 0.2s $ease-out-expo, color 0.2s $ease-out-expo;
 
   .theme--light & {
-    background-color: $light-base;
+    background-color: $light-secondary;
   }
 
   .theme--dark & {
@@ -24,7 +24,7 @@
 .photos-carousel__photos {
   position: absolute;
   left: 0;
-  top: rem(80px);
+  top: rem(80px + 48px);
   right: rem(280px);
   min-width: rem(320px);
   bottom: rem(0px);
@@ -32,7 +32,7 @@
   background-color: $dark-base;
 
   @media screen and (max-width: ($breakpoint-desktop - 1px)) {
-    top: rem(64px);
+    top: rem(64px + 48px);
   }
 
   @media screen and (max-width: ($breakpoint-tablet - 1px)) {
@@ -85,20 +85,13 @@
 
 .photos-carousel__photos__all {
   position: absolute;
-  left: rem(64px);
-  top: rem(64px);
-  right: rem(64px);
-  bottom: rem(32px);
+  left: rem(16px);
+  top: rem(16px);
+  right: rem(16px);
+  bottom: rem(16px);
   transition: top 0.4s $ease-out-expo, right 0.4s $ease-out-expo, bottom 0.4s $ease-out-expo, left 0.4s $ease-out-expo;
 
   @media screen and (max-width: ($breakpoint-phone - 1px)) {
-    left: rem(12px);
-    right: rem(12px);
-    top: rem(64px);
-    bottom: rem(32px);
-  }
-
-  .photos-carousel__photos.hide-controls & {
     left: rem(12px);
     right: rem(12px);
     top: rem(12px);
@@ -122,6 +115,38 @@
 
   .photos-carousel__photos.hide-controls & {
     pointer-events: none;
+    opacity: 0;
+  }
+
+  &:before {
+    display: block;
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: -4rem;
+    left: 0;
+    pointer-events: none;
+    transition: opacity 0.4s $ease-out-expo;
+
+    // smooth gradient based on ease-out-quad
+    background: linear-gradient(
+      0deg,
+      rgba($dark-base, 0) 0%,
+      rgba($dark-base, calc(0.8 * 0.01)) 10%,
+      rgba($dark-base, calc(0.8 * 0.05)) 20%,
+      rgba($dark-base, calc(0.8 * 0.09)) 30%,
+      rgba($dark-base, calc(0.8 * 0.17)) 40%,
+      rgba($dark-base, calc(0.8 * 0.26)) 50%,
+      rgba($dark-base, calc(0.8 * 0.37)) 60%,
+      rgba($dark-base, calc(0.8 * 0.5)) 70%,
+      rgba($dark-base, calc(0.8 * 0.66)) 80%,
+      rgba($dark-base, calc(0.8 * 0.82)) 90%,
+      rgba($dark-base, 0.8) 100%
+    );
+  }
+
+  .photos-carousel__photos.hide-controls &:before {
     opacity: 0;
   }
 }

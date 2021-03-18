@@ -3,7 +3,7 @@ import { Controller } from "stimulus"
 import throttle from "lodash/throttle"
 import config from "../../data/siteConfig"
 import { lang, trigger, getURLParams, isElementInViewport } from "../../js/utils"
-import searchAPI from "../../api/search"
+import photoManager from "../../js/photo-manager"
 
 export default class extends Controller {
   static get targets() {
@@ -35,17 +35,78 @@ export default class extends Controller {
   // auto-load new items when scrolling reaches the bottom of the page
   onScroll() {
     if (
-      this.element.scrollTop + this.element.offsetHeight >= this.element.scrollHeight - 150 &&
       !this.thumbnailsLoading &&
-      this.thumbnailsCount % config.THUMBNAILS_QUERY_LIMIT === 0 &&
-      this.thumbnailsCount > 0
+      this.thumbnailsCount > 0 &&
+      ((this.element.scrollTop + this.element.offsetHeight >= this.element.scrollHeight - 150 &&
+        !photoManager.getLastPhotoDataInContext()) ||
+        (this.element.scrollTop <= 0 && !photoManager.getFirstPhotoDataInContext()))
     ) {
       this.thumbnailsLoading = true
-      this.loadPhotos()
+      const insertBefore = this.element.scrollTop <= 0
+
+      this.loadPhotos(insertBefore).then(() => {
+        // loadPhotos resets the timline, so we need to update the displayed year on it
+        // reset first the year in viewport to force a new calculation
+        delete this.yearInViewPort
+        this.calcYearOfViewport()
+      })
+    }
+
+    this.calcYearOfViewport()
+  }
+
+  calcYearOfViewport() {
+    if (this.lockYearOnScroll) {
+      delete this.lockYearOnScroll
+      return
+    }
+
+    // don't set the year if the carousel is open and it is controlling the timeline component
+    const carouselElement = document.querySelector(".photos-carousel")
+
+    if (!carouselElement || (carouselElement && !carouselElement.classList.contains("is-visible"))) {
+      let year = -1
+      const thumbnails = this.element.querySelectorAll(".photos-thumbnail")
+      const viewportOffsetTop =
+        document.querySelector(".header-nav").offsetHeight + document.querySelector(".photos-timeline").offsetHeight + 8
+
+      if (!this.yearInViewPort && photoManager.getFirstPhotoData()) {
+        this.yearInViewPort = parseInt(photoManager.getFirstPhotoData().year, 10)
+      }
+
+      if (
+        photoManager.getFirstPhotoDataInContext() &&
+        this.element.scrollTop <= thumbnails[0].offsetTop + viewportOffsetTop &&
+        thumbnails[0].classList.contains("is-loaded", "is-visible")
+      ) {
+        // if we scrolled to the top
+        year = thumbnails[0].year
+      } else if (
+        photoManager.getLastPhotoDataInContext() &&
+        this.element.scrollTop + this.element.offsetHeight >= this.element.scrollHeight - 100 &&
+        thumbnails[thumbnails.length - 1].classList.contains("is-loaded", "is-visible")
+      ) {
+        // if we scrolled to the bottom
+        year = thumbnails[thumbnails.length - 1].year
+      } else {
+        // if we are in-between the top and the bottom
+        thumbnails.forEach(item => {
+          if (item.offsetTop > this.element.scrollTop + viewportOffsetTop && year === -1) {
+            year = item.year
+          }
+        })
+      }
+
+      if (year !== this.yearInViewPort) {
+        this.yearInViewPort = year
+
+        // dispatches a custom event if the year has changed
+        trigger("photos:yearChanged", { year: this.yearInViewPort })
+      }
     }
   }
 
-  // show all loaded thumbnails at once
+  // show all loaded thumbnailnails at once
   showAllLoadedThumbnails() {
     this.element.querySelectorAll(".photos-thumbnail.is-loaded:not(.is-visible)").forEach(thumbnail => {
       thumbnail.photosThumbnail.show()
@@ -65,17 +126,24 @@ export default class extends Controller {
   }
 
   loadMorePhotos(e) {
-    e.currentTarget.classList.add("is-hidden")
+    if (e && e.currentTarget) {
+      e.currentTarget.classList.add("is-hidden")
+    }
     this.thumbnailsLoading = true
     this.loadPhotos()
   }
 
   // this method generates the tumbnails from the data attribute
   // and starts loading the thumbnails with Promise.all
-  generateThumbnailsFromData(data) {
+  generateThumbnailsFromData(data, insertBefore = false) {
     const thumbnailLoadingPromises = []
 
     trigger("photosTitle:setTitle", { count: data.total })
+
+    const insertBeforeTarget = insertBefore ? this.element.querySelectorAll(".photos-thumbnail")[0] : null
+    const scrollPosition =
+      insertBefore && insertBeforeTarget ? this.element.scrollTop - insertBeforeTarget.offsetTop : 0
+    const scrollH = this.element.scrollHeight
 
     data.items.forEach(item => {
       // count results
@@ -84,14 +152,21 @@ export default class extends Controller {
       // clone thumnail template
       const template = document.getElementById("photos-thumbnail")
       const thumbnail = template.content.firstElementChild.cloneNode(true)
-      this.gridTarget.appendChild(thumbnail)
+
+      if (insertBefore && insertBeforeTarget) {
+        this.gridTarget.insertBefore(thumbnail, insertBeforeTarget)
+      } else {
+        this.gridTarget.appendChild(thumbnail)
+      }
 
       // set thumnail node element index
       thumbnail.index = Array.prototype.indexOf.call(thumbnail.parentElement.children, thumbnail) + 1
 
-      // apply thumnail data to node
-      // eslint-disable-next-line no-underscore-dangle
-      thumbnail.itemData = item
+      // apply photo id to node
+      thumbnail.photoId = item.mid
+
+      // apply year data to node
+      thumbnail.year = item.year
 
       // observe when the thumbnail class attribute changes and contains 'is-loaded'
       const thumbnailLoadingPromise = new Promise(res => {
@@ -113,28 +188,36 @@ export default class extends Controller {
       trigger("loader:hide", { id: "loaderBase" })
       this.showAllLoadedThumbnails()
       this.toggleLoadMoreButton()
+
+      // keep the scrolling position after inserting the new elements on the beginning of the list
+      if (insertBefore && insertBeforeTarget) {
+        this.element.scrollTop = scrollPosition + (this.element.scrollHeight - scrollH)
+      }
     })
   }
 
   // async function that loads thumbnail data based on the search query
-  async loadPhotos() {
+  async loadPhotos(insertBefore) {
     // get default and seatch query params
-    const params = {}
-    const defaultParams = {
+    const params = {
       size: config.THUMBNAILS_QUERY_LIMIT,
-      from: this.thumbnailsCount,
     }
-    const urlParams = getURLParams()
 
-    // merge default params with query params
-    Object.assign(params, defaultParams, urlParams)
+    // merge params with query params
+    Object.assign(params, getURLParams())
 
-    // init timeline with the reqested url query params
-    trigger("timeline:reset")
+    if (photoManager.hasData()) {
+      if (insertBefore) {
+        params.search_after = photoManager.getFirstPhotoData().search_after
+        params.reverseOrder = true
+      } else {
+        params.search_after = photoManager.getLastPhotoData().search_after
+      }
 
-    // if year url query filter is present, the timeline should be hidden
-    if (params.year) {
-      trigger("timeline:disable")
+      // not passing id on once the first round of data loading happened
+      delete params.id
+    } else {
+      params.from = 0
     }
 
     if (!params.q) {
@@ -152,11 +235,22 @@ export default class extends Controller {
       trigger("loader:show", { id: "loaderBase" })
     }, 10)
 
-    // search for photos
-    const respData = await searchAPI.search(params)
+    // request loading photos through the photoManager module
+    const respData = await photoManager.loadPhotoData(params, true)
 
-    // generate thumbnails
-    this.generateThumbnailsFromData(respData)
+    // init timeline after we have data loaded
+    trigger("timeline:reset")
+
+    this.generateThumbnailsFromData(respData, insertBefore)
+  }
+
+  // event listener for photoManager:load
+  onPhotoDataLoaded(e) {
+    if (e && e.detail) {
+      const insertBefore = e.detail.reverseOrder
+      // generate thumbnails
+      this.generateThumbnailsFromData(e.detail, insertBefore)
+    }
   }
 
   // Custom event to load content and update page meta tag
@@ -165,82 +259,150 @@ export default class extends Controller {
     this.onPopState(e)
   }
 
+  resetPhotosGrid() {
+    this.selectedThumbnail = null
+
+    // Empty photosNode and reset counters
+    while (this.gridTarget.firstChild) {
+      this.gridTarget.firstChild.remove()
+    }
+
+    this.element.scrollTop = 0
+    this.thumbnailsCount = 0
+  }
+
   // Load new photos when address bar url changes
   onPopState(e) {
     // Empty photosNode and reset counters when resetPhotosGrid parameter is set
     if ((e && e.detail && e.detail.resetPhotosGrid === true) || (e && e.type)) {
-      while (this.gridTarget.firstChild) {
-        this.gridTarget.firstChild.remove()
-      }
-      this.scrollTop = 0
-      this.thumbnailsCount = 0
+      this.resetPhotosGrid()
+
+      // clear all stored photo data as the search context changed completely
+      photoManager.clearAllData()
     }
 
-    // load photos then...
-    this.loadPhotos().then(() => {
-      // open carousel if @id parameter is present in the url's query string
-      if (getURLParams().id > 0) {
-        // show carousel with an image
-        if (document.querySelector(".photos-thumbnail")) document.querySelector(".photos-thumbnail").click()
-      } else {
-        trigger("photosCarousel:hide")
-      }
-    })
+    if (e && e.detail && e.detail.jumpToYearAfter) {
+      // if jumpToYearAfter flag is given, dispatch a new year selection event
+      // this is a delayed year selection method
+      trigger("timeline:yearSelected", { year: e.detail.jumpToYearAfter })
+    } else {
+      // load photos then...
+      this.loadPhotos().then(() => {
+        // open carousel if @id parameter is present in the url's query string
+        if (getURLParams().id > 0) {
+          // load the next photos to fill up the grid in the background
+          if (this.thumbnailsCount < 2) {
+            photoManager.loadMorePhotoDataInContext().then(result => {
+              this.generateThumbnailsFromData(result)
+            })
+          }
+
+          // show carousel with an image
+          const selectedPhoto = photoManager.selectPhotoById(getURLParams().id)
+          trigger("photosCarousel:showPhoto", { data: selectedPhoto.data })
+        } else {
+          trigger("photosCarousel:close")
+        }
+
+        if (getURLParams().year > 0) {
+          // make sure the timeline gets the memo of the given year
+          trigger("photos:yearChanged", { year: getURLParams().year })
+        }
+      })
+    }
 
     // track pageview when page url changes
     // but skip tracking when page loads for the first time as GA triggers a pageview when it gets initialized
     if (e) trigger("analytics:trackPageView")
   }
 
-  // The carousel communicates with the photos page through events and
-  // and the next/prev pagers trigger these actions below:
-
-  // Show next photo in carousel
-  showNextPhotoInCarousel() {
-    let next = this.selectedThumbnail.nextElementSibling
-    if (next) {
-      trigger("photosCarousel:hidePhotos")
-      next.click()
-    } else if (this.thumbnailsCount % config.THUMBNAILS_QUERY_LIMIT === 0 && this.thumbnailsCount > 0) {
-      this.thumbnailsLoading = true
-      this.loadPhotos().then(() => {
-        next = this.selectedThumbnail.nextElementSibling
-        if (next) {
-          trigger("photosCarousel:hidePhotos")
-          next.click()
-        }
-      })
-    }
-  }
-
-  // Show previous photo in carousel
-  showPrevPhotoInCarousel() {
-    const prev = this.selectedThumbnail.previousElementSibling
-    if (prev) {
-      trigger("photosCarousel:hidePhotos")
-      prev.click()
-    }
-  }
-
   // Set a thumbnail's selected state
-  selectThumbnail(e) {
-    if (e.detail && e.detail.node) {
+  selectThumbnail(e = null, index = -1) {
+    if ((e && e.detail && e.detail.index !== -1 && e.detail.index !== undefined) || index !== -1) {
       // change status of the currently selected thumbnail
       if (this.selectedThumbnail) this.selectedThumbnail.classList.remove("is-selected")
 
-      // set a new selected thumbnail based on event data
-      this.selectedThumbnail = e.detail.node
-      this.selectedThumbnail.classList.add("is-selected")
+      const selectedIndex =
+        e && e.detail && e.detail.index !== -1 && e.detail.index !== undefined ? e.detail.index : index
+
+      const element = this.element.querySelectorAll(".photos-thumbnail")[selectedIndex]
+
+      if (element) {
+        // set a new selected thumbnail based on event data
+        this.selectedThumbnail = element
+        this.selectedThumbnail.classList.add("is-selected")
+      }
     }
   }
 
-  // when carousel gets closed...
-  scrollToSelectedThumbnail() {
-    // ...scroll to thumbnail if it's not in the viewport
+  scrollToSelectedThumbnail(lockYearOnScroll = false) {
+    // scroll to thumbnail if it's not in the viewport
     if (this.selectedThumbnail) {
       if (!isElementInViewport(this.selectedThumbnail.querySelector(".photos-thumbnail__image"))) {
-        this.scrollTop = this.selectedThumbnail.offsetTop - 16 - document.querySelector(".header-nav").offsetHeight
+        const viewportOffsetTop =
+          document.querySelector(".header-nav").offsetHeight +
+          document.querySelector(".photos-timeline").offsetHeight +
+          16
+
+        this.element.scrollTop = this.selectedThumbnail.offsetTop - viewportOffsetTop
+
+        if (!lockYearOnScroll) {
+          // reset first the year in viewport to force a new calculation
+          delete this.yearInViewPort
+          this.calcYearOfViewport()
+        }
       }
+    }
+  }
+
+  // event listener to photoManager:cacheCleared
+  onPhotoCacheCleared() {
+    this.resetPhotosGrid()
+  }
+
+  // event listener to photoCarousel:closed
+  onCarouselClosed() {
+    if (this.selectedThumbnail) {
+      this.scrollToSelectedThumbnail()
+    }
+  }
+
+  // event listener for timeline:yearSelected
+  onYearSelected(e) {
+    const carouselElement = document.querySelector(".photos-carousel")
+
+    if (
+      (!carouselElement || (carouselElement && !carouselElement.classList.contains("is-visible"))) &&
+      e &&
+      e.detail &&
+      e.detail.year
+    ) {
+      if (this.selectedThumbnail) {
+        this.selectedThumbnail.classList.remove("is-selected")
+        this.selectedThumbnail = null
+      }
+
+      // set a flag if we need to select the next photo in the year
+      // this only applies if we don't need to load a new set but the photo data is already loaded
+      let selectAfterLoad = true
+
+      // show loader based on if we have any data for the given year
+      if (!photoManager.hasPhotoDataOfYear(e.detail.year)) {
+        trigger("loader:show", { id: "loaderBase" })
+
+        // set the select after load flag to flase (to load a new set without selection)
+        selectAfterLoad = false
+      }
+
+      photoManager.getFirstPhotoOfYear(e.detail.year, selectAfterLoad).then(() => {
+        if (selectAfterLoad) {
+          // avoid setting the year again when we scroll
+          // (it has been set already, and we should avoid jumping of the timeline slider)
+          this.lockYearOnScroll = true
+
+          this.scrollToSelectedThumbnail(this.lockYearOnScroll)
+        }
+      })
     }
   }
 }

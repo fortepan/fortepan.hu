@@ -14,9 +14,10 @@ export const isTouchDevice = () => {
   return "ontouchstart" in window || window.navigator.maxTouchPoints > 0 || window.navigator.msMaxTouchPoints > 0
 }
 
-export const trigger = (eventId, obj = {}, scope = document) => {
+export const trigger = (eventId, obj = {}, scope = document, doBubble = false) => {
   const event = new CustomEvent(eventId, {
     detail: obj,
+    bubbles: doBubble,
   })
   scope.dispatchEvent(event)
 }
@@ -136,7 +137,7 @@ export const copyToClipboard = (textToCopy, type) => {
 
 export const isElementInViewport = el => {
   if (el) {
-    const top = document.querySelector(".header") ? document.querySelector(".header").offsetHeight : 0
+    const top = document.querySelector(".header-nav") ? document.querySelector(".header-nav").offsetHeight : 0
     const bounds = el.getBoundingClientRect()
     return bounds.top >= top && bounds.bottom <= window.innerHeight
   }

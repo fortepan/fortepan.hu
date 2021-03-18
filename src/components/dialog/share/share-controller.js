@@ -1,11 +1,11 @@
 import { Controller } from "stimulus"
 import { copyToClipboard, trigger } from "../../../js/utils"
-import { selectedThumbnail } from "../../../js/app"
+import photoManager from "../../../js/photo-manager"
 
 export default class extends Controller {
   show() {
     this.element.classList.add("is-visible")
-    this.imageData = selectedThumbnail.itemData
+    this.imageData = photoManager.getSelectedPhotoData()
   }
 
   hide() {

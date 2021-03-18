@@ -9,22 +9,35 @@ const transformResults = resp => {
     items: [],
   }
 
+  // adding the aggregated years (photo count per all year in search range) to the results
+  if (resp.aggregations && resp.aggregations.years && resp.aggregations.years.buckets) {
+    r.years = []
+    resp.aggregations.years.buckets.forEach(year => {
+      if (year.key > 0) {
+        r.years.push({ year: year.key, count: year.doc_count })
+      }
+    })
+  }
+
   if (resp.hits.hits.length > 0) {
     resp.hits.hits.forEach(hit => {
       // eslint-disable-next-line no-underscore-dangle
       const h = hit._source
       const item = {}
+
       item.year = h.year
       item.mid = h.mid
       item.uuid = h.uuid
       item.created = h.created
       item.description = h.description
-      item.donor = h.adomanyozo_name
+      item.search_after = hit.sort
+      item.donor = l === "hu" ? h.adomanyozo_name : h.adomanyozo_en
       item.author = l === "hu" ? h.szerzo_name : h.szerzo_en
       item.tags = l === "hu" ? h.cimke_name : h.cimke_en
       item.country = l === "hu" ? h.orszag_name : h.orszag_en
       item.city = l === "hu" ? h.varos_name : h.varos_en
       item.place = l === "hu" ? h.helyszin_name : h.helyszin_en
+
       r.items.push(item)
     })
   }
@@ -56,8 +69,11 @@ const search = params => {
       },
     }
 
+    const sortOrder = params && params.reverseOrder ? "desc" : "asc"
+    const sortOrderIverse = params && params.reverseOrder ? "asc" : "desc"
+
     const sort = [
-      { year: { order: "asc" } },
+      { year: { order: sortOrder } },
       {
         _script: {
           type: "string",
@@ -66,10 +82,10 @@ const search = params => {
             source:
               "DateTimeFormatter df = DateTimeFormatter.ofPattern('yyyy-MM-dd'); return doc['created'].size()==0 ? '1970-01-01' : df.format(doc['created'].value);",
           },
-          order: "desc",
+          order: sortOrderIverse,
         },
       },
-      { mid: { order: "asc" } },
+      { mid: { order: sortOrder } },
     ]
 
     const range = {
@@ -98,10 +114,7 @@ const search = params => {
 
     // if query (search term) exists
     // then it'll search matches in name, description, orszag_name, cimke_name, and varos_name fields
-    // SHOULD means "OR" in elastic
     if (params.q && params.q !== "") {
-      // const q = slugify(params.q)
-      // query.bool.must.push({ match_phrase: { description_search: `${q}` } })
       const words = params.q.split(", ")
       words.forEach(word => {
         query.bool.must.push({
@@ -170,6 +183,9 @@ const search = params => {
     if (params.id) {
       const id = slugify(params.id)
       query.bool.must.push({ term: { mid: `${id}` } })
+      if (params.year && params.created) {
+        params.search_after = [slugify(params.year), slugify(params.created), slugify(params.id)]
+      }
     }
 
     // if there's a year range defined (advanced search / range filter)
@@ -179,17 +195,32 @@ const search = params => {
       if (params.year_to) y.lte = params.year_to
       range.range.year = y
     }
-
     // if there's a range set
     query.bool.must.push(range)
 
-    // request 30 items from the Elastic server
     const body = {
-      from: params.from || 0,
       size: params.size || 30,
       sort,
       track_total_hits: true,
       query,
+    }
+
+    if (params.search_after) {
+      body.search_after = params.search_after
+    } else {
+      body.from = params.from || 0
+    }
+
+    if (params.from === 0) {
+      body.aggs = {
+        years: {
+          terms: {
+            field: "year",
+            size: 100000,
+            order: { _key: "asc" },
+          },
+        },
+      }
     }
 
     elasticRequest(body)
@@ -262,8 +293,99 @@ const getDonators = () => {
   })
 }
 
+// get a random records from Elastic
+const getRandom = (size = 1) => {
+  return new Promise((resolve, reject) => {
+    const body = {
+      size,
+      query: {
+        function_score: {
+          query: {
+            bool: {
+              must: [
+                {
+                  match_all: {},
+                },
+                {
+                  range: {
+                    year: {
+                      gt: 0,
+                    },
+                  },
+                },
+              ],
+            },
+          },
+          functions: [
+            {
+              random_score: {
+                seed: Math.round(Math.random() * 100000000).toString(),
+              },
+            },
+          ],
+        },
+      },
+    }
+
+    elasticRequest(body)
+      .then(resp => {
+        resolve(resp)
+      })
+      .catch(err => {
+        reject(err)
+      })
+  })
+}
+
+const getDataById = array => {
+  return new Promise((resolve, reject) => {
+    const body = {
+      query: {
+        ids: {
+          values: array.map(item => `"entity:media/${item}:hu"`),
+        },
+      },
+    }
+
+    elasticRequest(body)
+      .then(resp => {
+        resolve(resp)
+      })
+      .catch(err => {
+        reject(err)
+      })
+  })
+}
+
+const getAggregatedYears = () => {
+  return new Promise((resolve, reject) => {
+    const body = {
+      aggs: {
+        years: {
+          terms: {
+            field: "year",
+            size: 100000,
+            order: { _key: "asc" },
+          },
+        },
+      },
+    }
+
+    elasticRequest(body)
+      .then(resp => {
+        resolve(transformResults(resp))
+      })
+      .catch(err => {
+        reject(err)
+      })
+  })
+}
+
 export default {
   search,
   getTotal,
   getDonators,
+  getRandom,
+  getDataById,
+  getAggregatedYears,
 }

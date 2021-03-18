@@ -1,0 +1,279 @@
+.photos-timeline {
+  display: block;
+  position: absolute;
+  top: rem(48px + 2 * 16px);
+  left: 0;
+  right: 0;
+  height: rem(48px);
+  box-sizing: border-box;
+  opacity: 0;
+  pointer-events: none;
+  user-select: none;
+  transition: transform 0.8s $ease-out-expo, opacity 0.8s $ease-out-expo;
+
+  @media screen and (max-width: ($breakpoint-desktop - 1px)) {
+    top: rem(48px + 2 * 8px);
+  }
+
+  &.is-visible {
+    opacity: 1;
+    pointer-events: initial;
+  }
+
+  &.has-shadow {
+    &:after {
+      display: block;
+      position: absolute;
+      content: "";
+      left: 0;
+      right: 0;
+      bottom: rem(-12px);
+      height: rem(12px);
+      background: linear-gradient(0deg, rgba($dark-base, 0) 0%, rgba($dark-base, 0.06) 100%);
+    }
+  }
+
+  .theme--light & {
+    color: $dark-base;
+    background-color: $light-primary;
+  }
+
+  .theme--dark & {
+    color: $light-base;
+    background-color: $dark-secondary;
+  }
+}
+
+.photos-timeline__slider__container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: rem(16px + 28px + 16px);
+  right: rem(16px + 28px + 16px);
+  cursor: pointer;
+}
+
+.photos-timeline__slider {
+  position: absolute;
+  top: calc(50% - 1.625rem / 2);
+  height: rem(26px);
+  padding: 0 rem(10px);
+  border-radius: 4px;
+  transition: left 0.4s $ease-out-expo, background-color 0.3s $ease-out-expo;
+  cursor: pointer;
+  @include font-heading-bold();
+  font-size: rem(14px);
+  line-height: rem(26px);
+  box-sizing: border-box;
+  user-select: none;
+
+  .is-used & {
+    transition: background-color 0.3s $ease-out-expo, border-color 0.3s $ease-out-expo;
+  }
+
+  &:hover,
+  &.is-active {
+    .theme--light & {
+      color: $light-base;
+      background-color: $red;
+    }
+
+    .theme--dark & {
+      color: $light-base;
+      background-color: $red;
+    }
+
+    &.is-empty {
+      color: $light-base;
+      background-color: $grey;
+    }
+  }
+
+  .theme--light &,
+  .theme--dark & {
+    color: $light-base;
+    background-color: $red;
+  }
+}
+
+.button-circular__label {
+  .photos-timeline__slider &,
+  .photos-timeline__year-indicator & {
+    @include font-heading-demi();
+    position: absolute;
+    z-index: 9999;
+    left: 50%;
+    top: -100%;
+    line-height: 1.5;
+
+    &:before {
+      position: absolute;
+      bottom: rem(-4px);
+      margin: auto;
+      left: calc(50% - 8px);
+      border-bottom: 0;
+      border-top: rem(6px) solid transparent;
+    }
+
+    .theme--light &:before {
+      border-top-color: $dark-base;
+    }
+
+    .theme--dark &:before {
+      border-top-color: $light-base;
+    }
+  }
+
+  .photos-timeline__slider & {
+    top: -115%;
+  }
+
+  .photos-timeline__year-indicator & {
+    top: auto;
+    bottom: rem(20px);
+  }
+
+  .photos-timeline__slider:hover &,
+  .photos-timeline__slider.is-active &,
+  .photos-timeline__year-indicator.is-hover & {
+    visibility: visible;
+    opacity: 1;
+    transform: translate(-50%, 0px);
+    transition: transform 0.4s $ease-out-expo, opacity 0.4s $ease-out-expo, visibility 0s linear 0s,
+      background-color 0.4s $ease-out-expo, color 0.4s $ease-out-expo;
+
+    &::before {
+      transition: opacity 0.4s $ease-out-expo, border-color 0.4s $ease-out-expo;
+      opacity: 1;
+    }
+  }
+
+  .theme--light .is-empty & {
+    color: rgba($light-base, 0.4);
+  }
+
+  .theme--dark .is-empty & {
+    color: rgba($dark-base, 0.4);
+  }
+
+  & .count {
+    @include font-heading-demi();
+    opacity: 0.5;
+  }
+}
+
+.photos-timeline__slider-selected-range {
+  position: absolute;
+  top: calc(50% - 1px);
+  height: 2px;
+  border-radius: 1px;
+  width: 0;
+  transition: left 0.4s $ease-out-expo, width 0.4s $ease-out-expo;
+
+  .photos-timeline.is-used & {
+    transition: none;
+  }
+
+  .theme--light & {
+    background-color: $red;
+  }
+
+  .theme--dark & {
+    background-color: $red;
+  }
+}
+
+.photos-timeline__range-background {
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(50% - 1px);
+  height: 2px;
+  border-radius: 1px;
+  transition: left 0.4s $ease-out-expo, width 0.4s $ease-out-expo;
+
+  .photos-timeline.is-used & {
+    transition: none;
+  }
+
+  .theme--light & {
+    background-color: rgba($dark-base, 0.08);
+  }
+
+  .theme--dark & {
+    background-color: rgba($light-base, 0.08);
+  }
+}
+
+.photos-timeline__year-label {
+  position: absolute;
+  width: rem(16px + 28px + 16px);
+  top: 0;
+  bottom: 0;
+  left: rem(4px);
+  cursor: pointer;
+  @include font-heading-bold();
+  font-size: rem(11px);
+  line-height: rem(48px);
+  text-align: center;
+  box-sizing: border-box;
+  user-select: none;
+  transition: color 0.3s $ease-out-expo;
+
+  .theme--light & {
+    color: $dark-base;
+  }
+
+  .theme--dark & {
+    color: $light-base;
+  }
+
+  .theme--light &:hover,
+  .theme--dark &:hover {
+    color: $red;
+  }
+
+  &.photos-timeline__year-label--yearEnd {
+    left: auto;
+    right: rem(4px);
+  }
+}
+
+.photos-timeline__year-indicator {
+  position: absolute;
+  top: 50%;
+
+  cursor: pointer;
+  @include font-heading-bold();
+  font-size: rem(11px);
+
+  &:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: rem(-7px);
+    left: rem(-1px);
+    width: rem(2px);
+    height: rem(14px);
+    border-radius: 1px;
+
+    opacity: 0;
+    transform: scale(0);
+
+    transition: opacity 0.3s $ease-out-expo, transform 0.3s $ease-out-expo;
+  }
+
+  .theme--light &:before {
+    background-color: rgba($dark-base, 0.08);
+  }
+
+  .theme--dark &:before {
+    background-color: rgba($light-base, 0.08);
+  }
+
+  &.is-hover:before {
+    opacity: 1;
+    transform: none;
+  }
+}
