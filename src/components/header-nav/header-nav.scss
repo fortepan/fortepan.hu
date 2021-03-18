@@ -28,7 +28,6 @@
     box-shadow: 0px 0px 20px rgba($dark-base, 0.16), 0px 0px 1px rgba($dark-base, 0.16);
   }
 
-
   .theme--light & {
     background-color: $light-base;
   }
@@ -70,6 +69,10 @@
     visibility: hidden;
     width: 0;
     padding: 0;
+  }
+
+  &:hover {
+    z-index: 10;
   }
 }
 
