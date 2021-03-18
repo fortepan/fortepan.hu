@@ -159,6 +159,7 @@ const getLastPhotoData = () => {
 // load more photos without changing the current search context
 const loadMorePhotoDataInContext = async (insertBefore = false) => {
   const params = {}
+  Object.assign(params, photoData.context)
 
   if (insertBefore) {
     params.search_after = getFirstPhotoData().search_after
@@ -166,8 +167,6 @@ const loadMorePhotoDataInContext = async (insertBefore = false) => {
   } else {
     params.search_after = getLastPhotoData().search_after
   }
-
-  Object.assign(params, photoData.context)
 
   // remove the id if it was present
   if (params.id > 0) delete params.id
