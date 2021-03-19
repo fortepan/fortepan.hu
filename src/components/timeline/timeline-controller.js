@@ -96,11 +96,16 @@ export default class extends Controller {
   }
 
   fixSlider() {
-    const start = Math.round(((this.year - this.yearStart) / (this.yearEnd - this.yearStart)) * this.range)
+    if (this.year > 0) {
+      const start = Math.max(
+        0,
+        Math.min(Math.round(((this.year - this.yearStart) / (this.yearEnd - this.yearStart)) * this.range), this.range)
+      )
 
-    this.sliderYearTarget.style.left = `${start}px`
-    this.selectedRangeTarget.style.left = `0px`
-    this.selectedRangeTarget.style.width = `${start + 2}px`
+      this.sliderYearTarget.style.left = `${start}px`
+      this.selectedRangeTarget.style.left = `0px`
+      this.selectedRangeTarget.style.width = `${start + 2}px`
+    }
   }
 
   resetSlider(e, enable = true) {
