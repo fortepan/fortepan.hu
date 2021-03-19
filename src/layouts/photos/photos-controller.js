@@ -242,6 +242,8 @@ export default class extends Controller {
     trigger("timeline:reset")
 
     this.generateThumbnailsFromData(respData, insertBefore)
+
+    return respData
   }
 
   // event listener for photoManager:load
@@ -287,7 +289,13 @@ export default class extends Controller {
       trigger("timeline:yearSelected", { year: e.detail.jumpToYearAfter })
     } else {
       // load photos then...
-      this.loadPhotos().then(() => {
+      this.loadPhotos().then(respData => {
+        // hook for the special case when the query is a photo id, open the carousel
+        if (respData.items.length === 1 && getURLParams().q === respData.items[0].mid.toString()) {
+          trigger("photos:historyPushState", { url: `?id=${respData.items[0].mid}`, resetPhotosGrid: true })
+          return
+        }
+
         // open carousel if @id parameter is present in the url's query string
         if (getURLParams().id > 0) {
           // load the next photos to fill up the grid in the background
