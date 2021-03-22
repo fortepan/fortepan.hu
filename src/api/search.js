@@ -329,7 +329,7 @@ const getRandom = (size = 1) => {
 
     elasticRequest(body)
       .then(resp => {
-        resolve(resp)
+        resolve(transformResults(resp))
       })
       .catch(err => {
         reject(err)

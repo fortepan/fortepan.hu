@@ -4,6 +4,7 @@ import throttle from "lodash/throttle"
 import config from "../../data/siteConfig"
 import { lang, trigger, getURLParams, isElementInViewport } from "../../js/utils"
 import photoManager from "../../js/photo-manager"
+import searchAPI from "../../api/search"
 
 export default class extends Controller {
   static get targets() {
@@ -20,8 +21,19 @@ export default class extends Controller {
     this.onScroll = throttle(this.onScroll, 200)
     this.resizeThumbnails = throttle(this.resizeThumbnails, 500)
 
-    // populate page content for the first time
-    this.onPopState()
+    // check if we have any keys in the query
+    const queryKeys = Object.keys(getURLParams())
+
+    if (queryKeys.length > 0) {
+      // populate page content for the first time
+      this.onPopState()
+    } else {
+      // select a random id (that will open the carousel)
+      searchAPI.getRandom().then(result => {
+        if (result && result.items && result.items.length > 0 && result.items[0].mid)
+          trigger("photos:historyPushState", { url: `?id=${result.items[0].mid}` })
+      })
+    }
   }
 
   // resize thumbnails when window gets resized
