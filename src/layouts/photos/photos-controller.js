@@ -30,8 +30,12 @@ export default class extends Controller {
     } else {
       // select a random id (that will open the carousel)
       searchAPI.getRandom().then(result => {
-        if (result && result.items && result.items.length > 0 && result.items[0].mid)
+        if (result && result.items && result.items.length > 0 && result.items[0].mid) {
           trigger("photos:historyPushState", { url: `?id=${result.items[0].mid}` })
+        } else {
+          // fallback if the above doesn't work for some reason
+          this.onPopState()
+        }
       })
     }
   }
