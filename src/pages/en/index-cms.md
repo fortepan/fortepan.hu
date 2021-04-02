@@ -19,9 +19,9 @@ announcement:
   - label: 100 favorites
     style: primary
     url: https://fortepan.hu/hu/photos/?donor=F%C5%90FOT%C3%93&tag=Best%20of
-  - label: All Kereki photos
+  - label: All FŐFOTÓ Collection
     style: light-transparent
-    url: "/en/photos/?q=Kereki%20S%C3%A1ndor"
+    url: https://fortepan.hu/hu/photos/?donor=F%C5%90FOT%C3%93
 
 ---
 This website was launched in 2010 and it initially contained photographs found randomly in the streets of Budapest. The archive has expanded since then through donations from families, amateur and professional photographers, along with public collections. The images on the website are selected by editors.
