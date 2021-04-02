@@ -3,16 +3,18 @@ layout: home/home.liquid
 title: Fortepan — Home
 permalink: "/en/"
 announcement:
-  title: Sándor <b>Kereki</b>
+  title: "<strong>FŐFOTÓ</strong>"
   caption: New Collection
   cover_image: "205758"
-  blurb: Sándor Kereki was born in Budapest in 1952 and started photographing at the
-    age of 16. On his images, grotesque as well as emotional scenes come to life from
-    the everyday life of socialist Hungary in the 70s. After fifty years he decided
-    to pulish his images that depict the world of a street photographer focusing primarily
-    on people, special figures and odd characters. From the thousands of negatives
-    taken by him over ten years, we selected 1,850 photographs for Fortepan and we
-    also recommend to check out our hundred favorite Kereki photos.
+  blurb: Have a look at the 60s and the 70s through the cameras of Budapest Municipal
+    Photography Company (FŐFOTÓ). Out of a legacy of more than 200 000 negatives,
+    we have uploaded about 5000 frames. In this first instalment there are street
+    photos, building- and street views, images of hotels, espressos, and workplace
+    interiors. Also, we have included several hundred outdoor movie ads, uniquely
+    produced to fit the sites, fences, tram stops, or notice boards. Also, this special
+    collection abounds in advertising and fashion photos – often survived on color
+    negatives. If you are interested in the design history of the period, you mustn’t
+    miss all this.
   actions:
   - label: 100 favorites
     style: primary
