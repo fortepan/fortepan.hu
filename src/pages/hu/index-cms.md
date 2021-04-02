@@ -10,7 +10,7 @@ announcement:
     több, mint 200.000 negatívkockából álló hagyatékából 5000 képet választottunk
     ki a Fortepanra. Válogatásunk első részében utcaképek, épület- és városfotók,
     szállodák, presszók, munkahelyek belső enteriőrjei szerepelnek. Többszáz fotót
-    választottunk a tűzfalakra, villamosokra, hírdetőtáblákra tervezett egyedi mozifilm
+    választottunk a palánkokra, villamosokra, hírdetőtáblákra tervezett egyedi mozifilm
     plakátból. A gyűjtemény külön értéke a számtalan - sokszor színes negatívra készült
     - reklám és divatfotó.  A korszak design-története iránt érdeklődőknek kötelező!
   actions:
