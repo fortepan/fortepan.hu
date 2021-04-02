@@ -17,7 +17,7 @@ announcement:
   actions:
   - label: 100 kedvenc
     style: primary
-    url: "/hu/photos/?q=Kereki%20S%C3%A1ndor,%20best%20of"
+    url: ''
   - label: A teljes FŐFOTÓ-sorozat
     style: light-transparent
     url: "/hu/photos/?donor=F%C5%90FOT%C3%93"
