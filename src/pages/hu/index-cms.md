@@ -18,7 +18,7 @@ announcement:
   - label: 100 kedvenc
     style: primary
     url: ''
-  - label: 2600 kép FŐFOTÓ-hagyatékból
+  - label: 2600 FŐFOTÓ kép
     style: light-transparent
     url: "/hu/photos/?donor=F%C5%90FOT%C3%93"
 
