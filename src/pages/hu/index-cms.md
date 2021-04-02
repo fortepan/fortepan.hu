@@ -17,7 +17,7 @@ announcement:
   actions:
   - label: 100 kedvenc
     style: primary
-    url: ''
+    url: https://fortepan.hu/hu/photos/?donor=F%C5%90FOT%C3%93&tag=Best%20of
   - label: 2600 FŐFOTÓ kép
     style: light-transparent
     url: "/hu/photos/?donor=F%C5%90FOT%C3%93"
