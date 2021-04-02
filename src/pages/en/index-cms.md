@@ -9,7 +9,7 @@ announcement:
   blurb: Have a look at the 60s and the 70s through the cameras of Budapest Municipal
     Photography Company (FŐFOTÓ). Out of a legacy of more than 200 000 negatives,
     we have selected about 5000 frames. In this first instalment there are street
-    photos, building- and street views, images of hotels, espressos, and workplace
+    photos, building- and street views, images of hotels, espresso bars, and workplace
     interiors. Also, we have included several hundred outdoor movie ads, uniquely
     produced to fit the sites, fences, tram stops, or notice boards. Also, this special
     collection abounds in advertising and fashion photos – often survived on color
