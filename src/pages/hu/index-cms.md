@@ -11,8 +11,9 @@ announcement:
     ki a Fortepanra. Válogatásunk első részében utcaképek, épület- és városfotók,
     szállodák, presszók, munkahelyek belső enteriőrjei szerepelnek. Többszáz fotót
     választottunk a palánkokra, villamosokra, hírdetőtáblákra tervezett egyedi mozifilm
-    plakátból. A gyűjtemény külön értéke a számtalan - sokszor színes negatívra készült
-    - reklám és divatfotó.  A korszak design-története iránt érdeklődőknek kötelező!
+    plakátokból. A gyűjtemény külön értéke a számtalan - sokszor színes negatívra
+    készült - reklám és divatfotó.  A korszak design-története iránt érdeklődőknek
+    kötelező!
   actions:
   - label: 100 kedvenc
     style: primary
