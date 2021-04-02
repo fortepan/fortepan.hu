@@ -6,12 +6,13 @@ announcement:
   title: "<strong>FŐFOTÓ</strong>"
   caption: Új gyűjtemény
   cover_image: "207613"
-  blurb: 'Kereki Sándor 1952-ben született Budapesten és 16 évesen kezdett el fényképezni.
-    Képein egyszerre groteszk és érzelmes jelenetek elevenednek meg a 70-es évek mindennapjaiból.
-    Ötven év után előkerült fotói egy eddig ismeretlen színt hoznak a Fortepanba,
-    az elsősorban emberekre, figurákra, karakterekre fókuszáló street-fotós világát.
-    A tíz év alatt készült többezer negatív kockájából 1850 fotót választottunk ki
-    a Fortepanra és a száz kedvenc Kereki-fotónkat külön is ajánljuk. '
+  blurb: A 60-as 70-es évek a Fővárosi Fotóipari Vállalat kameráján keresztül. A FŐFOTÓ
+    több, mint 200.000 negatívkockából álló hagyatékából 5000 képet választottunk
+    ki a Fortepanra. Válogatásunk első részében utcaképek, épület- és városfotók,
+    szállodák, presszók, munkahelyek belső enteriőrjei szerepelnek. Többszáz fotót
+    választottunk a tűzfalakra, villamosokra, hírdetőtáblákra tervezett egyedi mozifilm
+    plakátból. A gyűjtemény külön értéke a számtalan - sokszor színes negatívra készült
+    - reklám és divatfotó.  A korszak design-története iránt érdeklődőknek kötelező!
   actions:
   - label: 100 kedvenc
     style: primary
