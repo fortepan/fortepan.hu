@@ -5,7 +5,7 @@ permalink: "/en/"
 announcement:
   title: "<strong>FŐFOTÓ</strong>"
   caption: New Collection
-  cover_image: "205758"
+  cover_image: "207613"
   blurb: Have a look at the 60s and the 70s through the cameras of Budapest Municipal
     Photography Company (FŐFOTÓ). Out of a legacy of more than 200 000 negatives,
     we have uploaded about 5000 frames. In this first instalment there are street
@@ -18,7 +18,7 @@ announcement:
   actions:
   - label: 100 favorites
     style: primary
-    url: "/en/photos/?q=Kereki%20S%C3%A1ndor,%20best%20of"
+    url: https://fortepan.hu/hu/photos/?donor=F%C5%90FOT%C3%93&tag=Best%20of
   - label: All Kereki photos
     style: light-transparent
     url: "/en/photos/?q=Kereki%20S%C3%A1ndor"
