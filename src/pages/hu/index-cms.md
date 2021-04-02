@@ -3,22 +3,22 @@ layout: home/home.liquid
 title: Fortepan — Főoldal
 permalink: "/"
 announcement:
-  title: "<b>Kereki</b> Sándor"
+  title: "<strong>FŐFOTÓ</strong>"
   caption: Új gyűjtemény
-  cover_image: "205844"
-  blurb: Kereki Sándor 1952-ben született Budapesten és 16 évesen kezdett el fényképezni.
+  cover_image: "207613"
+  blurb: 'Kereki Sándor 1952-ben született Budapesten és 16 évesen kezdett el fényképezni.
     Képein egyszerre groteszk és érzelmes jelenetek elevenednek meg a 70-es évek mindennapjaiból.
     Ötven év után előkerült fotói egy eddig ismeretlen színt hoznak a Fortepanba,
     az elsősorban emberekre, figurákra, karakterekre fókuszáló street-fotós világát.
     A tíz év alatt készült többezer negatív kockájából 1850 fotót választottunk ki
-    a Fortepanra és a száz kedvenc Kereki-fotónkat külön is ajánljuk.
+    a Fortepanra és a száz kedvenc Kereki-fotónkat külön is ajánljuk. '
   actions:
   - label: 100 kedvenc
     style: primary
     url: "/hu/photos/?q=Kereki%20S%C3%A1ndor,%20best%20of"
-  - label: Az összes Kereki-fotó
+  - label: Az összes FŐFOTÓ-fotó
     style: light-transparent
-    url: "/hu/photos/?q=Kereki%20S%C3%A1ndor"
+    url: "/hu/photos/?donor=F%C5%90FOT%C3%93"
 
 ---
 A honlap 2010-ben indult ötezer, jórészt lomtalanításokon talált fotóval. Azóta többszáz család, amatőr és hivatásos fotós, illetve közgyűjtemény bővítette a Fortepant. A honlapon megjelenő képeket a szerkesztőség válogatja ki.
