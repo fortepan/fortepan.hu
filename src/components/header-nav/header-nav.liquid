@@ -60,7 +60,14 @@
           {% inlineSVG src:"src/static/images/icons/24/icon-profile-signed-in.svg" class:"button-circular__icon" %}
           <div class="button-circular__label">{{ lang[locale].profile }}</div>
         </a>
+
       </div>
+
+      {% if  locale == "hu" %}{% assign newLocale = "en" %}{% else %}{% assign newLocale = "hu" %}{% endif %}
+      <a href="/{{ newLocale }}" class="button-circular button-circular--language header-nav__link--desktop-only">
+          <span class="button-circular__text">{{ newLocale }}</span>
+          <div class="button-circular__label">{{ siteConfig.LOCALES[newLocale] }}</div>
+        </a>
     </div>
   </div>
 
@@ -74,7 +81,19 @@
     <a class="header-nav__link header-nav__link--top" href="https://forum.index.hu/Article/showArticle?t=9204653" target="_blank">{{ lang[locale].forum }}</a>
     <a class="header-nav__link header-nav__link--top header-nav__link--separator-after" href="https://www.facebook.com/FortepanArchivum/" target="_blank">Facebook</a>
     <a class="header-nav__link" href="mailto:fortepan@gmail.com">{{ lang[locale].contact_us }}</a>
-    <a class="header-nav__link" href="/{{ locale }}/privacy/">{{ lang[locale].privacy_policy }}</a>
+    <a class="header-nav__link header-nav__link--desktop-only" href="/{{ locale }}/privacy/">{{ lang[locale].privacy_policy }}</a>
+    <div class="header-nav__link--hide-on-desktop">
+      <a class="header-nav__link header-nav__link--separator-after" href="/{{ locale }}/privacy/">{{ lang[locale].privacy_policy }}</a>
+      <h6>{{ lang[locale].language }}</h6>
+      {% for l in siteConfig.LOCALES %}
+      <a class="header-nav__link header-nav__link--top header-nav__link__lang lang-{{ l[0] }}{% if class %} {{ class }}{% endif %}"
+        data-lang="{{ l[0] }}"
+        href="/{{ l[0] }}/"
+        data-action="click->header-nav#switchLocale">
+        {{ l[1] }}
+      </a>
+      {% endfor %}
+    </div>
   </div>
 
   <div class="header-nav__popup" data-header-nav-target="popup profile">
@@ -89,19 +108,10 @@
     {% endcomment %}
     <a href="#" class="header-nav__link header-nav__link--top header-nav__link--separator-after is-visible-when-signed-in" data-action="click->header-nav#signOut">{{ lang[locale].signout }}</a>
     <h6>{{ lang[locale].settings }}</h6>
-    <a href="#" class="header-nav__link header-nav__link--top header-nav__link--separator-after" data-controller="theme" data-action="click->header-nav#toggleTheme theme:toggleTheme@document->theme#toggleTheme">
+    <a href="#" class="header-nav__link header-nav__link--top" data-controller="theme" data-action="click->header-nav#toggleTheme theme:toggleTheme@document->theme#toggleTheme">
       {{ lang[locale].darkmode }}
       <span class="header-nav__toggle-switch"></span>
     </a>
-    <h6>{{ lang[locale].language }}</h6>
-    {% for l in siteConfig.LOCALES %}
-    <a class="header-nav__link header-nav__link--top header-nav__link__lang lang-{{ l[0] }}"
-       data-lang="{{ l[0] }}"
-       href="/{{ l[0] }}/"
-       data-action="click->header-nav#switchLocale">
-       {{ l[1] }}
-    </a>
-    {% endfor %}
   </div>
 
   <div class="header-nav__popup header-nav__notifications" data-header-nav-target="popup notifications">
