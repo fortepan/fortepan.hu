@@ -64,7 +64,9 @@
       </div>
 
       {% if  locale == "hu" %}{% assign newLocale = "en" %}{% else %}{% assign newLocale = "hu" %}{% endif %}
-      <a href="/{{ newLocale }}/" class="button-circular button-circular--language header-nav__link--desktop-only">
+      <a href="/{{ newLocale }}/" class="button-circular button-circular--language header-nav__link--desktop-only"
+        data-lang="{{ newLocale }}"
+        data-action="click->header-nav#switchLocale">
           <span class="button-circular__text">{{ newLocale }}</span>
           <div class="button-circular__label">{{ siteConfig.LOCALES[newLocale] }}</div>
         </a>
