@@ -257,22 +257,16 @@
     display: block;
     position: absolute;
     top: rem(-7px);
-    left: 0;
-    width: rem(1px);
+    left: rem(-1px);
+    width: rem(2px);
     height: rem(14px);
+    border-radius: 1px;
+    background-color: $red;
 
     opacity: 0;
     transform: scale(0);
 
     transition: opacity 0.3s $ease-out-expo, transform 0.3s $ease-out-expo;
-  }
-
-  .theme--light &:before {
-    background-color: rgba($dark-base, 0.1);
-  }
-
-  .theme--dark &:before {
-    background-color: rgba($light-base, 0.1);
   }
 
   &.is-hover:before {
@@ -291,16 +285,25 @@
 
 .photos-timeline__ruler-indicator {
   position: absolute;
-  top: calc(50% - 0.875rem / 2);
-  height: rem(14px);
-  width: 1px;
+  top: 50%;
   display: none;
 
-  .theme--light & {
+  &:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: rem(-7px);
+    left: rem(-1px);
+    width: rem(2px);
+    height: rem(14px);
+    border-radius: 1px;
+  }
+
+  .theme--light &:before {
     background-color: rgba($dark-base, 0.1);
   }
 
-  .theme--dark & {
+  .theme--dark &:before {
     background-color: rgba($light-base, 0.1);
   }
 
