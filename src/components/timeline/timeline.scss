@@ -198,11 +198,13 @@
   }
 
   .theme--light & {
-    background-color: rgba($dark-base, 0.08);
+    // background-color: rgba($dark-base, 0.08);
+    background-color: #e2e3e4;
   }
 
   .theme--dark & {
-    background-color: rgba($light-base, 0.08);
+    // background-color: rgba($light-base, 0.08);
+    background-color: #404040;
   }
 }
 

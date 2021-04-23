@@ -138,7 +138,7 @@ export default class extends Controller {
       }
 
       this.rulerIndicatorTargets.forEach((item, index) => {
-        if (index <= Math.floor(yearsCount / 10)) {
+        if (index <= Math.floor(yearsCount / 10) && firstDecade.year + index * 10 <= this.yearEnd) {
           item.style.left = `${firstDecade.left + Math.round((this.range / yearsCount) * index * 10)}px`
           item.classList.add("visible")
         } else {
