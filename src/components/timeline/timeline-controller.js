@@ -16,6 +16,8 @@ export default class extends Controller {
       "sliderYear",
       "sliderYearLabel",
       "sliderYearCount",
+      "ruler",
+      "rulerIndicator",
     ]
   }
 
@@ -97,14 +99,52 @@ export default class extends Controller {
 
   fixSlider() {
     if (this.year > 0) {
+      const left = Math.floor(this.sliderYearTarget.offsetWidth / 2)
       const start = Math.max(
-        0,
-        Math.min(Math.round(((this.year - this.yearStart) / (this.yearEnd - this.yearStart)) * this.range), this.range)
+        left,
+        left +
+          Math.min(
+            Math.round(((this.year - this.yearStart) / (this.yearEnd - this.yearStart)) * this.range),
+            this.range
+          )
       )
 
-      this.sliderYearTarget.style.left = `${start}px`
+      this.sliderYearTarget.style.left = `${start - left}px`
       this.selectedRangeTarget.style.left = `0px`
       this.selectedRangeTarget.style.width = `${start + 2}px`
+
+      // setting the ruler indicators (for every 10 years)
+
+      const yearsCount = this.yearEnd - this.yearStart
+
+      // creating the ruler indicators if they're not created yet
+      while (this.rulerIndicatorTargets.length <= Math.floor(yearsCount / 10)) {
+        // clone template
+        const indicator = this.element.querySelectorAll(".photos-timeline__ruler-indicator")[0].cloneNode(true)
+        this.rulerTarget.appendChild(indicator)
+      }
+
+      // calculate the x position of the first decade marker
+      let counter = this.yearStart
+      const firstDecade = {}
+
+      while (counter < this.yearEnd) {
+        if (counter % 10 === 0) {
+          firstDecade.left = left + Math.round((this.range / yearsCount) * (counter - this.yearStart))
+          firstDecade.year = counter
+          break
+        }
+        counter += 1
+      }
+
+      this.rulerIndicatorTargets.forEach((item, index) => {
+        if (index <= Math.floor(yearsCount / 10)) {
+          item.style.left = `${firstDecade.left + Math.round((this.range / yearsCount) * index * 10)}px`
+          item.classList.add("visible")
+        } else {
+          item.classList.remove("visible")
+        }
+      })
     }
   }
 
@@ -190,7 +230,7 @@ export default class extends Controller {
 
       this.sliderYearTarget.style.left = `${x}px`
       this.selectedRangeTarget.style.left = `0px`
-      this.selectedRangeTarget.style.width = `${x}px`
+      this.selectedRangeTarget.style.width = `${x + 2}px`
 
       this.calcYear()
       this.setTimelineLabels()
@@ -218,8 +258,8 @@ export default class extends Controller {
   }
 
   onTimelineOver() {
-    this.timelineOver = true
     this.yearIndicatorTarget.classList.add("is-hover")
+    this.timelineOver = true
   }
 
   onTimelineOut() {
@@ -254,18 +294,14 @@ export default class extends Controller {
     }
   }
 
-  calcIndicatorYear(mouseX) {
+  calcIndicatorYear() {
     const knobBounds = this.sliderYearTarget.getBoundingClientRect()
-    let targetX = this.yearIndicatorTarget.offsetLeft
+    const targetX = this.yearIndicatorTarget.offsetLeft - Math.floor(knobBounds.width / 2)
 
-    if (mouseX > knobBounds.right) targetX -= knobBounds.width
-
-    const yearPartial = (targetX / this.range) * (this.yearEnd - this.yearStart)
-
-    if (mouseX > knobBounds.right) return this.yearStart + Math.ceil(yearPartial)
-    if (mouseX < knobBounds.left) return this.yearStart + Math.floor(yearPartial)
-
-    return -1
+    return Math.max(
+      this.yearStart,
+      Math.min(this.yearEnd, this.yearStart + Math.round((targetX / this.range) * (this.yearEnd - this.yearStart)))
+    )
   }
 
   setIndicatorLabel(year) {

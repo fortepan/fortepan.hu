@@ -22,12 +22,16 @@
                    mouseleave->timeline#onTimelineOut
                    click->timeline#seek"
     >
+        <div class="photos-timeline__ruler" data-timeline-target="ruler">
+          <div class="photos-timeline__ruler-indicator" data-timeline-target="rulerIndicator"></div>
+        </div>
         <div class="photos-timeline__range-background"></div>
         <div class="photos-timeline__year-indicator"
           data-timeline-target="yearIndicator"
         >
           <div class="button-circular__label" data-timeline-target="yearIndicatorLabel"></div>
         </div>
+        <div class="photos-timeline__slider-selected-range" data-timeline-target="selectedRange">
         <div class="photos-timeline__slider"
           data-timeline-target="sliderKnob sliderYear"
           data-action="touchstart->timeline#sliderStartDrag
@@ -40,7 +44,6 @@
           <span data-timeline-target="sliderYearLabel">1900</span>
           <div class="button-circular__label" data-timeline-target="sliderYearCount"></div>
         </div>
-        <div class="photos-timeline__slider-selected-range" data-timeline-target="selectedRange">
         </div>
     </div>
 </div>
