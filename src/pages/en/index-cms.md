@@ -3,23 +3,25 @@ layout: home/home.liquid
 title: Fortepan — Home
 permalink: "/en/"
 announcement:
-  title: Sándor <b>Kereki</b>
+  title: "<strong>FŐFOTÓ</strong>"
   caption: New Collection
-  cover_image: "205758"
-  blurb: Sándor Kereki was born in Budapest in 1952 and started photographing at the
-    age of 16. On his images, grotesque as well as emotional scenes come to life from
-    the everyday life of socialist Hungary in the 70s. After fifty years he decided
-    to pulish his images that depict the world of a street photographer focusing primarily
-    on people, special figures and odd characters. From the thousands of negatives
-    taken by him over ten years, we selected 1,850 photographs for Fortepan and we
-    also recommend to check out our hundred favorite Kereki photos.
+  cover_image: "207613"
+  blurb: Have a look at the 60s and the 70s through the cameras of Budapest Municipal
+    Photography Company (FŐFOTÓ). Out of a legacy of more than 200 000 negatives,
+    we have selected about 5000 frames. In this first instalment there are street
+    photos, building- and street views, images of hotels, espresso bars, and workplace
+    interiors. Also, we have included several hundred outdoor movie ads, uniquely
+    produced to fit the sites, fences, tram stops, or notice boards. Also, this special
+    collection abounds in advertising and fashion photos – often survived on color
+    negatives. If you are interested in the design history of the period, you mustn’t
+    miss all this.
   actions:
   - label: 100 favorites
     style: primary
-    url: "/en/photos/?q=Kereki%20S%C3%A1ndor,%20best%20of"
-  - label: All Kereki photos
+    url: https://fortepan.hu/hu/photos/?donor=F%C5%90FOT%C3%93&tag=Best%20of
+  - label: All FŐFOTÓ Collection
     style: light-transparent
-    url: "/en/photos/?q=Kereki%20S%C3%A1ndor"
+    url: https://fortepan.hu/hu/photos/?donor=F%C5%90FOT%C3%93
 
 ---
 This website was launched in 2010 and it initially contained photographs found randomly in the streets of Budapest. The archive has expanded since then through donations from families, amateur and professional photographers, along with public collections. The images on the website are selected by editors.

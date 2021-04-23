@@ -225,3 +225,11 @@
     display: none;
   }
 }
+
+.button-circular__text {
+  display: block;
+  @include font-heading-demi();
+  font-size: rem(18px);
+  text-align: center;
+  line-height: rem(48px);
+}

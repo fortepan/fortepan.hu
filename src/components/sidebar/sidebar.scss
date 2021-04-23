@@ -1,15 +1,16 @@
 .carousel-sidebar {
   position: absolute;
   padding: 0 rem(24px) rem(24px);
-  top: rem(80px + 48px);
+  top: 8rem;
   right: 0;
   width: rem(280px);
-  height: 100%;
+  height: calc(100vh - 8rem);
   box-sizing: border-box;
   transition: transform 0.4s $ease-out-expo, top 0.4s $ease-out-expo, opacity 0.2s ease-out;
 
   @media screen and (max-width: ($breakpoint-desktop - 1px)) {
-    top: rem(64px + 48px);
+    top: 7rem;
+    height: calc(100vh - 7rem);
   }
 
   .hide-carousel-sidebar & {

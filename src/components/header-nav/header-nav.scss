@@ -270,6 +270,7 @@
 .header-nav__link--top {
   @include font-heading-demi();
   font-size: rem(18px);
+  position: relative;
 }
 
 .header-nav__link__small {
@@ -306,6 +307,12 @@
 
 .header-nav__link--hide-on-desktop {
   @media screen and (min-width: ($breakpoint-desktop)) {
+    display: none;
+  }
+}
+
+.header-nav__link--desktop-only {
+  @media screen and (max-width: ($breakpoint-desktop - 1px)) {
     display: none;
   }
 }
@@ -411,6 +418,14 @@ body[data-lang="en"] .header-nav__link.lang-en {
     left: 0;
     top: 0;
     margin-left: 0;
+  }
+}
+
+.button-circular--language {
+  text-decoration: none;
+
+  & .button-circular__text {
+    text-transform: uppercase;
   }
 }
 
