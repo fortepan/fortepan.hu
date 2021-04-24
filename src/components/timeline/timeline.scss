@@ -302,11 +302,13 @@
   }
 
   .theme--light &:before {
-    background-color: rgba($dark-base, 0.1);
+    // background-color: rgba($dark-base, 0.08);
+    background-color: #e2e3e4;
   }
 
   .theme--dark &:before {
-    background-color: rgba($light-base, 0.1);
+    // background-color: rgba($light-base, 0.08);
+    background-color: #404040;
   }
 
   &.visible {
