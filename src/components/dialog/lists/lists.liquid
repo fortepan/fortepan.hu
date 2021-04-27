@@ -14,6 +14,17 @@
 
       <h3 class="dialog__title">{{ lang[locale].lists }}</h3>
 
+      <div class="dialog-lists__added-to" data-dialog--lists-target="addedTo">
+        <h6>{{ lang[locale].list_added_to }}</h6>
+
+        <ul class="dialog-lists__added-to-list" data-dialog--lists-target="addedToList">
+          <li><h5><a href="#">Lista neve</a></h5> (<a href="#">{{ lang[locale].list_edit }}</a>)</li>
+          <li><h5><a href="#">Lista neve</a></h5> (<a href="#">{{ lang[locale].list_edit }}</a>)</li>
+        </ul>
+      </div>
+
+      <h6>{{ lang[locale].list_add_to }}</h6>
+
       <form class="dialog__form" data-dialog--lists-target="form">
         {% include select/select.liquid
                    label:lang[locale].list_choose
@@ -25,7 +36,14 @@
                    name:"name"
                    label:lang[locale].list_new_name
                    stimulus_wrapper_target:'data-dialog--lists-target="name"'
-                   class:"dialog-lists__input"
+                   class:"dialog-lists__input is-hidden"
+        %}
+        {% include input/input.liquid
+                   type:"text"
+                   name:"description"
+                   label:lang[locale].list_description_label
+                   stimulus_wrapper_target:'data-dialog--lists-target="description"'
+                   class:"dialog-lists__input is-hidden"
         %}
 
         <button class="button button--primary dialog__button" data-action="dialog--lists#submit">{{ lang[locale].save }}</button>
