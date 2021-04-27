@@ -1,0 +1,34 @@
+<div class="dialog dialog-lists"
+     data-controller="dialog--lists"
+     data-action="dialogs:hide@document->dialog--lists#hide
+                   dialogLists:show@document->dialog--lists#show
+                   dialogLists:hide@document->dialog--lists#hide"
+>
+  <div class="dialog__wrapper">
+      <div class="button-circular dialog__close"
+           data-action="click->dialog--lists#hide"
+      >
+        {% inlineSVG src:"src/static/images/icons/24/icon-close.svg" class:"button-circular__icon" %}
+        <div class="button-circular__label">{{ lang[locale].close }}</div>
+      </div>
+
+      <h3 class="dialog__title">{{ lang[locale].lists }}</h3>
+
+      <form class="dialog__form" data-dialog--lists-target="form">
+        {% include select/select.liquid
+                   label:lang[locale].list_choose
+                   stimulus_target:'data-dialog--lists-target="select"'
+                   stimulus_action:'change->dialog--lists#toggleInput'
+        %}
+        {% include input/input.liquid
+                   type:"text"
+                   name:"name"
+                   label:lang[locale].list_new_name
+                   stimulus_wrapper_target:'data-dialog--lists-target="name"'
+                   class:"dialog-lists__input"
+        %}
+
+        <button class="button button--primary dialog__button" data-action="dialog--lists#submit">{{ lang[locale].save }}</button>
+      </form>
+  </div>
+</div>
