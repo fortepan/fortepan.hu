@@ -275,8 +275,8 @@ export default class extends Controller {
     }
   }
 
-  bookmarkPhoto() {
-    trigger("dialogBookmark:show")
+  addToList() {
+    trigger("dialogLists:show")
   }
 
   downloadImage() {

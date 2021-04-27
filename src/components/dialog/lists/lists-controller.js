@@ -23,7 +23,7 @@ export default class extends Controller {
 
     await listsAPI.addToList(selectedThumbnail.itemData.mid[0], listID)
 
-    trigger("dialogBookmark:hide")
+    trigger("dialogLists:hide")
   }
 
   success() {
@@ -31,7 +31,7 @@ export default class extends Controller {
     this.element.classList.remove("is-disabled")
 
     trigger("snackbar:show", { message: lang("user_signup_success"), status: "success", autoHide: true })
-    trigger("dialogBookmark:hide")
+    trigger("dialogLists:hide")
   }
 
   hide() {
@@ -44,7 +44,7 @@ export default class extends Controller {
 
   async renderOptions() {
     const resp = await listsAPI.getLists()
-    let innerHTML = `<option value="0">${lang("bookmark_new")}</option>`
+    let innerHTML = `<option value="0">${lang("list_new")}</option>`
     Object.keys(resp).forEach(key => {
       innerHTML += `<option value="${key}">${resp[key]}</option>`
     })
@@ -59,7 +59,7 @@ export default class extends Controller {
       await this.renderOptions()
       this.toggleInput()
     } else {
-      trigger("snackbar:show", { message: lang("bookmark_signin_alert"), status: "error", autoHide: true })
+      trigger("snackbar:show", { message: lang("list_signin_alert"), status: "error", autoHide: true })
       trigger("dialogSignin:show")
     }
   }
