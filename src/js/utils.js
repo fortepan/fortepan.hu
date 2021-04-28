@@ -74,6 +74,7 @@ export const slugify = (str, removeSpaces) => {
 
   if (removeSpaces) {
     s = s.replace(new RegExp("·|/|_|,|:|;| ", "g"), "-")
+    s = s.replace(new RegExp("\\?|\\=|\\&|\\<|\\>", "g"), "")
   }
 
   return s
