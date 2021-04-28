@@ -22,12 +22,15 @@
   color: inherit;
   width: 100%;
   margin: 0;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 3rem 0.5rem 1rem;
   height: 3rem;
   -webkit-appearance: none;
   font-size: 1rem;
   line-height: 2rem;
   border-radius: 0.25rem;
+  background-size: rem(16px) rem(16px);
+  background-position: calc(100% - 1rem) center;
+  background-repeat: no-repeat;
   transition: transform 0.6s $ease-out-expo, opacity 0.3s $ease-out-expo, background-color 0.3s $ease-out-expo,
     box-shadow 0.3s $ease-out-expo;
 
@@ -39,11 +42,13 @@
     background-color: $light-base;
     color: $dark-base;
     box-shadow: 0px 0px 0px 1px rgba($dark-base, 0.08) inset;
+    background-image: svg-load("static/images/icons/16/icon-arrow-down.svg", fill=none, stroke=$dark-base);
   }
 
   .theme--dark & {
     background-color: $dark-base;
     color: $light-base;
     box-shadow: 0px 0px 0px 1px rgba($light-base, 0) inset;
+    background-image: svg-load("static/images/icons/16/icon-arrow-down.svg", fill=none, stroke=$light-base);
   }
 }
