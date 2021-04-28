@@ -26,7 +26,7 @@
 
       <h6>{{ lang[locale].list_add_to }}</h6>
 
-      <form class="dialog__form" data-dialog--lists-target="form">
+      <form class="dialog__form" data-dialog--lists-target="addToListForm">
         {% include select/select.liquid
                    label:lang[locale].list_choose
                    stimulus_target:'data-dialog--lists-target="select"'
@@ -45,9 +45,10 @@
                    label:lang[locale].list_description_label
                    stimulus_wrapper_target:'data-dialog--lists-target="description"'
                    class:"dialog-lists__input is-hidden"
+                   input_options:'maxlength="140"'
         %}
 
-        <button class="button button--primary dialog__button" data-action="dialog--lists#submit">{{ lang[locale].save }}</button>
+        <button class="button button--primary dialog__button" data-action="dialog--lists#submitAddingToList">{{ lang[locale].save }}</button>
       </form>
   </div>
 </div>

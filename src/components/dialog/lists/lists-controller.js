@@ -6,24 +6,40 @@ import listsAPI from "../../../api/lists"
 
 export default class extends Controller {
   static get targets() {
-    return ["addedTo", "addedToList", "form", "select", "name", "description", "submitButton"]
+    return ["addedTo", "addedToList", "addToListForm", "select", "name", "description", "submitButton"]
   }
 
   connect() {
-    this.formTarget.submit = this.submit.bind(this)
+    this.addToListFormTarget.submit = this.submitAddingToList.bind(this)
   }
 
-  async submit(e) {
+  async submitAddingToList(e) {
     e.preventDefault()
 
     let listID = Number(this.selectTarget.value)
+    let listName = Array.from(this.selectTarget.getElementsByTagName("option")).find(
+      item => Number(item.getAttribute("value")) === listID
+    ).innerText
+    const nameInput = this.addToListFormTarget.name
+
+    // reset error states
+    nameInput.parentNode.classList.remove("error")
+
     // if the photo needs to be added to a new list
     if (listID === 0) {
-      listID = await listsAPI.createList(this.formTarget.name.value)
+      if (nameInput.value && nameInput.value !== "") {
+        listName = nameInput.value
+        listID = await listsAPI.createList(listName)
+      } else {
+        nameInput.parentNode.classList.add("error")
+        trigger("snackbar:show", { message: lang("list_submit_error_name_missing"), status: "error", autoHide: true })
+        return
+      }
     }
 
     await listsAPI.addToList(photoManager.getSelectedPhotoId(), listID)
 
+    trigger("snackbar:show", { message: lang("list_add_success") + listName, status: "success", autoHide: true })
     trigger("dialogLists:hide")
   }
 
@@ -79,11 +95,13 @@ export default class extends Controller {
         const url = `/${getLocale()}/lists/${slugify(resp[key], true)}`
 
         const listLink = newItem.getElementsByClassName("dialog-lists__list-link")[0]
-        listLink.innerHTML = resp[key]
-        listLink.setAttribute("href", url)
+        if (listLink) {
+          listLink.innerHTML = resp[key]
+          listLink.setAttribute("href", url)
+        }
 
         const editLink = newItem.getElementsByClassName("dialog-lists__edit-link")[0]
-        editLink.setAttribute("href", url)
+        if (editLink) editLink.setAttribute("href", url)
 
         newItem.classList.add("is-visible")
 
