@@ -187,3 +187,9 @@ export const globalSettings = {
     delete globalSettingsStorage[key]
   },
 }
+
+export const escapeHTML = unsafe => {
+  return unsafe.replace(/[\u00A0-\u9999<>&]/g, i => {
+    return `&#${i.charCodeAt(0)};`
+  })
+}
