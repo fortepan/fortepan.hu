@@ -1,5 +1,5 @@
 import { Controller } from "stimulus"
-import { trigger, lang, getLocale, slugify } from "../../../js/utils"
+import { trigger, lang, getLocale, slugify, escapeHTML } from "../../../js/utils"
 import { appState } from "../../../js/app"
 import photoManager from "../../../js/photo-manager"
 import listsAPI from "../../../api/lists"
@@ -64,7 +64,7 @@ export default class extends Controller {
     const resp = await listsAPI.getLists()
     let innerHTML = ""
     Object.keys(resp).forEach(key => {
-      innerHTML += `<option value="${key}">${resp[key]}</option>`
+      innerHTML += `<option value="${key}">${escapeHTML(resp[key])}</option>`
     })
     innerHTML += `<option value="0">${lang("list_new")}</option>`
     this.selectTarget.innerHTML = innerHTML
@@ -96,7 +96,7 @@ export default class extends Controller {
 
         const listLink = newItem.getElementsByClassName("dialog-lists__list-link")[0]
         if (listLink) {
-          listLink.innerHTML = resp[key]
+          listLink.innerHTML = escapeHTML(resp[key])
           listLink.setAttribute("href", url)
         }
 
