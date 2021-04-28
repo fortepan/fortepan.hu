@@ -11,9 +11,13 @@
 }
 
 .dialog-lists__added-to {
-  // display: none;
+  display: none;
   padding-bottom: 1.5rem;
   border-bottom: 1px solid;
+
+  &.is-visible {
+    display: block;
+  }
 
   .theme--light & {
     border-bottom-color: $light-secondary;
@@ -21,10 +25,6 @@
 
   .theme--dark & {
     border-bottom-color: $dark-tertiary;
-  }
-
-  &.is-visible {
-    display: block;
   }
 
   h6 {
@@ -38,13 +38,17 @@
   padding: 0;
   font-size: rem(12px);
   line-height: rem(20px);
+}
 
-  li {
+.dialog-lists__added-to-list-item {
+  display: none;
+  margin-right: rem(4px);
+
+  &.is-visible {
     display: inline;
-    margin-right: rem(4px);
   }
 
-  li:not(:last-of-type):after {
+  &:not(:last-of-type):after {
     content: ",";
   }
 
