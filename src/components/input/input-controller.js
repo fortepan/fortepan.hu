@@ -14,6 +14,9 @@ export default class extends Controller {
         this.labelTarget.classList.remove("is-visible")
       }
     }
+
+    // remove any error indication on typing
+    this.element.classList.remove("error")
   }
 
   keypress(e) {
