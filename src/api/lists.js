@@ -103,6 +103,12 @@ const getList = async id => {
   return respData
 }
 
+// return all the lists of the current logged in user that contains a given image
+const getContainingLists = async id => {
+  // TODO
+  return id
+}
+
 export default {
   createList,
   deleteList,
@@ -110,4 +116,5 @@ export default {
   deleteFromList,
   getLists,
   getList,
+  getContainingLists,
 }
