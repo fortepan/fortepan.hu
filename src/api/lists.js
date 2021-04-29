@@ -61,7 +61,7 @@ const addToList = async (photoId, listId) => {
 const deleteFromList = async (photoId, listId) => {
   const url = `${config.DRUPAL_HOST}/fortepan/unflag/${photoId}/${listId}`
   const resp = await fetch(url, {
-    method: "GET",
+    method: "POST",
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
