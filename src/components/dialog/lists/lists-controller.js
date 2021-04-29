@@ -88,21 +88,16 @@ export default class extends Controller {
     const resp = await listsAPI.getLists(photoManager.getSelectedPhotoId())
 
     if (Object.keys(resp).length) {
-      const defaultListTag = this.addedToListTarget.getElementsByClassName("dialog-lists__list-tag")[0]
-
       // remove all list tags first
       const listTags = Array.from(this.addedToListTarget.getElementsByClassName("dialog-lists__list-tag"))
-      listTags.forEach(item => {
-        if (item !== defaultListTag) {
-          this.addedToListTarget.removeChild(item)
-        }
-      })
+      listTags.forEach(item => item.remove())
 
       // list the list tags that contains the photo
       Object.keys(resp).forEach(key => {
         const url = `/${getLocale()}/lists/${slugify(resp[key], true)}`
+        const template = document.getElementById("dialog-list-tag").content.firstElementChild
 
-        const newTag = defaultListTag.cloneNode(true)
+        const newTag = template.cloneNode(true)
         newTag.setAttribute("data-action", "mouseleave->dialog--lists#closeListTagDropdowns")
 
         const listLabel = newTag.getElementsByClassName("dialog-lists__list-tag__label")[0]
