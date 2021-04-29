@@ -162,6 +162,7 @@
   top: rem(64px);
   transform: translate(-90%, 8px);
   opacity: 0;
+  border-radius: rem(8px);
   user-select: none;
   pointer-events: none;
   transition: transform 0.3s $ease-out-expo, opacity 0.3s $ease-out-expo;
@@ -170,6 +171,12 @@
   min-width: rem(200px);
   max-width: rem(400px);
   z-index: 700;
+
+  &--small {
+    padding: 0.5rem 0;
+    min-width: rem(128px);
+    border-radius: rem(4px);
+  }
 
   @media screen and (max-width: ($breakpoint-phone-sm - 1px)) {
     width: calc(100vw - 2rem);
@@ -185,6 +192,12 @@
     line-height: 1.5rem;
   }
 
+  &--small {
+    h6 {
+      padding: 0 rem(12px);
+    }
+  }
+
   &.is-visible {
     opacity: 1;
     pointer-events: initial;
@@ -198,13 +211,11 @@
 
   .theme--light & {
     background-color: $light-base;
-    border-radius: rem(8px);
     box-shadow: 0px 0px 0px 1px rgba($dark-base, 0.04), 0px 12px 36px rgba($dark-base, 0.12);
   }
 
   .theme--dark & {
     background-color: $dark-secondary;
-    border-radius: rem(8px);
     box-shadow: 0px 0px 0px 1px rgba($light-base, 0.04) inset, 0px 8px 24px rgba($dark-base, 0.12);
   }
 }
@@ -212,6 +223,10 @@
 .header-nav__popup__heading {
   margin: 0;
   padding: 0 1.5rem;
+
+  .header-nav__popup--small & {
+    padding: 0 0.75rem;
+  }
 }
 
 .header-nav__link {
@@ -226,6 +241,10 @@
   > * {
     display: block;
     white-space: nowrap;
+  }
+
+  .header-nav__popup--small & {
+    padding: rem(6px) rem(12px);
   }
 
   .theme--light & {
@@ -248,6 +267,10 @@
 .header-nav__link--separator-after {
   margin-bottom: 1.5rem;
   position: relative;
+
+  .header-nav__popup--small & {
+    margin-bottom: 0.75rem;
+  }
 }
 
 .header-nav__link--separator-after::after {
@@ -257,6 +280,11 @@
   left: 1.5rem;
   right: 0;
   height: 1px;
+
+  .header-nav__popup--small & {
+    left: 0.75rem;
+    bottom: -0.375rem;
+  }
 
   .theme--light & {
     background-color: $light-secondary;
@@ -271,6 +299,10 @@
   @include font-heading-demi();
   font-size: rem(18px);
   position: relative;
+
+  .header-nav__popup--small & {
+    font-size: rem(15px);
+  }
 }
 
 .header-nav__link__small {
