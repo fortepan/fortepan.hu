@@ -14,13 +14,23 @@
 
       <h3 class="dialog__title">{{ lang[locale].lists }}</h3>
 
-      <div class="dialog-lists__added-to" data-dialog--lists-target="addedTo">
+      <div class="dialog-lists__added-to"
+        data-dialog--lists-target="addedToSection"
+        data-action="click@document->dialog-lists#closeListTagDropdowns"
+      >
         <h6>{{ lang[locale].list_added_to }}</h6>
 
         <ul class="dialog-lists__added-to-list" data-dialog--lists-target="addedToList">
-          <li class="dialog-lists__added-to-list-item">
-            <h5><a href="#" class="dialog-lists__list-link"></a></h5>
-            (<a href="#" class="dialog-lists__edit-link">{{ lang[locale].list_edit }}</a>)</li>
+
+          <li class="dialog-lists__list-tag">
+            <a href="#" class="dialog-lists__list-tag__label"></a>
+            <a href="#" class="dialog-lists__list-tag__icon"></a>
+            <div class="header-nav__popup header-nav__popup--small">
+              <a href="#" class="header-nav__link dialog-lists__tag-link--open-list">{{ lang[locale].list_jump_to }}</a>
+              <a href="#" class="header-nav__link dialog-lists__tag-link--remove">{{ lang[locale].list_remove_from }}</a>
+            </div>
+          </li>
+
         </ul>
       </div>
 
