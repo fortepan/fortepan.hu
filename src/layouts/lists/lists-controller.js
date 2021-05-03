@@ -1,8 +1,8 @@
 import { Controller } from "stimulus"
-import { getLocale, lang, slugify, escapeHTML, trigger } from "../../js/utils"
+import { lang, escapeHTML, trigger } from "../../js/utils"
 import { appState } from "../../js/app"
-import listsAPI from "../../api/lists"
 import config from "../../data/siteConfig"
+import listManager from "../../js/list-manager"
 
 export default class extends Controller {
   static get targets() {
@@ -13,10 +13,10 @@ export default class extends Controller {
     this.listRendered = false
   }
 
-  show() {
+  async show() {
     if (appState("auth-signed-in")) {
+      await this.renderLists()
       this.element.classList.add("is-visible")
-      this.renderLists()
     } else {
       this.element.classList.remove("is-visible")
       trigger("snackbar:show", { message: lang("list_signin_alert"), status: "error", autoHide: true })
@@ -27,41 +27,45 @@ export default class extends Controller {
   async renderLists() {
     if (this.listRendered) return
 
-    const resp = await listsAPI.getLists()
+    const lists = await listManager.loadListData()
 
-    this.totalTarget.innerText = Object.keys(resp).length
+    this.totalTarget.innerText = lists.length
 
-    Object.keys(resp).forEach(async key => {
-      const listID = key
-      const listName = resp[key]
-      const url = `/${getLocale()}/lists/${slugify(listName, true)}`
+    lists.forEach(async listData => {
       const template = document.getElementById("lists-item").content.firstElementChild
 
       const newListItem = template.cloneNode(true)
 
       const title = newListItem.getElementsByClassName("lists__item__title")[0]
       if (title) {
-        title.innerHTML = escapeHTML(listName)
-        title.setAttribute("href", url)
+        title.innerHTML = escapeHTML(listData.name)
+        title.setAttribute("href", listData.url)
       }
 
-      // images
-      const rawPhotosResp = await listsAPI.getListPhotos(listID)
-      const photoCount = Object.keys(rawPhotosResp.flags).length
-
-      const cover = newListItem.getElementsByClassName("lists__item__cover")[0]
-      if (cover && photoCount > 0) {
-        cover.classList.add(photoCount > 3 ? "has-image--more" : `has-image--${photoCount}`)
-
-        if (photoCount > 3) {
-          const count = newListItem.getElementsByClassName("lists__item__counter")[0]
-          count.innerText = `+${photoCount - 3}`
+      if (listData.description) {
+        const description = newListItem.getElementsByClassName("lists__item__description")[0]
+        if (description) {
+          description.innerHTML = escapeHTML(listData.description)
+          description.classList.add("is-visible")
         }
       }
 
-      Object.keys(rawPhotosResp.flags).forEach((photoKey, index) => {
+      // images
+      const photos = await listManager.getListPhotos(listData.id)
+
+      const cover = newListItem.getElementsByClassName("lists__item__cover")[0]
+      if (cover && photos.length > 0) {
+        cover.classList.add(photos.length > 3 ? "has-image--more" : `has-image--${photos.length}`)
+
+        if (photos.length > 3) {
+          const count = newListItem.getElementsByClassName("lists__item__counter")[0]
+          count.innerText = `+${photos.length - 3}`
+        }
+      }
+
+      photos.forEach((photoItem, index) => {
         if (index < 3) {
-          const photoId = rawPhotosResp.flags[photoKey]
+          const photoId = photoItem.id
           const photoElement = newListItem.getElementsByClassName("lists__item__photo")[index]
           const imageTarget = photoElement.getElementsByClassName("lists__item__photo__img")[0]
           const img = new Image()
@@ -79,18 +83,7 @@ export default class extends Controller {
         }
       })
 
-      // TODO: add the description once it returns from backend
-      /* const description = newListItem.getElementsByClassName("lists__item__description")[0]
-      if (description) {
-        description.innerHTML = escapeHTML(
-          "Random lista leírás, maximum 140 karakter hosszú, és minden listához egyenként hozzáadható. Megjelenik a listákat listázó oldalon és máshol."
-        )
-        description.classList.add("is-visible")
-      } */
-
-      newListItem.listID = listID
-      newListItem.listName = listName
-      newListItem.url = url
+      newListItem.listId = listData.id
 
       this.gridTarget.appendChild(newListItem)
 
@@ -100,13 +93,16 @@ export default class extends Controller {
 
   onListCoverClick(e) {
     if (e && e.currentTarget) {
-      window.location = e.currentTarget.parentElement.url
+      const listData = listManager.getListById(e.currentTarget.parentElement.listId)
+      if (listData && listData.url) {
+        window.location = listData.url
 
-      /* window.history.pushState(
+        /* window.history.pushState(
         null,
-        escapeHTML(e.currentTarget.parentElement.listName),
-        e.currentTarget.parentElement.url
+        escapeHTML(listData.name),
+        listData.url
       ) */
+      }
     }
   }
 }
