@@ -27,6 +27,8 @@ export default class extends Controller {
   async renderLists() {
     if (this.listRendered) return
 
+    trigger("loader:show", { id: "loaderBase" })
+
     const lists = await listManager.loadListData()
 
     this.totalTarget.innerText = lists.length
@@ -88,6 +90,7 @@ export default class extends Controller {
       this.gridTarget.appendChild(newListItem)
 
       this.listRendered = true
+      trigger("loader:hide", { id: "loaderBase" })
     })
   }
 
