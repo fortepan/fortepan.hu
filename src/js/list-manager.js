@@ -20,6 +20,13 @@ const loadListData = async () => {
   return listData.lists
 }
 
+const getLists = async () => {
+  if (!listData.lists) {
+    await loadListData()
+  }
+  return listData.lists
+}
+
 const getListById = listId => {
   return listData.lists.find(item => Number(item.id) === Number(listId))
 }
@@ -59,8 +66,52 @@ const clearAllData = () => {
   trigger("listManager:allDataCleared")
 }
 
+// admin functions (creating and deleting lists, adding and removing photos to/from lists)
+
+const createList = async (listName, description) => {
+  const listId = await listsAPI.createList(listName, description)
+
+  // force to reload the list data in the listManager as a new list has been created
+  clearAllData()
+  await loadListData()
+
+  return getListById(listId)
+}
+
+const deleteList = async listId => {
+  await listsAPI.deleteList(listId)
+
+  // force to reload the list data in the listManager as a new list has been created
+  clearAllData()
+  await loadListData()
+
+  return getListById(listId)
+}
+
+const addPhotoToList = async (photoId, listId) => {
+  await listsAPI.addToList(photoId, listId)
+  const photos = await loadListPhotosData(listId)
+
+  return photos
+}
+
+const deletePhotoFromList = async (photoId, listId) => {
+  await listsAPI.deleteFromList(photoId, listId)
+  const photos = await loadListPhotosData(listId)
+
+  return photos
+}
+
+// return all the lists of the current logged in user that contains a given image
+const getContainingLists = async photoId => {
+  // TODO
+  await listsAPI.getContainingLists(photoId)
+  return photoId
+}
+
 export default {
   loadListData,
+  getLists,
   getListById,
   loadListPhotosData,
   getListPhotos,
@@ -86,4 +137,9 @@ export default {
     getLatestSearchContext,
     clearPhotoCache, */
   clearAllData,
+  createList,
+  deleteList,
+  addPhotoToList,
+  deletePhotoFromList,
+  getContainingLists,
 }

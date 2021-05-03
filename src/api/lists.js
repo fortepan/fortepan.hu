@@ -1,6 +1,8 @@
 import config from "../data/siteConfig"
 
-const createList = async name => {
+const createList = async (name, description) => {
+  // TODO: include the description on creating as well once the backend is ready
+
   const authData = JSON.parse(localStorage.getItem("auth")) || {}
   const data = {
     data: {
@@ -104,9 +106,9 @@ const getListPhotos = async id => {
 }
 
 // return all the lists of the current logged in user that contains a given image
-const getContainingLists = async id => {
+const getContainingLists = async photoId => {
   // TODO
-  return id
+  return photoId
 }
 
 export default {

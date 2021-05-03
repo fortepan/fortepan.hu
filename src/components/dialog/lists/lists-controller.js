@@ -1,8 +1,8 @@
 import { Controller } from "stimulus"
-import { trigger, lang, getLocale, slugify, escapeHTML } from "../../../js/utils"
+import { trigger, lang, escapeHTML } from "../../../js/utils"
 import { appState } from "../../../js/app"
 import photoManager from "../../../js/photo-manager"
-import listsAPI from "../../../api/lists"
+import listManager from "../../../js/list-manager"
 
 export default class extends Controller {
   static get targets() {
@@ -16,20 +16,22 @@ export default class extends Controller {
   async submitAddingToList(e) {
     e.preventDefault()
 
-    let listID = Number(this.selectTarget.value)
+    let listId = Number(this.selectTarget.value)
     let listName = Array.from(this.selectTarget.getElementsByTagName("option")).find(
-      item => Number(item.getAttribute("value")) === listID
+      item => Number(item.getAttribute("value")) === listId
     ).innerText
+
     const nameInput = this.addToListFormTarget.name
+    const descriptionInput = this.addToListFormTarget.description
 
     // reset error states
     nameInput.parentNode.classList.remove("error")
 
     // if the photo needs to be added to a new list
-    if (listID === 0) {
+    if (listId === 0) {
       if (nameInput.value && nameInput.value !== "") {
         listName = nameInput.value
-        listID = await listsAPI.createList(listName)
+        listId = await listManager.createList(listName, descriptionInput.value)
       } else {
         nameInput.parentNode.classList.add("error")
         trigger("snackbar:show", { message: lang("list_submit_error_name_missing"), status: "error", autoHide: true })
@@ -37,7 +39,7 @@ export default class extends Controller {
       }
     }
 
-    await listsAPI.addToList(photoManager.getSelectedPhotoId(), listID)
+    await listManager.addPhotoToList(photoManager.getSelectedPhotoId(), listId)
 
     trigger("snackbar:show", {
       message: lang("list_add_success") + escapeHTML(listName),
@@ -65,12 +67,12 @@ export default class extends Controller {
   }
 
   async renderOptions() {
-    const resp = await listsAPI.getLists()
+    const lists = await listManager.getLists()
     let innerHTML = ""
 
-    Object.keys(resp).forEach(key => {
+    lists.forEach(listData => {
       // TODO: exclude the lists from the dropdown that already contains the photo
-      innerHTML += `<option value="${key}">${escapeHTML(resp[key])}</option>`
+      innerHTML += `<option value="${listData.id}">${escapeHTML(listData.name)}</option>`
     })
 
     // adding the option to create a new list at the end
@@ -78,23 +80,22 @@ export default class extends Controller {
 
     this.selectTarget.innerHTML = innerHTML
 
-    return resp
+    return lists
   }
 
   async renderContainingLists() {
     // TODO: get the all the lists containing the photo
-    // const resp = await listsAPI.getContainingLists(photoManager.getSelectedPhotoId())
+    // const resp = await listManager.getContainingLists(photoManager.getSelectedPhotoId())
 
-    const resp = await listsAPI.getLists(photoManager.getSelectedPhotoId())
+    const lists = await listManager.getLists()
 
-    if (Object.keys(resp).length) {
+    if (lists.length) {
       // remove all list tags first
       const listTags = Array.from(this.addedToListTarget.getElementsByClassName("dialog-lists__list-tag"))
       listTags.forEach(item => item.remove())
 
       // list the list tags that contains the photo
-      Object.keys(resp).forEach(key => {
-        const url = `/${getLocale()}/lists/${slugify(resp[key], true)}`
+      lists.forEach(listData => {
         const template = document.getElementById("dialog-list-tag").content.firstElementChild
 
         const newTag = template.cloneNode(true)
@@ -102,21 +103,20 @@ export default class extends Controller {
 
         const listLabel = newTag.getElementsByClassName("dialog-lists__list-tag__label")[0]
         if (listLabel) {
-          listLabel.innerHTML = escapeHTML(resp[key])
-          listLabel.setAttribute("href", url)
+          listLabel.innerHTML = escapeHTML(listData.name)
+          listLabel.setAttribute("href", listData.url)
         }
 
         const dropdownButton = newTag.getElementsByClassName("dialog-lists__list-tag__icon")[0]
         if (dropdownButton) dropdownButton.setAttribute("data-action", "click->dialog--lists#openListTagDropdown")
 
         const listLink = newTag.getElementsByClassName("dialog-lists__tag-link--open-list")[0]
-        if (listLink) listLink.setAttribute("href", url)
+        if (listLink) listLink.setAttribute("href", listData.url)
 
         const removeLink = newTag.getElementsByClassName("dialog-lists__tag-link--remove")[0]
         if (removeLink) {
           removeLink.setAttribute("data-action", "click->dialog--lists#deletePhotoFromList")
-          removeLink.dataset.listID = key
-          removeLink.dataset.listName = resp[key]
+          removeLink.listId = listData.id
         }
 
         newTag.classList.add("is-visible")
@@ -125,9 +125,9 @@ export default class extends Controller {
       })
     }
 
-    this.addedToSectionTarget.classList.toggle("is-visible", Object.keys(resp).length !== -1)
+    this.addedToSectionTarget.classList.toggle("is-visible", lists.length > 0)
 
-    return resp
+    return lists
   }
 
   async show() {
@@ -147,13 +147,13 @@ export default class extends Controller {
     if (e) e.preventDefault()
 
     if (e && e.currentTarget) {
-      const data = e.currentTarget.dataset
+      const listData = listManager.getListById(e.currentTarget.listId)
       const listTag = e.currentTarget.parentNode.parentNode
 
-      await listsAPI.deleteFromList(photoManager.getSelectedPhotoId(), data.listID)
+      await listManager.deletePhotoFromList(photoManager.getSelectedPhotoId(), listData.id)
 
       trigger("snackbar:show", {
-        message: lang("list_remove_from_success") + escapeHTML(data.listName),
+        message: lang("list_remove_from_success") + escapeHTML(listData.name),
         status: "success",
         autoHide: true,
       })
