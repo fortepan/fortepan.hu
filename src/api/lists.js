@@ -88,8 +88,8 @@ const getLists = async () => {
   return respData.listak
 }
 
-const getList = async id => {
-  const url = `${config.DRUPAL_HOST}/fortepan/flags/${id}/created/desc`
+const getListPhotos = async id => {
+  const url = `${config.DRUPAL_HOST}/fortepan/flags/${id}/created/asc`
   const resp = await fetch(url, {
     method: "GET",
     credentials: "include",
@@ -115,6 +115,6 @@ export default {
   addToList,
   deleteFromList,
   getLists,
-  getList,
+  getListPhotos,
   getContainingLists,
 }
