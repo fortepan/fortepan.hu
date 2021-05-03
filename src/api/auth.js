@@ -9,6 +9,8 @@ const setLoginStatus = isUserSignedIn => {
     removeAppState("auth-signed-in")
     localStorage.removeItem("auth")
   }
+
+  trigger("auth:loginStatus")
 }
 
 const signin = async body => {
