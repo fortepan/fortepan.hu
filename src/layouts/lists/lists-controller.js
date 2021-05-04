@@ -6,12 +6,10 @@ import listManager from "../../js/list-manager"
 
 export default class extends Controller {
   static get targets() {
-    return ["total", "grid"]
+    return ["total", "grid", "listItem"]
   }
 
-  connect() {
-    this.listRendered = false
-  }
+  connect() {}
 
   async show() {
     if (appState("auth-signed-in")) {
@@ -27,9 +25,11 @@ export default class extends Controller {
   async renderLists() {
     if (this.listRendered) return
 
+    this.listRendered = true
+
     trigger("loader:show", { id: "loaderBase" })
 
-    const lists = await listManager.loadListData()
+    const lists = await listManager.getLists()
 
     this.totalTarget.innerText = lists.length
 
@@ -48,6 +48,9 @@ export default class extends Controller {
         const description = newListItem.getElementsByClassName("lists__item__description")[0]
         if (description) {
           description.innerHTML = escapeHTML(listData.description)
+          /* description.innerHTML = escapeHTML(
+            "Random lista leírás, maximum 140 karakter hosszú, és minden listához egyenként hozzáadható. Megjelenik a listákat listázó oldalon és máshol."
+          ) */
           description.classList.add("is-visible")
         }
       }
@@ -88,15 +91,17 @@ export default class extends Controller {
       newListItem.listId = listData.id
 
       this.gridTarget.appendChild(newListItem)
-
-      this.listRendered = true
-      trigger("loader:hide", { id: "loaderBase" })
     })
+
+    trigger("loader:hide", { id: "loaderBase" })
   }
 
-  onListCoverClick(e) {
+  openList(e) {
     if (e && e.currentTarget) {
-      const listData = listManager.getListById(e.currentTarget.parentElement.listId)
+      const listItem = this.listItemTargets.find(item => item.contains(e.currentTarget))
+      const id = listItem ? listItem.listId : 0
+      const listData = listManager.getListById(id)
+
       if (listData && listData.url) {
         window.location = listData.url
 
@@ -106,6 +111,52 @@ export default class extends Controller {
         listData.url
       ) */
       }
+    }
+  }
+
+  showEditListDropdown(e) {
+    if (e) {
+      e.preventDefault()
+
+      const listItemMenu = e.currentTarget.parentNode
+      const dropdown = listItemMenu.getElementsByClassName("header-nav__popup")[0]
+
+      this.hideEditListDropdowns(dropdown)
+      dropdown.classList.toggle("is-visible")
+    }
+  }
+
+  hideEditListDropdowns(elementToExclude) {
+    if (this.element.classList.contains("is-visible")) {
+      const dropdowns = Array.from(this.element.getElementsByClassName("header-nav__popup"))
+
+      dropdowns.forEach(dropdown => {
+        if (!elementToExclude || elementToExclude !== dropdown) {
+          dropdown.classList.remove("is-visible")
+        }
+      })
+    }
+  }
+
+  editList(e) {
+    if (e) {
+      e.preventDefault()
+
+      const listItem = this.listItemTargets.find(item => item.contains(e.currentTarget))
+      const id = listItem ? listItem.listId : 0
+
+      trigger("dialogLists:show", { action: "edit", listId: id })
+    }
+  }
+
+  deleteList(e) {
+    if (e) {
+      e.preventDefault()
+
+      const listItem = this.listItemTargets.find(item => item.contains(e.currentTarget))
+      const id = listItem ? listItem.listId : 0
+
+      trigger("dialogLists:show", { action: "delete", listId: id })
     }
   }
 }
