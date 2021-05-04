@@ -75,17 +75,26 @@ const createList = async (listName, description) => {
   clearAllData()
   await loadListData()
 
-  return getListById(listId)
+  return listId
+}
+
+const editList = async (listId, name, description) => {
+  if (listId && name) {
+    // TODO: implement the backend solution if ready
+    // const resp = listsAPI.editList(listId, name, description)
+    return true
+  }
+  return false
 }
 
 const deleteList = async listId => {
-  await listsAPI.deleteList(listId)
+  const resp = await listsAPI.deleteList(listId)
 
   // force to reload the list data in the listManager as a new list has been created
   clearAllData()
   await loadListData()
 
-  return getListById(listId)
+  return resp
 }
 
 const addPhotoToList = async (photoId, listId) => {
@@ -138,6 +147,7 @@ export default {
     clearPhotoCache, */
   clearAllData,
   createList,
+  editList,
   deleteList,
   addPhotoToList,
   deletePhotoFromList,

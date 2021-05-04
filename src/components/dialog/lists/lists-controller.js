@@ -6,11 +6,25 @@ import listManager from "../../../js/list-manager"
 
 export default class extends Controller {
   static get targets() {
-    return ["addedToSection", "addedToList", "addToListForm", "select", "name", "description", "submitButton"]
+    return [
+      "addedToSection",
+      "addedToList",
+      "addToListForm",
+      "select",
+      "addToListFormName",
+      "addToListFormDescription",
+      "editListForm",
+      "section",
+      "sectionAddPhotos",
+      "sectionEdit",
+      "sectionDelete",
+    ]
   }
 
   connect() {
     this.addToListFormTarget.submit = this.submitAddingToList.bind(this)
+    this.role = "addPhotos"
+    this.listId = 0
   }
 
   async submitAddingToList(e) {
@@ -24,37 +38,100 @@ export default class extends Controller {
     const nameInput = this.addToListFormTarget.name
     const descriptionInput = this.addToListFormTarget.description
 
+    const result = {}
+
     // reset error states
     nameInput.parentNode.classList.remove("error")
 
-    // if the photo needs to be added to a new list
     if (listId === 0) {
       if (nameInput.value && nameInput.value !== "") {
+        // if the photo needs to be added to a new list
         listName = nameInput.value
-        listId = await listManager.createList(listName, descriptionInput.value)
+        listId = await listManager.createList(nameInput.value, descriptionInput.value)
+        result.listsChanged = listId !== 0
       } else {
         nameInput.parentNode.classList.add("error")
-        trigger("snackbar:show", { message: lang("list_submit_error_name_missing"), status: "error", autoHide: true })
-        return
+        result.status = "error"
+        result.message = lang("list_submit_error_name_missing")
       }
     }
 
-    await listManager.addPhotoToList(photoManager.getSelectedPhotoId(), listId)
+    if (result.status !== "error") {
+      // if there isn't any error yet
+      if (listId === 0) {
+        // error handling if the listId is still 0
+        result.status = "error"
+        result.message = lang("list_create_error")
+      } else {
+        const success = await listManager.addPhotoToList(photoManager.getSelectedPhotoId(), listId)
 
-    trigger("snackbar:show", {
-      message: lang("list_add_success") + escapeHTML(listName),
-      status: "success",
-      autoHide: true,
-    })
-    trigger("dialogLists:hide")
+        result.status = success ? "success" : "error"
+        result.message = success ? lang("list_add_success") + escapeHTML(listName) : lang("list_add_error")
+      }
+    }
+
+    trigger("snackbar:show", { message: result.message, status: result.status, autoHide: true })
+
+    if (result.status === "success") trigger("dialogLists:hide")
+    if (result.listsChanged) trigger("dialogLists:listsChanged", { action: "create", listId: listId })
   }
 
-  success() {
-    trigger("loader:hide", { id: "loaderBase" })
-    this.element.classList.remove("is-disabled")
+  async submitEditList(e) {
+    e.preventDefault()
 
-    trigger("snackbar:show", { message: lang("user_signup_success"), status: "success", autoHide: true })
-    trigger("dialogLists:hide")
+    const nameInput = this.editListFormTarget.name
+    const descriptionInput = this.editListFormTarget.description
+
+    const result = {}
+
+    if (nameInput.value && nameInput.value !== "") {
+      if (this.listId === 0) {
+        // adding a new list
+        this.listId = await listManager.createList(nameInput.value, descriptionInput.value)
+
+        result.status = this.listId === 0 ? "error" : "success"
+        result.message =
+          this.listId === 0 ? lang("list_create_error") : lang("list_create_success") + escapeHTML(nameInput.value)
+      } else {
+        // editing an existing list
+        const listData = listManager.getListById(this.listId)
+
+        if (nameInput.value !== listData.name || descriptionInput.value !== listData.description) {
+          const success = await listManager.editList(this.listId, nameInput.value, descriptionInput.value)
+
+          result.status = success ? "success" : "error"
+          result.message = success ? lang("list_edit_success") : lang("list_edit_error")
+        } else {
+          // no changes, lets return
+          return
+        }
+      }
+    } else {
+      nameInput.parentNode.classList.add("error")
+      result.status = "error"
+      result.message = lang("list_submit_error_name_missing")
+    }
+
+    trigger("snackbar:show", { message: result.message, status: result.status, autoHide: true })
+
+    if (result.status === "success") {
+      trigger("dialogLists:hide")
+      trigger("dialogLists:listsChanged", { action: this.role, listId: this.listId })
+    }
+  }
+
+  async deleteList(e) {
+    if (e) e.preventDefault()
+
+    const success = await listManager.deleteList(this.listId)
+
+    if (success) {
+      trigger("snackbar:show", { message: lang("list_delete_success"), status: "success", autoHide: true })
+      trigger("dialogLists:hide")
+      trigger("dialogLists:listsChanged", { action: "delete", listId: this.listId })
+    } else {
+      trigger("snackbar:show", { message: lang("list_delete_error"), status: "error", autoHide: true })
+    }
   }
 
   hide() {
@@ -62,8 +139,8 @@ export default class extends Controller {
   }
 
   toggleInput() {
-    this.nameTarget.classList.toggle("is-hidden", this.selectTarget.value !== "0")
-    this.descriptionTarget.classList.toggle("is-hidden", this.selectTarget.value !== "0")
+    this.addToListFormNameTarget.classList.toggle("is-hidden", this.selectTarget.value !== "0")
+    this.addToListFormDescriptionTarget.classList.toggle("is-hidden", this.selectTarget.value !== "0")
   }
 
   async renderOptions() {
@@ -130,13 +207,37 @@ export default class extends Controller {
     return lists
   }
 
-  async show() {
+  async show(e) {
     if (appState("auth-signed-in")) {
-      this.element.classList.add("is-visible")
+      this.role = e && e.detail && e.detail.action ? e.detail.action : "addPhotos"
+      this.listId = e && e.detail && e.detail.listId ? e.detail.listId : 0
 
-      await this.renderContainingLists()
-      await this.renderOptions()
-      this.toggleInput()
+      this.sectionTargets.forEach(section => section.classList.remove("is-visible"))
+
+      switch (this.role) {
+        case "addPhotos":
+        default:
+          await this.renderContainingLists()
+          await this.renderOptions()
+          this.toggleInput()
+          break
+        case "create":
+        case "edit":
+          this.renderEditSection(this.listId, this.role)
+          break
+        case "delete":
+          this.renderDeleteSection(this.listId)
+          break
+      }
+
+      this.sectionTargets
+        .find(section => {
+          const role = this.role === "create" ? "edit" : this.role
+          return section.getAttribute("role") === role
+        })
+        .classList.add("is-visible")
+
+      this.element.classList.add("is-visible")
     } else {
       trigger("snackbar:show", { message: lang("list_signin_alert"), status: "error", autoHide: true })
       trigger("dialogSignin:show")
@@ -190,5 +291,25 @@ export default class extends Controller {
         }
       })
     }
+  }
+
+  renderEditSection(listId, role) {
+    const header = this.sectionEditTarget.getElementsByTagName("h3")[0]
+    if (header) header.innerHTML = role === "edit" ? lang("list_edit_header") : lang("list_create_header")
+
+    const listData = listManager.getListById(listId)
+
+    this.editListFormTarget.name.value = listData ? listData.name || "" : ""
+    trigger("change", null, this.editListFormTarget.name)
+
+    this.editListFormTarget.description.value = listData ? listData.description || "" : ""
+    trigger("change", null, this.editListFormTarget.description)
+  }
+
+  renderDeleteSection(listId) {
+    const listData = listManager.getListById(listId)
+    const header = this.sectionDeleteTarget.getElementsByTagName("h5")[0]
+
+    header.innerHTML = escapeHTML(listData.name)
   }
 }

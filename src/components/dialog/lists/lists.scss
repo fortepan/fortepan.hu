@@ -2,6 +2,14 @@
   h6 {
     margin: 1.5rem 0;
   }
+
+  section {
+    display: none;
+
+    &.is-visible {
+      display: block;
+    }
+  }
 }
 
 .dialog-lists__input {

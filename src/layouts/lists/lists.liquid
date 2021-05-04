@@ -3,9 +3,11 @@ layout: base/base.liquid
 ---
 
 <div class="lists scrollview" data-controller="lists"
-  data-action="auth:loginStatus@document->lists#show">
+  data-action="auth:loginStatus@document->lists#show
+               dialogLists:listsChanged@document->lists#onListsChanged"
+>
   <div class="layout-heading lists__heading">
-    <h1 class="lists__title">{{ lang[locale].lists }}</h1>
+    <h1 class="lists__title">{{ lang[locale].lists }} <a href="#" data-action="click->lists#createList">Új lista</a></h1>
     <h5 class="lists__subtitle">
       <span data-lists-target="total">0</span>
       <span>{{ lang[locale].list }}</span>

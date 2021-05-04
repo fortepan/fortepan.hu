@@ -8,7 +8,7 @@
     {{ input_options }}
     data-input-target="input"
     {{ stimulus_target }}
-    data-action="keyup->input#keyup keypress->input#keypress{% unless autosuggest == null %} keyup->autosuggest#keyup{% endunless %}"
+    data-action="change->input#onChange keyup->input#onChange keypress->input#keypress{% unless autosuggest == null %} keyup->autosuggest#keyup{% endunless %}"
     {% unless autosuggest == null %}
     data-autosuggest="{{ autosuggest }}"
     data-autosuggest-target="input"

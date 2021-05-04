@@ -24,10 +24,12 @@ export default class extends Controller {
 
   async renderLists() {
     if (this.listRendered) return
-
     this.listRendered = true
 
     trigger("loader:show", { id: "loaderBase" })
+
+    // remove all previously existing listItems
+    this.listItemTargets.forEach(listItem => listItem.remove())
 
     const lists = await listManager.getLists()
 
@@ -138,6 +140,11 @@ export default class extends Controller {
     }
   }
 
+  createList(e) {
+    if (e) e.preventDefault()
+    trigger("dialogLists:show", { action: "create" })
+  }
+
   editList(e) {
     if (e) {
       e.preventDefault()
@@ -157,6 +164,28 @@ export default class extends Controller {
       const id = listItem ? listItem.listId : 0
 
       trigger("dialogLists:show", { action: "delete", listId: id })
+    }
+  }
+
+  onListsChanged(e) {
+    if (e && e.action) {
+      switch (e.action) {
+        case "create":
+          // TODO: add the new listItem
+          break
+        case "edit":
+          // TODO: modify the listItem
+          break
+        case "delete":
+          // TODO: remove the listItem
+          break
+        default:
+          // reload the whole list
+          this.listRendered = false
+          this.element.classList.remove("is-visible")
+          this.show()
+          break
+      }
     }
   }
 }

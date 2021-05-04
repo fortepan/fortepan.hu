@@ -5,7 +5,7 @@ export default class extends Controller {
     return ["label", "input"]
   }
 
-  keyup(e) {
+  onChange(e) {
     // show the label of the input field when the input value is not empty
     if (this.hasLabelTarget) {
       if (e.currentTarget.value.length > 0) {
