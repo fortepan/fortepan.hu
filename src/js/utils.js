@@ -189,7 +189,9 @@ export const globalSettings = {
 }
 
 export const escapeHTML = unsafe => {
-  return unsafe.replace(/[\u00A0-\u9999<>&]/g, i => {
-    return `&#${i.charCodeAt(0)};`
-  })
+  return unsafe
+    ? unsafe.replace(/[\u00A0-\u9999<>&]/g, i => {
+        return `&#${i.charCodeAt(0)};`
+      })
+    : ""
 }

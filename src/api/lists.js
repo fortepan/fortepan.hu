@@ -25,7 +25,11 @@ const createList = async (name, description) => {
   })
 
   const respData = await resp.json()
-  return respData.data.attributes.drupal_internal__tid
+  if (respData && respData.data && respData.data.attributes && respData.data.attributes.drupal_internal__tid) {
+    return respData.data.attributes.drupal_internal__tid
+  }
+
+  return 0
 }
 
 const deleteList = async listId => {
