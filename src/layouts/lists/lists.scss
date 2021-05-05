@@ -156,7 +156,8 @@
     }
   }
 
-  .no-image &,
+  // .no-image &,
+  &,
   .has-image--1 & {
     top: 0;
     right: 0;
@@ -202,7 +203,6 @@
     }
   }
 
-  .lists__item__cover:not(.no-image, .has-image--1, .has-image--2) &,
   .has-image--3 &,
   .has-image--more & {
     width: calc(50% - 1px);
