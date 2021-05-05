@@ -9,6 +9,7 @@ const createList = async (name, description) => {
       type: "taxonomy_term--private",
       attributes: {
         name,
+        description,
       },
     },
   }
@@ -30,6 +31,11 @@ const createList = async (name, description) => {
   }
 
   return 0
+}
+
+const editList = async (listId, name, description) => {
+  // TODO: implement the backend solution if ready
+  return { errors: "Feature is not implemented yet", params: [listId, name, description] }
 }
 
 const deleteList = async listId => {
@@ -117,6 +123,7 @@ const getContainingLists = async photoId => {
 
 export default {
   createList,
+  editList,
   deleteList,
   addToList,
   deleteFromList,

@@ -170,7 +170,7 @@ export default class extends Controller {
   onListsChanged(e) {
     if (e && e.action) {
       switch (e.action) {
-        case "create":
+        /* case "create":
           // TODO: add the new listItem
           break
         case "edit":
@@ -178,14 +178,20 @@ export default class extends Controller {
           break
         case "delete":
           // TODO: remove the listItem
-          break
+          break */
         default:
-          // reload the whole list
-          this.listRendered = false
-          this.element.classList.remove("is-visible")
-          this.show()
+          this.reloadLists()
           break
       }
+    } else {
+      this.reloadLists()
     }
+  }
+
+  reloadLists() {
+    // reload the whole list
+    this.listRendered = false
+    this.element.classList.remove("is-visible")
+    this.show()
   }
 }
