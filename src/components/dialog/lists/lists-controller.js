@@ -63,17 +63,17 @@ export default class extends Controller {
         result.status = "error"
         result.message = lang("list_create_error")
       } else {
-        const success = await listManager.addPhotoToList(photoManager.getSelectedPhotoId(), listId)
+        const resp = await listManager.addPhotoToList(photoManager.getSelectedPhotoId(), listId)
 
-        result.status = success ? "success" : "error"
-        result.message = success ? lang("list_add_success") + escapeHTML(listName) : lang("list_add_error")
+        result.status = resp.errors ? "error" : "success"
+        result.message = resp.errors ? lang("list_add_error") : lang("list_add_success") + escapeHTML(listName)
       }
     }
 
     trigger("snackbar:show", { message: result.message, status: result.status, autoHide: true })
 
     if (result.status === "success") trigger("dialogLists:hide")
-    if (result.listsChanged) trigger("dialogLists:listsChanged", { action: "create", listId: listId })
+    if (result.listsChanged) trigger("dialogLists:listsChanged", { action: "create", listId })
   }
 
   async submitEditList(e) {
@@ -96,11 +96,11 @@ export default class extends Controller {
         // editing an existing list
         const listData = listManager.getListById(this.listId)
 
-        if (nameInput.value !== listData.name || descriptionInput.value !== listData.description) {
-          const success = await listManager.editList(this.listId, nameInput.value, descriptionInput.value)
+        if (listData.name !== nameInput.value || listData.description !== descriptionInput.value) {
+          const resp = await listManager.editList(this.listId, nameInput.value, descriptionInput.value)
 
-          result.status = success ? "success" : "error"
-          result.message = success ? lang("list_edit_success") : lang("list_edit_error")
+          result.status = resp.errors ? "error" : "success"
+          result.message = resp.errors ? lang("list_edit_error") : lang("list_edit_success")
         } else {
           // no changes, lets return
           return
@@ -123,14 +123,18 @@ export default class extends Controller {
   async deleteList(e) {
     if (e) e.preventDefault()
 
-    const success = await listManager.deleteList(this.listId)
+    const result = {}
 
-    if (success) {
-      trigger("snackbar:show", { message: lang("list_delete_success"), status: "success", autoHide: true })
+    const resp = await listManager.deleteList(this.listId)
+
+    result.status = resp.errors ? "error" : "success"
+    result.message = resp.errors ? lang("list_delete_error") : lang("list_delete_success")
+
+    trigger("snackbar:show", { message: result.message, status: result.status, autoHide: true })
+
+    if (result.status === "success") {
       trigger("dialogLists:hide")
       trigger("dialogLists:listsChanged", { action: "delete", listId: this.listId })
-    } else {
-      trigger("snackbar:show", { message: lang("list_delete_error"), status: "error", autoHide: true })
     }
   }
 
@@ -250,14 +254,16 @@ export default class extends Controller {
     if (e && e.currentTarget) {
       const listData = listManager.getListById(e.currentTarget.listId)
       const listTag = e.currentTarget.parentNode.parentNode
+      const result = {}
 
-      await listManager.deletePhotoFromList(photoManager.getSelectedPhotoId(), listData.id)
+      const resp = await listManager.deletePhotoFromList(photoManager.getSelectedPhotoId(), listData.id)
 
-      trigger("snackbar:show", {
-        message: lang("list_remove_from_success") + escapeHTML(listData.name),
-        status: "success",
-        autoHide: true,
-      })
+      result.status = resp.errors ? "error" : "success"
+      result.message = resp.errors
+        ? lang("list_remove_from_error")
+        : lang("list_remove_from_success") + escapeHTML(listData.name)
+
+      trigger("snackbar:show", { message: result.message, status: result.status, autoHide: true })
 
       // temporarily remove the list-tag (until the api callback returns, see below)
       listTag.remove()

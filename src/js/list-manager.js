@@ -80,11 +80,10 @@ const createList = async (listName, description) => {
 
 const editList = async (listId, name, description) => {
   if (listId && name) {
-    // TODO: implement the backend solution if ready
-    // const resp = listsAPI.editList(listId, name, description)
-    return true
+    const resp = await listsAPI.editList(listId, name, description)
+    return resp
   }
-  return false
+  return { errors: `Missing parameters: ${!listId ? "listId, " : ""}${!name ? "name" : ""}` }
 }
 
 const deleteList = async listId => {
@@ -98,17 +97,21 @@ const deleteList = async listId => {
 }
 
 const addPhotoToList = async (photoId, listId) => {
-  await listsAPI.addToList(photoId, listId)
-  const photos = await loadListPhotosData(listId)
+  const resp = await listsAPI.addToList(photoId, listId)
 
-  return photos
+  // update photo data of the list item
+  await loadListPhotosData(listId)
+
+  return resp
 }
 
 const deletePhotoFromList = async (photoId, listId) => {
-  await listsAPI.deleteFromList(photoId, listId)
-  const photos = await loadListPhotosData(listId)
+  const resp = await listsAPI.deleteFromList(photoId, listId)
 
-  return photos
+  // update photo data of the list item
+  await loadListPhotosData(listId)
+
+  return resp
 }
 
 // return all the lists of the current logged in user that contains a given image
