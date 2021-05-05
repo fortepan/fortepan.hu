@@ -4,13 +4,19 @@ layout: base/base.liquid
 
 <div class="lists scrollview" data-controller="lists"
   data-action="auth:loginStatus@document->lists#show
-               dialogLists:listsChanged@document->lists#onListsChanged"
+               dialogLists:listsChanged@document->lists#onListsChanged
+               scroll->lists#loadListItemThumbnails"
 >
   <div class="layout-heading lists__heading">
-    <h1 class="lists__title">{{ lang[locale].lists }} <a href="#" data-action="click->lists#createList">Új lista</a></h1>
+    <h1 class="lists__title">
+      <span class="lists__title__label">{{ lang[locale].lists }}</span>
+      <a href="#" class="button button--medium button--secondary lists__title__button" data-action="click->lists#createList">
+        <span>{{ lang[locale].list_new }}</span>
+      </a>
+    </h1>
     <h5 class="lists__subtitle">
-      <span data-lists-target="total">0</span>
-      <span>{{ lang[locale].list }}</span>
+      <span class="lists__subtitle__count" data-lists-target="count">0</span>
+      <span class="lists__subtitle__label" data-lists-target="countLabel">{{ lang[locale].list }}</span>
     </h5>
   </div>
   <div class="lists__grid" data-lists-target="grid"></div>
@@ -20,7 +26,13 @@ layout: base/base.liquid
   <div class="lists__item" data-lists-target="listItem">
     <div class="lists__item__cover" data-action="click->lists#openList">
       <div class="lists__item__cover-inner">
-        <div class="lists__item__photo"><span class="lists__item__photo__img"></span></div>
+        <div class="lists__item__photo">
+          <span class="lists__item__photo__img"></span>
+          <div class="button-circular lists__item__add-icon" data-action="click->lists#jumpToPhotos">
+            {% inlineSVG src:"src/static/images/icons/24/icon-add-to-list.svg" class:"button-circular__icon" %}
+            <div class="button-circular__label">{{ lang[locale].list_add_photos }}</div>
+          </div>
+        </div>
         <div class="lists__item__photo"><span class="lists__item__photo__img"></span></div>
         <div class="lists__item__photo"><span class="lists__item__photo__img"></span></div>
         <span class="lists__item__photo-count"><span class="lists__item__counter"></span></span>
@@ -32,10 +44,12 @@ layout: base/base.liquid
         <div class="button-circular lists__item__menu__button"
           data-action="click->lists#showEditListDropdown"
         >
-            {% inlineSVG src:"src/static/images/icons/24/icon-dots.svg" class:"button-circular__icon" %}
-            <div class="button-circular__label">{{ lang[locale].list_edit }}</div>
+          {% inlineSVG src:"src/static/images/icons/24/icon-dots.svg" class:"button-circular__icon" %}
+          <div class="button-circular__label">{{ lang[locale].list_edit }}</div>
         </div>
         <div class="header-nav__popup">
+          <a href="#" class="header-nav__link header-nav__link--top"
+            data-action="click->lists#jumpToPhotos">{{ lang[locale].list_add_photos }}</a>
           <a href="#" class="header-nav__link header-nav__link--top header-nav__link--separator-after"
             data-action="click->lists#openList">{{ lang[locale].list_view }}</a>
           <a href="#" class="header-nav__link header-nav__link--top"
