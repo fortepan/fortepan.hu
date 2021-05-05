@@ -1,15 +1,18 @@
 import { Controller } from "stimulus"
-import { lang, escapeHTML, trigger } from "../../js/utils"
+import { throttle } from "lodash"
+import { lang, escapeHTML, trigger, getLocale, isElementInViewport } from "../../js/utils"
 import { appState } from "../../js/app"
 import config from "../../data/siteConfig"
 import listManager from "../../js/list-manager"
 
 export default class extends Controller {
   static get targets() {
-    return ["total", "grid", "listItem"]
+    return ["count", "countLabel", "grid", "listItem"]
   }
 
-  connect() {}
+  connect() {
+    this.loadListItemThumbnails = throttle(this.loadListItemThumbnails, 200)
+  }
 
   async show() {
     if (appState("auth-signed-in")) {
@@ -33,12 +36,13 @@ export default class extends Controller {
 
     const lists = await listManager.getLists()
 
-    this.totalTarget.innerText = lists.length
+    this.countTarget.innerText = lists.length
 
     lists.forEach(async listData => {
       const template = document.getElementById("lists-item").content.firstElementChild
 
       const newListItem = template.cloneNode(true)
+      newListItem.listId = listData.id
 
       const title = newListItem.getElementsByClassName("lists__item__title")[0]
       if (title) {
@@ -52,30 +56,37 @@ export default class extends Controller {
           description.innerHTML = escapeHTML(listData.description)
           /* description.innerHTML = escapeHTML(
             "Random lista leírás, maximum 140 karakter hosszú, és minden listához egyenként hozzáadható. Megjelenik a listákat listázó oldalon és máshol."
-          ) */
+            ) */
           description.classList.add("is-visible")
         }
       }
 
+      this.gridTarget.appendChild(newListItem)
+
       // images
-      const photos = await listManager.getListPhotos(listData.id)
+      const photosData = await listManager.getListPhotos(listData.id)
 
+      // after photos data loaded
       const cover = newListItem.getElementsByClassName("lists__item__cover")[0]
-      if (cover && photos.length > 0) {
-        cover.classList.add(photos.length > 3 ? "has-image--more" : `has-image--${photos.length}`)
+      if (cover && photosData.length > 0) {
+        cover.classList.add(photosData.length > 3 ? "has-image--more" : `has-image--${photosData.length}`)
 
-        if (photos.length > 3) {
+        if (photosData.length > 3) {
           const count = newListItem.getElementsByClassName("lists__item__counter")[0]
-          count.innerText = `+${photos.length - 3}`
+          count.innerText = `+${photosData.length - 3}`
         }
+      } else {
+        cover.classList.add("no-image")
       }
 
-      photos.forEach((photoItem, index) => {
+      photosData.forEach((photoItem, index) => {
         if (index < 3) {
           const photoId = photoItem.id
           const photoElement = newListItem.getElementsByClassName("lists__item__photo")[index]
           const imageTarget = photoElement.getElementsByClassName("lists__item__photo__img")[0]
           const img = new Image()
+
+          photoElement.classList.add("has-photo")
 
           img.addEventListener("load", () => {
             imageTarget.style.backgroundImage = `url("${img.src}")`
@@ -86,20 +97,37 @@ export default class extends Controller {
             imageTarget.classList.add("is-failed-loading")
           })
 
-          img.src = `${config.PHOTO_SOURCE}240/fortepan_${photoId}.jpg`
+          imageTarget.img = img
+          imageTarget.src = `${config.PHOTO_SOURCE}240/fortepan_${photoId}.jpg`
         }
       })
 
-      newListItem.listId = listData.id
-
-      this.gridTarget.appendChild(newListItem)
+      this.loadListItemThumbnails()
     })
 
     trigger("loader:hide", { id: "loaderBase" })
   }
 
+  loadListItemThumbnails() {
+    const imageTargets = Array.from(
+      this.element.querySelectorAll(".lists__item__photo.has-photo .lists__item__photo__img:not(.is-loaded)")
+    )
+
+    imageTargets.forEach(imgTarget => {
+      if (!imgTarget.imageLoadInit && imgTarget.img && isElementInViewport(imgTarget, false)) {
+        imgTarget.img.src = imgTarget.src
+        imgTarget.imageLoadInit = true
+      }
+    })
+  }
+
   openList(e) {
     if (e && e.currentTarget) {
+      // if the user clicks on the add photos icon do nothing
+      if (e.target && e.target.classList.contains("lists__item__add-icon")) {
+        return
+      }
+
       const listItem = this.listItemTargets.find(item => item.contains(e.currentTarget))
       const id = listItem ? listItem.listId : 0
       const listData = listManager.getListById(id)
@@ -193,5 +221,10 @@ export default class extends Controller {
     this.listRendered = false
     this.element.classList.remove("is-visible")
     this.show()
+  }
+
+  jumpToPhotos(e) {
+    if (e) e.preventDefault()
+    window.location = `/${getLocale()}/photos/`
   }
 }
