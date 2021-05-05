@@ -314,8 +314,8 @@ export default class extends Controller {
 
   renderDeleteSection(listId) {
     const listData = listManager.getListById(listId)
-    const header = this.sectionDeleteTarget.getElementsByTagName("h5")[0]
+    const title = this.sectionDeleteTarget.getElementsByClassName("dialog-lists__delete-title")[0]
 
-    header.innerHTML = escapeHTML(listData.name)
+    title.innerHTML = escapeHTML(listData.name)
   }
 }

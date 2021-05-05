@@ -10,6 +10,12 @@
       display: block;
     }
   }
+
+  p {
+    font-size: rem(14px);
+    line-height: 1.5rem;
+    margin: 1rem 0 0 0;
+  }
 }
 
 .dialog-lists__input {
@@ -153,4 +159,8 @@
   display: none;
   display: block;
   position: absolute;
+}
+
+.dialog-lists__delete-title {
+  color: $red;
 }

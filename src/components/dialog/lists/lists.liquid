@@ -73,9 +73,8 @@
 
       <section role="delete" data-dialog--lists-target="section sectionDelete">
         <h3 class="dialog__title">{{ lang[locale].list_delete_header }}</h3>
-          <p>{{ lang[locale].list_delete_confirm_msg }}</p>
-          <h5>Lista neve</h5>
-          <button class="button button--primary dialog__button" data-action="dialog--lists#deleteList">{{ lang[locale].list_delete }}</button>
+        <p class="dialog-lists__message">{{ lang[locale].list_delete_confirm_msg }} <strong class="dialog-lists__delete-title"></strong></p>
+        <button class="button button--primary dialog__button" data-action="dialog--lists#deleteList">{{ lang[locale].list_delete }}</button>
       </section>
 
   </div>

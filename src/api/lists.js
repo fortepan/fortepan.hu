@@ -51,7 +51,9 @@ const deleteList = async listId => {
     },
   })
 
-  const respData = await resp.json()
+  const respData = await resp.json().catch(error => {
+    return { errors: error }
+  })
   return respData
 }
 
