@@ -1,8 +1,10 @@
 import { trigger, validateEmail } from "../js/utils"
 import config from "../data/siteConfig"
-import { setAppState, removeAppState } from "../js/app"
+import { appState, setAppState, removeAppState } from "../js/app"
 
 const setLoginStatus = isUserSignedIn => {
+  const authState = appState("auth-signed-in")
+
   if (isUserSignedIn) {
     setAppState("auth-signed-in")
   } else {
@@ -10,7 +12,9 @@ const setLoginStatus = isUserSignedIn => {
     localStorage.removeItem("auth")
   }
 
-  trigger("auth:loginStatus")
+  if (appState("auth-signed-in") !== authState) {
+    trigger("auth:loginStatus")
+  }
 }
 
 const signin = async body => {

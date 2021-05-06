@@ -16,8 +16,8 @@ export default class extends Controller {
 
   async show() {
     if (appState("auth-signed-in")) {
-      await this.renderLists()
       this.element.classList.add("is-visible")
+      await this.renderLists()
     } else {
       this.element.classList.remove("is-visible")
       trigger("snackbar:show", { message: lang("list_signin_alert"), status: "error", autoHide: true })
@@ -36,13 +36,15 @@ export default class extends Controller {
 
     const lists = await listManager.getLists()
 
-    this.countTarget.innerText = lists.length
+    const listPhotosPromises = []
+    const listItemsCreated = []
 
-    lists.forEach(async listData => {
+    lists.forEach(listData => {
       const template = document.getElementById("lists-item").content.firstElementChild
 
       const newListItem = template.cloneNode(true)
       newListItem.listId = listData.id
+      listItemsCreated.push(newListItem)
 
       const title = newListItem.getElementsByClassName("lists__item__title")[0]
       if (title) {
@@ -61,49 +63,56 @@ export default class extends Controller {
         }
       }
 
-      this.gridTarget.appendChild(newListItem)
-
       // images
-      const photosData = await listManager.getListPhotos(listData.id)
+      const listPhotosPromise = listManager.getListPhotos(listData.id).then(photosData => {
+        // after photos data loaded
+        const cover = newListItem.getElementsByClassName("lists__item__cover")[0]
+        if (cover && photosData.length > 0) {
+          cover.classList.add(photosData.length > 3 ? "has-image--more" : `has-image--${photosData.length}`)
 
-      // after photos data loaded
-      const cover = newListItem.getElementsByClassName("lists__item__cover")[0]
-      if (cover && photosData.length > 0) {
-        cover.classList.add(photosData.length > 3 ? "has-image--more" : `has-image--${photosData.length}`)
-
-        if (photosData.length > 3) {
-          const count = newListItem.getElementsByClassName("lists__item__counter")[0]
-          count.innerText = `+${photosData.length - 3}`
+          if (photosData.length > 3) {
+            const count = newListItem.getElementsByClassName("lists__item__counter")[0]
+            count.innerText = `+${photosData.length - 3}`
+          }
+        } else {
+          cover.classList.add("no-image")
         }
-      } else {
-        cover.classList.add("no-image")
-      }
 
-      photosData.forEach((photoItem, index) => {
-        if (index < 3) {
-          const photoId = photoItem.id
-          const photoElement = newListItem.getElementsByClassName("lists__item__photo")[index]
-          const imageTarget = photoElement.getElementsByClassName("lists__item__photo__img")[0]
-          const img = new Image()
+        photosData.forEach((photoItem, index) => {
+          if (index < 3) {
+            const photoId = photoItem.id
+            const photoElement = newListItem.getElementsByClassName("lists__item__photo")[index]
+            const imageTarget = photoElement.getElementsByClassName("lists__item__photo__img")[0]
+            const img = new Image()
 
-          photoElement.classList.add("has-photo")
+            photoElement.classList.add("has-photo")
 
-          img.addEventListener("load", () => {
-            imageTarget.style.backgroundImage = `url("${img.src}")`
-            imageTarget.classList.add("is-loaded")
-          })
+            img.addEventListener("load", () => {
+              imageTarget.style.backgroundImage = `url("${img.src}")`
+              imageTarget.classList.add("is-loaded")
+            })
 
-          img.addEventListener("error", () => {
-            imageTarget.classList.add("is-failed-loading")
-          })
+            img.addEventListener("error", () => {
+              imageTarget.classList.add("is-failed-loading")
+            })
 
-          imageTarget.img = img
-          imageTarget.src = `${config.PHOTO_SOURCE}240/fortepan_${photoId}.jpg`
-        }
+            imageTarget.img = img
+            imageTarget.src = `${config.PHOTO_SOURCE}240/fortepan_${photoId}.jpg`
+          }
+        })
+
+        this.loadListItemThumbnails()
       })
 
-      this.loadListItemThumbnails()
+      listPhotosPromises.push(listPhotosPromise)
     })
+
+    await Promise.all(listPhotosPromises)
+
+    // when all data is loaded add the list items to the dom
+    listItemsCreated.forEach(listItem => this.gridTarget.appendChild(listItem))
+
+    this.countTarget.innerText = lists.length
 
     trigger("loader:hide", { id: "loaderBase" })
   }
