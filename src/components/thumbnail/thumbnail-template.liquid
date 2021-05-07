@@ -1,0 +1,12 @@
+<template id="photos-thumbnail">
+    <div class="photos-thumbnail is-hidden" data-controller="thumbnail"
+        data-action="click->thumbnail#clicked"
+        {% if role %}role="{{ role }}"{% endif %}
+    >
+        <div class="photos-thumbnail__image" data-thumbnail-target="container">
+            <img alt="" draggable="false" data-thumbnail-target="image"/>
+        </div>
+        <div class="photos-thumbnail__meta photos-thumbnail__meta--location" data-thumbnail-target="location"></div>
+        <div class="photos-thumbnail__meta photos-thumbnail__meta--description" data-thumbnail-target="description"></div>
+    </div>
+</template>
