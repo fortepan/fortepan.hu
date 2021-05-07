@@ -1,9 +1,9 @@
 import { Controller } from "stimulus"
 
-import config from "../../../data/siteConfig"
-import { trigger } from "../../../js/utils"
-import photoManager from "../../../js/photo-manager"
-import listManager from "../../../js/list-manager"
+import config from "../../data/siteConfig"
+import { trigger } from "../../js/utils"
+import photoManager from "../../js/photo-manager"
+import listManager from "../../js/list-manager"
 
 const THUMBNAIL_HEIGHT = 160
 export default class extends Controller {
@@ -38,7 +38,7 @@ export default class extends Controller {
     }
 
     // Load photo in Carousel
-    trigger("photosCarousel:showPhoto", { data: selectedPhotoData })
+    trigger("photosThumbnail:select", { data: selectedPhotoData })
   }
 
   // resize thumbnail when the browser window gets resized

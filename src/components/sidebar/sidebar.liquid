@@ -1,4 +1,4 @@
-<div class="carousel-sidebar scrollview" 
+<div class="carousel-sidebar scrollview"
      data-controller="sidebar"
      data-action="resize@window->sidebar#toggleOnResize
                   carouselSidebar:init@document->sidebar#init
@@ -28,11 +28,11 @@
             <h6>{{ lang[locale].photographer }}</h6>
             <h5 data-sidebar-target="author"></h5>
         </div>
-        
-        <div class="carousel-add-tags" 
+
+        <div class="carousel-add-tags"
              data-controller="add-tags"
              data-action="photosCarousel:hide@document->add-tags#hideForm
-             photosCarousel:showPhoto@document->add-tags#getPendingTags
+             photosThumbnail:select@document->add-tags#getPendingTags
              auth:signedOut@document->add-tags#hideForm">
             <h6 class="carousel-sidebar__tags-title">{{ lang[locale].tags }}</h6>
             <p class="carousel-sidebar__tags" data-sidebar-target="tags" data-add-tags-target="tags"></p>
@@ -41,12 +41,12 @@
                data-action="click->add-tags#showForm"
             >{{ lang[locale].add_tag }}</div>
             <form class="carousel-add-tags__form is-hidden" data-add-tags-target="form">
-                {% include selectize-control/selectize-control.liquid 
+                {% include selectize-control/selectize-control.liquid
                             class:'carousel-sidebar__tags__form__selectize'
                             filter:'cimke_name'
-                            stimulus_target:'data-add-tags-target="input"' 
+                            stimulus_target:'data-add-tags-target="input"'
                 %}
-                <button class="button button--primary button--medium button--wide carousel-add-tags__save" 
+                <button class="button button--primary button--medium button--wide carousel-add-tags__save"
                         data-add-tags-target="submitButton"
                         data-action="click->add-tags#submit"
                 >{{ lang[locale].save }}</button>

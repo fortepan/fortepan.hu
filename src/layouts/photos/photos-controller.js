@@ -323,7 +323,7 @@ export default class extends Controller {
 
           // show carousel with an image
           const selectedPhoto = photoManager.selectPhotoById(getURLParams().id)
-          trigger("photosCarousel:showPhoto", { data: selectedPhoto.data })
+          trigger("photosThumbnail:select", { data: selectedPhoto.data })
         } else {
           trigger("photosCarousel:close")
         }
