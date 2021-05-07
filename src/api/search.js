@@ -342,14 +342,14 @@ const getDataById = array => {
     const body = {
       query: {
         ids: {
-          values: array.map(item => `"entity:media/${item}:hu"`),
+          values: array.map(item => `entity:media/${item}:hu`),
         },
       },
     }
 
     elasticRequest(body)
       .then(resp => {
-        resolve(resp)
+        resolve(transformResults(resp))
       })
       .catch(err => {
         reject(err)
