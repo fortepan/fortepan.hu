@@ -1,5 +1,6 @@
 import { getLocale, trigger, slugify } from "./utils"
 import listsAPI from "../api/lists"
+import searchAPI from "../api/search"
 
 const listData = {}
 
@@ -10,7 +11,7 @@ const loadListData = async () => {
 
   Object.keys(rawResponse).forEach(key => {
     const data = { id: key, name: rawResponse[key] }
-    data.url = `/${getLocale()}/lists/${slugify(data.name, true)}`
+    data.url = `/${getLocale()}/lists/${slugify(data.name, true)}/`
 
     listData.lists.push(data)
   })
@@ -18,6 +19,10 @@ const loadListData = async () => {
   trigger("listManager:load", listData.lists)
 
   return listData.lists
+}
+
+const hasData = () => {
+  return !!listData.lists
 }
 
 const getLists = async () => {
@@ -28,7 +33,17 @@ const getLists = async () => {
 }
 
 const getListById = listId => {
-  return listData.lists.find(item => Number(item.id) === Number(listId))
+  if (listData.lists) {
+    return listData.lists.find(item => Number(item.id) === Number(listId))
+  }
+  return {}
+}
+
+const getListBySlug = slug => {
+  if (listData.lists) {
+    return listData.lists.find(item => slugify(item.name, true) === slug)
+  }
+  return {}
 }
 
 const loadListPhotosData = async listId => {
@@ -59,9 +74,57 @@ const getListPhotos = async listId => {
   return []
 }
 
+const getListPhotoById = (listId, photoId) => {
+  const list = getListById(listId)
+  if (list && list.photos && list.photos.length > 0) {
+    return list.photos.find(photo => Number(photo.id) === Number(photoId))
+  }
+
+  return null
+}
+
+const loadExtendedListPhotoData = async listId => {
+  const list = getListById(listId)
+  if (list.photos && !list.extendedPhotoDataLoaded) {
+    const resp = await searchAPI.getDataById(list.photos.map(item => item.id))
+
+    if (resp.items && resp.items.length > 0) {
+      resp.items.forEach(data => {
+        // copy the properties of the loaded data over the stored object
+        Object.assign(getListPhotoById(listId, data.mid), data)
+      })
+    }
+
+    list.extendedPhotoDataLoaded = true
+  }
+}
+
+const selectListById = listId => {
+  listData.selectedList = getListById(listId)
+  return listData.selectedList
+}
+
+const getSelectedListId = () => {
+  return listData.selectedList ? listData.selectedList.id : undefined
+}
+
+const getSelectedList = () => {
+  return listData.selectedList
+}
+
+const selectPhotoById = (listId, photoId) => {
+  listData.selectedPhoto = getListPhotoById(listId, photoId)
+  return listData.selectedPhoto
+}
+
+const getSelectedPhoto = () => {
+  return listData.selectedPhoto
+}
+
 const clearAllData = () => {
   // if the context of the search has changed destroy all photo data
   delete listData.lists
+  delete listData.selectedList
 
   trigger("listManager:allDataCleared")
 }
@@ -123,10 +186,19 @@ const getContainingLists = async photoId => {
 
 export default {
   loadListData,
+  hasData,
   getLists,
   getListById,
+  getListBySlug,
   loadListPhotosData,
   getListPhotos,
+  getListPhotoById,
+  loadExtendedListPhotoData,
+  selectListById,
+  getSelectedListId,
+  getSelectedList,
+  selectPhotoById,
+  getSelectedPhoto,
   /* hasData,
     getSelectedPhotoId,
     getSelectedPhotoData,
