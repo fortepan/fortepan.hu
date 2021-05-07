@@ -1,13 +1,13 @@
 import { Controller } from "stimulus"
 import { throttle } from "lodash"
-import { lang, escapeHTML, trigger, getLocale, isElementInViewport } from "../../js/utils"
+import { lang, escapeHTML, trigger, getLocale, isElementInViewport, getPrettyURLValues } from "../../js/utils"
 import { appState } from "../../js/app"
 import config from "../../data/siteConfig"
 import listManager from "../../js/list-manager"
 
 export default class extends Controller {
   static get targets() {
-    return ["count", "countLabel", "grid", "listItem"]
+    return ["title", "titleLabel", "subtitle", "count", "countLabel", "grid", "listItem", "listPhotos"]
   }
 
   connect() {
@@ -16,8 +16,33 @@ export default class extends Controller {
 
   async show() {
     if (appState("auth-signed-in")) {
-      this.element.classList.add("is-visible")
-      await this.renderLists()
+      // hide the both the lists and list-photos first
+      trigger("lists:hideListPhotos")
+      this.element.classList.remove("is-visible")
+
+      // first check if we have a matching slug in the url to show the list photo page
+      const urlValues = getPrettyURLValues(window.location.pathname.split(`/${getLocale()}/lists/`).join("/"))
+
+      if (urlValues.length > 0) {
+        // load lists if it hasn't been loaded
+        if (!listManager.hasData()) await listManager.loadListData()
+
+        // check for an existing list given the slug (first of the url path values)
+        const listData = listManager.getListBySlug(urlValues[0])
+
+        if (listData) {
+          // if the selected list exists trigger the event to show the list photos
+          trigger("lists:showListPhotos", { listId: listData.id })
+        } else {
+          // if the list doesn't exist fallback to the lists page
+          this.element.classList.add("is-visible")
+          await this.renderLists()
+        }
+      } else {
+        // no slug is given, show the lists page by default
+        this.element.classList.add("is-visible")
+        await this.renderLists()
+      }
     } else {
       this.element.classList.remove("is-visible")
       trigger("snackbar:show", { message: lang("list_signin_alert"), status: "error", autoHide: true })
@@ -33,6 +58,8 @@ export default class extends Controller {
 
     // remove all previously existing listItems
     this.listItemTargets.forEach(listItem => listItem.remove())
+
+    this.subtitleTarget.classList.remove("is-visible")
 
     const lists = await listManager.getLists()
 
@@ -113,6 +140,7 @@ export default class extends Controller {
     listItemsCreated.forEach(listItem => this.gridTarget.appendChild(listItem))
 
     this.countTarget.innerText = lists.length
+    this.subtitleTarget.classList.add("is-visible")
 
     trigger("loader:hide", { id: "loaderBase" })
   }
@@ -132,25 +160,28 @@ export default class extends Controller {
 
   openList(e) {
     if (e && e.currentTarget) {
+      e.preventDefault()
+
       // if the user clicks on the add photos icon do nothing
       if (e.target && e.target.classList.contains("lists__item__add-icon")) {
         return
       }
 
       const listItem = this.listItemTargets.find(item => item.contains(e.currentTarget))
-      const id = listItem ? listItem.listId : 0
-      const listData = listManager.getListById(id)
+      const listData = listManager.getListById(listItem.listId || 0)
 
       if (listData && listData.url) {
-        window.location = listData.url
+        // window.location = listData.url
 
-        /* window.history.pushState(
-        null,
-        escapeHTML(listData.name),
-        listData.url
-      ) */
+        window.history.pushState(null, escapeHTML(listData.name), listData.url)
+        // manually trigger popstate - history.pushState doesn't trigger it by default
+        trigger("popstate", null, window)
       }
     }
+  }
+
+  onPopState() {
+    this.show()
   }
 
   showEditListDropdown(e) {

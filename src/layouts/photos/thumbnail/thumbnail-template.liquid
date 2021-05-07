@@ -1,5 +1,5 @@
 <template id="photos-thumbnail">
-    <div class="photos-thumbnail is-hidden" data-controller="photos--thumbnail" data-action="click->photos--thumbnail#clicked">
+    <div class="photos-thumbnail is-hidden" data-controller="photos--thumbnail" data-action="click->photos--thumbnail#clicked"{% if role %} role="{{ role }}"{% endif %}>
         <div class="photos-thumbnail__image" data-photos--thumbnail-target="container">
             <img alt="" draggable="false" data-photos--thumbnail-target="image"/>
         </div>

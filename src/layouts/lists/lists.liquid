@@ -2,19 +2,21 @@
 layout: base/base.liquid
 ---
 
-<div class="lists scrollview" data-controller="lists"
-  data-action="auth:loginStatus@document->lists#show
-               dialogLists:listsChanged@document->lists#onListsChanged
-               scroll->lists#loadListItemThumbnails"
+<div class="lists scrollview"
+     data-controller="lists"
+     data-action="auth:loginStatus@document->lists#show
+                  dialogLists:listsChanged@document->lists#onListsChanged
+                  scroll->lists#loadListItemThumbnails
+                  popstate@window->lists#onPopState"
 >
   <div class="layout-heading lists__heading">
-    <h1 class="lists__title">
-      <span class="lists__title__label">{{ lang[locale].lists }}</span>
+    <h1 class="lists__title" data-lists-target="title">
+      <span class="lists__title__label" data-lists-target="titleLabel">{{ lang[locale].lists }}</span>
       <a href="#" class="button button--medium button--secondary lists__title__button" data-action="click->lists#createList">
         <span>{{ lang[locale].list_new }}</span>
       </a>
     </h1>
-    <h5 class="lists__subtitle">
+    <h5 class="lists__subtitle" data-lists-target="subtitle">
       <span class="lists__subtitle__count" data-lists-target="count">0</span>
       <span class="lists__subtitle__label" data-lists-target="countLabel">{{ lang[locale].list }}</span>
     </h5>
@@ -39,7 +41,7 @@ layout: base/base.liquid
       </div>
     </div>
     <div class="lists__item__meta">
-      <h5><a href="#" class="lists__item__title"></a></h5>
+      <h5><a href="#" class="lists__item__title" data-action="click->lists#openList"></a></h5>
       <div class="lists__item__menu" data-action="mouseleave->lists#hideEditListDropdowns">
         <div class="button-circular lists__item__menu__button"
           data-action="click->lists#showEditListDropdown"
@@ -63,5 +65,6 @@ layout: base/base.liquid
   </div>
 </template>
 
+{% include ./photos/photos %}
 {% include header-nav/header-nav %}
 {% include dialog/lists/lists %}

@@ -34,6 +34,15 @@
   position: relative;
 }
 
+.lists__subtitle {
+  opacity: 0;
+  transition: opacity 0.3s $ease-out-expo;
+
+  &.is-visible {
+    opacity: 1;
+  }
+}
+
 .lists__subtitle__label {
   color: $grey;
 }

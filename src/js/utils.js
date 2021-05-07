@@ -30,6 +30,13 @@ export const getURLParams = () => {
   return Object.fromEntries(new URLSearchParams(window.location.search.substring(1)))
 }
 
+export const getPrettyURLValues = path => {
+  const values = (path || window.location.pathname).split("/")
+  while (values[0] === "") values.shift()
+  while (values[values.length - 1] === "") values.pop()
+  return values
+}
+
 export const removeClassByPrefix = (el, prefix) => {
   const regx = new RegExp(`\\b${prefix}(.[^\\s]*)?\\b`, "g")
   // eslint-disable-next-line no-param-reassign

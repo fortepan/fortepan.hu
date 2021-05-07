@@ -1,0 +1,21 @@
+<div class="list-photos photos scrollview"
+     data-controller="lists--photos"
+     data-action="lists:showListPhotos@document->lists--photos#show
+                  lists:hideListPhotos@document->lists--photos#hide"
+>
+  <div class="photos-title">
+    <h1 class="photos-title__title" data-lists--photos-target="title">
+      <span  data-lists--photos-target="titleLabel">Listák</span>
+    </h1>
+    <h5 class="photos-title__subtitle" data-lists--photos-target="subtitle">
+      <span data-lists--photos-target="count" class="photos-title__subtitle__count"></span>
+      {{ lang[locale].photo_results }}
+    </h5>
+  </div>
+  <div class="photos__grid" data-lists--photos-target="grid"></div>
+</div>
+
+{% include ../photos/thumbnail/thumbnail-template.liquid role:"lists" %}
+{% include carousel/carousel.liquid %}
+{% include dialog/download/download.liquid %}
+{% include dialog/share/share.liquid %}

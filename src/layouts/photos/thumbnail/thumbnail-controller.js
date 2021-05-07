@@ -3,6 +3,7 @@ import { Controller } from "stimulus"
 import config from "../../../data/siteConfig"
 import { trigger } from "../../../js/utils"
 import photoManager from "../../../js/photo-manager"
+import listManager from "../../../js/list-manager"
 
 const THUMBNAIL_HEIGHT = 160
 export default class extends Controller {
@@ -11,6 +12,11 @@ export default class extends Controller {
   }
 
   connect() {
+    // role defines if the thumbnail is loaded on the photos page or on the lists page
+    // possible values (strict): [ lists | photos (default) ]
+    const role = this.element.getAttribute("role")
+    this.role = role && role === "lists" ? "lists" : "photos"
+
     // add stimulus class reference to node
     this.element.photosThumbnail = this
 
@@ -22,13 +28,17 @@ export default class extends Controller {
   }
 
   clicked() {
-    const selectedPhoto = photoManager.selectPhotoById(this.element.photoId)
-
-    // select thumbnail in photos list
-    trigger("photos:selectThumbnail", { index: photoManager.getSelectedPhotoIndex() })
+    let selectedPhotoData
+    if (this.role === "lists") {
+      selectedPhotoData = listManager.selectPhotoById(listManager.getSelectedListId(), this.element.photoId)
+    } else {
+      selectedPhotoData = photoManager.selectPhotoById(this.element.photoId).data
+      // select thumbnail in photos list
+      trigger("photos:selectThumbnail", { index: photoManager.getSelectedPhotoIndex() })
+    }
 
     // Load photo in Carousel
-    trigger("photosCarousel:showPhoto", { data: selectedPhoto.data })
+    trigger("photosCarousel:showPhoto", { data: selectedPhotoData })
   }
 
   // resize thumbnail when the browser window gets resized
@@ -50,7 +60,11 @@ export default class extends Controller {
 
   // set thumbnail meta data
   applyThumbnailData() {
-    const data = photoManager.getPhotoDataByID(this.element.photoId)
+    const data =
+      this.role === "lists"
+        ? listManager.getListPhotoById(listManager.getSelectedListId(), this.element.photoId)
+        : photoManager.getPhotoDataByID(this.element.photoId)
+
     const locationArray = [data.year, data.city, data.place]
     if (!data.city && !data.place && data.country) locationArray.push(data.country)
     this.locationTarget.textContent = locationArray.filter(Boolean).join(" · ")
@@ -59,7 +73,7 @@ export default class extends Controller {
 
   // load thumbnail image
   loadThumbnailImage() {
-    const data = photoManager.getPhotoDataByID(this.element.photoId)
+    const mediaId = this.element.photoId
 
     this.imageTarget.addEventListener("load", () => {
       this.naturalWidth = this.imageTarget.naturalWidth
@@ -73,7 +87,7 @@ export default class extends Controller {
       this.element.classList.add("is-failed-loading")
     })
 
-    this.imageTarget.srcset = `${config.PHOTO_SOURCE}240/fortepan_${data.mid}.jpg 1x, ${config.PHOTO_SOURCE}480/fortepan_${data.mid}.jpg 2x`
-    this.imageTarget.src = `${config.PHOTO_SOURCE}240/fortepan_${data.mid}.jpg`
+    this.imageTarget.srcset = `${config.PHOTO_SOURCE}240/fortepan_${mediaId}.jpg 1x, ${config.PHOTO_SOURCE}480/fortepan_${mediaId}.jpg 2x`
+    this.imageTarget.src = `${config.PHOTO_SOURCE}240/fortepan_${mediaId}.jpg`
   }
 }
