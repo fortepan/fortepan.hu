@@ -340,6 +340,7 @@ const getRandom = (size = 1) => {
 const getDataById = array => {
   return new Promise((resolve, reject) => {
     const body = {
+      size: array.length,
       query: {
         ids: {
           values: array.map(item => `entity:media/${item}:hu`),
