@@ -1,6 +1,7 @@
 import { Controller } from "stimulus"
+import { setAppState } from "../../../js/app"
 import listManager from "../../../js/list-manager"
-import { escapeHTML, getLocale, lang, trigger } from "../../../js/utils"
+import { escapeHTML, getLocale, getPrettyURLValues, lang, trigger } from "../../../js/utils"
 
 export default class extends Controller {
   static get targets() {
@@ -9,6 +10,7 @@ export default class extends Controller {
 
   connect() {
     this.listData = null
+    setAppState("is-lists")
   }
 
   async show(e) {
@@ -19,7 +21,20 @@ export default class extends Controller {
       if (listData) {
         this.listData = listData
         this.element.classList.add("is-visible")
+
         await this.renderPhotos()
+
+        const urlValues = getPrettyURLValues(window.location.pathname.split(`/${getLocale()}/lists/`).join("/"))
+        const photoId = urlValues[1]
+
+        if (photoId) {
+          // open carousel
+          const selectedPhotoData = listManager.selectPhotoById(listData.id, photoId)
+          if (selectedPhotoData) {
+            // Load photo in Carousel
+            trigger("photosThumbnail:select", { data: selectedPhotoData })
+          }
+        }
       } else {
         // some issue here -- redirect to the lists page
         window.history.pushState(null, lang("lists"), `/${getLocale()}/lists/`)
@@ -90,5 +105,16 @@ export default class extends Controller {
 
     this.countTarget.textContent = this.listData.photos.length
     this.subtitleTarget.classList.add("is-visible")
+  }
+
+  onPhotoSelected(e) {
+    const id = e && e.detail && e.detail.photoId ? e.detail.photoId : listManager.getSelectedPhotoId()
+    // set the proper url
+    window.history.pushState(null, null, `${listManager.getSelectedList().url}/${id}`)
+  }
+
+  onCarouselClosed() {
+    // set the proper url
+    window.history.pushState(null, null, listManager.getSelectedList().url)
   }
 }
