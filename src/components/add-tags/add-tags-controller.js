@@ -3,6 +3,7 @@ import { Controller } from "stimulus"
 import { appState } from "../../js/app"
 import { trigger, lang } from "../../js/utils"
 import photoManager from "../../js/photo-manager"
+import listManager from "../../js/list-manager"
 import tagsAPI from "../../api/tags"
 
 export default class extends Controller {
@@ -33,7 +34,7 @@ export default class extends Controller {
 
   async getPendingTags() {
     if (appState("auth-signed-in")) {
-      const data = photoManager.getSelectedPhotoData()
+      const data = appState("is-lists") ? listManager.getSelectedPhoto() : photoManager.getSelectedPhotoData()
       const pendingTags = await tagsAPI.getPendingTags(data.mid[0])
       console.log(pendingTags)
     }
@@ -47,7 +48,7 @@ export default class extends Controller {
   submit(e) {
     if (e) e.preventDefault()
     const tags = this.inputTarget.selectizeControl.value
-    const data = photoManager.getSelectedPhotoData()
+    const data = appState("is-lists") ? listManager.getSelectedPhoto() : photoManager.getSelectedPhotoData()
 
     if (tags.length > 0) {
       tagsAPI

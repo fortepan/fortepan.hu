@@ -11,7 +11,7 @@ const loadListData = async () => {
 
   Object.keys(rawResponse).forEach(key => {
     const data = { id: key, name: rawResponse[key] }
-    data.url = `/${getLocale()}/lists/${slugify(data.name, true)}/`
+    data.url = `/${getLocale()}/lists/${slugify(data.name, true)}`
 
     listData.lists.push(data)
   })
@@ -121,6 +121,26 @@ const getSelectedPhoto = () => {
   return listData.selectedPhoto
 }
 
+const getSelectedPhotoId = () => {
+  return listData.selectedPhoto ? listData.selectedPhoto.id : null
+}
+
+const getSelectedPhotoIndex = () => {
+  return listData.selectedList && listData.selectedPhoto
+    ? listData.selectedList.photos.indexOf(listData.selectedPhoto)
+    : -1
+}
+
+const selectNextPhoto = () => {
+  const i = Math.min(getSelectedPhotoIndex() + 1, listData.selectedList.photos.length - 1)
+  return selectPhotoById(listData.selectedList.id, listData.selectedList.photos[i].id)
+}
+
+const selectPrevPhoto = () => {
+  const i = Math.max(getSelectedPhotoIndex() - 1, 0)
+  return selectPhotoById(listData.selectedList.id, listData.selectedList.photos[i].id)
+}
+
 const clearAllData = () => {
   // if the context of the search has changed destroy all photo data
   delete listData.lists
@@ -199,27 +219,10 @@ export default {
   getSelectedList,
   selectPhotoById,
   getSelectedPhoto,
-  /* hasData,
-    getSelectedPhotoId,
-    getSelectedPhotoData,
-    getSelectedPhotoIndex,
-    selectPhotoById,
-    getPhotoDataByID,
-    loadMorePhotoDataInContext,
-    getLastPhotoDataInContext,
-    selectNextPhoto,
-    getFirstPhotoDataInContext,
-    selectPrevPhoto,
-    getFirstPhotoData,
-    getLastPhotoData,
-    getYearsInContext,
-    getFirstYearInContext,
-    getLastYearInContext,
-    hasPhotoDataOfYear,
-    getFirstPhotoOfYear,
-    getTotalPhotoCountInContext,
-    getLatestSearchContext,
-    clearPhotoCache, */
+  getSelectedPhotoId,
+  getSelectedPhotoIndex,
+  selectNextPhoto,
+  selectPrevPhoto,
   clearAllData,
   createList,
   editList,

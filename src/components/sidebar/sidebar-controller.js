@@ -1,9 +1,10 @@
 import { Controller } from "stimulus"
 
 import throttle from "lodash/throttle"
-import { trigger } from "../../js/utils"
+import { getLocale, trigger } from "../../js/utils"
 import { setAppState, removeAppState, toggleAppState, appState } from "../../js/app"
 import photoManager from "../../js/photo-manager"
+import listManager from "../../js/list-manager"
 
 export default class extends Controller {
   static get targets() {
@@ -18,16 +19,17 @@ export default class extends Controller {
   }
 
   init() {
-    const data = photoManager.getSelectedPhotoData()
+    const data = appState("is-lists") ? listManager.getSelectedPhoto() : photoManager.getSelectedPhotoData()
 
     // fill template with data
+    const baseUrl = `/${getLocale()}/photos/`
 
     // create a string of anchors from array
     const convertToHref = key => {
       if (data[key]) {
         const resp = []
         data[key].forEach(item => {
-          resp.push(`<a href="?${key}=${encodeURIComponent(item)}">${item}</a>`)
+          resp.push(`<a href="${baseUrl}?${key}=${encodeURIComponent(item)}">${item}</a>`)
         })
         return resp.join(",<br/>")
       }
@@ -52,30 +54,34 @@ export default class extends Controller {
 
     if (data.tags) {
       this.tagsTarget.innerHTML = data.tags
-        .map(tag => `<a href="?tag=${encodeURIComponent(tag)}">${tag}</a>`)
+        .map(tag => `<a href="${baseUrl}?tag=${encodeURIComponent(tag)}">${tag}</a>`)
         .join(", ")
     } else {
       this.tagsTarget.innerHTML = `<span class="carousel-sidebar__tags__empty">–</span>`
     }
 
-    this.midTarget.innerHTML = `<a href="?id=${data.mid}">${data.mid}</a>`
-    this.yearTarget.innerHTML = `<a href="?year=${data.year}">${data.year}</a>`
-    this.donorTarget.innerHTML = `<a href="?donor=${encodeURIComponent(data.donor)}">${data.donor}</a>`
+    this.midTarget.innerHTML = `<a href="${baseUrl}?id=${data.mid}">${data.mid}</a>`
+    this.yearTarget.innerHTML = `<a href="${baseUrl}?year=${data.year}">${data.year}</a>`
+    this.donorTarget.innerHTML = `<a href="${baseUrl}?donor=${encodeURIComponent(data.donor)}">${data.donor}</a>`
 
     if (data.author) {
-      this.authorTarget.innerHTML = `<a href="?photographer=${encodeURIComponent(data.author)}">${data.author}</a>`
+      this.authorTarget.innerHTML = `<a href="${baseUrl}?photographer=${encodeURIComponent(data.author)}">${
+        data.author
+      }</a>`
       this.authorTarget.parentNode.style.display = "block"
     } else {
       this.authorTarget.parentNode.style.display = "none"
     }
 
-    // bind history api calls to sidabar anchors
-    this.element.querySelectorAll(".carousel-sidebar a:not([class])").forEach(anchorNode => {
-      anchorNode.addEventListener("click", event => {
-        event.preventDefault()
-        trigger("photos:historyPushState", { url: event.currentTarget.href, resetPhotosGrid: true })
+    if (!appState("is-lists")) {
+      // bind history api calls to sidabar anchors
+      this.element.querySelectorAll(".carousel-sidebar a:not([class])").forEach(anchorNode => {
+        anchorNode.addEventListener("click", event => {
+          event.preventDefault()
+          trigger("photos:historyPushState", { url: event.currentTarget.href, resetPhotosGrid: true })
+        })
       })
-    })
+    }
   }
 
   show() {

@@ -4,6 +4,7 @@ import config from "../../data/siteConfig"
 import { trigger } from "../../js/utils"
 import photoManager from "../../js/photo-manager"
 import listManager from "../../js/list-manager"
+import { appState } from "../../js/app"
 
 const THUMBNAIL_HEIGHT = 160
 export default class extends Controller {
@@ -14,8 +15,7 @@ export default class extends Controller {
   connect() {
     // role defines if the thumbnail is loaded on the photos page or on the lists page
     // possible values (strict): [ lists | photos (default) ]
-    const role = this.element.getAttribute("role")
-    this.role = role && role === "lists" ? "lists" : "photos"
+    this.role = appState("is-lists") ? "lists" : "photos"
 
     // add stimulus class reference to node
     this.element.photosThumbnail = this

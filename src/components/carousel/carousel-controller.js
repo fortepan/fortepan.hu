@@ -4,6 +4,7 @@ import config from "../../data/siteConfig"
 import { trigger } from "../../js/utils"
 import { setAppState, removeAppState, appState } from "../../js/app"
 import photoManager from "../../js/photo-manager"
+import listManager from "../../js/list-manager"
 
 export default class extends Controller {
   static get targets() {
@@ -11,6 +12,10 @@ export default class extends Controller {
   }
 
   connect() {
+    // role defines if the thumbnail is loaded on the photos page or on the lists page
+    // possible values (strict): [ lists | photos (default) ]
+    this.role = appState("is-lists") ? "lists" : "photos"
+
     this.slideshowTimeout = 0
     this.touchTimeout = 0
   }
@@ -85,9 +90,11 @@ export default class extends Controller {
   }
 
   togglePager() {
+    const total =
+      this.role === "lists" ? listManager.getSelectedList().photos.length : photoManager.getTotalPhotoCountInContext()
     // keep pager disabled if there's only one photo thumbnail in the photos list
     this.pagerTargets.forEach(pager => {
-      pager.classList.toggle("disable", photoManager.getTotalPhotoCountInContext() === 1)
+      pager.classList.toggle("disable", total === 1)
     })
   }
 
@@ -107,23 +114,45 @@ export default class extends Controller {
       if (!this.element.classList.contains("is-visible")) {
         this.show()
       }
+
+      trigger("photosCarousel:photoSelected", { photoId: id })
     }
   }
 
-  showNextPhoto() {
-    // select the next photo in the current context (or load more if neccessary)
-    photoManager.selectNextPhoto().then(() => {
-      this.showPhoto(null, photoManager.getSelectedPhotoId())
-      trigger("photos:selectThumbnail", { index: photoManager.getSelectedPhotoIndex() })
-    })
+  async showNextPhoto() {
+    let photoId
+    let index
+
+    if (this.role === "lists") {
+      photoId = listManager.selectNextPhoto().id
+      index = listManager.getSelectedPhotoIndex()
+    } else {
+      // select the next photo in the current context (or load more if neccessary)
+      await photoManager.selectNextPhoto()
+      photoId = photoManager.getSelectedPhotoId()
+      index = photoManager.getSelectedPhotoIndex()
+    }
+
+    this.showPhoto(null, photoId)
+    trigger("photos:selectThumbnail", { index })
   }
 
-  showPrevPhoto() {
-    // select the next previous in the current context (or load more if neccessary)
-    photoManager.selectPrevPhoto().then(() => {
-      this.showPhoto(null, photoManager.getSelectedPhotoId())
-      trigger("photos:selectThumbnail", { index: photoManager.getSelectedPhotoIndex() })
-    })
+  async showPrevPhoto() {
+    let photoId
+    let index
+
+    if (this.role === "lists") {
+      photoId = listManager.selectPrevPhoto().id
+      index = listManager.getSelectedPhotoIndex()
+    } else {
+      // select the next previous in the current context (or load more if neccessary)
+      await photoManager.selectPrevPhoto()
+      photoId = photoManager.getSelectedPhotoId()
+      index = photoManager.getSelectedPhotoIndex()
+    }
+
+    this.showPhoto(null, photoId)
+    trigger("photos:selectThumbnail", { index })
   }
 
   // event listener for timeline:yearSelected
