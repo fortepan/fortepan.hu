@@ -1,5 +1,5 @@
 ---
 layout: lists/lists.liquid
-title: Lists
+title: Fortepan — Lists
 permalink: /en/lists/
 ---

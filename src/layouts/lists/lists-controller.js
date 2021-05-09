@@ -1,6 +1,14 @@
 import { Controller } from "stimulus"
 import { throttle } from "lodash"
-import { lang, escapeHTML, trigger, getLocale, isElementInViewport, getPrettyURLValues } from "../../js/utils"
+import {
+  lang,
+  escapeHTML,
+  trigger,
+  getLocale,
+  isElementInViewport,
+  getPrettyURLValues,
+  setPageMeta,
+} from "../../js/utils"
 import { appState } from "../../js/app"
 import config from "../../data/siteConfig"
 import listManager from "../../js/list-manager"
@@ -55,6 +63,8 @@ export default class extends Controller {
     this.listRendered = true
 
     trigger("loader:show", { id: "loaderBase" })
+
+    setPageMeta(lang("lists"), null, null)
 
     // remove all previously existing listItems
     this.listItemTargets.forEach(listItem => listItem.remove())
@@ -170,12 +180,13 @@ export default class extends Controller {
       const listItem = this.listItemTargets.find(item => item.contains(e.currentTarget))
       const listData = listManager.getListById(listItem.listId || 0)
 
-      if (listData && listData.url) {
+      if (listData && listData.url && window.location.pathname !== listData.url) {
         // window.location = listData.url
 
         window.history.pushState(null, escapeHTML(listData.name), listData.url)
-        // manually trigger popstate - history.pushState doesn't trigger it by default
-        trigger("popstate", null, window)
+
+        // this.show() will open the list photos (= carousel component) given the url conditions
+        this.show()
       }
     }
   }

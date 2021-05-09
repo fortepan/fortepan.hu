@@ -1,7 +1,9 @@
 import { Controller } from "stimulus"
+
+import config from "../../../data/siteConfig"
 import { setAppState } from "../../../js/app"
 import listManager from "../../../js/list-manager"
-import { escapeHTML, getLocale, getPrettyURLValues, lang, trigger } from "../../../js/utils"
+import { escapeHTML, getLocale, getPrettyURLValues, lang, setPageMeta, trigger } from "../../../js/utils"
 
 export default class extends Controller {
   static get targets() {
@@ -34,6 +36,9 @@ export default class extends Controller {
             // Load photo in Carousel
             trigger("photosThumbnail:select", { data: selectedPhotoData })
           }
+        } else {
+          // close carousel if it is open
+          document.querySelector(".carousel").classList.remove("is-visible")
         }
       } else {
         // some issue here -- redirect to the lists page
@@ -48,10 +53,10 @@ export default class extends Controller {
   }
 
   async renderPhotos() {
-    // search.getDataById(["33554"]).then(resp => console.log(resp))
-
     this.titleTarget.innerHTML = escapeHTML(this.listData.name)
     this.subtitleTarget.classList.remove("is-visible")
+
+    setPageMeta(`${this.listData.name} — ${lang("lists")}`, this.listData.description, null)
 
     // remove any existing thumbnails from the grid
     this.element.querySelectorAll(".photos-thumbnail").forEach(thumbnail => thumbnail.remove())
@@ -81,6 +86,11 @@ export default class extends Controller {
       // apply year data to node
       thumbnail.year = item.year
 
+      if (index === 0) {
+        // set the meta image
+        setPageMeta(null, null, `${config.PHOTO_SOURCE}240/fortepan_${item.mid}.jpg`)
+      }
+
       // observe when the thumbnail class attribute changes and contains 'is-loaded'
       const thumbnailLoadingPromise = new Promise(res => {
         const classObserver = new window.MutationObserver(() => {
@@ -109,8 +119,22 @@ export default class extends Controller {
 
   onPhotoSelected(e) {
     const id = e && e.detail && e.detail.photoId ? e.detail.photoId : listManager.getSelectedPhotoId()
-    // set the proper url
-    window.history.pushState(null, null, `${listManager.getSelectedList().url}/${id}`)
+    const url = `${listManager.getSelectedList().url}/${id}`
+
+    setPageMeta(
+      `${this.listData.name} — #${id}`,
+      this.listData.description,
+      `${config.PHOTO_SOURCE}240/fortepan_${id}.jpg`
+    )
+
+    if (window.location.pathname !== url) {
+      // set the proper url
+      window.history.pushState(
+        null,
+        `Fortepan — ${this.listData.name} — #${id}`,
+        `${listManager.getSelectedList().url}/${id}`
+      )
+    }
   }
 
   onCarouselClosed() {
