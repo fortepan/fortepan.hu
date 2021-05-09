@@ -1,5 +1,5 @@
 ---
 layout: lists/lists.liquid
-title: Listák
+title: Fortepan — Listák
 permalink: /hu/lists/
 ---
