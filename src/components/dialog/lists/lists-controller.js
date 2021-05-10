@@ -220,6 +220,12 @@ export default class extends Controller {
   }
 
   async show(e) {
+    // TODO: remove when feature/lists is live
+    if (!localStorage.getItem("lists")) {
+      this.hide()
+      return
+    }
+
     if (appState("auth-signed-in")) {
       this.role = e && e.detail && e.detail.action ? e.detail.action : "addPhotos"
       this.listId = e && e.detail && e.detail.listId ? e.detail.listId : 0
