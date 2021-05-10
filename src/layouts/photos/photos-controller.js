@@ -342,12 +342,11 @@ export default class extends Controller {
 
   // Set a thumbnail's selected state
   selectThumbnail(e = null, index = -1) {
-    if ((e && e.detail && e.detail.index !== -1 && e.detail.index !== undefined) || index !== -1) {
+    if ((e && e.detail && e.detail.index > -1) || index !== -1) {
       // change status of the currently selected thumbnail
       if (this.selectedThumbnail) this.selectedThumbnail.classList.remove("is-selected")
 
-      const selectedIndex =
-        e && e.detail && e.detail.index !== -1 && e.detail.index !== undefined ? e.detail.index : index
+      const selectedIndex = e && e.detail && e.detail.index > -1 ? e.detail.index : index
 
       const element = this.element.querySelectorAll(".photos-thumbnail")[selectedIndex]
 
