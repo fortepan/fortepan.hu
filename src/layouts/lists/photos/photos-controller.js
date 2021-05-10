@@ -7,7 +7,7 @@ import { escapeHTML, getLocale, getPrettyURLValues, lang, setPageMeta, trigger }
 
 export default class extends Controller {
   static get targets() {
-    return ["title", "subtitle", "count", "grid"]
+    return ["title", "titleLabel", "subtitle", "count", "description", "grid"]
   }
 
   connect() {
@@ -38,7 +38,7 @@ export default class extends Controller {
           }
         } else {
           // close carousel if it is open
-          document.querySelector(".carousel").classList.remove("is-visible")
+          trigger("photosCarousel:close", { silent: true })
         }
       } else {
         // some issue here -- redirect to the lists page
@@ -49,11 +49,15 @@ export default class extends Controller {
   }
 
   hide() {
+    // close carousel if it is open
+    trigger("photosCarousel:close", { silent: true })
+
+    this.element.scrollTop = 0
     this.element.classList.remove("is-visible")
   }
 
   async renderPhotos() {
-    this.titleTarget.innerHTML = escapeHTML(this.listData.name)
+    this.titleLabelTarget.innerHTML = escapeHTML(this.listData.name)
     this.subtitleTarget.classList.remove("is-visible")
 
     setPageMeta(`${this.listData.name} — ${lang("lists")}`, this.listData.description, null)
@@ -115,6 +119,12 @@ export default class extends Controller {
 
     this.countTarget.textContent = this.listData.photos.length
     this.subtitleTarget.classList.add("is-visible")
+
+    /* this.listData.description =
+      "Random lista leírás, maximum 140 karakter hosszú, és minden listához egyenként hozzáadható. Megjelenik a listákat listázó oldalon és máshol." */
+
+    this.descriptionTarget.innerHTML = escapeHTML(this.listData.description)
+    this.descriptionTarget.classList.toggle("is-visible", !!this.listData.description)
   }
 
   onPhotoSelected(e) {
@@ -140,5 +150,73 @@ export default class extends Controller {
   onCarouselClosed() {
     // set the proper url
     window.history.pushState(null, null, listManager.getSelectedList().url)
+  }
+
+  // context menu functions
+
+  showEditListDropdown(e) {
+    if (e) {
+      e.preventDefault()
+
+      const listItemMenu = e.currentTarget.parentNode
+      const dropdown = listItemMenu.querySelector(".header-nav__popup")
+
+      this.hideEditListDropdowns(dropdown)
+      dropdown.classList.toggle("is-visible")
+    }
+  }
+
+  hideEditListDropdowns(elementToExclude) {
+    this.element.querySelectorAll(".header-nav__popup").forEach(dropdown => {
+      if (!elementToExclude || elementToExclude !== dropdown) {
+        dropdown.classList.remove("is-visible")
+      }
+    })
+  }
+
+  editList(e) {
+    if (e) e.preventDefault()
+    trigger("dialogLists:show", { action: "edit", listId: this.listData.id })
+  }
+
+  deleteList(e) {
+    if (e) e.preventDefault()
+    trigger("dialogLists:show", { action: "delete", listId: this.listData.id })
+  }
+
+  onListsChanged(e) {
+    if (this.element.classList.contains("is-visible")) {
+      if (e && e.action) {
+        switch (e.action) {
+          case "delete":
+            // upon delete jump back to the lists page
+            this.backToLists()
+            break
+          case "edit":
+          default:
+            // TODO: modify the listItem
+            this.reloadPhotos()
+            break
+        }
+      } else {
+        this.reloadPhotos()
+      }
+    }
+  }
+
+  reloadPhotos() {
+    this.show()
+  }
+
+  jumpToPhotos(e) {
+    if (e) e.preventDefault()
+    window.location = `/${getLocale()}/photos/`
+  }
+
+  backToLists(e) {
+    if (e) e.preventDefault()
+
+    window.history.pushState(null, `Fortepan — ${lang("lists")}`, `/${getLocale()}/lists/`)
+    trigger("popstate", null, window)
   }
 }

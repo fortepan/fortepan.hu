@@ -3,16 +3,23 @@
      data-action="lists:showListPhotos@document->lists--photos#show
                   lists:hideListPhotos@document->lists--photos#hide
                   photosCarousel:photoSelected@document->lists--photos#onPhotoSelected
-                  photosCarousel:hide@document->lists--photos#onCarouselClosed"
+                  photosCarousel:hide@document->lists--photos#onCarouselClosed
+                  dialogLists:listsChanged@document->lists#onListsChanged"
 >
-  <div class="photos-title">
+  <div class="list-title photos-title">
     <h1 class="photos-title__title" data-lists--photos-target="title">
       <span data-lists--photos-target="titleLabel"></span>
+      {% include ./inc/context-menu controller:"lists--photos" %}
     </h1>
     <h5 class="photos-title__subtitle" data-lists--photos-target="subtitle">
       <span data-lists--photos-target="count" class="photos-title__subtitle__count"></span>
       {{ lang[locale].photo_results }}
+      &bull;
+      <a href="/{{ locale }}/lists/" class="photos-title__subtitle__list-link"
+         data-action="click->lists--photos#backToLists"
+      >{{ lang[locale].lists }}</a>
     </h5>
+    <p class="list-description" data-lists--photos-target="description"></p>
   </div>
   <div class="photos__grid" data-lists--photos-target="grid"></div>
 </div>

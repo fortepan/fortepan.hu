@@ -24,47 +24,7 @@ layout: base/base.liquid
   <div class="lists__grid" data-lists-target="grid"></div>
 </div>
 
-<template id="lists-item">
-  <div class="lists__item" data-lists-target="listItem">
-    <div class="lists__item__cover" data-action="click->lists#openList">
-      <div class="lists__item__cover-inner">
-        <div class="lists__item__photo">
-          <span class="lists__item__photo__img"></span>
-          <div class="button-circular lists__item__add-icon" data-action="click->lists#jumpToPhotos">
-            {% inlineSVG src:"src/static/images/icons/24/icon-add-to-list.svg" class:"button-circular__icon" %}
-            <div class="button-circular__label">{{ lang[locale].list_add_photos }}</div>
-          </div>
-        </div>
-        <div class="lists__item__photo"><span class="lists__item__photo__img"></span></div>
-        <div class="lists__item__photo"><span class="lists__item__photo__img"></span></div>
-        <span class="lists__item__photo-count"><span class="lists__item__counter"></span></span>
-      </div>
-    </div>
-    <div class="lists__item__meta">
-      <h5><a href="#" class="lists__item__title" data-action="click->lists#openList"></a></h5>
-      <div class="lists__item__menu" data-action="mouseleave->lists#hideEditListDropdowns">
-        <div class="button-circular lists__item__menu__button"
-          data-action="click->lists#showEditListDropdown"
-        >
-          {% inlineSVG src:"src/static/images/icons/24/icon-dots.svg" class:"button-circular__icon" %}
-          <div class="button-circular__label">{{ lang[locale].list_edit }}</div>
-        </div>
-        <div class="header-nav__popup">
-          <a href="#" class="header-nav__link header-nav__link--top"
-            data-action="click->lists#jumpToPhotos">{{ lang[locale].list_add_photos }}</a>
-          <a href="#" class="header-nav__link header-nav__link--top header-nav__link--separator-after"
-            data-action="click->lists#openList">{{ lang[locale].list_view }}</a>
-          <a href="#" class="header-nav__link header-nav__link--top"
-            data-action="click->lists#editList">{{ lang[locale].list_edit }}</a>
-          <a href="#" class="header-nav__link header-nav__link--top"
-            data-action="click->lists#deleteList">{{ lang[locale].list_delete }}</a>
-        </div>
-      </div>
-      <div class="lists__item__description"></div>
-    </div>
-  </div>
-</template>
-
+{% include ./inc/list-item-template %}
 {% include ./photos/photos %}
 {% include header-nav/header-nav %}
 {% include dialog/lists/lists %}
