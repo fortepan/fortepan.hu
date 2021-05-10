@@ -40,13 +40,18 @@ export default class extends Controller {
     }
 
     let selectedPhotoData
+    let index
+
     if (this.role === "lists") {
       selectedPhotoData = listManager.selectPhotoById(listManager.getSelectedListId(), this.element.photoId)
+      index = listManager.getSelectedPhotoIndex()
     } else {
       selectedPhotoData = photoManager.selectPhotoById(this.element.photoId).data
-      // select thumbnail in photos list
-      trigger("photos:selectThumbnail", { index: photoManager.getSelectedPhotoIndex() })
+      index = photoManager.getSelectedPhotoIndex()
     }
+
+    // select thumbnail in photos list
+    trigger("photos:selectThumbnail", { index })
 
     // Load photo in Carousel
     trigger("photosThumbnail:select", { data: selectedPhotoData })
