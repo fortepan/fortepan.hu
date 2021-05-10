@@ -73,22 +73,22 @@ export default class extends Controller {
   }
 
   autoHideNavShadowOnScroll() {
-    const scrollview = document.querySelector(".scrollview")
+    const scrollviewElements = document.querySelectorAll(".scrollview")
 
-    if (scrollview) {
-      scrollview.addEventListener(
+    scrollviewElements.forEach(item => {
+      item.addEventListener(
         "scroll",
         throttle(() => {
           const timeline = document.querySelector(".photos-timeline")
 
-          if (scrollview.scrollTop > 0 && !timeline) {
+          if (item.scrollTop > 0 && !timeline) {
             this.element.classList.add("has-shadow")
           } else {
             this.element.classList.remove("has-shadow")
           }
         }, 100)
       )
-    }
+    })
   }
 
   signOut(e) {
