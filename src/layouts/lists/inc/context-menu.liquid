@@ -1,11 +1,15 @@
-<div class="lists__item__menu context-menu" data-action="mouseleave->{{ controller }}#hideEditListDropdowns">
+<div class="lists__item__menu context-menu" data-action="mouseleave->{{ controller }}#hideAllContextMenu">
     <div class="button-circular lists__item__menu__button"
-        data-action="click->{{ controller }}#showEditListDropdown"
+        data-action="click->{{ controller }}#showContextMenu"
     >
         {% inlineSVG src:"src/static/images/icons/24/icon-dots.svg" class:"button-circular__icon" %}
         <div class="button-circular__label">{{ lang[locale].list_edit }}</div>
     </div>
-    <div class="header-nav__popup">
+    <div class="header-nav__popup{% if role == "thumbnail" %} header-nav__popup--small{% endif %}">
+    {% if role == "thumbnail" %}
+        <a href="#" class="header-nav__link"
+        data-action="click->{{ controller }}#removePhoto">{{ lang[locale].list_remove_from }}</a>
+    {% else %}
         <a href="#" class="header-nav__link header-nav__link--top{% if controller == "lists--photos" %} header-nav__link--separator-after{% endif %}"
         data-action="click->{{ controller }}#jumpToPhotos">{{ lang[locale].list_add_photos }}</a>
         {% unless controller == "lists--photos" %}
@@ -16,5 +20,6 @@
         data-action="click->{{ controller }}#editList">{{ lang[locale].list_edit }}</a>
         <a href="#" class="header-nav__link header-nav__link--top"
         data-action="click->{{ controller }}#deleteList">{{ lang[locale].list_delete }}</a>
+    {% endif %}
     </div>
 </div>
