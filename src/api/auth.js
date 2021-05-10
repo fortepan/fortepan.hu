@@ -2,6 +2,8 @@ import { trigger, validateEmail } from "../js/utils"
 import config from "../data/siteConfig"
 import { appState, setAppState, removeAppState } from "../js/app"
 
+let initialAuthCheck = false
+
 const setLoginStatus = isUserSignedIn => {
   const authState = appState("auth-signed-in")
 
@@ -12,8 +14,12 @@ const setLoginStatus = isUserSignedIn => {
     localStorage.removeItem("auth")
   }
 
-  if (appState("auth-signed-in") !== authState) {
+  // trigger a custom event:
+  // - on the very first check regardless of the status
+  // - or when the status has changed
+  if (!initialAuthCheck || appState("auth-signed-in") !== authState) {
     trigger("auth:loginStatus")
+    initialAuthCheck = true
   }
 }
 
