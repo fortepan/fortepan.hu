@@ -42,13 +42,11 @@ export default class extends Controller {
           trigger("lists:showListPhotos", { listId: listData.id })
         } else {
           // if the list doesn't exist fallback to the lists page
-          this.element.classList.add("is-visible")
-          await this.renderLists()
+          await this.open()
         }
       } else {
         // no slug is given, show the lists page by default
-        this.element.classList.add("is-visible")
-        await this.renderLists()
+        await this.open()
       }
     } else {
       this.hide()
@@ -57,9 +55,24 @@ export default class extends Controller {
     }
   }
 
+  async open() {
+    this.element.classList.add("is-visible")
+
+    await this.renderLists()
+
+    this.gridTarget.classList.remove("is-hidden")
+    setTimeout(() => {
+      this.subtitleTarget.classList.add("is-visible")
+      this.gridTarget.classList.add("is-visible")
+    }, 100)
+  }
+
   hide() {
     this.element.scrollTop = 0
     this.element.classList.remove("is-visible")
+    this.subtitleTarget.classList.remove("is-visible")
+    this.gridTarget.classList.remove("is-visible")
+    this.gridTarget.classList.add("is-hidden")
     trigger("lists:hideListPhotos")
   }
 

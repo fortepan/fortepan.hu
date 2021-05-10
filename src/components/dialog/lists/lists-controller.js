@@ -68,7 +68,8 @@ export default class extends Controller {
         result.status = resp.errors ? "error" : "success"
         result.message = resp.errors ? lang("list_add_error") : lang("list_add_success") + escapeHTML(listName)
 
-        if (resp.errors) console.log(resp)
+        // eslint-disable-next-line no-console
+        if (resp.errors) console.error(resp.errors)
       }
     }
 
@@ -104,7 +105,8 @@ export default class extends Controller {
           result.status = resp.errors ? "error" : "success"
           result.message = resp.errors ? lang("list_edit_error") : lang("list_edit_success")
 
-          if (resp.errors) console.log(resp)
+          // eslint-disable-next-line no-console
+          if (resp.errors) console.error(resp.errors)
         } else {
           // no changes, lets return
           return
@@ -134,7 +136,8 @@ export default class extends Controller {
     result.status = resp.errors ? "error" : "success"
     result.message = resp.errors ? lang("list_delete_error") : lang("list_delete_success")
 
-    if (resp.errors) console.log(resp)
+    // eslint-disable-next-line no-console
+    if (resp.errors) console.error(resp.errors)
 
     trigger("snackbar:show", { message: result.message, status: result.status, autoHide: true })
 
@@ -268,7 +271,8 @@ export default class extends Controller {
         ? lang("list_remove_from_error")
         : lang("list_remove_from_success") + escapeHTML(listData.name)
 
-      if (resp.errors) console.log(resp)
+      // eslint-disable-next-line no-console
+      if (resp.errors) console.error(resp.errors)
 
       trigger("snackbar:show", { message: result.message, status: result.status, autoHide: true })
 
