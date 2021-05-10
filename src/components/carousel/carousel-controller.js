@@ -21,6 +21,12 @@ export default class extends Controller {
   }
 
   show() {
+    // TODO: remove when feature/lists is live
+    if (!localStorage.getItem("lists")) {
+      const button = this.element.querySelector(".add-to-list-button")
+      if (button) button.remove()
+    }
+
     this.showControls(null, true)
 
     if (window.innerWidth < 768)
