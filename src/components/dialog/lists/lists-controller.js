@@ -67,6 +67,8 @@ export default class extends Controller {
 
         result.status = resp.errors ? "error" : "success"
         result.message = resp.errors ? lang("list_add_error") : lang("list_add_success") + escapeHTML(listName)
+
+        if (resp.errors) console.log(resp)
       }
     }
 
@@ -101,6 +103,8 @@ export default class extends Controller {
 
           result.status = resp.errors ? "error" : "success"
           result.message = resp.errors ? lang("list_edit_error") : lang("list_edit_success")
+
+          if (resp.errors) console.log(resp)
         } else {
           // no changes, lets return
           return
@@ -129,6 +133,8 @@ export default class extends Controller {
 
     result.status = resp.errors ? "error" : "success"
     result.message = resp.errors ? lang("list_delete_error") : lang("list_delete_success")
+
+    if (resp.errors) console.log(resp)
 
     trigger("snackbar:show", { message: result.message, status: result.status, autoHide: true })
 
@@ -172,8 +178,7 @@ export default class extends Controller {
 
     if (lists.length) {
       // remove all list tags first
-      const listTags = Array.from(this.addedToListTarget.getElementsByClassName("dialog-lists__list-tag"))
-      listTags.forEach(item => item.remove())
+      this.addedToListTarget.querySelectorAll(".dialog-lists__list-tag").forEach(item => item.remove())
 
       // list the list tags that contains the photo
       lists.forEach(listData => {
@@ -182,19 +187,19 @@ export default class extends Controller {
         const newTag = template.cloneNode(true)
         newTag.setAttribute("data-action", "mouseleave->dialog--lists#closeListTagDropdowns")
 
-        const listLabel = newTag.getElementsByClassName("dialog-lists__list-tag__label")[0]
+        const listLabel = newTag.querySelector(".dialog-lists__list-tag__label")
         if (listLabel) {
           listLabel.innerHTML = escapeHTML(listData.name)
           listLabel.setAttribute("href", listData.url)
         }
 
-        const dropdownButton = newTag.getElementsByClassName("dialog-lists__list-tag__icon")[0]
+        const dropdownButton = newTag.querySelector(".dialog-lists__list-tag__icon")
         if (dropdownButton) dropdownButton.setAttribute("data-action", "click->dialog--lists#openListTagDropdown")
 
-        const listLink = newTag.getElementsByClassName("dialog-lists__tag-link--open-list")[0]
+        const listLink = newTag.querySelector(".dialog-lists__tag-link--open-list")
         if (listLink) listLink.setAttribute("href", listData.url)
 
-        const removeLink = newTag.getElementsByClassName("dialog-lists__tag-link--remove")[0]
+        const removeLink = newTag.querySelector(".dialog-lists__tag-link--remove")
         if (removeLink) {
           removeLink.setAttribute("data-action", "click->dialog--lists#deletePhotoFromList")
           removeLink.listId = listData.id
@@ -263,6 +268,8 @@ export default class extends Controller {
         ? lang("list_remove_from_error")
         : lang("list_remove_from_success") + escapeHTML(listData.name)
 
+      if (resp.errors) console.log(resp)
+
       trigger("snackbar:show", { message: result.message, status: result.status, autoHide: true })
 
       // temporarily remove the list-tag (until the api callback returns, see below)
@@ -280,7 +287,7 @@ export default class extends Controller {
       e.preventDefault()
 
       const listTag = e.currentTarget.parentNode
-      const dropdown = listTag.getElementsByClassName("header-nav__popup")[0]
+      const dropdown = listTag.querySelector(".header-nav__popup")
 
       this.closeListTagDropdowns(dropdown)
       dropdown.classList.toggle("is-visible")
@@ -289,9 +296,7 @@ export default class extends Controller {
 
   closeListTagDropdowns(elementToExclude) {
     if (this.addedToSectionTarget.classList.contains("is-visible")) {
-      const dropdowns = Array.from(this.element.getElementsByClassName("header-nav__popup"))
-
-      dropdowns.forEach(dropdown => {
+      this.element.querySelectorAll(".header-nav__popup").forEach(dropdown => {
         if (!elementToExclude || elementToExclude !== dropdown) {
           dropdown.classList.remove("is-visible")
         }
@@ -314,7 +319,7 @@ export default class extends Controller {
 
   renderDeleteSection(listId) {
     const listData = listManager.getListById(listId)
-    const title = this.sectionDeleteTarget.getElementsByClassName("dialog-lists__delete-title")[0]
+    const title = this.sectionDeleteTarget.querySelector(".dialog-lists__delete-title")
 
     title.innerHTML = escapeHTML(listData.name)
   }
