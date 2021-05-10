@@ -69,6 +69,7 @@ export default class extends Controller {
 
     // load photo data if it hasn't been loaded yet
     if (!this.listData.photos) await listManager.loadListPhotosData(this.listData.id)
+
     // then load the extended photo data (from elastic search)
     await listManager.loadExtendedListPhotoData(this.listData.id)
 
@@ -154,19 +155,19 @@ export default class extends Controller {
 
   // context menu functions
 
-  showEditListDropdown(e) {
+  showContextMenu(e) {
     if (e) {
       e.preventDefault()
 
       const listItemMenu = e.currentTarget.parentNode
       const dropdown = listItemMenu.querySelector(".header-nav__popup")
 
-      this.hideEditListDropdowns(dropdown)
+      this.hideAllContextMenu(dropdown)
       dropdown.classList.toggle("is-visible")
     }
   }
 
-  hideEditListDropdowns(elementToExclude) {
+  hideAllContextMenu(elementToExclude) {
     this.element.querySelectorAll(".header-nav__popup").forEach(dropdown => {
       if (!elementToExclude || elementToExclude !== dropdown) {
         dropdown.classList.remove("is-visible")
@@ -218,5 +219,35 @@ export default class extends Controller {
 
     window.history.pushState(null, `Fortepan — ${lang("lists")}`, `/${getLocale()}/lists/`)
     trigger("popstate", null, window)
+  }
+
+  async removePhoto(e) {
+    if (e) e.preventDefault()
+
+    if (e && e.currentTarget) {
+      const thumbnail = Array.from(this.element.querySelectorAll(".photos-thumbnail")).find(thumb =>
+        thumb.contains(e.currentTarget)
+      )
+      const result = {}
+
+      const resp = await listManager.deletePhotoFromList(thumbnail.photoId, this.listData.id)
+
+      result.status = resp.errors ? "error" : "success"
+      result.message = resp.errors
+        ? lang("list_remove_from_error")
+        : lang("list_remove_from_success") + escapeHTML(this.listData.name)
+
+      if (resp.errors) console.log(resp)
+
+      trigger("snackbar:show", { message: result.message, status: result.status, autoHide: true })
+
+      if (result.status === "success") {
+        // remove the thumbnail from the DOM on success
+        thumbnail.remove()
+
+        // update the photo counter
+        this.countTarget.textContent = this.listData.photos.length
+      }
+    }
   }
 }

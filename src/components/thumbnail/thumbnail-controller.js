@@ -27,7 +27,18 @@ export default class extends Controller {
     this.loadThumbnailImage()
   }
 
-  clicked() {
+  clicked(e) {
+    if (
+      e &&
+      e.target &&
+      this.role === "lists" &&
+      (e.target === this.element.querySelector(".context-menu") ||
+        this.element.querySelector(".context-menu").contains(e.target))
+    ) {
+      // if context menu is clicked do nothing
+      return
+    }
+
     let selectedPhotoData
     if (this.role === "lists") {
       selectedPhotoData = listManager.selectPhotoById(listManager.getSelectedListId(), this.element.photoId)

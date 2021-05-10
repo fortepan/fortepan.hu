@@ -3,7 +3,12 @@
         <div class="photos-thumbnail__image" data-thumbnail-target="container">
             <img alt="" draggable="false" data-thumbnail-target="image"/>
         </div>
-        <div class="photos-thumbnail__meta photos-thumbnail__meta--location" data-thumbnail-target="location"></div>
-        <div class="photos-thumbnail__meta photos-thumbnail__meta--description" data-thumbnail-target="description"></div>
+        <div class="photos-thumbnail__meta-container{% if role == "lists" %} has-context-menu{% endif %}">
+            <div class="photos-thumbnail__meta photos-thumbnail__meta--location" data-thumbnail-target="location"></div>
+            <div class="photos-thumbnail__meta photos-thumbnail__meta--description" data-thumbnail-target="description"></div>
+            {% if role == "lists" %}
+            {% include ./inc/context-menu role:"thumbnail" controller:"lists--photos" %}
+            {% endif %}
+        </div>
     </div>
 </template>

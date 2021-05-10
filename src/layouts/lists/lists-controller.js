@@ -202,19 +202,19 @@ export default class extends Controller {
 
   // context menu functions
 
-  showEditListDropdown(e) {
+  showContextMenu(e) {
     if (e) {
       e.preventDefault()
 
       const listItemMenu = e.currentTarget.parentNode
       const dropdown = listItemMenu.querySelector(".header-nav__popup")
 
-      this.hideEditListDropdowns(dropdown)
+      this.hideAllContextMenu(dropdown)
       dropdown.classList.toggle("is-visible")
     }
   }
 
-  hideEditListDropdowns(elementToExclude) {
+  hideAllContextMenu(elementToExclude) {
     this.element.querySelectorAll(".header-nav__popup").forEach(dropdown => {
       if (!elementToExclude || elementToExclude !== dropdown) {
         dropdown.classList.remove("is-visible")

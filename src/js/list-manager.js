@@ -50,6 +50,7 @@ const loadListPhotosData = async listId => {
   const list = getListById(listId)
   const rawPhotosResp = await listsAPI.getListPhotos(listId)
 
+  delete list.extendedPhotoDataLoaded
   list.photos = []
 
   Object.keys(rawPhotosResp.flags).forEach(key => {
@@ -189,10 +190,17 @@ const addPhotoToList = async (photoId, listId) => {
 }
 
 const deletePhotoFromList = async (photoId, listId) => {
+  const list = getListById(listId)
+  const hadExtendedPhotoData = list.extendedPhotoDataLoaded
+
   const resp = await listsAPI.deleteFromList(photoId, listId)
 
   // update photo data of the list item
   await loadListPhotosData(listId)
+
+  if (hadExtendedPhotoData) {
+    await loadExtendedListPhotoData(listId)
+  }
 
   return resp
 }
