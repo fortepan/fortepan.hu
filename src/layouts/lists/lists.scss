@@ -36,7 +36,7 @@
 
 .lists__subtitle {
   opacity: 0;
-  transition: opacity 0.3s $ease-out-expo;
+  transition: opacity 0.8s $ease-out-expo;
 
   &.is-visible {
     opacity: 1;
@@ -64,6 +64,17 @@
   margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
+
+  opacity: 0;
+  transition: opacity 0.8s $ease-out-expo;
+
+  &.is-hidden {
+    display: none;
+  }
+
+  &.is-visible {
+    opacity: 1;
+  }
 }
 
 .lists__item {

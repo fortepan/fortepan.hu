@@ -41,6 +41,9 @@ export default class extends Controller {
           // open carousel
           const selectedPhotoData = listManager.selectPhotoById(listData.id, photoId)
           if (selectedPhotoData) {
+            // scroll to top
+            this.element.scrollTop = 0
+
             // Load photo in Carousel
             trigger("photosThumbnail:select", { data: selectedPhotoData })
           }
@@ -273,7 +276,8 @@ export default class extends Controller {
         ? lang("list_remove_from_error")
         : lang("list_remove_from_success") + escapeHTML(this.listData.name)
 
-      if (resp.errors) console.log(resp)
+      // eslint-disable-next-line no-console
+      if (resp.errors) console.error(resp.errors)
 
       trigger("snackbar:show", { message: result.message, status: result.status, autoHide: true })
 
