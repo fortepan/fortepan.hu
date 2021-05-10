@@ -5,3 +5,58 @@
     display: block;
   }
 }
+
+.list-title {
+  & .lists__item__menu {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    margin-bottom: rem(-24px);
+    margin-left: rem(-12px);
+    opacity: 0.5;
+    letter-spacing: initial;
+    line-height: 1.5;
+
+    &:hover {
+      opacity: 1;
+      z-index: 999;
+    }
+
+    & .button-circular__icon {
+      width: rem(32px);
+      height: rem(32px);
+    }
+  }
+}
+
+.list-description {
+  height: 0;
+  overflow: hidden;
+  opacity: 0;
+
+  max-width: rem(570px);
+  font-size: rem(14px);
+  font-weight: 500;
+  line-height: rem(24px);
+
+  transition: opacity 0.3s $ease-out-expo;
+
+  &.is-visible {
+    margin-top: 1rem;
+    overflow: initial;
+    height: auto;
+    opacity: 1;
+  }
+}
+
+.photos-title__subtitle__list-link {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s $ease-out-expo, border-color 0.2s $ease-out-expo;
+
+  &:hover {
+    color: $red;
+    border-color: $red;
+  }
+}

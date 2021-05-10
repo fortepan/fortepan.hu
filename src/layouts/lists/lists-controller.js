@@ -25,8 +25,7 @@ export default class extends Controller {
   async show() {
     if (appState("auth-signed-in")) {
       // hide the both the lists and list-photos first
-      trigger("lists:hideListPhotos")
-      this.element.classList.remove("is-visible")
+      this.hide()
 
       // first check if we have a matching slug in the url to show the list photo page
       const urlValues = getPrettyURLValues(window.location.pathname.split(`/${getLocale()}/lists/`).join("/"))
@@ -52,10 +51,16 @@ export default class extends Controller {
         await this.renderLists()
       }
     } else {
-      this.element.classList.remove("is-visible")
+      this.hide()
       trigger("snackbar:show", { message: lang("list_signin_alert"), status: "error", autoHide: true })
       trigger("dialogSignin:show")
     }
+  }
+
+  hide() {
+    this.element.scrollTop = 0
+    this.element.classList.remove("is-visible")
+    trigger("lists:hideListPhotos")
   }
 
   async renderLists() {
@@ -83,14 +88,14 @@ export default class extends Controller {
       newListItem.listId = listData.id
       listItemsCreated.push(newListItem)
 
-      const title = newListItem.getElementsByClassName("lists__item__title")[0]
+      const title = newListItem.querySelector(".lists__item__title")
       if (title) {
         title.innerHTML = escapeHTML(listData.name)
         title.setAttribute("href", listData.url)
       }
 
       if (listData.description) {
-        const description = newListItem.getElementsByClassName("lists__item__description")[0]
+        const description = newListItem.querySelector(".lists__item__description")
         if (description) {
           description.innerHTML = escapeHTML(listData.description)
           /* description.innerHTML = escapeHTML(
@@ -103,12 +108,12 @@ export default class extends Controller {
       // images
       const listPhotosPromise = listManager.getListPhotos(listData.id).then(photosData => {
         // after photos data loaded
-        const cover = newListItem.getElementsByClassName("lists__item__cover")[0]
+        const cover = newListItem.querySelector(".lists__item__cover")
         if (cover && photosData.length > 0) {
           cover.classList.add(photosData.length > 3 ? "has-image--more" : `has-image--${photosData.length}`)
 
           if (photosData.length > 3) {
-            const count = newListItem.getElementsByClassName("lists__item__counter")[0]
+            const count = newListItem.querySelector(".lists__item__counter")
             count.innerText = `+${photosData.length - 3}`
           }
         } else {
@@ -118,8 +123,8 @@ export default class extends Controller {
         photosData.forEach((photoItem, index) => {
           if (index < 3) {
             const photoId = photoItem.id
-            const photoElement = newListItem.getElementsByClassName("lists__item__photo")[index]
-            const imageTarget = photoElement.getElementsByClassName("lists__item__photo__img")[0]
+            const photoElement = newListItem.querySelectorAll(".lists__item__photo")[index]
+            const imageTarget = photoElement.querySelector(".lists__item__photo__img")
             const img = new Image()
 
             photoElement.classList.add("has-photo")
@@ -195,12 +200,14 @@ export default class extends Controller {
     this.show()
   }
 
+  // context menu functions
+
   showEditListDropdown(e) {
     if (e) {
       e.preventDefault()
 
       const listItemMenu = e.currentTarget.parentNode
-      const dropdown = listItemMenu.getElementsByClassName("header-nav__popup")[0]
+      const dropdown = listItemMenu.querySelector(".header-nav__popup")
 
       this.hideEditListDropdowns(dropdown)
       dropdown.classList.toggle("is-visible")
@@ -208,15 +215,11 @@ export default class extends Controller {
   }
 
   hideEditListDropdowns(elementToExclude) {
-    if (this.element.classList.contains("is-visible")) {
-      const dropdowns = Array.from(this.element.getElementsByClassName("header-nav__popup"))
-
-      dropdowns.forEach(dropdown => {
-        if (!elementToExclude || elementToExclude !== dropdown) {
-          dropdown.classList.remove("is-visible")
-        }
-      })
-    }
+    this.element.querySelectorAll(".header-nav__popup").forEach(dropdown => {
+      if (!elementToExclude || elementToExclude !== dropdown) {
+        dropdown.classList.remove("is-visible")
+      }
+    })
   }
 
   createList(e) {
@@ -247,9 +250,10 @@ export default class extends Controller {
   }
 
   onListsChanged(e) {
-    if (e && e.action) {
-      switch (e.action) {
-        /* case "create":
+    if (this.element.classList.contains("is-visible")) {
+      if (e && e.action) {
+        switch (e.action) {
+          /* case "create":
           // TODO: add the new listItem
           break
         case "edit":
@@ -258,19 +262,19 @@ export default class extends Controller {
         case "delete":
           // TODO: remove the listItem
           break */
-        default:
-          this.reloadLists()
-          break
+          default:
+            this.reloadLists()
+            break
+        }
+      } else {
+        this.reloadLists()
       }
-    } else {
-      this.reloadLists()
     }
   }
 
   reloadLists() {
     // reload the whole list
     this.listRendered = false
-    this.element.classList.remove("is-visible")
     this.show()
   }
 

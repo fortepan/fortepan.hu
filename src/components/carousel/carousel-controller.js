@@ -30,7 +30,7 @@ export default class extends Controller {
     this.element.classList.add("is-visible")
   }
 
-  hide() {
+  hide(e) {
     // hide all photos
     this.hideAllPhotos()
 
@@ -40,7 +40,9 @@ export default class extends Controller {
     // hide carousel
     this.element.classList.remove("is-visible")
 
-    trigger("photosCarousel:hide")
+    if (!e || (e && e.detail && !e.detail.silent)) {
+      trigger("photosCarousel:hide")
+    }
   }
 
   stepSlideshow() {
