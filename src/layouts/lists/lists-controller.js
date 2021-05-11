@@ -15,7 +15,18 @@ import listManager from "../../js/list-manager"
 
 export default class extends Controller {
   static get targets() {
-    return ["title", "titleLabel", "subtitle", "count", "countLabel", "grid", "listItem", "listPhotos"]
+    return [
+      "title",
+      "titleLabel",
+      "titleButton",
+      "subtitle",
+      "count",
+      "countLabel",
+      "grid",
+      "listItem",
+      "listPhotos",
+      "placeholder",
+    ]
   }
 
   connect() {
@@ -64,26 +75,46 @@ export default class extends Controller {
   async open() {
     this.element.classList.add("is-visible")
 
-    await this.renderLists()
+    const lists = await this.renderLists()
 
-    this.gridTarget.classList.remove("is-hidden")
+    const target = lists.length > 0 ? this.gridTarget : this.placeholderTarget
+
+    target.classList.remove("is-hidden")
+    if (lists.length > 0) this.titleButtonTarget.classList.remove("is-hidden")
+
     setTimeout(() => {
       this.subtitleTarget.classList.add("is-visible")
-      this.gridTarget.classList.add("is-visible")
+      target.classList.add("is-visible")
+      if (lists.length > 0) this.titleButtonTarget.classList.add("is-visible")
     }, 100)
   }
 
   hide() {
     this.element.scrollTop = 0
     this.element.classList.remove("is-visible")
+
     this.subtitleTarget.classList.remove("is-visible")
-    this.gridTarget.classList.remove("is-visible")
+
+    this.titleButtonTarget.classList.add("is-hidden")
+    this.titleButtonTarget.classList.remove("is-visible")
+
     this.gridTarget.classList.add("is-hidden")
+    this.gridTarget.classList.remove("is-visible")
+
+    this.placeholderTarget.classList.add("is-hidden")
+    this.placeholderTarget.classList.remove("is-visible")
+
     trigger("lists:hideListPhotos")
   }
 
   async renderLists() {
-    if (this.listRendered) return
+    // run the render only once
+    if (this.listRendered) {
+      // needs to return with lists in any case
+      const lists = await listManager.getLists()
+      return lists
+    }
+
     this.listRendered = true
 
     trigger("loader:show", { id: "loaderBase" })
@@ -113,9 +144,11 @@ export default class extends Controller {
         title.setAttribute("href", listData.url)
       }
 
-      if (listData.description) {
-        const description = newListItem.querySelector(".lists__item__description")
-        if (description) {
+      const description = newListItem.querySelector(".lists__item__description")
+      if (description) {
+        description.classList.remove("is-visible")
+
+        if (listData.description) {
           description.innerHTML = escapeHTML(listData.description)
           /* description.innerHTML = escapeHTML(
             "Random lista leírás, maximum 140 karakter hosszú, és minden listához egyenként hozzáadható. Megjelenik a listákat listázó oldalon és máshol."
@@ -177,6 +210,8 @@ export default class extends Controller {
     this.subtitleTarget.classList.add("is-visible")
 
     trigger("loader:hide", { id: "loaderBase" })
+
+    return lists
   }
 
   loadListItemThumbnails() {

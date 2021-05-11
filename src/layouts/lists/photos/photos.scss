@@ -1,6 +1,10 @@
 .list-photos {
   display: none;
 
+  &.is-visible {
+    display: block;
+  }
+
   &,
   &.photos {
     padding: rem(104px) rem(24px) rem(96px);
@@ -41,8 +45,8 @@
     }
   }
 
-  &.is-visible {
-    display: block;
+  .photos__grid.is-hidden {
+    display: none;
   }
 
   .photos-thumbnail {
@@ -51,12 +55,16 @@
 }
 
 .list-title {
-  & .lists__item__menu {
+  .photos-title__label {
+    margin-right: rem(4px);
+  }
+
+  .lists__item__menu {
     position: relative;
     display: inline-block;
     vertical-align: middle;
     margin-bottom: rem(-24px);
-    margin-left: rem(4px);
+
     opacity: 0.5;
     letter-spacing: initial;
     line-height: 1.5;

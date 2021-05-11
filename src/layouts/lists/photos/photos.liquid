@@ -9,7 +9,7 @@
 >
   <div class="list-title photos-title">
     <h1 class="photos-title__title" data-lists--photos-target="title">
-      <span data-lists--photos-target="titleLabel"></span>{% include ./inc/context-menu controller:"lists--photos" %}
+      <span class="photos-title__label" data-lists--photos-target="titleLabel"></span>{% include ./inc/context-menu controller:"lists--photos" %}
     </h1>
     <h5 class="photos-title__subtitle" data-lists--photos-target="subtitle">
       <span data-lists--photos-target="count" class="photos-title__subtitle__count"></span>
@@ -21,7 +21,17 @@
     </h5>
     <p class="list-description" data-lists--photos-target="description"></p>
   </div>
-  <div class="photos__grid" data-lists--photos-target="grid"></div>
+  <div class="photos__grid is-hidden" data-lists--photos-target="grid"></div>
+  <div class="lists__placeholder is-hidden" data-lists--photos-target="placeholder">
+    <h3>{{ lang[locale].list_photos_empty_header }}</h3>
+    <p>{{ lang[locale].list_photos_empty_text }}</p>
+    <a href="/{{ locale }}/photos/" class="button button--medium button--primary">
+      {{ lang[locale].photos }}
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="10" viewBox="0 0 14 10">
+        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2,6 L6,10 L10,6 M6,-2 L6,9" transform="rotate(-90 7 4)"/>
+      </svg>
+      </a>
+  </div>
 </div>
 
 {% include thumbnail/thumbnail-template role:"lists" %}
