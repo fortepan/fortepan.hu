@@ -15,7 +15,7 @@ import {
 
 export default class extends Controller {
   static get targets() {
-    return ["title", "titleLabel", "subtitle", "count", "description", "grid"]
+    return ["title", "titleLabel", "subtitle", "count", "description", "grid", "placeholder"]
   }
 
   connect() {
@@ -24,9 +24,10 @@ export default class extends Controller {
   }
 
   async show(e) {
+    this.hide()
+
     // TODO: remove when feature/lists is live
     if (!localStorage.getItem("lists")) {
-      this.hide()
       return
     }
 
@@ -39,6 +40,15 @@ export default class extends Controller {
         this.element.classList.add("is-visible")
 
         await this.renderPhotos()
+
+        if (this.listData.photos.length > 0) {
+          this.gridTarget.classList.remove("is-hidden")
+        } else {
+          this.placeholderTarget.classList.remove("is-hidden")
+          setTimeout(() => {
+            this.placeholderTarget.classList.add("is-visible")
+          }, 100)
+        }
 
         const urlValues = getPrettyURLValues(window.location.pathname.split(`/${getLocale()}/lists/`).join("/"))
         const photoId = urlValues[1]
@@ -53,9 +63,6 @@ export default class extends Controller {
             // Load photo in Carousel
             trigger("photosThumbnail:select", { data: selectedPhotoData })
           }
-        } else {
-          // close carousel if it is open
-          trigger("photosCarousel:close", { silent: true })
         }
       } else {
         // some issue here -- redirect to the lists page
@@ -71,6 +78,9 @@ export default class extends Controller {
 
     this.element.scrollTop = 0
     this.element.classList.remove("is-visible")
+    this.gridTarget.classList.add("is-hidden")
+    this.placeholderTarget.classList.add("is-hidden")
+    this.placeholderTarget.classList.remove("is-visible")
   }
 
   async renderPhotos() {

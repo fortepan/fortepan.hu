@@ -12,7 +12,7 @@ layout: base/base.liquid
   <div class="layout-heading lists__heading">
     <h1 class="lists__title" data-lists-target="title">
       <span class="lists__title__label" data-lists-target="titleLabel">{{ lang[locale].lists }}</span>
-      <a href="#" class="button button--medium button--secondary lists__title__button" data-action="click->lists#createList">
+      <a href="#" class="button button--medium button--secondary lists__title__button is-hidden" data-lists-target="titleButton" data-action="click->lists#createList">
         <span>{{ lang[locale].list_new }}</span>
       </a>
     </h1>
@@ -22,6 +22,11 @@ layout: base/base.liquid
     </h5>
   </div>
   <div class="lists__grid is-hidden" data-lists-target="grid"></div>
+  <div class="lists__placeholder is-hidden" data-lists-target="placeholder">
+    <h3>{{ lang[locale].list_empty_header }}</h3>
+    <p>{{ lang[locale].list_empty_text }}</p>
+    <a href="#" class="button button--medium button--primary" data-action="click->lists#createList">{{ lang[locale].list_new }}</a>
+  </div>
 </div>
 
 {% include ./inc/list-item-template %}
