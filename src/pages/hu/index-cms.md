@@ -12,9 +12,9 @@ announcement:
     az elmúlásról. Nyaralások, költözések, egyenruhák, ünnepek. Beszkártosok, disszidensek,
     úttörők. Ezek mind mi voltunk és ez mind velünk történt egykor.<br>
   actions:
-  - label: 100 kedvenc
+  - label: 100 fontos kép
     style: primary
-    url: https://fortepan.hu/hu/photos/?donor=F%C5%90FOT%C3%93&tag=Best%20of
+    url: https://fortepan.hu/hu/photos/?latest&tag=best%20of
   - label: 2400 friss fotó
     style: light-transparent
     url: "/hu/photos/?donor=F%C5%90FOT%C3%93"
