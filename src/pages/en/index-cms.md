@@ -5,7 +5,7 @@ permalink: "/en/"
 announcement:
   title: "<strong>OUR MOST RECENT OLD PHOTOS</strong>"
   caption: New Collection
-  cover_image: "207613"
+  cover_image: "209871"
   blurb: Have a look at 2300 hitherto unknown images from 65 donors in the “Fresh”
     section of Fortepan. If we place the images from family albums and negative rolls
     close to one another, we can sort of stroll along the entire 20th century. Here
