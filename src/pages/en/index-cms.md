@@ -19,7 +19,7 @@ announcement:
     url: https://fortepan.hu/hu/photos/?latest&tag=best%20of
   - label: All Collection
     style: light-transparent
-    url: https://fortepan.hu/hu/photos/?latest
+    url: https://fortepan.hu/en/photos/?latest
 
 ---
 This website was launched in 2010 and it initially contained photographs found randomly in the streets of Budapest. The archive has expanded since then through donations from families, amateur and professional photographers, along with public collections. The images on the website are selected by editors.
