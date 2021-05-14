@@ -3,22 +3,19 @@ layout: home/home.liquid
 title: Fortepan — Főoldal
 permalink: "/"
 announcement:
-  title: "<strong>FŐFOTÓ</strong>"
+  title: "<strong>LEGÚJABB RÉGI KÉPEINK</strong>"
   caption: Új gyűjtemény
   cover_image: "207613"
-  blurb: A 60-as 70-es évek a Fővárosi Fotóipari Vállalat kameráján keresztül. A FŐFOTÓ
-    több, mint 200.000 negatívkockából álló hagyatékából 5000 képet választottunk
-    ki a Fortepanra. Válogatásunk első részében utcaképek, épület- és városfotók,
-    szállodák, presszók, munkahelyek belső enteriőrjei szerepelnek. Többszáz fotót
-    választottunk a palánkokra, villamosokra, hírdetőtáblákra tervezett egyedi mozifilm
-    plakátokból. A gyűjtemény külön értéke a számtalan - sokszor színes negatívra
-    készült - reklám és divatfotó.  A korszak design-története iránt érdeklődőknek
-    kötelező!
+  blurb: 65 adományozó 2300 ismeretlen fényképe a Fortepan Friss sorozatában. A családi
+    fotóalbumok és negatívtekercsek képeit egymás mellé téve, végiglépegethetünk az
+    egész huszadik századon. Ime a legújabb szubjektív válogatásunk a létezésről és
+    az elmúlásról. Nyaralások, költözések, egyenruhák, ünnepek. Beszkártosok, disszidensek,
+    úttörők. Ezek mind mi voltunk és ez mind velünk történt egykor.<br>
   actions:
   - label: 100 kedvenc
     style: primary
     url: https://fortepan.hu/hu/photos/?donor=F%C5%90FOT%C3%93&tag=Best%20of
-  - label: 2600 FŐFOTÓ kép
+  - label: 2400 friss fotó
     style: light-transparent
     url: "/hu/photos/?donor=F%C5%90FOT%C3%93"
 
