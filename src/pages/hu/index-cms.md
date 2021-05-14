@@ -4,7 +4,7 @@ title: Fortepan — Főoldal
 permalink: "/"
 announcement:
   title: "<strong>LEGÚJABB RÉGI KÉPEINK</strong>"
-  caption: Új gyűjtemény
+  caption: Új sorozat
   cover_image: "207613"
   blurb: 65 adományozó 2300 ismeretlen fényképe a Fortepan Friss sorozatában. A családi
     fotóalbumok és negatívtekercsek képeit egymás mellé téve, végiglépegethetünk az
