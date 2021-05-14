@@ -3,23 +3,21 @@ layout: home/home.liquid
 title: Fortepan — Home
 permalink: "/en/"
 announcement:
-  title: "<strong>FŐFOTÓ</strong>"
+  title: "<strong>OUR MOST RECENT OLD PHOTOS</strong>"
   caption: New Collection
   cover_image: "207613"
-  blurb: Have a look at the 60s and the 70s through the cameras of Budapest Municipal
-    Photography Company (FŐFOTÓ). Out of a legacy of more than 200 000 negatives,
-    we have selected about 5000 frames. In this first instalment there are street
-    photos, building- and street views, images of hotels, espresso bars, and workplace
-    interiors. Also, we have included several hundred outdoor movie ads, uniquely
-    produced to fit the sites, fences, tram stops, or notice boards. Also, this special
-    collection abounds in advertising and fashion photos – often survived on color
-    negatives. If you are interested in the design history of the period, you mustn’t
-    miss all this.
+  blurb: Have a look at 2300 hitherto unknown images from 65 donors in the “Fresh”
+    section of Fortepan. If we place the images from family albums and negative rolls
+    close to one another, we can sort of stroll along the entire 20th century. Here
+    you can find our highly personal selection, the subject of which is human being
+    and human passing. Holidays, relocation calamities, uniforms, public and private
+    holidays. Transit employees, emigrants, pioneers. Our earlier selves – all this
+    once happened to us.
   actions:
   - label: 100 favorites
     style: primary
     url: https://fortepan.hu/hu/photos/?donor=F%C5%90FOT%C3%93&tag=Best%20of
-  - label: All FŐFOTÓ Collection
+  - label: All New Collection
     style: light-transparent
     url: https://fortepan.hu/hu/photos/?donor=F%C5%90FOT%C3%93
 
