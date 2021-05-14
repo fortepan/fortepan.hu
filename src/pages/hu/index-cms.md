@@ -6,10 +6,10 @@ announcement:
   title: "<strong>LEGÚJABB RÉGI KÉPEINK</strong>"
   caption: Új sorozat
   cover_image: "209871"
-  blurb: 65 adományozó 2300 ismeretlen fényképe a Fortepan Friss sorozatában. A családi
-    fotóalbumok és negatívtekercsek képeit egymás mellé téve, végiglépegethetünk az
-    egész huszadik századon. Ime a legújabb szubjektív válogatásunk a létezésről és
-    az elmúlásról. Nyaralások, költözések, egyenruhák, ünnepek. Beszkártosok, disszidensek,
+  blurb: 65 adományozó, 2300 ismeretlen fényképét töltöttük fel a Fortepan Friss sorozatába.
+    A családi fotóalbumok és negatívtekercsek képeit egymás mellé téve, végiglépegethetünk
+    az egész huszadik századon. Ime a legújabb szubjektív válogatásunk a létezésről
+    és az elmúlásról. Nyaralások, költözések, egyenruhák, ünnepek. Beszkártosok, disszidensek,
     úttörők. Ezek mind mi voltunk és ez mind velünk történt egykor.<br>
   actions:
   - label: 100 fontos kép
