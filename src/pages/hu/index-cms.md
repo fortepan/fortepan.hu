@@ -17,7 +17,7 @@ announcement:
     url: https://fortepan.hu/hu/photos/?latest&tag=best%20of
   - label: 2300 friss fotó
     style: light-transparent
-    url: "/hu/photos/?donor=F%C5%90FOT%C3%93"
+    url: https://fortepan.hu/hu/photos/?latest
 
 ---
 A honlap 2010-ben indult ötezer, jórészt lomtalanításokon talált fotóval. Azóta többszáz család, amatőr és hivatásos fotós, illetve közgyűjtemény bővítette a Fortepant. A honlapon megjelenő képeket a szerkesztőség válogatja ki.
