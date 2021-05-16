@@ -15,7 +15,7 @@ import {
 
 export default class extends Controller {
   static get targets() {
-    return ["title", "titleLabel", "subtitle", "count", "description", "grid", "placeholder"]
+    return ["title", "subtitle", "count", "description", "grid", "placeholder"]
   }
 
   connect() {
@@ -84,7 +84,7 @@ export default class extends Controller {
   }
 
   async renderPhotos() {
-    this.titleLabelTarget.innerHTML = escapeHTML(this.listData.name)
+    this.titleTarget.innerHTML = escapeHTML(this.listData.name)
     this.subtitleTarget.classList.remove("is-visible")
 
     setPageMeta(`${this.listData.name} — ${lang("lists")}`, this.listData.description, null)
