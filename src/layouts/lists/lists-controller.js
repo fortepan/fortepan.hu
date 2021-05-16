@@ -85,7 +85,10 @@ export default class extends Controller {
     setTimeout(() => {
       this.subtitleTarget.classList.add("is-visible")
       target.classList.add("is-visible")
+
       if (lists.length > 0) this.titleButtonTarget.classList.add("is-visible")
+
+      this.loadListItemThumbnails()
     }, 100)
   }
 
@@ -215,8 +218,8 @@ export default class extends Controller {
   }
 
   loadListItemThumbnails() {
-    const imageTargets = Array.from(
-      this.element.querySelectorAll(".lists__item__photo.has-photo .lists__item__photo__img:not(.is-loaded)")
+    const imageTargets = this.element.querySelectorAll(
+      ".lists__item__photo.has-photo .lists__item__photo__img:not(.is-loaded)"
     )
 
     imageTargets.forEach(imgTarget => {
