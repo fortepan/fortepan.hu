@@ -11,7 +11,7 @@ const loadListData = async () => {
 
   Object.keys(rawResponse).forEach(key => {
     const data = { id: key, name: rawResponse[key] }
-    data.url = `/${getLocale()}/lists/${slugify(data.name, true)}`
+    data.url = `/${getLocale()}/lists/${data.id}`
 
     listData.lists.push(data)
   })

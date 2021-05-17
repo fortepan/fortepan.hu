@@ -50,10 +50,12 @@ export default class extends Controller {
           }, 100)
         }
 
-        const urlValues = getPrettyURLValues(window.location.pathname.split(`/${getLocale()}/lists/`).join("/"))
+        const urlValues = getPrettyURLValues(window.location.pathname.split(listData.url).join("/"))
+
+        // urlValues[0] is simply photos for better readibility
         const photoId = urlValues[1]
 
-        if (photoId) {
+        if (urlValues[0] === "photos" && photoId) {
           // open carousel
           const selectedPhotoData = listManager.selectPhotoById(listData.id, photoId)
           if (selectedPhotoData) {
@@ -120,7 +122,7 @@ export default class extends Controller {
 
       if (index === 0) {
         // set the meta image
-        setPageMeta(null, null, `${config.PHOTO_SOURCE}240/fortepan_${item.mid}.jpg`)
+        setPageMeta(null, null, `${config.PHOTO_SOURCE}480/fortepan_${item.mid}.jpg`)
       }
 
       // observe when the thumbnail class attribute changes and contains 'is-loaded'
@@ -157,21 +159,17 @@ export default class extends Controller {
 
   onPhotoSelected(e) {
     const id = e && e.detail && e.detail.photoId ? e.detail.photoId : listManager.getSelectedPhotoId()
-    const url = `${listManager.getSelectedList().url}/${id}`
+    const url = `${listManager.getSelectedList().url}/photos/${id}`
 
     setPageMeta(
       `${this.listData.name} — #${id}`,
       this.listData.description,
-      `${config.PHOTO_SOURCE}240/fortepan_${id}.jpg`
+      `${config.PHOTO_SOURCE}480/fortepan_${id}.jpg`
     )
 
     if (window.location.pathname !== url) {
       // set the proper url
-      window.history.pushState(
-        null,
-        `Fortepan — ${this.listData.name} — #${id}`,
-        `${listManager.getSelectedList().url}/${id}`
-      )
+      window.history.pushState(null, `Fortepan — ${this.listData.name} — #${id}`, url)
     }
   }
 

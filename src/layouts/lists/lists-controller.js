@@ -51,8 +51,8 @@ export default class extends Controller {
         // load lists if it hasn't been loaded
         if (!listManager.hasData()) await listManager.loadListData()
 
-        // check for an existing list given the slug (first of the url path values)
-        const listData = listManager.getListBySlug(urlValues[0])
+        // check for an existing list given the id (first of the url path values)
+        const listData = listManager.getListById(urlValues[0])
 
         if (listData) {
           // if the selected list exists trigger the event to show the list photos
@@ -62,7 +62,7 @@ export default class extends Controller {
           await this.open()
         }
       } else {
-        // no slug is given, show the lists page by default
+        // no id is given, show the lists page by default
         await this.open()
       }
     } else {
