@@ -194,7 +194,7 @@ export default class extends Controller {
             })
 
             imageTarget.img = img
-            imageTarget.src = `${config.PHOTO_SOURCE}240/fortepan_${photoId}.jpg`
+            imageTarget.src = `${config.PHOTO_SOURCE}480/fortepan_${photoId}.jpg`
           }
         })
 
