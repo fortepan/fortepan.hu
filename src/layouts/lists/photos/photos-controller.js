@@ -217,6 +217,26 @@ export default class extends Controller {
 
       this.hideAllContextMenu(dropdown)
       dropdown.classList.toggle("is-visible")
+
+      dropdown.removeAttribute("style")
+      const bounds = dropdown.getBoundingClientRect()
+
+      if (bounds.left < 16) {
+        dropdown.style.right = "auto"
+        dropdown.style.left = 0
+      }
+
+      if (bounds.right > window.innerWidth - 16) {
+        dropdown.style.right = "auto"
+        dropdown.style.left = `${window.innerWidth -
+          16 -
+          e.currentTarget.getBoundingClientRect().left -
+          bounds.width}px`
+      }
+
+      if (bounds.bottom > window.innerHeight - 16) {
+        dropdown.style.top = `-${bounds.height}px`
+      }
     }
   }
 
