@@ -18,8 +18,7 @@
     <h5 class="photos-title__subtitle" data-lists--photos-target="subtitle">
       <span data-lists--photos-target="count" class="photos-title__subtitle__count"></span>
       {{ lang[locale].photo_results }}
-      &bull;
-      {% include ./inc/context-menu role:"list-photos-edit" controller:"lists--photos" %}
+      &bull;&nbsp;{% include ./inc/context-menu role:"list-photos-edit" controller:"lists--photos" %}
     </h5>
     <p class="list-description" data-lists--photos-target="description"></p>
   </div>
