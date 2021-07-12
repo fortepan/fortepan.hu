@@ -3,14 +3,14 @@ layout: home/home.liquid
 title: Fortepan — Főoldal
 permalink: "/"
 announcement:
-  title: "<strong>LEGÚJABB RÉGI KÉPEINK</strong>"
+  title: "<strong>LEGÚJABB RÉGI KÉPEINK '21. NYÁR</strong>"
   caption: Új sorozat
   cover_image: "209871"
-  blurb: 65 adományozó, 2300 ismeretlen fényképét töltöttük fel a Fortepan Friss sorozatába.
-    A családi fotóalbumok és negatívtekercsek képeit egymás mellé téve, végiglépegethetünk
-    az egész huszadik századon. Íme a legújabb szubjektív válogatásunk a létezésről
-    és az elmúlásról. Nyaralások, költözések, egyenruhák, ünnepek. Beszkártosok, disszidensek,
-    úttörők. Ezek mind mi voltunk és ez mind velünk történt egykor.<br>
+  blurb: 22 adományozó, 2200 ismeretlen fényképét töltöttük fel a Fortepan Friss sorozatába.
+    A Fortepanra jellemző családi, amatőr fotós hagyatékok mellett két fontos szerzőnk
+    - Szalay Zoltán és Urbán Tamás - életművéből is mutatunk új képeket. Közel négyszáz
+    fotót pedig az osztrák Nemzeti Könyvtár első világháborús gyűjteményéből válogattunk.
+    <br>
   actions:
   - label: 100 fontos kép
     style: primary
