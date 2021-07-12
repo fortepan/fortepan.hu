@@ -6,11 +6,11 @@ announcement:
   title: "<strong>LEGÚJABB RÉGI KÉPEINK '21. NYÁR</strong>"
   caption: Új sorozat
   cover_image: "212359"
-  blurb: 22 adományozó, 2200 ismeretlen fényképét töltöttük fel a Fortepan Friss sorozatába.
-    A Fortepanra jellemző családi, amatőr fotós hagyatékok mellett két fontos szerzőnk
-    - Szalay Zoltán és Urbán Tamás - életművéből is mutatunk új képeket. Közel négyszáz
-    fotót pedig az osztrák Nemzeti Könyvtár első világháborús gyűjteményéből válogattunk.
-    <br>
+  blurb: 22 adományozó, 2200 fényképét töltöttük fel a Fortepan Friss sorozatába.
+    Az ismerősnek tűnő, de megunhatatlan amatőr fotós hagyatékok mellett két fontos
+    szerzőnk - Szalay Zoltán és Urbán Tamás - életművéből is mutatunk új képeket.
+    Közel négyszáz fotót pedig az osztrák Nemzeti Könyvtár első világháborús gyűjteményéből
+    válogattunk. <br>
   actions:
   - label: 80 fontos kép
     style: primary
