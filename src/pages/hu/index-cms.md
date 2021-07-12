@@ -12,7 +12,7 @@ announcement:
     fotót pedig az osztrák Nemzeti Könyvtár első világháborús gyűjteményéből válogattunk.
     <br>
   actions:
-  - label: 100 fontos kép
+  - label: 80 fontos kép
     style: primary
     url: https://fortepan.hu/hu/photos/?latest&tag=best%20of
   - label: 2200 friss fotó
