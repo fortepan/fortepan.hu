@@ -3,7 +3,7 @@ layout: home/home.liquid
 title: Fortepan — Home
 permalink: "/en/"
 announcement:
-  title: "<strong>OUR MOST RECENT OLD PHOTOS - '21 SUMMER</strong>"
+  title: "<strong>OUR MOST RECENT OLD PHOTOS - SUMMER '21</strong>"
   caption: New Collection
   cover_image: "212359"
   blurb: This time we have uploaded 2200 photos from 22 donors to the Fresh section
