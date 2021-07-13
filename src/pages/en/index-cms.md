@@ -14,7 +14,7 @@ announcement:
   actions:
   - label: 80 favorites
     style: primary
-    url: ttps://fortepan.hu/en/photos/?latest&tag=best%20of
+    url: https://fortepan.hu/hu/photos/?latest&tag=best%20of
   - label: All Collection
     style: light-transparent
     url: https://fortepan.hu/en/photos/?latest
