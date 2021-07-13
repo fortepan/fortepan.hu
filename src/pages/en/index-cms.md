@@ -12,7 +12,7 @@ announcement:
     important photo journalists, of Zoltán Szalay and Tamás Urbán. Moreover, we selected
     close to 400 photos from the WWI collection of the National Library of Austria.
   actions:
-  - label: 100 favorites
+  - label: 80 favorites
     style: primary
     url: ttps://fortepan.hu/en/photos/?latest&tag=best%20of
   - label: All Collection
