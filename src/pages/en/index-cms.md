@@ -5,7 +5,7 @@ permalink: "/en/"
 announcement:
   title: "<strong>OUR MOST RECENT OLD PHOTOS - '21 SUMMER</strong>"
   caption: New Collection
-  cover_image: "209871"
+  cover_image: "212359"
   blurb: This time we have uploaded 2200 photos from 22 donors to the Fresh section
     of Fortepan. Apart from the ever familiar amateur photo legacies (ones we can
     never grow tired of), we included images from the oeuvre of two of our pivotally
