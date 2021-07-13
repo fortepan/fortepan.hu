@@ -6,13 +6,11 @@ announcement:
   title: "<strong>OUR MOST RECENT OLD PHOTOS</strong>"
   caption: New Collection
   cover_image: "209871"
-  blurb: Have a look at 2300 hitherto unknown images from 65 donors in the “Newly
-    Added” section of Fortepan. If we place the images from family albums and negative
-    rolls close to one another, we can sort of stroll along the entire 20th century.
-    Here you can find our highly personal selection, the subject of which is human
-    being and human passing. Holidays, relocation calamities, uniforms, public and
-    private holidays. Transit employees, emigrants, pioneers. Our earlier selves –
-    all this once happened to us.
+  blurb: This time we have uploaded 2200 photos from 22 donors to the Fresh section
+    of Fortepan. Apart from the ever familiar amateur photo legacies (ones we can
+    never grow tired of), we included images from the oeuvre of two of our pivotally
+    important photo journalists, of Zoltán Szalay and Tamás Urbán. Moreover, we selected
+    close to 400 photos from the WWI collection of the National Library of Austria.
   actions:
   - label: 100 favorites
     style: primary
