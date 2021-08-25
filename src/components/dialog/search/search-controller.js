@@ -1,4 +1,5 @@
 import { Controller } from "stimulus"
+import { appState } from "../../../js/app"
 import { trigger, getURLParams, getLocale } from "../../../js/utils"
 
 export default class extends Controller {
@@ -15,7 +16,7 @@ export default class extends Controller {
 
     const q = this.inputTarget.selectizeControl.value.join(", ")
 
-    if (window.location.pathname.indexOf("/photos") === -1) {
+    if (window.location.pathname.indexOf("/photos") === -1 || appState("is-lists")) {
       window.location = `/${getLocale()}/photos/?q=${q}`
     } else {
       trigger("photos:historyPushState", {
