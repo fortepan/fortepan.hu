@@ -63,7 +63,10 @@ export default class extends Controller {
         result.status = "error"
         result.message = lang("list_create_error")
       } else {
-        const resp = await listManager.addPhotoToList(photoManager.getSelectedPhotoId(), listId)
+        const resp = await listManager.addPhotoToList(
+          appState("is-lists") ? listManager.getSelectedPhotoId() : photoManager.getSelectedPhotoId(),
+          listId
+        )
 
         result.status = resp.errors ? "error" : "success"
         result.message = resp.errors ? lang("list_add_error") : lang("list_add_success") + escapeHTML(listName)
@@ -175,7 +178,7 @@ export default class extends Controller {
 
   async renderContainingLists() {
     // TODO: get the all the lists containing the photo
-    // const resp = await listManager.getContainingLists(photoManager.getSelectedPhotoId())
+    // const resp = await listManager.getContainingLists(appState("is-lists") ? listManager.getSelectedPhotoId() : photoManager.getSelectedPhotoId())
 
     const lists = await listManager.getLists()
 
@@ -270,7 +273,10 @@ export default class extends Controller {
       const listTag = e.currentTarget.parentNode.parentNode
       const result = {}
 
-      const resp = await listManager.deletePhotoFromList(photoManager.getSelectedPhotoId(), listData.id)
+      const resp = await listManager.deletePhotoFromList(
+        appState("is-lists") ? listManager.getSelectedPhotoId() : photoManager.getSelectedPhotoId(),
+        listData.id
+      )
 
       result.status = resp.errors ? "error" : "success"
       result.message = resp.errors

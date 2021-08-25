@@ -1,7 +1,9 @@
 import { Controller } from "stimulus"
 import config from "../../../data/siteConfig"
 import { lang } from "../../../js/utils"
+import { appState } from "../../../js/app"
 import photoManager from "../../../js/photo-manager"
+import listManager from "../../../js/list-manager"
 
 export default class extends Controller {
   static get targets() {
@@ -18,7 +20,7 @@ export default class extends Controller {
   }
 
   downloadImage() {
-    const data = photoManager.getSelectedPhotoData()
+    const data = appState("is-lists") ? listManager.getSelectedPhoto() : photoManager.getSelectedPhotoData()
 
     this.element.classList.add("is-visible")
     this.contentTarget.innerHTML = lang("dialog_download").replace("$donor", `<br/><b>Fortepan / ${data.donor}</b>`)
