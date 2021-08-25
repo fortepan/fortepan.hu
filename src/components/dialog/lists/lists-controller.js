@@ -25,6 +25,7 @@ export default class extends Controller {
     this.addToListFormTarget.submit = this.submitAddingToList.bind(this)
     this.role = "addPhotos"
     this.listId = 0
+    this.lastSelectedListId = 0
   }
 
   async submitAddingToList(e) {
@@ -63,6 +64,9 @@ export default class extends Controller {
         result.status = "error"
         result.message = lang("list_create_error")
       } else {
+        // saving the last selected list to be displayed as the first option in the dropdown
+        this.lastSelectedListId = listId
+
         const resp = await listManager.addPhotoToList(
           appState("is-lists") ? listManager.getSelectedPhotoId() : photoManager.getSelectedPhotoId(),
           listId
@@ -163,9 +167,16 @@ export default class extends Controller {
     const lists = await listManager.getLists()
     let innerHTML = ""
 
+    if (this.lastSelectedListId !== 0) {
+      const lastListData = listManager.getListById(this.lastSelectedListId)
+      innerHTML += `<option value="${lastListData.id}">${escapeHTML(lastListData.name)}</option>`
+    }
+
     lists.forEach(listData => {
       // TODO: exclude the lists from the dropdown that already contains the photo
-      innerHTML += `<option value="${listData.id}">${escapeHTML(listData.name)}</option>`
+      if (this.lastSelectedListId !== listData.id) {
+        innerHTML += `<option value="${listData.id}">${escapeHTML(listData.name)}</option>`
+      }
     })
 
     // adding the option to create a new list at the end
