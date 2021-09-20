@@ -15,4 +15,4 @@ Fortepan’s collaborators are: Ildikó Bozóky, Richárd Gazdik, Károly Négye
 
 Fortepan's work is supported by Arcanum, Blinken OSA Archivum, Archive of Modern Conflict (Toronto) and Forum Hungaricum Nonprofit Kft. Administrative management is provided by Summa Artium Nonprofit Kft.
 
-The launch of Fortepan was facilitated by Kortörténeti Alapítvány, Budapest.
+The launch of Fortepan was facilitated by the financial support of Kortörténeti Alapítvány, Budapest.
