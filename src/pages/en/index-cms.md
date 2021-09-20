@@ -3,16 +3,19 @@ layout: home/home.liquid
 title: Fortepan — Home
 permalink: "/en/"
 announcement:
-  title: "<strong>OUR MOST RECENT OLD PHOTOS<br>SUMMER '21</strong>"
+  title: "<strong>FŐFOTÓ - 2nd edition</strong>"
   caption: New Collection
-  cover_image: "212359"
-  blurb: This time we have uploaded 2200 photos from 22 donors to the Fresh section
-    of Fortepan. Apart from the ever familiar amateur photo legacies (ones we can
-    never grow tired of), we included images from the oeuvre of two of our pivotally
-    important photo journalists, of Zoltán Szalay and Tamás Urbán. Moreover, we selected
-    close to 400 photos from the WWI collection of the National Library of Austria.
+  cover_image: "215627"
+  blurb: 'Below you can find the second, concluding part of what we have chosen from
+    the FŐFOTO (Municipal Photo Company) archive, the continuation of the spring instalment.
+    You’ll find 2200 images, focusing on three subjects: film posters and hand-painted
+    film ads on large canvases, advertising and fashion photos from the advent of
+    Hungarian advertising photography, street photography block by block, from the
+    inner districts of Budapest. Several hundreds of colour photos, on classic modern
+    buildings, on products impossible to sell, on clothes difficult not to smile at.
+    Professional photos from a DIY world.'
   actions:
-  - label: 80 favorites
+  - label: 60 favorites
     style: primary
     url: https://fortepan.hu/en/photos/?latest&tag=best%20of
   - label: All Collection
