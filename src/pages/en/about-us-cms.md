@@ -14,3 +14,5 @@ This website was launched in 2010 by Ákos Szepessy and Miklós Tamási and it i
 Fortepan’s collaborators are: Ildikó Bozóky, Richárd Gazdik, Károly Négyesi, Pál Négyesi, Tamás Németh, Zsolt Pálinkás, Gábor Péter, Dávid Sándor, Gyula Simon, Miklós Tamási, András Török, János Varga, János F. Varga, István Virágvölgyi, <span class="border-grief">László Gál</span>
 
 Fortepan's work is supported by Arcanum, Blinken OSA Archivum, Archive of Modern Conflict (Toronto) and Forum Hungaricum Nonprofit Kft. Administrative management is provided by Summa Artium Nonprofit Kft.
+
+The launch of Fortepan was facilitated by Kortörténeti Alapítvány, Budapest.
