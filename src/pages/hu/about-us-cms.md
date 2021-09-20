@@ -14,3 +14,5 @@ A honlapot két magánszemély, Szepessy Ákos és Tamási Miklós indította 20
 A Fortepan munkatársai: Bozóky Ildikó, Gazdik Richárd, Négyesi Károly, Négyesi Pál, Németh Tamás, Pálinkás Zsolt, Péter Gábor, Sándor Dávid, Simon Gyula, Tamási Miklós, Török András, Varga János, Varga F. János, Virágvölgyi István, <span class="border-grief">Gál László</span>
 
 Munkánkat az Arcanum, az Archive of Modern Conflict (Toronto), a Blinken OSA Archívum és a Forum Hungaricum Nonprofit Kft. segíti. A Fortepan adminisztratív hátterét a Summa Artium Nonprofit Kft. biztosítja.
+
+A Fortepan indulását a Kortörténeti Alapítvány segítette
