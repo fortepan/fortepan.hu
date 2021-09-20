@@ -15,4 +15,4 @@ A Fortepan munkatársai: Bozóky Ildikó, Gazdik Richárd, Négyesi Károly, Né
 
 Munkánkat az Arcanum, az Archive of Modern Conflict (Toronto), a Blinken OSA Archívum és a Forum Hungaricum Nonprofit Kft. segíti. A Fortepan adminisztratív hátterét a Summa Artium Nonprofit Kft. biztosítja.
 
-A Fortepan indulását a Kortörténeti Alapítvány segítette
+A Fortepan indulását a Kortörténeti Alapítvány anyagi támogatása segítette.
