@@ -3,16 +3,16 @@ layout: home/home.liquid
 title: Fortepan — Főoldal
 permalink: "/"
 announcement:
-  title: "<strong>LEGÚJABB RÉGI KÉPEINK '21. NYÁR</strong>"
+  title: "<strong>FŐFOTÓ - II. rész</strong>"
   caption: Új sorozat
   cover_image: "212359"
-  blurb: 22 adományozó, 2200 fényképét töltöttük fel a Fortepan Friss sorozatába.
-    Az ismerősnek tűnő, de megunhatatlan amatőr fotós hagyatékok mellett két fontos
-    szerzőnk - Szalay Zoltán és Urbán Tamás - életművéből is mutatunk új képeket.
-    Közel négyszáz fotót pedig az osztrák Nemzeti Könyvtár első világháborús gyűjteményéből
-    válogattunk. <br>
+  blurb: 'A tavasszal elindult Főfotó anyag második, befejező része. 2200 fénykép
+    három nagy témával a középpontban: moziplakátok és filmgrafikák az utcán, reklám-
+    és divatfotók a reklámfotózás hőskorából, házról-házra készített utcaképek Budapest
+    belső kerületeiből. Több száz színes fotó modern épületekkel, eladhatatlan termékekkel,
+    megmosolyogtató ruhákkal. Profi képek a barkácsvilágból.<br>'
   actions:
-  - label: 80 fontos kép
+  - label: 60 fontos kép
     style: primary
     url: https://fortepan.hu/hu/photos/?latest&tag=best%20of
   - label: 2200 friss fotó
