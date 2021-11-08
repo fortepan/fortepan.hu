@@ -9,7 +9,7 @@ announcement:
   blurb: 'Ebben a sorozatban több mint hatvan adományozó papírképeiből válogattunk.
     A családi albumok fotói mellett négy nagyobb gyűjteményt is bemutatunk: Révész
     György filmrendező hagyatékát, a Vörös Hadsereg 1945-ös budapesti fotóit, Nasztanovics
-    Ferenc répüléstörténeti képeit és Milkó szabadkai, helytörténeti gyűjteményét.
+    Ferenc repüléstörténeti képeit és Milkó szabadkai, helytörténeti gyűjteményét.
     <br>'
   actions:
   - label: 50 fontos kép
