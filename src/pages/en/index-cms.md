@@ -5,14 +5,14 @@ permalink: "/en/"
 announcement:
   title: "<strong>2200 PRINTS</strong>"
   caption: New Collection
-  cover_image: "215627"
+  cover_image: "222484"
   blurb: 'In this series you can browse images scanned from printed photos from over
     60 donors. Apart from family albums we represent here some larger collections:
     the legacy of György Révész, film director, the photos of the Red Army taken in
     1945, the aviation archive of Ferenc Nasztanovics, and the local history photos
     covering Subotica, Serbia (Szabadka in Hungarian).'
   actions:
-  - label: 60 favorites
+  - label: 50 favorites
     style: primary
     url: https://fortepan.hu/en/photos/?latest&tag=best%20of
   - label: All Collection
