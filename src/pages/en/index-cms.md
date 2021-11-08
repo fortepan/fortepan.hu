@@ -5,7 +5,7 @@ permalink: "/en/"
 announcement:
   title: "<strong>2200 PRINTS</strong>"
   caption: New Collection
-  cover_image: "222484"
+  cover_image: "222039"
   blurb: 'In this series you can browse images scanned from printed photos from over
     60 donors. Apart from family albums we represent here some larger collections:
     the legacy of György Révész, film director, the photos of the Red Army taken in
