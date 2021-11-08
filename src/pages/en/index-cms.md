@@ -3,17 +3,14 @@ layout: home/home.liquid
 title: Fortepan — Home
 permalink: "/en/"
 announcement:
-  title: "<strong>FŐFOTÓ - 2nd edition</strong>"
+  title: "<strong>2200 PRINTS</strong>"
   caption: New Collection
   cover_image: "215627"
-  blurb: 'Below you can find the second, concluding part of what we have chosen from
-    the FŐFOTO (Municipal Photo Company) archive, the continuation of the spring instalment.
-    You’ll find 2200 images, focusing on three subjects: film posters and hand-painted
-    film ads on large canvases, advertising and fashion photos from the advent of
-    Hungarian advertising photography, street photography block by block, from the
-    inner districts of Budapest. Several hundreds of colour photos, on classic modern
-    buildings, on products impossible to sell, on clothes difficult not to smile at.
-    Professional photos from a DIY world.'
+  blurb: 'In this series you can browse images scanned from printed photos from over
+    60 donors. Apart from family albums we represent here some larger collections:
+    the legacy of György Révész, film director, the photos of the Red Army taken in
+    1945, the aviation archive of Ferenc Nasztanovics, and the local history photos
+    covering Subotica, Serbia (Szabadka in Hungarian).'
   actions:
   - label: 60 favorites
     style: primary
