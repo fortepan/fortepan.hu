@@ -12,7 +12,7 @@ announcement:
     belső kerületeiből. Több száz színes fotó modern épületekkel, eladhatatlan termékekkel,
     megmosolyogtató ruhákkal. Profi képek a barkácsvilágból.<br>'
   actions:
-  - label: 60 fontos kép
+  - label: 50 fontos kép
     style: primary
     url: https://fortepan.hu/hu/photos/?latest&tag=best%20of
   - label: 2200 friss fotó
