@@ -10,7 +10,7 @@ announcement:
     A családi albumok fotói mellett négy nagyobb gyűjteményt is bemutatunk: Révész
     György filmrendező hagyatékát, a Vörös Hadsereg 1945-ös budapesti fotóit, Nasztanovics
     Ferenc repüléstörténeti képeit és Milkó szabadkai, helytörténeti gyűjteményét.
-    <br>Utazzanak velünk a cikk-cakkos, sűrű XX. századba!'
+    <br>2200 fotó időutazóknak a cikk-cakkos XX. századba!'
   actions:
   - label: 50 fontos kép
     style: primary
