@@ -33,6 +33,7 @@
              data-controller="add-tags"
              data-action="photosCarousel:hide@document->add-tags#hideForm
              photosThumbnail:select@document->add-tags#getPendingTags
+             photos:selectThumbnail@document->add-tags#hideForm
              auth:signedOut@document->add-tags#hideForm">
             <h6 class="carousel-sidebar__tags-title">{{ lang[locale].tags }}</h6>
             <p class="carousel-sidebar__tags" data-sidebar-target="tags" data-add-tags-target="tags"></p>

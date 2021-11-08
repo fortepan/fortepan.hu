@@ -41,6 +41,7 @@ export default class extends Controller {
   }
 
   hideForm() {
+    this.inputTarget.selectizeControl.reset()
     this.addButtonTarget.classList.remove("is-hidden")
     this.formTarget.classList.add("is-hidden")
   }
