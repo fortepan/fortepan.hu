@@ -5,7 +5,7 @@ permalink: "/"
 announcement:
   title: "<strong>2200 PAPÍRKÉP</strong>"
   caption: Új sorozat
-  cover_image: "220838"
+  cover_image: "222484"
   blurb: 'A tavasszal elindult Főfotó anyag második, befejező része. 2200 fénykép
     három nagy témával a középpontban: moziplakátok és filmgrafikák az utcán, reklám-
     és divatfotók a reklámfotózás hőskorából, házról-házra készített utcaképek Budapest
