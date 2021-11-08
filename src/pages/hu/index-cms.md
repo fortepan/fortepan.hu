@@ -6,11 +6,11 @@ announcement:
   title: "<strong>2200 PAPÍRKÉP</strong>"
   caption: Új sorozat
   cover_image: "222484"
-  blurb: 'A tavasszal elindult Főfotó anyag második, befejező része. 2200 fénykép
-    három nagy témával a középpontban: moziplakátok és filmgrafikák az utcán, reklám-
-    és divatfotók a reklámfotózás hőskorából, házról-házra készített utcaképek Budapest
-    belső kerületeiből. Több száz színes fotó modern épületekkel, eladhatatlan termékekkel,
-    megmosolyogtató ruhákkal. Profi képek a barkácsvilágból.<br>'
+  blurb: 'Ebben a sorozatban több mint hatvan adományozó papírképeiből válogattunk.
+    A családi albumok fotói mellett négy nagyobb gyűjteményt is bemutatunk: Révész
+    György filmrendező hagyatékát, a Vörös Hadsereg 1945-ös budapesti fotóit, Nasztanovics
+    Ferenc répüléstörténeti képeit és Milkó szabadkai, helytörténeti gyűjteményét.
+    <br>'
   actions:
   - label: 50 fontos kép
     style: primary
