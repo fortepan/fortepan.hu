@@ -113,14 +113,19 @@ const search = params => {
     }
 
     // if query (search term) exists
-    // then it'll search matches in name, description, orszag_name, cimke_name, and varos_name fields
+    // then it'll search matches in adomanyozo, cimke, description, orszag, varos fields
     if (params.q && params.q !== "") {
       const words = params.q.split(", ")
+      const fieldsToSearch = ["mid^5", "year^2", "description_search"]
+      const availableFields = ["adomanyozo", "cimke", "orszag", "varos"]
+
+      availableFields.forEach(s => fieldsToSearch.push(getLocale() === "hu" ? `${s}_search` : `${s}_en_search`))
+
       words.forEach(word => {
         query.bool.must.push({
           multi_match: {
             query: `${slugify(word)}`,
-            fields: ["mid^5", "year^2", "*_search"],
+            fields: fieldsToSearch,
             type: "bool_prefix",
             lenient: true,
             operator: "and",
