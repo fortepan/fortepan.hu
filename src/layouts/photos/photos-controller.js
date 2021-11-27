@@ -316,9 +316,7 @@ export default class extends Controller {
         if (getURLParams().id > 0) {
           // load the next photos to fill up the grid in the background
           if (this.thumbnailsCount < 2) {
-            photoManager.loadMorePhotoDataInContext().then(result => {
-              this.generateThumbnailsFromData(result)
-            })
+            photoManager.loadMorePhotoDataInContext()
           }
 
           // show carousel with an image
