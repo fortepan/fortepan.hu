@@ -129,6 +129,7 @@ module.exports = {
     user_signup_username_taken: "A megadott felhasználónévvel már regisztráltak.",
     username: "Felhasználónév",
     username_or_email: "Felhasználónév vagy Email",
+    weekly_fortepan: "Heti Fortepan",
     year: "Év",
   },
   en: {
@@ -261,6 +262,7 @@ module.exports = {
     user_signup_username_taken: "Username is already taken.",
     username: "Username",
     username_or_email: "Username or Email",
+    weekly_fortepan: "Weekly Fortepan",
     year: "Year",
   },
 }
