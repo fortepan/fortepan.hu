@@ -3,7 +3,7 @@
     <a class="footer__link" href="/{{ locale }}/about-us/">{{ lang[locale].about_us }}</a>
     <a class="footer__link" href="/{{ locale }}/donors/">{{ lang[locale].donors }}</a>
     <a class="footer__link" href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=fortepan%40fortepan.hu&currency_code=HUF&source=url" target="_blank">{{ lang[locale].donate }}</a>
-    <a class="footer__link" href="https://hetifortepan.capacenter.hu/" target="_blank">Heti Fortepan</a>
+    <a class="footer__link" href="https://hetifortepan.capacenter.hu/{% if locale == "en" %}/{{locale}}{% endif %}" target="_blank">Heti Fortepan</a>
     <a class="footer__link" href="https://forum.index.hu/Article/showArticle?t=9204653" target="_blank">{{ lang[locale].forum }}</a>
     <small class="footer__small">
     FORTEPAN ©2010-2020 · <a href="mailto:fortepan@gmail.com">{{ lang[locale].contact_us }}</a> · <a href="/{{ locale }}/privacy/">{{ lang[locale].privacy_policy }}</a><br/>
