@@ -12,7 +12,7 @@ announcement:
     Ferenc repüléstörténeti képeit és Milkó szabadkai, helytörténeti gyűjteményét.
     <br>2200 fotó időutazóknak a cikk-cakkos XX. századba!'
   actions:
-  - label: 50 fontos kép
+  - label: 60 kedvenc kép
     style: primary
     url: https://fortepan.hu/hu/photos/?latest&tag=best%20of
   - label: 2200 friss fotó
