@@ -3,14 +3,14 @@ layout: home/home.liquid
 title: Fortepan — Home
 permalink: "/en/"
 announcement:
-  title: "<strong>2200 PRINTS</strong>"
+  title: "<strong>2700 NEW PHOTOS</strong>"
   caption: New Collection
   cover_image: "222484"
-  blurb: 'In this series you can browse images scanned from printed photos from over
-    60 donors. Apart from family albums we represent here some larger collections:
-    the legacy of György Révész, film director, the photos of the Red Army taken in
-    1945, the aviation archive of Ferenc Nasztanovics, and the local history photos
-    covering Subotica, Serbia (Szabadka in Hungarian).'
+  blurb: In this series we have included some of the best negatives from twenty different
+    donors. It is through home-made, amateur snapshots that we can let you have a
+    glance at the dramatic 20th century, nobody can ever get tired of.The first journey
+    to the West, or the very first rented apartment, taken on the first roll of film.
+    2700 meaningful photos, recording negligible moments.
   actions:
   - label: 50 favorites
     style: primary
