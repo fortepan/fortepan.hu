@@ -5,9 +5,10 @@ permalink: "/"
 announcement:
   title: "<strong>2700 FRISS FOTÓ</strong>"
   caption: Új sorozat
-  cover_image: "218211"
-  blurb: Ebben a sorozatban húsz adományozó negatívjaiból válogattunk. <br>2200 fotó
-    időutazóknak a cikk-cakkos XX. századba!
+  cover_image: "250141"
+  blurb: Ebben a sorozatban húsz adományozó negatívjaiból válogattunk. Jórészt családi,
+    amatőr fotókon keresztül láthatjuk a drámai-megunhatatlan XX. századot. Jelentős
+    fotók jelentéktelen pillanatokról.
   actions:
   - label: 60 kedvenc kép
     style: primary
