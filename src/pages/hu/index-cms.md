@@ -5,12 +5,9 @@ permalink: "/"
 announcement:
   title: "<strong>2700 FRISS FOTÓ</strong>"
   caption: Új sorozat
-  cover_image: "218370"
-  blurb: 'Ebben a sorozatban több mint hatvan adományozó papírképeiből válogattunk.
-    A családi albumok fotói mellett négy nagyobb gyűjteményt is bemutatunk: Révész
-    György filmrendező hagyatékát, a Vörös Hadsereg 1945-ös budapesti fotóit, Nasztanovics
-    Ferenc repüléstörténeti képeit és Milkó szabadkai, helytörténeti gyűjteményét.
-    <br>2200 fotó időutazóknak a cikk-cakkos XX. századba!'
+  cover_image: "218211"
+  blurb: Ebben a sorozatban húsz adományozó negatívjaiból válogattunk. <br>2200 fotó
+    időutazóknak a cikk-cakkos XX. századba!
   actions:
   - label: 60 kedvenc kép
     style: primary
