@@ -8,8 +8,8 @@ announcement:
   cover_image: "250141"
   blurb: Ebben a sorozatban húsz adományozó negatívjaiból válogattunk. Jórészt családi,
     amatőr fotókon keresztül láthatjuk a drámai-megunhatatlan XX. századot. Az első
-    nyugati utazást, vagy az első lakást, az első tekercs filmen. 2700 jelentős fotót
-    a jelentéktelen pillanatokról.
+    nyugati utazást, vagy az első albérletet, az első tekercs filmen. 2700 jelentős
+    fotót a jelentéktelen pillanatokról.
   actions:
   - label: 60 kedvenc kép
     style: primary
