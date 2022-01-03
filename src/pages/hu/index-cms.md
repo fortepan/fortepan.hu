@@ -3,9 +3,9 @@ layout: home/home.liquid
 title: Fortepan — Főoldal
 permalink: "/"
 announcement:
-  title: "<strong>2200 PAPÍRKÉP</strong>"
+  title: "<strong>2700 FRISS FOTÓ</strong>"
   caption: Új sorozat
-  cover_image: "222484"
+  cover_image: "218730"
   blurb: 'Ebben a sorozatban több mint hatvan adományozó papírképeiből válogattunk.
     A családi albumok fotói mellett négy nagyobb gyűjteményt is bemutatunk: Révész
     György filmrendező hagyatékát, a Vörös Hadsereg 1945-ös budapesti fotóit, Nasztanovics
