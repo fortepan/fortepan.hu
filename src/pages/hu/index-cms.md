@@ -14,7 +14,7 @@ announcement:
   - label: 60 kedvenc kép
     style: primary
     url: https://fortepan.hu/hu/photos/?latest&tag=best%20of
-  - label: 2200 friss fotó
+  - label: A teljes sorozat
     style: light-transparent
     url: https://fortepan.hu/hu/photos/?latest
 
