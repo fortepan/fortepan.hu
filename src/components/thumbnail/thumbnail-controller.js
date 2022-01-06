@@ -1,10 +1,11 @@
 import { Controller } from "stimulus"
 
 import config from "../../data/siteConfig"
-import { trigger } from "../../js/utils"
+import { getLocale, trigger } from "../../js/utils"
 import photoManager from "../../js/photo-manager"
 import listManager from "../../js/list-manager"
 import { appState } from "../../js/app"
+import lang from "../../data/lang"
 
 const THUMBNAIL_HEIGHT = 160
 export default class extends Controller {
@@ -45,6 +46,10 @@ export default class extends Controller {
     if (this.role === "lists") {
       selectedPhotoData = listManager.selectPhotoById(listManager.getSelectedListId(), this.element.photoId)
       index = listManager.getSelectedPhotoIndex()
+
+      if (!selectedPhotoData.isDataLoaded) {
+        return
+      }
     } else {
       selectedPhotoData = photoManager.selectPhotoById(this.element.photoId).data
       index = photoManager.getSelectedPhotoIndex()
@@ -89,6 +94,16 @@ export default class extends Controller {
 
   // load thumbnail image
   loadThumbnailImage() {
+    if (this.role === "lists") {
+      const photoData = listManager.getListPhotoById(listManager.getSelectedListId(), this.element.photoId)
+
+      if (!photoData.isDataLoaded) {
+        this.element.classList.add("is-loaded", "no-image")
+        this.containerTarget.textContent = lang[getLocale()].list_photo_removed
+        return
+      }
+    }
+
     const mediaId = this.element.photoId
 
     this.imageTarget.addEventListener("load", () => {

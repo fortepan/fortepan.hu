@@ -57,6 +57,10 @@
 .carousel-sidebar__content {
   display: flex;
   flex-wrap: wrap;
+
+  .is-hidden & {
+    display: none;
+  }
 }
 
 .carousel-sidebar__id,

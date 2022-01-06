@@ -44,6 +44,33 @@
   &:hover .context-menu--lists {
     opacity: 1;
   }
+
+  &.no-image .photos-thumbnail__image {
+    width: rem(240px);
+    height: rem(160px);
+    padding: 2rem;
+    box-sizing: border-box;
+
+    .theme--light & {
+      background-color: $light-secondary;
+    }
+
+    .theme--dark & {
+      background-color: $dark-secondary;
+    }
+
+    img {
+      display: none;
+    }
+
+    color: $grey;
+    font-size: 0.75rem;
+    text-align: center;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 .photos-thumbnail__image {

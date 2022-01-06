@@ -1,10 +1,11 @@
 import { Controller } from "stimulus"
 
 import config from "../../data/siteConfig"
-import { trigger } from "../../js/utils"
+import { trigger, getLocale } from "../../js/utils"
 import { setAppState, removeAppState, appState } from "../../js/app"
 import photoManager from "../../js/photo-manager"
 import listManager from "../../js/list-manager"
+import lang from "../../data/lang"
 
 export default class extends Controller {
   static get targets() {
@@ -62,6 +63,15 @@ export default class extends Controller {
   }
 
   setCarouselBackground(id) {
+    if (this.role === "lists") {
+      const photoData = listManager.getListPhotoById(listManager.getSelectedListId(), id)
+
+      if (!photoData.isDataLoaded) {
+        this.backgroundTarget.classList.remove("fade-in")
+        return
+      }
+    }
+
     this.backgroundTarget.style.backgroundImage = `url(${config.PHOTO_SOURCE}240/fortepan_${id}.jpg)`
     this.backgroundTarget.classList.remove("fade-in")
     setTimeout(() => {
@@ -71,12 +81,28 @@ export default class extends Controller {
 
   loadPhoto(id) {
     let photo = this.element.querySelector(`#Fortepan-${id}`)
+
     if (!photo) {
       photo = document.createElement("div")
       photo.dataset.controller = "image-loader"
       photo.setAttribute("data-carousel-target", "photo")
       photo.className = "image-loader"
       photo.id = `Fortepan-${id}`
+
+      if (this.role === "lists") {
+        const photoData = listManager.getListPhotoById(listManager.getSelectedListId(), id)
+
+        if (!photoData.isDataLoaded) {
+          photo.noImage = true
+          photo.classList.add("image-loader--no-image", "is-active")
+          photo.textContent = lang[getLocale()].list_photo_removed
+          this.photosTarget.appendChild(photo)
+
+          trigger("loader:hide", { id: "loaderCarousel" })
+          this.stepSlideshow()
+          return
+        }
+      }
 
       photo.imageSrc = `${config.PHOTO_SOURCE}1600/fortepan_${id}.jpg`
       photo.loadCallback = () => {
@@ -88,7 +114,7 @@ export default class extends Controller {
       trigger("loader:show", { id: "loaderCarousel" })
 
       this.photosTarget.appendChild(photo)
-    } else if (photo.imageLoaded) {
+    } else if (photo.imageLoaded || photo.noImage) {
       photo.classList.add("is-active")
       trigger("loader:hide", { id: "loaderCarousel" })
       this.stepSlideshow()
@@ -313,14 +339,17 @@ export default class extends Controller {
   }
 
   addToList() {
+    if (this.role === "lists" && listManager.getSelectedPhoto() && !listManager.getSelectedPhoto().isDataLoaded) return
     trigger("dialogLists:show")
   }
 
   downloadImage() {
+    if (this.role === "lists" && listManager.getSelectedPhoto() && !listManager.getSelectedPhoto().isDataLoaded) return
     trigger("dialogDownload:show")
   }
 
   shareImage() {
+    if (this.role === "lists" && listManager.getSelectedPhoto() && !listManager.getSelectedPhoto().isDataLoaded) return
     trigger("dialogShare:show")
   }
 }

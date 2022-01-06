@@ -21,6 +21,12 @@ export default class extends Controller {
   init() {
     const data = appState("is-lists") ? listManager.getSelectedPhoto() : photoManager.getSelectedPhotoData()
 
+    if (appState("is-lists") && !data.isDataLoaded) {
+      this.element.classList.add("is-hidden")
+      return
+    }
+    this.element.classList.remove("is-hidden")
+
     // fill template with data
     const baseUrl = `/${getLocale()}/photos/`
 

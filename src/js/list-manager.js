@@ -54,7 +54,7 @@ const loadListPhotosData = async listId => {
   list.photos = []
 
   Object.keys(rawPhotosResp.flags).forEach(key => {
-    list.photos.push({ id: rawPhotosResp.flags[key] })
+    list.photos.push({ id: rawPhotosResp.flags[key], mid: [Number(rawPhotosResp.flags[key])] })
   })
 
   trigger("listManager:onPhotosDataLoaded", { listID: listId, photos: list.photos })
@@ -92,7 +92,10 @@ const loadExtendedListPhotoData = async listId => {
     if (resp.items && resp.items.length > 0) {
       resp.items.forEach(data => {
         // copy the properties of the loaded data over the stored object
-        Object.assign(getListPhotoById(listId, data.mid), data)
+        const photoData = getListPhotoById(listId, data.mid)
+
+        Object.assign(photoData, data)
+        photoData.isDataLoaded = true
       })
     }
 
