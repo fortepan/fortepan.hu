@@ -69,7 +69,7 @@ module.exports = {
     list_empty_text: "A listák segítségével elmentheti és rendszerezheti a Fortepan archívumának képeit.",
     list_photos_empty_header: "Ez a lista még üres",
     list_photos_empty_text: "A Fortepan archívumában böngészve adhat képeket a listához.",
-    list_photo_removed: "Ez a kép már nem elérhető a Fortepanon",
+    list_photo_removed: "Ez a kép el lett távolítva a Fortepan archívumából",
     load_more: "Még több kép",
     location: "Helyszín",
     login: "Belépés",

@@ -1,11 +1,10 @@
 import { Controller } from "stimulus"
 
 import config from "../../data/siteConfig"
-import { getLocale, trigger } from "../../js/utils"
+import { trigger, lang } from "../../js/utils"
 import photoManager from "../../js/photo-manager"
 import listManager from "../../js/list-manager"
 import { appState } from "../../js/app"
-import lang from "../../data/lang"
 
 const THUMBNAIL_HEIGHT = 160
 export default class extends Controller {
@@ -99,7 +98,7 @@ export default class extends Controller {
 
       if (!photoData.isDataLoaded) {
         this.element.classList.add("is-loaded", "no-image")
-        this.containerTarget.textContent = lang[getLocale()].list_photo_removed
+        this.containerTarget.textContent = lang("list_photo_removed")
         return
       }
     }

@@ -1,11 +1,10 @@
 import { Controller } from "stimulus"
 
 import config from "../../data/siteConfig"
-import { trigger, getLocale } from "../../js/utils"
+import { trigger, lang } from "../../js/utils"
 import { setAppState, removeAppState, appState } from "../../js/app"
 import photoManager from "../../js/photo-manager"
 import listManager from "../../js/list-manager"
-import lang from "../../data/lang"
 
 export default class extends Controller {
   static get targets() {
@@ -95,7 +94,7 @@ export default class extends Controller {
         if (!photoData.isDataLoaded) {
           photo.noImage = true
           photo.classList.add("image-loader--no-image", "is-active")
-          photo.textContent = lang[getLocale()].list_photo_removed
+          photo.textContent = lang("list_photo_removed")
           this.photosTarget.appendChild(photo)
 
           trigger("loader:hide", { id: "loaderCarousel" })
