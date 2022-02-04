@@ -1,7 +1,7 @@
 import { Controller } from "stimulus"
 
 import config from "../../data/siteConfig"
-import { trigger, lang } from "../../js/utils"
+import { trigger, lang, isElementInViewport } from "../../js/utils"
 import photoManager from "../../js/photo-manager"
 import listManager from "../../js/list-manager"
 import { appState } from "../../js/app"
@@ -20,8 +20,8 @@ export default class extends Controller {
     // add stimulus class reference to node
     this.element.photosThumbnail = this
 
-    // apply element data
-    this.applyThumbnailData()
+    // apply element data & setting up loading event listeners
+    this.initThumbnail()
 
     // load thumbnail image
     this.loadThumbnailImage()
@@ -71,15 +71,8 @@ export default class extends Controller {
     this.element.style.minWidth = `${w}px`
   }
 
-  show() {
-    this.element.classList.remove("is-hidden")
-    setTimeout(() => {
-      this.element.classList.add("is-visible")
-    }, 100)
-  }
-
-  // set thumbnail meta data
-  applyThumbnailData() {
+  initThumbnail() {
+    // applying thumbnail meta data
     const data =
       this.role === "lists"
         ? listManager.getListPhotoById(listManager.getSelectedListId(), this.element.photoId)
@@ -89,35 +82,48 @@ export default class extends Controller {
     if (!data.city && !data.place && data.country) locationArray.push(data.country)
     this.locationTarget.textContent = locationArray.filter(Boolean).join(" · ")
     this.descriptionTarget.textContent = data.description || ""
-  }
 
-  // load thumbnail image
-  loadThumbnailImage() {
+    // event listeners and handling image loading
     if (this.role === "lists") {
       const photoData = listManager.getListPhotoById(listManager.getSelectedListId(), this.element.photoId)
 
       if (!photoData.isDataLoaded) {
+        this.element.classList.remove("is-loading")
         this.element.classList.add("is-loaded", "no-image")
         this.containerTarget.textContent = lang("list_photo_removed")
         return
       }
     }
 
-    const mediaId = this.element.photoId
-
     this.imageTarget.addEventListener("load", () => {
       this.naturalWidth = this.imageTarget.naturalWidth
       this.naturalHeight = this.imageTarget.naturalHeight
       this.resize()
 
+      this.element.classList.remove("is-loading")
       this.element.classList.add("is-loaded")
     })
 
     this.imageTarget.addEventListener("error", () => {
+      this.element.classList.remove("is-loading")
       this.element.classList.add("is-failed-loading")
     })
+  }
 
-    this.imageTarget.srcset = `${config.PHOTO_SOURCE}240/fortepan_${mediaId}.jpg 1x, ${config.PHOTO_SOURCE}480/fortepan_${mediaId}.jpg 2x`
-    this.imageTarget.src = `${config.PHOTO_SOURCE}240/fortepan_${mediaId}.jpg`
+  // load thumbnail image
+  loadThumbnailImage() {
+    if (
+      !this.element.classList.contains("is-loaded") &&
+      !this.loadInitiated &&
+      isElementInViewport(this.element, false)
+    ) {
+      const mediaId = this.element.photoId
+
+      this.imageTarget.srcset = `${config.PHOTO_SOURCE}240/fortepan_${mediaId}.jpg 1x, ${config.PHOTO_SOURCE}480/fortepan_${mediaId}.jpg 2x`
+      this.imageTarget.src = `${config.PHOTO_SOURCE}240/fortepan_${mediaId}.jpg`
+
+      this.element.classList.add("is-loading")
+      this.loadInitiated = true
+    }
   }
 }
