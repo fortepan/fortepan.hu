@@ -8,7 +8,7 @@ import searchAPI from "../../api/search"
 
 export default class extends Controller {
   static get targets() {
-    return ["grid", "bottomActions"]
+    return ["grid"]
   }
 
   connect() {
@@ -45,7 +45,6 @@ export default class extends Controller {
     this.element.querySelectorAll(".photos-thumbnail").forEach(thumbnail => {
       thumbnail.photosThumbnail.resize()
     })
-    this.toggleLoadMoreButton()
   }
 
   // auto-load new items when scrolling reaches the bottom of the page
@@ -69,6 +68,10 @@ export default class extends Controller {
     }
 
     this.calcYearOfViewport()
+
+    this.element.querySelectorAll(".photos-thumbnail:not(.is-loaded)").forEach(thumbnail => {
+      thumbnail.photosThumbnail.loadThumbnailImage()
+    })
   }
 
   calcYearOfViewport() {
@@ -122,25 +125,6 @@ export default class extends Controller {
     }
   }
 
-  // show all loaded thumbnailnails at once
-  showAllLoadedThumbnails() {
-    this.element.querySelectorAll(".photos-thumbnail.is-loaded:not(.is-visible)").forEach(thumbnail => {
-      thumbnail.photosThumbnail.show()
-    })
-  }
-
-  toggleLoadMoreButton() {
-    if (
-      this.thumbnailsCount % config.THUMBNAILS_QUERY_LIMIT === 0 &&
-      this.thumbnailsCount > 0 &&
-      this.offsetHeight - this.scrollHeight >= 0
-    ) {
-      this.bottomActionsTarget.classList.remove("is-hidden")
-    } else {
-      this.bottomActionsTarget.classList.add("is-hidden")
-    }
-  }
-
   loadMorePhotos(e) {
     if (e && e.currentTarget) {
       e.currentTarget.classList.add("is-hidden")
@@ -150,10 +134,9 @@ export default class extends Controller {
   }
 
   // this method generates the tumbnails from the data attribute
-  // and starts loading the thumbnails with Promise.all
+  // and displays them with a placeholder until the images load by themselves
   generateThumbnailsFromData(data, insertBefore = false) {
-    const thumbnailLoadingPromises = []
-
+    // set the total photo counter
     trigger("photosTitle:setTitle", { count: data.total })
 
     const insertBeforeTarget = insertBefore ? this.element.querySelectorAll(".photos-thumbnail")[0] : null
@@ -183,33 +166,16 @@ export default class extends Controller {
 
       // apply year data to node
       thumbnail.year = item.year
-
-      // observe when the thumbnail class attribute changes and contains 'is-loaded'
-      const thumbnailLoadingPromise = new Promise(res => {
-        const classObserver = new window.MutationObserver(() => {
-          if (thumbnail.classList.contains("is-loaded") || thumbnail.classList.contains("is-failed-loading")) res()
-        })
-        classObserver.observe(thumbnail, {
-          attributes: true,
-          attributeFilter: ["class"],
-        })
-      })
-      thumbnailLoadingPromises.push(thumbnailLoadingPromise)
     })
 
-    // load all thumbnail images
-    Promise.all(thumbnailLoadingPromises).then(() => {
-      this.thumbnailsLoading = false
+    this.thumbnailsLoading = false
 
-      trigger("loader:hide", { id: "loaderBase" })
-      this.showAllLoadedThumbnails()
-      this.toggleLoadMoreButton()
+    trigger("loader:hide", { id: "loaderBase" })
 
-      // keep the scrolling position after inserting the new elements on the beginning of the list
-      if (insertBefore && insertBeforeTarget) {
-        this.element.scrollTop = scrollPosition + (this.element.scrollHeight - scrollH)
-      }
-    })
+    // keep the scrolling position after inserting the new elements on the beginning of the list
+    if (insertBefore && insertBeforeTarget) {
+      this.element.scrollTop = scrollPosition + (this.element.scrollHeight - scrollH)
+    }
   }
 
   // async function that loads thumbnail data based on the search query
@@ -251,7 +217,7 @@ export default class extends Controller {
       trigger("loader:show", { id: "loaderBase" })
     }, 10)
 
-    // request loading photos through the photoManager module
+    // request loading photos through the photoManager module (silent, no event triggered)
     const respData = await photoManager.loadPhotoData(params, true)
 
     // init timeline after we have data loaded

@@ -1,3 +1,4 @@
+import { throttle } from "lodash"
 import { Controller } from "stimulus"
 
 import config from "../../../data/siteConfig"
@@ -21,6 +22,8 @@ export default class extends Controller {
   connect() {
     this.listData = null
     setAppState("is-lists")
+
+    this.onScroll = throttle(this.onScroll, 200)
   }
 
   async show(e) {
@@ -49,6 +52,10 @@ export default class extends Controller {
             this.placeholderTarget.classList.add("is-visible")
           }, 100)
         }
+
+        // lets force thumbnail image loading: upon creating the thumbnails the parent element is still hidden,
+        // so checking if they're in the viewport fails (and that's needed to start loading the first set in the viewport)
+        this.onScroll()
 
         const urlValues = getPrettyURLValues(window.location.pathname.split(listData.url).join("/"))
 
@@ -102,8 +109,6 @@ export default class extends Controller {
     // then load the extended photo data (from elastic search)
     await listManager.loadExtendedListPhotoData(this.listData.id)
 
-    const thumbnailLoadingPromises = []
-
     // we have the photos loaded now, lets build the dom
     this.listData.photos.forEach((item, index) => {
       // clone thumnail template
@@ -124,25 +129,6 @@ export default class extends Controller {
         // set the meta image
         setPageMeta(null, null, `${config.PHOTO_SOURCE}480/fortepan_${item.mid}.jpg`)
       }
-
-      // observe when the thumbnail class attribute changes and contains 'is-loaded'
-      const thumbnailLoadingPromise = new Promise(res => {
-        const classObserver = new window.MutationObserver(() => {
-          if (thumbnail.classList.contains("is-loaded") || thumbnail.classList.contains("is-failed-loading")) res()
-        })
-        classObserver.observe(thumbnail, {
-          attributes: true,
-          attributeFilter: ["class"],
-        })
-      })
-      thumbnailLoadingPromises.push(thumbnailLoadingPromise)
-    })
-
-    // load all thumbnail images
-    await Promise.all(thumbnailLoadingPromises)
-
-    this.element.querySelectorAll(".photos-thumbnail.is-loaded:not(.is-visible)").forEach(thumbnail => {
-      thumbnail.photosThumbnail.show()
     })
 
     trigger("loader:hide", { id: "loaderBase" })
@@ -323,5 +309,11 @@ export default class extends Controller {
         this.countTarget.textContent = this.listData.photos.length
       }
     }
+  }
+
+  onScroll() {
+    this.element.querySelectorAll(".photos-thumbnail:not(.is-loaded)").forEach(thumbnail => {
+      thumbnail.photosThumbnail.loadThumbnailImage()
+    })
   }
 }
