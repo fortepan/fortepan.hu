@@ -359,7 +359,7 @@ export default class extends Controller {
 
   // event listener for timeline:yearSelected
   onYearSelected(e) {
-    const carouselElement = document.querySelector(".photos-carousel")
+    const carouselElement = document.querySelector(".carousel")
 
     if (
       (!carouselElement || (carouselElement && !carouselElement.classList.contains("is-visible"))) &&
@@ -380,7 +380,7 @@ export default class extends Controller {
       if (!photoManager.hasPhotoDataOfYear(e.detail.year)) {
         trigger("loader:show", { id: "loaderBase" })
 
-        // set the select after load flag to flase (to load a new set without selection)
+        // set the select after load flag to false (to load a new set without selection)
         selectAfterLoad = false
       }
 
