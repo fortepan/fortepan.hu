@@ -16,7 +16,8 @@ layout: base/base.liquid
                   photoManager:load@document->photos#onPhotoDataLoaded
                   photoManager:cacheCleared@document->photos#onPhotoCacheCleared
                   photoManager:photoSelected@document->photos#selectThumbnail
-                  timeline:yearSelected@document->photos#onYearSelected"
+                  timeline:yearSelected@document->photos#onYearSelected
+                  thumbnail:loaded@document->photos#loadThumbnails"
 >
   {% include ./title/title %}
   <div class="photos__grid" data-photos-target="grid"></div>

@@ -83,6 +83,11 @@ export default class extends Controller {
     this.locationTarget.textContent = locationArray.filter(Boolean).join(" · ")
     this.descriptionTarget.textContent = data.description || ""
 
+    // fading the thumbnail in after displaying it
+    Promise.resolve(true).then(() => {
+      this.element.classList.add("is-visible")
+    })
+
     // event listeners and handling image loading
     if (this.role === "lists") {
       const photoData = listManager.getListPhotoById(listManager.getSelectedListId(), this.element.photoId)
@@ -102,11 +107,15 @@ export default class extends Controller {
 
       this.element.classList.remove("is-loading")
       this.element.classList.add("is-loaded")
+
+      trigger("thumbnail:loaded")
     })
 
     this.imageTarget.addEventListener("error", () => {
       this.element.classList.remove("is-loading")
       this.element.classList.add("is-failed-loading")
+
+      trigger("thumbnail:loaded")
     })
   }
 
