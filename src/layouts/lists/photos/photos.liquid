@@ -1,12 +1,14 @@
 <div class="list-photos photos scrollview"
      data-controller="lists--photos"
      data-action="scroll->lists--photos#onScroll
+                  resize@window->lists--photos#onScroll
                   lists:showListPhotos@document->lists--photos#show
                   lists:hideListPhotos@document->lists--photos#hide
                   photos:selectThumbnail@document->lists--photos#selectThumbnail
                   photosCarousel:photoSelected@document->lists--photos#onPhotoSelected
                   photosCarousel:hide@document->lists--photos#onCarouselClosed
-                  dialogLists:listsChanged@document->lists#onListsChanged"
+                  dialogLists:listsChanged@document->lists#onListsChanged
+                  thumbnail:loaded@document->lists--photos#loadThumbnails"
 >
   <div class="list-title photos-title">
       <a href="/{{ locale }}/lists/" class="photos-title__list-link" data-action="click->lists--photos#backToLists">

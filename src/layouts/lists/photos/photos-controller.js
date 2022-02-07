@@ -312,6 +312,10 @@ export default class extends Controller {
   }
 
   onScroll() {
+    this.loadThumbnails()
+  }
+
+  loadThumbnails() {
     this.element.querySelectorAll(".photos-thumbnail:not(.is-loaded)").forEach(thumbnail => {
       thumbnail.photosThumbnail.loadThumbnailImage()
     })

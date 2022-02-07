@@ -12,6 +12,13 @@
     min-width: rem(192px * 2 / 3);
   }
 
+  opacity: 0;
+  transition: opacity 0.8s $ease-out-expo;
+
+  &.is-visible {
+    opacity: 1;
+  }
+
   &.is-loaded:not(.no-image) {
     min-width: auto;
   }
@@ -45,6 +52,10 @@
 
   &:hover .context-menu--lists {
     opacity: 1;
+  }
+
+  &.is-failed-loading {
+    display: none;
   }
 }
 
