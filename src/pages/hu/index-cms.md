@@ -5,7 +5,7 @@ permalink: "/"
 announcement:
   title: "<strong>3000 FOTÓ A FŐMTERV ARCHÍVUMÁBÓL</strong>"
   caption: Új sorozat
-  cover_image: "253768"
+  cover_image: "252753"
   blurb: Válogatás a FŐMTERV (Fővárosi Mélyépítési Tervező Vállalat) archívumából.
     A Kádár-korszak Budapestjének építkezései, villamospályák és bekötőutak építése,
     strandok és fürdők rekonstrukciója. Felül- és aluljárók, Budafok, Pesterzsébet,
