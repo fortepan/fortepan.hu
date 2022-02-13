@@ -12,7 +12,7 @@ announcement:
     Zugló utcái, piacok, buszgarázsok és szanálásra ítélt tömbök épületei. Egy nagyvállalat
     mintaszerűen megőrzött fotóarchívuma.
   actions:
-  - label: 60 kedvenc kép
+  - label: 66 kedvenc kép
     style: primary
     url: https://fortepan.hu/hu/photos/?latest&tag=best%20of
   - label: A teljes sorozat
