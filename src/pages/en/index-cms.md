@@ -3,14 +3,14 @@ layout: home/home.liquid
 title: Fortepan — Home
 permalink: "/en/"
 announcement:
-  title: "<strong>3000 PHOTOS from the FŐMTERV ARCHIVES</strong>"
+  title: "<strong>3000 PHOTOS from the FŐMTERV ARCHIVE</strong>"
   caption: New Collection
   cover_image: "252768"
-  blurb: Válogatás a FŐMTERV (Fővárosi Mélyépítési Tervező Vállalat) archívumából.
-    A Kádár-korszak Budapestjének építkezései, villamospályák és bekötőutak építése,
-    strandok és fürdők rekonstrukciója. Felül- és aluljárók, Budafok, Pesterzsébet,
-    Zugló utcái, piacok, buszgarázsok és szanálásra ítélt tömbök épületei. Egy nagyvállalat
-    mintaszerűen megőrzött fotóarchívuma.
+  blurb: Selected from the archive of FŐMTERV (Municipal Civil Engineering Design
+    Company). The grand construction projects of the Kádár Era. Over-and underpasses
+    in Budafok, Pesterzsébet, the streets of Zugló, markets, bus depots and blocs
+    soon to be demolished. The archive of a large construction company, preserved
+    in an exemplary manner.
   actions:
   - label: 60 favorites
     style: primary
