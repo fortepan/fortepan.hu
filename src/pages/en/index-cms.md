@@ -12,7 +12,7 @@ announcement:
     soon to be demolished. The archive of a large construction company, preserved
     in an exemplary manner.
   actions:
-  - label: 60 favorites
+  - label: 66 favorites
     style: primary
     url: https://fortepan.hu/en/photos/?latest&tag=best%20of
   - label: All Collection
