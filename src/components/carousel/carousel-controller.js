@@ -205,39 +205,27 @@ export default class extends Controller {
     })
   }
 
-  pauseSlideshow() {
-    removeAppState("play-carousel-slideshow")
-
-    // show controls
-    this.showControls(null, true)
-
-    if (!this.sidebarIsHidden) trigger("carouselSidebar:show")
-    clearTimeout(this.slideshowTimeout)
-
-    this.showControls(null, true)
-  }
-
   get slideshowIsPlaying() {
     return appState("play-carousel-slideshow")
   }
 
-  get sidebarIsHidden() {
-    return appState("hide-carousel-sidebar")
-  }
-
   playSlideshow() {
     setAppState("play-carousel-slideshow")
-
-    // store sidebar visibility
-    trigger("carouselSidebar:hide")
-
-    // hide controls
-    this.autoHideControls()
-
     // start slideshow
     this.slideshowTimeout = setTimeout(() => {
       this.showNextPhoto()
     }, config.CAROUSEL_SLIDESHOW_DELAY)
+
+    this.wasFullScreen = appState("carousel-fullscreen")
+
+    this.openFullscreen()
+  }
+
+  pauseSlideshow() {
+    removeAppState("play-carousel-slideshow")
+    clearTimeout(this.slideshowTimeout)
+
+    if (!this.wasFullScreen) this.closeFullscreen()
   }
 
   toggleSlideshow() {
@@ -250,6 +238,41 @@ export default class extends Controller {
 
   toggleSidebar() {
     trigger("carouselSidebar:toggle")
+  }
+
+  get isFullscreen() {
+    return appState("carousel-fullscreen")
+  }
+
+  openFullscreen() {
+    setAppState("carousel-fullscreen")
+
+    // store sidebar visibility
+    this.sidebarWasHidden = appState("hide-carousel-sidebar")
+
+    // close sidebar
+    trigger("carouselSidebar:hide")
+
+    // hide controls
+    this.autoHideControls()
+  }
+
+  closeFullscreen() {
+    removeAppState("carousel-fullscreen")
+
+    // show controls
+    this.showControls(null, true)
+
+    if (!this.sidebarWasHidden) trigger("carouselSidebar:show")
+  }
+
+  toggleFullscreen() {
+    if (this.isFullscreen) {
+      if (this.slideshowIsPlaying) this.pauseSlideshow()
+      if (this.isFullscreen) this.closeFullscreen()
+    } else {
+      this.openFullscreen()
+    }
   }
 
   isMouseRightOverControls(e) {
@@ -302,9 +325,10 @@ export default class extends Controller {
   }
 
   onCloseClicked() {
-    // pause slideshow if the slideshow is playing
-    if (this.slideshowIsPlaying) {
-      this.pauseSlideshow()
+    // pause slideshow if the slideshow is playing & close the fullscreen state if we are in fullscreen
+    if (this.slideshowIsPlaying || this.isFullscreen) {
+      if (this.slideshowIsPlaying) this.pauseSlideshow()
+      if (this.isFullscreen) this.closeFullscreen()
     } else {
       this.hide()
     }

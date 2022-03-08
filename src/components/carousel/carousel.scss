@@ -47,7 +47,8 @@
     }
   }
 
-  .play-carousel-slideshow & {
+  .play-carousel-slideshow &,
+  .carousel-fullscreen & {
     top: 0;
   }
 }
@@ -197,5 +198,19 @@
 #SlideshowPlay {
   .play-carousel-slideshow & {
     display: none;
+  }
+}
+
+#FullscreenOpen {
+  .carousel-fullscreen & {
+    display: none;
+  }
+}
+
+#FullscreenClose {
+  display: none;
+
+  .carousel-fullscreen & {
+    display: flex;
   }
 }

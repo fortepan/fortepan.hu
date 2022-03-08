@@ -25,7 +25,8 @@
         top: rem(64px);
       }
 
-      .play-carousel-slideshow & {
+      .play-carousel-slideshow &,
+      .carousel-fullscreen & {
         top: 0;
       }
     }
@@ -39,7 +40,8 @@
         height: calc(100vh - 4rem);
       }
 
-      .play-carousel-slideshow & {
+      .play-carousel-slideshow &,
+      .carousel-fullscreen & {
         top: 0;
       }
     }

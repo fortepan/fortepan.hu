@@ -1,0 +1,8 @@
+<svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+  <g style="fill:none;fill-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke:currentColor;stroke-width:1.5">
+    <path d="m5 19h5v-5" transform="matrix(1 0 0 -1 0 33)"/>
+    <path d="m5 14 5 5" transform="matrix(-1 0 0 1 15 0)"/>
+    <path d="m14 10h5v-5" transform="matrix(-1 0 0 1 33 0)"/>
+    <path d="m13.964 5 5.036 5.036" transform="matrix(-1 0 0 1 32.964 0)"/>
+  </g>
+</svg>

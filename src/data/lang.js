@@ -27,7 +27,7 @@ module.exports = {
     download: "Letöltés",
     email: "Email",
     forum: "Fórum",
-    fullscreen: "Diavetítés",
+    fullscreen: "Teljes képernyő",
     full_name: "Teljes név",
     go: "Mehet",
     keyword: "Kulcsszó",
