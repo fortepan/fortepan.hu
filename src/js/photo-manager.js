@@ -389,7 +389,7 @@ const getFirstPhotoOfYear = async (y, selectAfterLoad = true) => {
 
   // if no photo data loaded for the given year
   // load the photo data for the year
-  // first, clear the loaded photo data cahce fors (with keeping the current search context)
+  // first, clear the loaded photo data cache (with keeping the current search context)
   clearPhotoCache()
 
   /*

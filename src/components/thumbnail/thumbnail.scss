@@ -162,6 +162,7 @@
 
   .photos-thumbnail:not(.is-loaded) & {
     width: 50%;
+    border-radius: rem(4px);
 
     &--description {
       width: 25%;
