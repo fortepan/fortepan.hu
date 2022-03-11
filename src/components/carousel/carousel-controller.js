@@ -85,8 +85,10 @@ export default class extends Controller {
       photo = document.createElement("div")
       photo.dataset.controller = "image-loader"
       photo.setAttribute("data-carousel-target", "photo")
+      photo.dataset.action = "click->carousel#onPhotoClick"
       photo.className = "image-loader"
       photo.id = `Fortepan-${id}`
+      photo.mid = id
 
       if (this.role === "lists") {
         const photoData = listManager.getListPhotoById(listManager.getSelectedListId(), id)
@@ -106,6 +108,7 @@ export default class extends Controller {
       photo.imageSrc = `${config.PHOTO_SOURCE}1600/fortepan_${id}.jpg`
       photo.loadCallback = () => {
         trigger("loader:hide", { id: "loaderCarousel" })
+        photo.classList.add("is-loaded")
         this.stepSlideshow()
       }
 
@@ -136,6 +139,7 @@ export default class extends Controller {
 
     if (id) {
       this.hideAllPhotos()
+      this.hideLargePhotoView()
       this.setCarouselBackground(id)
       this.loadPhoto(id)
       this.togglePager()
@@ -264,6 +268,7 @@ export default class extends Controller {
     this.showControls(null, true)
 
     if (!this.sidebarWasHidden) trigger("carouselSidebar:show")
+    if (this.isPhotoZoomedIn) this.hideLargePhotoView()
   }
 
   toggleFullscreen() {
@@ -321,6 +326,118 @@ export default class extends Controller {
       this.showControls()
       clearTimeout(this.touchTimeout)
       this.touchTimeout = setTimeout(this.hideControls.bind(this), 2000)
+    }
+  }
+
+  get isPhotoZoomedIn() {
+    return appState("carousel-photo-zoomed-in")
+  }
+
+  showLargePhotoView() {
+    const photo = this.photosTarget.querySelector(".image-loader.is-active.is-loaded")
+
+    if (!photo.noImage) {
+      setAppState("carousel-photo-zoomed-in")
+
+      if (this.slideshowIsPlaying) this.pauseSlideshow()
+
+      photo.classList.add("is-zoomed-in")
+
+      if (!photo.largePhoto) {
+        const container = document.createElement("div")
+        container.dataset.controller = "image-loader"
+        container.className = "large-image-loader"
+
+        photo.appendChild(container)
+        photo.largePhoto = container
+      }
+
+      if (!photo.largePhoto.imageLoaded) {
+        trigger("loader:show", { id: "loaderCarousel" })
+
+        // photo.largePhoto.imageSrc = `${config.PHOTO_SOURCE_LARGE}${photo.mid}.jpg`
+        photo.largePhoto.imageSrc = `${config.PHOTO_SOURCE}1600/fortepan_${photo.mid}.jpg`
+
+        photo.largePhoto.loadCallback = () => {
+          photo.classList.add("large-photo-loaded")
+          trigger("loader:hide", { id: "loaderCarousel" })
+          this.setLargePhotoPosition()
+        }
+
+        photo.largePhoto.classList.add("is-active")
+      } else {
+        trigger("loader:hide", { id: "loaderCarousel" })
+        this.setLargePhotoPosition()
+      }
+    }
+  }
+
+  hideLargePhotoView() {
+    removeAppState("carousel-photo-zoomed-in")
+
+    this.photoTargets.forEach(photo => {
+      photo.classList.remove("is-zoomed-in")
+      if (photo.largePhoto) {
+        photo.largePhoto.removeAttribute("style")
+      }
+    })
+
+    trigger("loader:hide", { id: "loaderCarousel" })
+  }
+
+  toggleLargePhotoView() {
+    if (this.isPhotoZoomedIn) {
+      this.hideLargePhotoView()
+    } else {
+      this.showLargePhotoView()
+    }
+  }
+
+  setLargePhotoPosition(e) {
+    const photo = this.photosTarget.querySelector(".image-loader.is-active.is-loaded.is-zoomed-in")
+
+    if (photo && photo.largePhoto && photo.largePhoto.imageLoaded) {
+      const bounds = photo.getBoundingClientRect()
+      bounds.centerX = bounds.left + bounds.width / 2
+      bounds.centerY = bounds.top + bounds.height / 2
+
+      const m = {}
+      if (e) {
+        m.x = e.touches ? e.touches[0].pageX : e.pageX
+        m.y = e.touches ? e.touches[0].pageY : e.pageY
+      } else {
+        m.x = bounds.centerX
+        m.y = bounds.centerY
+      }
+
+      const img = {
+        width: photo.largePhoto.offsetWidth,
+        height: photo.largePhoto.offsetHeight,
+      }
+
+      photo.largePhoto.style.left = `${0 - img.width / 2 + bounds.width / 2}px`
+      photo.largePhoto.style.top = `${0 - img.height / 2 + bounds.height / 2}px`
+
+      const translateX =
+        img.width > bounds.width
+          ? ((bounds.centerX - m.x) / (bounds.width / 2)) * ((img.width - bounds.width) / img.width) * 50
+          : 0
+      const translateY =
+        img.height > bounds.height
+          ? ((bounds.centerY - m.y) / (bounds.height / 2)) * ((img.height - bounds.height) / img.height) * 50
+          : 0
+
+      photo.largePhoto.style.transform = `translate(${translateX}%, ${translateY}%)`
+    }
+  }
+
+  onPhotoClick(e) {
+    if (e && e.currentTarget && e.currentTarget.classList.contains("image-loader--no-image")) return
+
+    if (!this.isFullscreen) {
+      this.openFullscreen()
+    } else {
+      this.toggleLargePhotoView()
     }
   }
 

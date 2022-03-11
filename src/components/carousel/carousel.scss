@@ -98,6 +98,52 @@
     top: rem(12px);
     bottom: rem(12px);
   }
+
+  .carousel-photo-zoomed-in & {
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  }
+
+  .image-loader.is-active.is-loaded:not(.image-loader--no-image) {
+    cursor: zoom-in;
+
+    .large-image-loader {
+      display: none;
+      position: absolute;
+      padding: 6rem;
+
+      @media screen and (max-width: ($breakpoint-phone - 1px)) {
+        padding: 2rem;
+      }
+
+      img {
+        position: relative;
+        display: block;
+        width: auto;
+        height: auto;
+        object-fit: none;
+      }
+    }
+
+    &.is-zoomed-in {
+      cursor: zoom-out;
+      overflow: hidden;
+
+      .large-image-loader {
+        display: block;
+      }
+
+      &:not(.large-photo-loaded) > img {
+        opacity: 0.5;
+      }
+
+      &.large-photo-loaded > img {
+        display: none;
+      }
+    }
+  }
 }
 
 .carousel__photos__actions {
@@ -154,6 +200,12 @@
 
 .carousel__photos__actions__group {
   display: flex;
+
+  @media screen and (max-width: ($breakpoint-phone - 1px)) {
+    .button-circular + .button-circular {
+      margin-left: 0;
+    }
+  }
 }
 
 .carousel__photos__pager {
