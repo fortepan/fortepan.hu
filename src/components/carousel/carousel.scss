@@ -113,6 +113,7 @@
       display: none;
       position: absolute;
       padding: 6rem;
+      pointer-events: none;
 
       @media screen and (max-width: ($breakpoint-phone - 1px)) {
         padding: 2rem;

@@ -86,7 +86,7 @@ export default class extends Controller {
       photo.dataset.controller = "image-loader"
       photo.setAttribute("data-carousel-target", "photo")
       photo.dataset.action =
-        "mouseup->carousel#onPhotoClick touchstart->carousel#showLargePhotoView touchend->carousel#hideLargePhotoView"
+        "mouseup->carousel#onPhotoClick touchstart->carousel#onPhotoClick touchend->carousel#hideLargePhotoView"
       photo.className = "image-loader"
       photo.id = `Fortepan-${id}`
       photo.mid = id
@@ -334,7 +334,9 @@ export default class extends Controller {
     return appState("carousel-photo-zoomed-in")
   }
 
-  showLargePhotoView() {
+  showLargePhotoView(e) {
+    if (e) e.preventDefault()
+
     const photo = this.photosTarget.querySelector(".image-loader.is-active.is-loaded")
 
     if (!photo.noImage) {
@@ -373,7 +375,8 @@ export default class extends Controller {
     }
   }
 
-  hideLargePhotoView() {
+  hideLargePhotoView(e) {
+    if (e) e.preventDefault()
     removeAppState("carousel-photo-zoomed-in")
 
     this.photoTargets.forEach(photo => {
@@ -437,6 +440,8 @@ export default class extends Controller {
 
     if (!this.isFullscreen) {
       this.openFullscreen()
+    } else if (e && e.type === "touchstart") {
+      this.showLargePhotoView()
     } else {
       this.toggleLargePhotoView()
     }
