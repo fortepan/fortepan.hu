@@ -86,7 +86,7 @@ export default class extends Controller {
       photo.dataset.controller = "image-loader"
       photo.setAttribute("data-carousel-target", "photo")
       photo.dataset.action =
-        "mouseup->carousel#onPhotoClick touchstart->carousel#onPhotoClick touchend->carousel#onPhotoClick"
+        "mouseup->carousel#onPhotoClick touchstart->carousel#showLargePhotoView touchend->carousel#hideLargePhotoView"
       photo.className = "image-loader"
       photo.id = `Fortepan-${id}`
       photo.mid = id
