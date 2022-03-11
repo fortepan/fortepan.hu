@@ -85,7 +85,8 @@ export default class extends Controller {
       photo = document.createElement("div")
       photo.dataset.controller = "image-loader"
       photo.setAttribute("data-carousel-target", "photo")
-      photo.dataset.action = "click->carousel#onPhotoClick"
+      photo.dataset.action =
+        "mouseup->carousel#onPhotoClick touchstart->carousel#onPhotoClick touchend->carousel#onPhotoClick"
       photo.className = "image-loader"
       photo.id = `Fortepan-${id}`
       photo.mid = id
