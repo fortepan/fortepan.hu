@@ -387,6 +387,7 @@ export default class extends Controller {
     })
 
     trigger("loader:hide", { id: "loaderCarousel" })
+    this.showControls(null, true)
   }
 
   toggleLargePhotoView() {
@@ -398,6 +399,7 @@ export default class extends Controller {
   }
 
   setLargePhotoPosition(e) {
+    if (e) e.preventDefault()
     const photo = this.photosTarget.querySelector(".image-loader.is-active.is-loaded.is-zoomed-in")
 
     if (photo && photo.largePhoto && photo.largePhoto.imageLoaded) {
@@ -439,6 +441,11 @@ export default class extends Controller {
     if (e && e.currentTarget && e.currentTarget.classList.contains("image-loader--no-image")) return
 
     if (!this.isFullscreen) {
+      // if controls are hidden, on mobile the first touch should open the controls
+      // (event listener is on photosContainer)
+      if (e && e.type === "touchstart" && this.photosContainerTarget.classList.contains("hide-controls")) {
+        return
+      }
       this.openFullscreen()
     } else if (e && e.type === "touchstart") {
       this.showLargePhotoView()
