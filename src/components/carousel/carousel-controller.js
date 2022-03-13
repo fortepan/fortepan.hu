@@ -341,6 +341,7 @@ export default class extends Controller {
 
     if (!photo.noImage) {
       setAppState("carousel-photo-zoomed-in")
+      setAppState("disable--selection")
 
       if (this.slideshowIsPlaying) this.pauseSlideshow()
 
@@ -378,6 +379,7 @@ export default class extends Controller {
   hideLargePhotoView(e) {
     if (e) e.preventDefault()
     removeAppState("carousel-photo-zoomed-in")
+    removeAppState("disable--selection")
 
     this.photoTargets.forEach(photo => {
       photo.classList.remove("is-zoomed-in")
