@@ -118,6 +118,14 @@ export default class extends Controller {
 
   // return value of the element
   get value() {
+    // adding the value of the input field as a tag if it hasn't happened yet
+    if (this.inputTarget.value.trim().length > 0) {
+      const tags = this.inputTarget.value.split(",")
+      tags.forEach(tag => {
+        this.addTagNode(tag)
+      })
+    }
+
     const tags = []
     this.tagTargets.forEach(el => {
       tags.push(el.textContent)
