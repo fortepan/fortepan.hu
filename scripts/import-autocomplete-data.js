@@ -20,7 +20,7 @@ const getKeywords = (key, callback, error) => {
           keywords: {
             terms: {
               field: key,
-              size: 5000000,
+              size: 500000,
             },
           },
         },
@@ -73,7 +73,7 @@ const saveAutocompleteLangFile = lang => {
       })
     })
     .catch(err => {
-      console.log("autocomplete-error", err)
+      console.log(err)
     })
 }
 
