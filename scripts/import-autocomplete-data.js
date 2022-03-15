@@ -20,7 +20,7 @@ const getKeywords = (key, callback, error) => {
           keywords: {
             terms: {
               field: key,
-              size: 500000,
+              size: 5000000,
             },
           },
         },
