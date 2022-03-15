@@ -73,7 +73,7 @@ const saveAutocompleteLangFile = lang => {
       })
     })
     .catch(err => {
-      console.log(err)
+      console.log("autocomplete-error", err)
     })
 }
 
