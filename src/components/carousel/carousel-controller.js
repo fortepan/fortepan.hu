@@ -85,8 +85,11 @@ export default class extends Controller {
       photo = document.createElement("div")
       photo.dataset.controller = "image-loader"
       photo.setAttribute("data-carousel-target", "photo")
+      photo.dataset.action =
+        "mouseup->carousel#onPhotoClick touchstart->carousel#onPhotoClick touchend->carousel#hideLargePhotoView"
       photo.className = "image-loader"
       photo.id = `Fortepan-${id}`
+      photo.mid = id
 
       if (this.role === "lists") {
         const photoData = listManager.getListPhotoById(listManager.getSelectedListId(), id)
@@ -106,6 +109,7 @@ export default class extends Controller {
       photo.imageSrc = `${config.PHOTO_SOURCE}1600/fortepan_${id}.jpg`
       photo.loadCallback = () => {
         trigger("loader:hide", { id: "loaderCarousel" })
+        photo.classList.add("is-loaded")
         this.stepSlideshow()
       }
 
@@ -136,6 +140,7 @@ export default class extends Controller {
 
     if (id) {
       this.hideAllPhotos()
+      this.hideLargePhotoView()
       this.setCarouselBackground(id)
       this.loadPhoto(id)
       this.togglePager()
@@ -205,39 +210,27 @@ export default class extends Controller {
     })
   }
 
-  pauseSlideshow() {
-    removeAppState("play-carousel-slideshow")
-
-    // show controls
-    this.showControls(null, true)
-
-    if (!this.sidebarIsHidden) trigger("carouselSidebar:show")
-    clearTimeout(this.slideshowTimeout)
-
-    this.showControls(null, true)
-  }
-
   get slideshowIsPlaying() {
     return appState("play-carousel-slideshow")
   }
 
-  get sidebarIsHidden() {
-    return appState("hide-carousel-sidebar")
-  }
-
   playSlideshow() {
     setAppState("play-carousel-slideshow")
-
-    // store sidebar visibility
-    trigger("carouselSidebar:hide")
-
-    // hide controls
-    this.autoHideControls()
-
     // start slideshow
     this.slideshowTimeout = setTimeout(() => {
       this.showNextPhoto()
     }, config.CAROUSEL_SLIDESHOW_DELAY)
+
+    this.wasFullScreen = appState("carousel-fullscreen")
+
+    this.openFullscreen()
+  }
+
+  pauseSlideshow() {
+    removeAppState("play-carousel-slideshow")
+    clearTimeout(this.slideshowTimeout)
+
+    if (!this.wasFullScreen) this.closeFullscreen()
   }
 
   toggleSlideshow() {
@@ -250,6 +243,42 @@ export default class extends Controller {
 
   toggleSidebar() {
     trigger("carouselSidebar:toggle")
+  }
+
+  get isFullscreen() {
+    return appState("carousel-fullscreen")
+  }
+
+  openFullscreen() {
+    setAppState("carousel-fullscreen")
+
+    // store sidebar visibility
+    this.sidebarWasHidden = appState("hide-carousel-sidebar")
+
+    // close sidebar
+    trigger("carouselSidebar:hide")
+
+    // hide controls
+    this.autoHideControls()
+  }
+
+  closeFullscreen() {
+    removeAppState("carousel-fullscreen")
+
+    // show controls
+    this.showControls(null, true)
+
+    if (!this.sidebarWasHidden) trigger("carouselSidebar:show")
+    if (this.isPhotoZoomedIn) this.hideLargePhotoView()
+  }
+
+  toggleFullscreen() {
+    if (this.isFullscreen) {
+      if (this.slideshowIsPlaying) this.pauseSlideshow()
+      if (this.isFullscreen) this.closeFullscreen()
+    } else {
+      this.openFullscreen()
+    }
   }
 
   isMouseRightOverControls(e) {
@@ -301,10 +330,137 @@ export default class extends Controller {
     }
   }
 
+  get isPhotoZoomedIn() {
+    return appState("carousel-photo-zoomed-in")
+  }
+
+  showLargePhotoView(e) {
+    if (e) e.preventDefault()
+
+    const photo = this.photosTarget.querySelector(".image-loader.is-active.is-loaded")
+
+    if (!photo.noImage) {
+      setAppState("carousel-photo-zoomed-in")
+      setAppState("disable--selection")
+
+      if (this.slideshowIsPlaying) this.pauseSlideshow()
+
+      photo.classList.add("is-zoomed-in")
+
+      if (!photo.largePhoto) {
+        const container = document.createElement("div")
+        container.dataset.controller = "image-loader"
+        container.className = "large-image-loader"
+
+        photo.appendChild(container)
+        photo.largePhoto = container
+      }
+
+      if (!photo.largePhoto.imageLoaded) {
+        trigger("loader:show", { id: "loaderCarousel" })
+
+        // photo.largePhoto.imageSrc = `${config.PHOTO_SOURCE_LARGE}${photo.mid}.jpg`
+        photo.largePhoto.imageSrc = `${config.PHOTO_SOURCE}1600/fortepan_${photo.mid}.jpg`
+
+        photo.largePhoto.loadCallback = () => {
+          photo.classList.add("large-photo-loaded")
+          trigger("loader:hide", { id: "loaderCarousel" })
+          this.setLargePhotoPosition()
+        }
+
+        photo.largePhoto.classList.add("is-active")
+      } else {
+        trigger("loader:hide", { id: "loaderCarousel" })
+        this.setLargePhotoPosition()
+      }
+    }
+  }
+
+  hideLargePhotoView(e) {
+    if (e) e.preventDefault()
+    removeAppState("carousel-photo-zoomed-in")
+    removeAppState("disable--selection")
+
+    this.photoTargets.forEach(photo => {
+      photo.classList.remove("is-zoomed-in")
+      if (photo.largePhoto) {
+        photo.largePhoto.removeAttribute("style")
+      }
+    })
+
+    trigger("loader:hide", { id: "loaderCarousel" })
+    this.showControls(null, true)
+  }
+
+  toggleLargePhotoView() {
+    if (this.isPhotoZoomedIn) {
+      this.hideLargePhotoView()
+    } else {
+      this.showLargePhotoView()
+    }
+  }
+
+  setLargePhotoPosition(e) {
+    if (e) e.preventDefault()
+    const photo = this.photosTarget.querySelector(".image-loader.is-active.is-loaded.is-zoomed-in")
+
+    if (photo && photo.largePhoto && photo.largePhoto.imageLoaded) {
+      const bounds = photo.getBoundingClientRect()
+      bounds.centerX = bounds.left + bounds.width / 2
+      bounds.centerY = bounds.top + bounds.height / 2
+
+      const m = {}
+      if (e) {
+        m.x = e.touches ? e.touches[0].pageX : e.pageX
+        m.y = e.touches ? e.touches[0].pageY : e.pageY
+      } else {
+        m.x = bounds.centerX
+        m.y = bounds.centerY
+      }
+
+      const img = {
+        width: photo.largePhoto.offsetWidth,
+        height: photo.largePhoto.offsetHeight,
+      }
+
+      photo.largePhoto.style.left = `${0 - img.width / 2 + bounds.width / 2}px`
+      photo.largePhoto.style.top = `${0 - img.height / 2 + bounds.height / 2}px`
+
+      const translateX =
+        img.width > bounds.width
+          ? ((bounds.centerX - m.x) / (bounds.width / 2)) * ((img.width - bounds.width) / img.width) * 50
+          : 0
+      const translateY =
+        img.height > bounds.height
+          ? ((bounds.centerY - m.y) / (bounds.height / 2)) * ((img.height - bounds.height) / img.height) * 50
+          : 0
+
+      photo.largePhoto.style.transform = `translate(${translateX}%, ${translateY}%)`
+    }
+  }
+
+  onPhotoClick(e) {
+    if (e && e.currentTarget && e.currentTarget.classList.contains("image-loader--no-image")) return
+
+    if (!this.isFullscreen) {
+      // if controls are hidden, on mobile the first touch should open the controls
+      // (event listener is on photosContainer)
+      if (e && e.type === "touchstart" && this.photosContainerTarget.classList.contains("hide-controls")) {
+        return
+      }
+      this.openFullscreen()
+    } else if (e && e.type === "touchstart") {
+      this.showLargePhotoView()
+    } else {
+      this.toggleLargePhotoView()
+    }
+  }
+
   onCloseClicked() {
-    // pause slideshow if the slideshow is playing
-    if (this.slideshowIsPlaying) {
-      this.pauseSlideshow()
+    // pause slideshow if the slideshow is playing & close the fullscreen state if we are in fullscreen
+    if (this.slideshowIsPlaying || this.isFullscreen) {
+      if (this.slideshowIsPlaying) this.pauseSlideshow()
+      if (this.isFullscreen) this.closeFullscreen()
     } else {
       this.hide()
     }

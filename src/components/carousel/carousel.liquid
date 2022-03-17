@@ -10,7 +10,10 @@
                   photosCarousel:close@document->carousel#hide
                   timeline:yearSelected@document->carousel#onYearSelected"
 >
-    <div class="carousel__photos hide-controls theme--dark" data-carousel-target="photosContainer">
+    <div class="carousel__photos hide-controls theme--dark" data-carousel-target="photosContainer"
+         data-action="pointermove->carousel#setLargePhotoPosition
+                      pointerleave->carousel#hideLargePhotoView"
+    >
         <div class="carousel__photos__background">
             <div class="carousel__photos__background-image" data-carousel-target="background"></div>
         </div>
@@ -62,6 +65,11 @@
                 <div class="button-circular" data-action="click->carousel#toggleSidebar">
                     {% inlineSVG src:"src/static/images/icons/24/icon-sidebar.svg" class:"button-circular__icon" %}
                     <div class="button-circular__label">{{ lang[locale].details }}</div>
+                </div>
+                <div class="button-circular" data-action="click->carousel#toggleFullscreen">
+                    {% inlineSVG src:"src/static/images/icons/24/icon-fullscreen.svg" class:"button-circular__icon" id:"FullscreenOpen" %}
+                    {% inlineSVG src:"src/static/images/icons/24/icon-fullscreen-close.svg" class:"button-circular__icon" id:"FullscreenClose" %}
+                    <div class="button-circular__label">{{ lang[locale].fullscreen }}</div>
                 </div>
             </div>
         </div>

@@ -6,7 +6,7 @@
   width: rem(280px);
   height: calc(100vh - 8rem);
   box-sizing: border-box;
-  transition: transform 0.4s $ease-out-expo, top 0.4s $ease-out-expo, opacity 0.2s ease-out;
+  transition: transform 0.4s $ease-out-expo, top 0.4s $ease-out-expo, height 0.4s $ease-out-expo, opacity 0.2s ease-out;
 
   @media screen and (max-width: ($breakpoint-desktop - 1px)) {
     top: 7rem;
@@ -49,8 +49,10 @@
     }
   }
 
-  .play-carousel-slideshow & {
+  .play-carousel-slideshow &,
+  .carousel-fullscreen & {
     top: 0;
+    height: 100vh;
   }
 }
 
