@@ -51,6 +51,10 @@
   .carousel-fullscreen & {
     top: 0;
   }
+
+  .carousel-photo-zoomed-in & {
+    touch-action: none;
+  }
 }
 
 .carousel__photos__loader {
