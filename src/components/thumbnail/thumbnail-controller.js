@@ -64,11 +64,18 @@ export default class extends Controller {
   // resize thumbnail when the browser window gets resized
   resize() {
     const h = window.innerWidth < 640 ? (THUMBNAIL_HEIGHT * 2) / 3 : THUMBNAIL_HEIGHT
+
     if (!this.naturalWidth) return
-    this.containerTarget.style.height = `${h}px`
     const w = Math.min(240, (this.naturalWidth / this.naturalHeight) * h)
+
+    this.containerTarget.style.height = `${h}px`
+
     this.element.style.flex = `${w}`
     this.element.style.minWidth = `${w}px`
+    this.element.classList.toggle(
+      "img-fit-contain",
+      h > this.naturalHeight && this.naturalWidth / this.naturalHeight > 16 / 9
+    )
   }
 
   initThumbnail() {
