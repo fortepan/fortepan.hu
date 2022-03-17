@@ -89,6 +89,17 @@
     transition: filter 0.3s ease-out, opacity 0.8s $ease-out-expo;
   }
 
+  .img-fit-contain & {
+    .theme--dark & {
+      background-color: rgba($dark-secondary, 0.5);
+    }
+
+    img {
+      object-fit: contain;
+      object-position: center center;
+    }
+  }
+
   .theme--light & {
     background-color: $light-primary;
   }
@@ -139,6 +150,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  .is-selected & {
+    box-shadow: 0 0 0 3px $red;
   }
 }
 
@@ -212,10 +227,6 @@
 
 .photos-thumbnail:hover .photos-thumbnail__image img {
   filter: brightness(0.7);
-}
-
-.photos-thumbnail.is-selected .photos-thumbnail__image {
-  box-shadow: 0 0 0 3px $red;
 }
 
 @keyframes skeleton-loading {
