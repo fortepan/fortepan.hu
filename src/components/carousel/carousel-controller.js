@@ -1,7 +1,7 @@
 import { Controller } from "stimulus"
 
 import config from "../../data/siteConfig"
-import { trigger, lang } from "../../js/utils"
+import { trigger, lang, isTouchDevice } from "../../js/utils"
 import { setAppState, removeAppState, appState } from "../../js/app"
 import photoManager from "../../js/photo-manager"
 import listManager from "../../js/list-manager"
@@ -18,6 +18,8 @@ export default class extends Controller {
 
     this.slideshowTimeout = 0
     this.touchTimeout = 0
+
+    if (isTouchDevice()) setAppState("is-touch-device")
   }
 
   show() {
@@ -85,8 +87,7 @@ export default class extends Controller {
       photo = document.createElement("div")
       photo.dataset.controller = "image-loader"
       photo.setAttribute("data-carousel-target", "photo")
-      photo.dataset.action =
-        "mouseup->carousel#onPhotoClick touchstart->carousel#onPhotoClick touchend->carousel#hideLargePhotoView"
+      photo.dataset.action = "mouseup->carousel#onPhotoClick touchstart->carousel#onPhotoClick"
       photo.className = "image-loader"
       photo.id = `Fortepan-${id}`
       photo.mid = id
@@ -273,7 +274,9 @@ export default class extends Controller {
   }
 
   toggleFullscreen() {
-    if (this.isFullscreen) {
+    if (this.isPhotoZoomedIn) {
+      this.hideLargePhotoView()
+    } else if (this.isFullscreen) {
       if (this.slideshowIsPlaying) this.pauseSlideshow()
       if (this.isFullscreen) this.closeFullscreen()
     } else {
@@ -402,6 +405,7 @@ export default class extends Controller {
 
   setLargePhotoPosition(e) {
     if (e) e.preventDefault()
+
     const photo = this.photosTarget.querySelector(".image-loader.is-active.is-loaded.is-zoomed-in")
 
     if (photo && photo.largePhoto && photo.largePhoto.imageLoaded) {
@@ -409,33 +413,42 @@ export default class extends Controller {
       bounds.centerX = bounds.left + bounds.width / 2
       bounds.centerY = bounds.top + bounds.height / 2
 
-      const m = {}
-      if (e) {
-        m.x = e.touches ? e.touches[0].pageX : e.pageX
-        m.y = e.touches ? e.touches[0].pageY : e.pageY
+      if (isTouchDevice()) {
+        const img = {
+          width: photo.largePhoto.querySelector("img").offsetWidth,
+          height: photo.largePhoto.querySelector("img").offsetHeight,
+        }
+
+        photo.largePhoto.scrollTo((img.width - bounds.width) / 2, (img.height - bounds.height) / 2)
       } else {
-        m.x = bounds.centerX
-        m.y = bounds.centerY
+        const m = {}
+        if (e) {
+          m.x = e.touches ? e.touches[0].pageX : e.pageX
+          m.y = e.touches ? e.touches[0].pageY : e.pageY
+        } else {
+          m.x = bounds.centerX
+          m.y = bounds.centerY
+        }
+
+        const img = {
+          width: photo.largePhoto.offsetWidth,
+          height: photo.largePhoto.offsetHeight,
+        }
+
+        photo.largePhoto.style.left = `${0 - img.width / 2 + bounds.width / 2}px`
+        photo.largePhoto.style.top = `${0 - img.height / 2 + bounds.height / 2}px`
+
+        const translateX =
+          img.width > bounds.width
+            ? ((bounds.centerX - m.x) / (bounds.width / 2)) * ((img.width - bounds.width) / img.width) * 50
+            : 0
+        const translateY =
+          img.height > bounds.height
+            ? ((bounds.centerY - m.y) / (bounds.height / 2)) * ((img.height - bounds.height) / img.height) * 50
+            : 0
+
+        photo.largePhoto.style.transform = `translate(${translateX}%, ${translateY}%)`
       }
-
-      const img = {
-        width: photo.largePhoto.offsetWidth,
-        height: photo.largePhoto.offsetHeight,
-      }
-
-      photo.largePhoto.style.left = `${0 - img.width / 2 + bounds.width / 2}px`
-      photo.largePhoto.style.top = `${0 - img.height / 2 + bounds.height / 2}px`
-
-      const translateX =
-        img.width > bounds.width
-          ? ((bounds.centerX - m.x) / (bounds.width / 2)) * ((img.width - bounds.width) / img.width) * 50
-          : 0
-      const translateY =
-        img.height > bounds.height
-          ? ((bounds.centerY - m.y) / (bounds.height / 2)) * ((img.height - bounds.height) / img.height) * 50
-          : 0
-
-      photo.largePhoto.style.transform = `translate(${translateX}%, ${translateY}%)`
     }
   }
 
@@ -449,16 +462,18 @@ export default class extends Controller {
         return
       }
       this.openFullscreen()
-    } else if (e && e.type === "touchstart") {
-      this.showLargePhotoView()
+    } else if (isTouchDevice()) {
+      if (!this.isPhotoZoomedIn) this.showLargePhotoView()
     } else {
       this.toggleLargePhotoView()
     }
   }
 
   onCloseClicked() {
-    // pause slideshow if the slideshow is playing & close the fullscreen state if we are in fullscreen
-    if (this.slideshowIsPlaying || this.isFullscreen) {
+    if (this.isPhotoZoomedIn) {
+      this.hideLargePhotoView()
+    } else if (this.slideshowIsPlaying || this.isFullscreen) {
+      // pause slideshow if the slideshow is playing & close the fullscreen state if we are in fullscreen
       if (this.slideshowIsPlaying) this.pauseSlideshow()
       if (this.isFullscreen) this.closeFullscreen()
     } else {

@@ -29,8 +29,4 @@ body {
   &.disable--selection {
     user-select: none;
   }
-
-  &.carousel-photo-zoomed-in {
-    touch-action: none;
-  }
 }
