@@ -404,7 +404,12 @@ export default class extends Controller {
   }
 
   setLargePhotoPosition(e) {
-    if (e) e.preventDefault()
+    if (e) {
+      if (isTouchDevice()) {
+        return
+      }
+      e.preventDefault()
+    }
 
     const photo = this.photosTarget.querySelector(".image-loader.is-active.is-loaded.is-zoomed-in")
 
@@ -435,8 +440,8 @@ export default class extends Controller {
           height: photo.largePhoto.offsetHeight,
         }
 
-        photo.largePhoto.style.left = `${0 - img.width / 2 + bounds.width / 2}px`
-        photo.largePhoto.style.top = `${0 - img.height / 2 + bounds.height / 2}px`
+        photo.largePhoto.style.left = `${(bounds.width - img.width) / 2}px`
+        photo.largePhoto.style.top = `${(bounds.height - img.height) / 2}px`
 
         const translateX =
           img.width > bounds.width
@@ -455,15 +460,21 @@ export default class extends Controller {
   onPhotoClick(e) {
     if (e && e.currentTarget && e.currentTarget.classList.contains("image-loader--no-image")) return
 
-    if (!this.isFullscreen) {
-      // if controls are hidden, on mobile the first touch should open the controls
-      // (event listener is on photosContainer)
-      if (e && e.type === "touchstart" && this.photosContainerTarget.classList.contains("hide-controls")) {
-        return
+    if (isTouchDevice()) {
+      // only listen to touch events on touch devices (no mouseup should fire the following)
+      if (e && e.type === "touchstart") {
+        // if controls are hidden, on mobile the first touch should open the controls
+        // (event listener is on photosContainer)
+        if (!this.photosContainerTarget.classList.contains("hide-controls")) {
+          if (!this.isFullscreen) {
+            this.openFullscreen()
+          } else if (!this.isPhotoZoomedIn) {
+            this.showLargePhotoView()
+          }
+        }
       }
+    } else if (!this.isFullscreen) {
       this.openFullscreen()
-    } else if (isTouchDevice()) {
-      if (!this.isPhotoZoomedIn) this.showLargePhotoView()
     } else {
       this.toggleLargePhotoView()
     }
