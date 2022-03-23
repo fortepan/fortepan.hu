@@ -19,9 +19,6 @@ export default class extends Controller {
   }
 
   connect() {
-    // throttle
-    this.hidePopups = throttle(this.hidePopups.bind(this), 100)
-
     this.showNotificationIconBadge()
     this.autoHideNavShadowOnScroll()
 
@@ -34,11 +31,16 @@ export default class extends Controller {
   // show a popup
   togglePopup(e) {
     e.preventDefault()
-    if (this.activePopup) this.activePopup.classList.remove("is-visible")
-    if (this.activePopup === this[`${e.currentTarget.dataset.popup}Target`]) {
-      this.activePopup = null
-      return
+
+    if (this.activePopup) {
+      this.activePopup.classList.remove("is-visible")
+
+      if (this.activePopup === this[`${e.currentTarget.dataset.popup}Target`]) {
+        this.activePopup = null
+        return
+      }
     }
+
     this.activePopup = this[`${e.currentTarget.dataset.popup}Target`]
     this.activePopup.classList.add("is-visible")
 
@@ -53,18 +55,24 @@ export default class extends Controller {
 
   // hide all popups that are opened and visible
   hidePopups(e) {
-    if (this.navTimer) clearTimeout(this.navTimer)
-    this.navTimer = setTimeout(() => {
-      this.popupTargets.forEach(popup => {
-        if (popup.classList.contains("is-visible")) {
-          const bounds = popup.getBoundingClientRect()
-          if (e.clientX < bounds.left || e.clientX > bounds.right || e.clientY > bounds.bottom) {
-            popup.classList.remove("is-visible")
+    this.popupTargets.forEach(popup => {
+      if (popup.classList.contains("is-visible")) {
+        let button = null
+        this.element.querySelectorAll(".button-circular").forEach(btn => {
+          if (btn === e.target && popup.dataset.headerNavTarget.indexOf(btn.dataset.popup) > -1) {
+            button = btn
           }
+        })
+
+        if (
+          e.type === "resize" ||
+          (popup !== e.target && !popup.contains(e.target) && (!button || !button.contains(e.target)))
+        ) {
+          popup.classList.remove("is-visible")
+          this.activePopup = null
         }
-      })
-      this.activePopup = null
-    }, 200)
+      }
+    })
   }
 
   addNavShadow() {

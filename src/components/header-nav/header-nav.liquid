@@ -1,6 +1,6 @@
 <div class="header-nav {{ header_class }}"
      data-controller="header-nav"
-     data-action="mousemove@document->header-nav#hidePopups
+     data-action="click@document->header-nav#hidePopups resize@window->header-nav#hidePopups
      headerNav:refreshProfile@document->header-nav#checkIfUserIsSignedIn"
 >
   <div class="header-nav__logo">
