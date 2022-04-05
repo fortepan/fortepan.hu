@@ -3,14 +3,12 @@ layout: home/home.liquid
 title: Fortepan — Főoldal
 permalink: "/"
 announcement:
-  title: "<strong>3000 FOTÓ A FŐMTERV ARCHÍVUMÁBÓL</strong>"
+  title: "<strong>3000 ÉLES FÉNYKÉP</strong>"
   caption: Új sorozat
-  cover_image: "252768"
-  blurb: Válogatás a FŐMTERV (Fővárosi Mélyépítési Tervező Vállalat) archívumából.
-    A Kádár-korszak Budapestjének építkezései, villamospályák és bekötőutak építése,
-    strandok és fürdők rekonstrukciója. Felül- és aluljárók, Budafok, Pesterzsébet,
-    Zugló utcái, piacok, buszgarázsok és szanálásra ítélt tömbök épületei. Egy nagyvállalat
-    mintaszerűen megőrzött fotóarchívuma.
+  cover_image: "257125"
+  blurb: 'a homályos XX. századból. Közel negyven adományozó albumaiból készült a
+    Fortepan tavaszi válogatása. Ismétlődő, de megunhatatlan helyszínek, helyzetek,
+    helyek, a véletlenül összeérő negatív tekercsekről. '
   actions:
   - label: 66 kedvenc kép
     style: primary
