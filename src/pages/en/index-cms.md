@@ -3,14 +3,12 @@ layout: home/home.liquid
 title: Fortepan — Home
 permalink: "/en/"
 announcement:
-  title: "<strong>3000 PHOTOS from the FŐMTERV ARCHIVE</strong>"
+  title: "<strong>3000 SHARP IMAGES</strong>"
   caption: New Collection
-  cover_image: "252768"
-  blurb: Selected from the archive of FŐMTERV (Municipal Civil Engineering Design
-    Company). The grand construction projects of the Kádár Era. Over-and underpasses
-    in Budafok, Pesterzsébet, the streets of Zugló, markets, bus depots and blocs
-    soon to be demolished. The archive of a large construction company, preserved
-    in an exemplary manner.
+  cover_image: "255218"
+  blurb: "<br>from the blurred 20th century. We have selected pictures from over forty
+    donors. Recurrent, but never boring venues, situations, places, from some haphazardly
+    related negative rolls"
   actions:
   - label: 66 favorites
     style: primary
