@@ -10,7 +10,7 @@ announcement:
     tavaszi válogatása. Ismétlődő, de megunhatatlan helyszínek, helyzetek, helyek,
     a véletlen által összeérő negatív tekercsekről.
   actions:
-  - label: 66 kedvenc kép
+  - label: 75 fontos kép
     style: primary
     url: https://fortepan.hu/hu/photos/?latest&tag=best%20of
   - label: A teljes sorozat
