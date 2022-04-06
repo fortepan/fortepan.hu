@@ -5,7 +5,7 @@ permalink: "/en/"
 announcement:
   title: "<strong>3000 SHARP IMAGES</strong>"
   caption: New Collection
-  cover_image: "223397"
+  cover_image: "223794"
   blurb: "<br>from the blurred 20th century. We have selected pictures from over forty
     donors. Recurrent, but never boring venues, situations, places, from some haphazardly
     related negative rolls"
