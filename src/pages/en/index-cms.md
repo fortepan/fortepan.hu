@@ -10,7 +10,7 @@ announcement:
     donors. Recurrent, but never boring venues, situations, places, from some haphazardly
     related negative rolls"
   actions:
-  - label: 66 favorites
+  - label: 75 favorites
     style: primary
     url: https://fortepan.hu/en/photos/?latest&tag=best%20of
   - label: All Collection
