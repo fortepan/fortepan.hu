@@ -5,10 +5,10 @@ permalink: "/"
 announcement:
   title: "<strong>3000 ÉLES FÉNYKÉP</strong>"
   caption: Új sorozat
-  cover_image: "254594"
-  blurb: 'a homályos XX. századból. Közel negyven adományozó fotóiból készült a Fortepan
+  cover_image: "222664"
+  blurb: a homályos XX. századból. Közel negyven adományozó fotóiból készült a Fortepan
     tavaszi válogatása. Ismétlődő, de megunhatatlan helyszínek, helyzetek, helyek,
-    a véletlenül összeérő negatív tekercsekről. '
+    a véletlen által összeérő negatív tekercsekről.
   actions:
   - label: 66 kedvenc kép
     style: primary
