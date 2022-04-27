@@ -8,7 +8,8 @@
                   photosThumbnail:select@document->carousel#showPhoto
                   photosCarousel:show@document->carousel#show
                   photosCarousel:close@document->carousel#hide
-                  timeline:yearSelected@document->carousel#onYearSelected"
+                  timeline:yearSelected@document->carousel#onYearSelected
+                  dialogAgeRestriction:remove@document->carousel#removeAgeRestriction"
 >
     <div class="carousel__photos hide-controls theme--dark" data-carousel-target="photosContainer"
          data-action="mousemove->carousel#setLargePhotoPosition mouseleave->carousel#hideLargePhotoView"

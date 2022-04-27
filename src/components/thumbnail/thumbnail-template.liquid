@@ -1,5 +1,8 @@
 <template id="photos-thumbnail">
-  <div class="photos-thumbnail" data-controller="thumbnail" data-action="click->thumbnail#clicked">
+  <div class="photos-thumbnail" data-controller="thumbnail"
+       data-action="click->thumbnail#clicked
+                    dialogAgeRestriction:remove@document->thumbnail#removeAgeRestriction"
+  >
     <div class="photos-thumbnail__image" data-thumbnail-target="container">
       <img alt="" draggable="false" data-thumbnail-target="image"/>
     </div>

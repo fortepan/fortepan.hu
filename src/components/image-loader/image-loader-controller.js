@@ -8,12 +8,6 @@ export default class extends Controller {
     this.loadImage()
   }
 
-  // load image
-  set imageSrc(url) {
-    this.element.src = url
-    this.loadImage()
-  }
-
   loadImage() {
     if (!this.img) {
       this.img = new Image()
@@ -31,6 +25,8 @@ export default class extends Controller {
       this.img.classList.remove("is-loaded")
     }
 
-    this.img.src = this.element.imageSrc
+    if (this.element.imageSrc) {
+      this.img.src = this.element.imageSrc
+    }
   }
 }

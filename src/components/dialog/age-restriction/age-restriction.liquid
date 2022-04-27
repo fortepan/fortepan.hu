@@ -1,0 +1,31 @@
+<div class="dialog dialog-age-restriction"
+     data-controller="dialog--age-restriction"
+     data-action="dialogs:hide@document->dialog--age-restriction#hide
+                  dialogAgeRestriction:show@document->dialog--age-restriction#show
+                  dialogAgeRestriction:hide@document->dialog--age-restriction#hide"
+>
+  <div class="dialog__wrapper">
+      <div class="button-circular dialog__close"
+           data-action="click->dialog--age-restriction#hide"
+      >
+        {% inlineSVG src:"src/static/images/icons/24/icon-close.svg" class:"button-circular__icon" %}
+        <div class="button-circular__label">{{ lang[locale].close }}</div>
+      </div>
+
+
+      <div class="dialog__content dialog-age-restriction__content">
+        <h3 class="dialog-age-restriction__icon">18</h3>
+        <h3 class="dialog__title">{{ lang[locale].age_restriction.title }}</h3>
+        <p>{{ lang[locale].age_restriction.content }}</p>
+      </div>
+
+      <div class="dialog-age-restriction__action">
+        <button class="button button--link dialog__button"
+                data-action="click->dialog--age-restriction#remove"
+        >{{ lang[locale].age_restriction.reveal_label }}</button>
+        <button class="button button--link dialog__button"
+                data-action="click->dialog--age-restriction#hide"
+        >{{ lang[locale].age_restriction.cancel_label }}</button>
+      </div>
+  </div>
+</div>

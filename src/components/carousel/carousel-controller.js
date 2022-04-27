@@ -64,13 +64,9 @@ export default class extends Controller {
   }
 
   setCarouselBackground(id) {
-    if (this.role === "lists") {
-      const photoData = listManager.getListPhotoById(listManager.getSelectedListId(), id)
-
-      if (!photoData.isDataLoaded) {
-        this.backgroundTarget.classList.remove("fade-in")
-        return
-      }
+    if (!this.isPhotoAvailable()) {
+      this.backgroundTarget.classList.remove("fade-in")
+      return
     }
 
     this.backgroundTarget.style.backgroundImage = `url(${config.PHOTO_SOURCE}240/fortepan_${id}.jpg)`
@@ -88,42 +84,60 @@ export default class extends Controller {
       photo.dataset.controller = "image-loader"
       photo.setAttribute("data-carousel-target", "photo")
       photo.dataset.action = "mouseup->carousel#onPhotoClick touchstart->carousel#onPhotoClick"
-      photo.className = "image-loader"
+      photo.className = "image-loader carousel__photo"
       photo.id = `Fortepan-${id}`
       photo.mid = id
 
-      if (this.role === "lists") {
-        const photoData = listManager.getListPhotoById(listManager.getSelectedListId(), id)
+      const photoData =
+        this.role === "lists"
+          ? listManager.getListPhotoById(listManager.getSelectedListId(), id)
+          : photoManager.getPhotoDataByID(id)
 
-        if (!photoData.isDataLoaded) {
-          photo.noImage = true
-          photo.classList.add("image-loader--no-image", "is-active")
-          photo.textContent = lang("list_photo_removed")
-          this.photosTarget.appendChild(photo)
+      if (this.role === "lists" && !photoData.isDataLoaded) {
+        photo.noImage = true
+        photo.classList.add("image-loader--no-image", "is-active")
+        photo.textContent = lang("list_photo_removed")
+        this.photosTarget.appendChild(photo)
 
-          trigger("loader:hide", { id: "loaderCarousel" })
-          this.stepSlideshow()
-          return
-        }
+        trigger("loader:hide", { id: "loaderCarousel" })
+        this.stepSlideshow()
+        return
       }
 
-      photo.imageSrc = `${config.PHOTO_SOURCE}1600/fortepan_${id}.jpg`
+      // age-restriction
+      if (
+        !appState("age-restriction-removed") &&
+        photoData.tags &&
+        photoData.tags.indexOf(config.AGE_RESTRICTION_TAG) > -1
+      ) {
+        photo.noImage = true
+        photo.ageRestricted = true
+        photo.classList.add("image-loader--no-image", "image-loader--age-restricted")
+
+        const el = document.getElementById("age-restriction-template").content.firstElementChild.cloneNode(true)
+        el.querySelector(".age-restriction__link").dataset.action = "click->carousel#showAgeRestrictionDialog"
+
+        photo.appendChild(el)
+      }
+
       photo.loadCallback = () => {
         trigger("loader:hide", { id: "loaderCarousel" })
         photo.classList.add("is-loaded")
         this.stepSlideshow()
       }
 
-      photo.classList.add("is-active")
-      trigger("loader:show", { id: "loaderCarousel" })
-
       this.photosTarget.appendChild(photo)
-    } else if (photo.imageLoaded || photo.noImage) {
-      photo.classList.add("is-active")
+    }
+
+    photo.classList.add("is-active")
+
+    if (photo.imageLoaded || photo.noImage) {
       trigger("loader:hide", { id: "loaderCarousel" })
       this.stepSlideshow()
     } else {
       trigger("loader:show", { id: "loaderCarousel" })
+      photo.imageSrc = `${config.PHOTO_SOURCE}1600/fortepan_${id}.jpg`
+      if (photo.imageLoader) photo.imageLoader.loadImage()
     }
   }
 
@@ -519,18 +533,58 @@ export default class extends Controller {
     }
   }
 
+  isPhotoAvailable() {
+    const photoData = this.role === "lists" ? listManager.getSelectedPhoto() : photoManager.getSelectedPhotoData()
+
+    if (
+      (this.role === "lists" && !photoData.isDataLoaded) ||
+      (!appState("age-restriction-removed") &&
+        photoData.tags &&
+        photoData.tags.indexOf(config.AGE_RESTRICTION_TAG) > -1)
+    ) {
+      return false
+    }
+
+    return true
+  }
+
   addToList() {
-    if (this.role === "lists" && listManager.getSelectedPhoto() && !listManager.getSelectedPhoto().isDataLoaded) return
-    trigger("dialogLists:show")
+    if (this.isPhotoAvailable()) {
+      trigger("dialogLists:show")
+    }
   }
 
   downloadImage() {
-    if (this.role === "lists" && listManager.getSelectedPhoto() && !listManager.getSelectedPhoto().isDataLoaded) return
-    trigger("dialogDownload:show")
+    if (this.isPhotoAvailable()) {
+      trigger("dialogDownload:show")
+    }
   }
 
   shareImage() {
-    if (this.role === "lists" && listManager.getSelectedPhoto() && !listManager.getSelectedPhoto().isDataLoaded) return
-    trigger("dialogShare:show")
+    if (this.isPhotoAvailable()) {
+      trigger("dialogShare:show")
+    }
+  }
+
+  showAgeRestrictionDialog(e) {
+    if (e) e.preventDefault()
+
+    trigger("dialogAgeRestriction:show")
+  }
+
+  removeAgeRestriction() {
+    this.photoTargets.forEach(photo => {
+      if (photo.noImage && photo.ageRestricted) {
+        delete photo.noImage
+        delete photo.ageRestricted
+
+        photo.classList.remove("image-loader--no-image", "image-loader--age-restricted")
+        photo.querySelector(".age-restriction").remove()
+
+        if (photo.classList.contains("is-active")) {
+          this.showPhoto(null, photo.mid)
+        }
+      }
+    })
   }
 }

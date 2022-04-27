@@ -1,0 +1,64 @@
+.age-restriction {
+  text-align: center;
+
+  &__icon {
+    font-weight: 700;
+    display: block;
+    margin: 0 auto 0.5rem;
+    width: 2rem;
+    height: 2rem;
+    line-height: calc(2rem - 6px);
+    border: 3px solid $red;
+    border-radius: 50%;
+    box-sizing: border-box;
+
+    .theme--light & {
+      color: $dark-base;
+    }
+
+    .theme--dark & {
+      color: $light-base;
+    }
+  }
+
+  &__title {
+    display: block;
+    font-weight: 700;
+  }
+
+  &__link {
+    color: $grey;
+    text-decoration: none;
+
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s $ease-out-expo, border-color 0.2s $ease-out-expo;
+
+    &:hover {
+      color: $red;
+      border-bottom-color: $red;
+    }
+  }
+
+  .carousel & {
+    &__icon {
+      width: 4rem;
+      height: 4rem;
+      line-height: calc(4rem - 12px);
+      border: 6px solid $red;
+      margin-bottom: 1rem;
+
+      font-size: rem(28px);
+      @include font-heading-bold();
+    }
+
+    &__title {
+      font-size: rem(18px);
+      @include font-heading-bold();
+    }
+
+    &__link {
+      font-size: rem(14px);
+      line-height: rem(20px);
+    }
+  }
+}

@@ -132,6 +132,13 @@ module.exports = {
     username_or_email: "Felhasználónév vagy Email",
     weekly_fortepan: "Heti Fortepan",
     year: "Év",
+    age_restriction: {
+      title: "Korhatáros tartalom",
+      content: "A kép megtekintése 18 éven aluliaknak nem ajánlott!",
+      reveal_label: "Elmúltam 18 éves, megnézem",
+      cancel_label: "Nem múltam el 18 éves",
+      remove_action_label: "Megtekintés",
+    },
   },
   en: {
     about_us: "About us",
@@ -266,5 +273,12 @@ module.exports = {
     username_or_email: "Username or Email",
     weekly_fortepan: "Weekly Fortepan",
     year: "Year",
+    age_restriction: {
+      title: "Age-restricted content",
+      content: "This content is not appropiate for visitors under 18 years",
+      reveal_label: "I'm over 18, show content",
+      cancel_label: "I'm not 18 yet",
+      remove_action_label: "Show",
+    },
   },
 }

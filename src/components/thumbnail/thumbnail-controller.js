@@ -39,6 +39,11 @@ export default class extends Controller {
       return
     }
 
+    if (this.element.classList.contains("age-restricted")) {
+      // if age-restricted do nothing
+      return
+    }
+
     let selectedPhotoData
     let index
 
@@ -107,6 +112,15 @@ export default class extends Controller {
       }
     }
 
+    // age-restriction
+    if (!appState("age-restriction-removed") && data.tags && data.tags.indexOf(config.AGE_RESTRICTION_TAG) > -1) {
+      this.element.classList.remove("is-loading")
+      this.element.classList.add("is-loaded", "no-image", "age-restricted")
+      const el = document.getElementById("age-restriction-template").content.firstElementChild.cloneNode(true)
+      el.querySelector(".age-restriction__link").dataset.action = "click->thumbnail#showAgeRestrictionDialog"
+      this.containerTarget.appendChild(el)
+    }
+
     this.imageTarget.addEventListener("load", () => {
       this.naturalWidth = this.imageTarget.naturalWidth
       this.naturalHeight = this.imageTarget.naturalHeight
@@ -140,6 +154,20 @@ export default class extends Controller {
 
       this.element.classList.add("is-loading")
       this.loadInitiated = true
+    }
+  }
+
+  showAgeRestrictionDialog(e) {
+    if (e) e.preventDefault()
+
+    trigger("dialogAgeRestriction:show")
+  }
+
+  removeAgeRestriction() {
+    if (this.element.classList.contains("age-restricted")) {
+      this.element.classList.remove("is-loaded", "no-image", "age-restricted")
+      this.containerTarget.querySelector(".age-restriction").remove()
+      this.loadThumbnailImage()
     }
   }
 }
