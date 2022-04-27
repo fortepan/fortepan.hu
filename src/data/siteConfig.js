@@ -19,4 +19,5 @@ module.exports = {
     hu: "Magyar",
     en: "English",
   },
+  AGE_RESTRICTION_TAG: "18+",
 }
