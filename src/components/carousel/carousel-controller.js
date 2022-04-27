@@ -134,6 +134,11 @@ export default class extends Controller {
     if (photo.imageLoaded || photo.noImage) {
       trigger("loader:hide", { id: "loaderCarousel" })
       this.stepSlideshow()
+
+      if (photo.ageRestricted && !this.slideshowIsPlaying) {
+        // open age restriction dialog
+        trigger("dialogAgeRestriction:show")
+      }
     } else {
       trigger("loader:show", { id: "loaderCarousel" })
       photo.imageSrc = `${config.PHOTO_SOURCE}1600/fortepan_${id}.jpg`
@@ -173,6 +178,9 @@ export default class extends Controller {
   }
 
   async showNextPhoto() {
+    // hide dialogs
+    trigger("dialogs:hide")
+
     let photoId
     let index
 
@@ -191,6 +199,9 @@ export default class extends Controller {
   }
 
   async showPrevPhoto() {
+    // hide dialogs
+    trigger("dialogs:hide")
+
     let photoId
     let index
 
