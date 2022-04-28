@@ -90,13 +90,11 @@ export default class extends Controller {
       item.addEventListener(
         "scroll",
         throttle(() => {
-          const timeline = document.querySelector(".photos-timeline")
-
-          if (item.scrollTop > 0 && !timeline) {
-            this.element.classList.add("has-shadow")
-          } else {
-            this.element.classList.remove("has-shadow")
-          }
+          const hasTimeline = document.querySelector(".photos-timeline")
+          this.element.classList.toggle(
+            "has-shadow",
+            item.scrollTop > 0 && (!hasTimeline || item.classList.contains("home"))
+          )
         }, 100)
       )
     })
