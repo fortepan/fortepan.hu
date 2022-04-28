@@ -58,7 +58,7 @@ const loadPhotoData = async (params, silent, lockContext) => {
   // -- only once per search context
   if (!photoData.result.years || !photoData.result.total || (!lockContext && resp.years)) {
     // load the total aggregated years if id or year is present (in wich case there's only one year loaded)
-    if (resp.years.length <= 1) {
+    if (!resp.years || resp.years.length <= 1) {
       const contextParams = {}
       Object.assign(contextParams, params)
       delete contextParams.id

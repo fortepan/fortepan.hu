@@ -161,7 +161,7 @@
 }
 
 .home__intro {
-  border-top: rem(8px) solid $red;
+  // border-top: rem(8px) solid $red;
   position: relative;
   padding: rem(48px) 0;
   max-width: rem(1140px);
@@ -191,4 +191,15 @@
     font-size: rem(14px);
     line-height: rem(24px);
   }
+}
+
+.home .photos-timeline {
+  position: relative;
+  top: auto;
+  right: auto;
+  bottom: auto;
+  left: auto;
+  max-width: rem(1140px);
+  margin: 0 auto;
+  border-radius: rem(4px);
 }
