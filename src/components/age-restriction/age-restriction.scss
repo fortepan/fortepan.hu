@@ -26,6 +26,10 @@
     font-weight: 700;
   }
 
+  &__content {
+    display: none;
+  }
+
   &__link {
     color: $grey;
     text-decoration: none;
@@ -56,6 +60,13 @@
       @include font-heading-bold();
     }
 
+    &__content {
+      display: block;
+      max-width: rem(360px);
+      margin: 0 auto 1rem;
+    }
+
+    &__content,
     &__link {
       font-size: rem(14px);
       line-height: rem(20px);
