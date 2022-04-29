@@ -275,7 +275,7 @@ module.exports = {
     year: "Year",
     age_restriction: {
       title: "Age-restricted content",
-      content: "This content may be offensive or disturbing, not appropiate for visitors under 18 years.",
+      content: "This content may be offensive or disturbing, not appropriate for visitors under 18 years.",
       reveal_label: "I'm over 18, show content",
       cancel_label: "I'm not 18 yet",
       remove_action_label: "Show",
