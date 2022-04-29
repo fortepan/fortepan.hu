@@ -134,7 +134,7 @@ module.exports = {
     year: "Év",
     age_restriction: {
       title: "Korhatáros tartalom",
-      content: "A kép megtekintése 18 éven aluliaknak nem ajánlott!",
+      content: "A kép megtekintése a nyugalom megzavarására alkalmas, kiskorúak számára nem ajánlott!",
       reveal_label: "Elmúltam 18 éves, megnézem",
       cancel_label: "Nem múltam el 18 éves",
       remove_action_label: "Megtekintés",
@@ -275,7 +275,7 @@ module.exports = {
     year: "Year",
     age_restriction: {
       title: "Age-restricted content",
-      content: "This content is not appropiate for visitors under 18 years",
+      content: "This content may be offensive or disturbing, not appropiate for visitors under 18 years.",
       reveal_label: "I'm over 18, show content",
       cancel_label: "I'm not 18 yet",
       remove_action_label: "Show",
