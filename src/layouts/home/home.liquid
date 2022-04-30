@@ -4,7 +4,7 @@ layout: base/base.liquid
 
 {% include header-nav/header-nav.liquid hide_search:true header_class:"header-nav--transparent" %}
 
-<div class="home scrollview" data-controller="home" data-action="timeline:yearSelected@document->home#onYearSelected">
+<div class="home scrollview" data-controller="home" data-action="timeline:yearSelected@document->home#onYearSelected timeline:stopDrag@document->home#onYearSelected">
   <section class="home__hero">
     <div class="home__announcement">
         <div class="home__announcement__caption caption">{{ announcement.caption }}</div>

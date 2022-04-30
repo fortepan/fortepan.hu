@@ -15,10 +15,10 @@ export const isTouchDevice = () => {
 }
 
 export const trigger = (eventId, obj = {}, scope = document, doBubble = false) => {
-  /* if (window.location.hostname === "localhost") {
+  if (window.location.hostname === "localhost") {
     // eslint-disable-next-line no-console
     console.log(eventId, obj)
-  } */
+  }
   const event = new CustomEvent(eventId, {
     detail: obj,
     bubbles: doBubble,

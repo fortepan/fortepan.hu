@@ -204,6 +204,8 @@ export default class extends Controller {
     this.element.classList.add("is-used")
     setAppState("disable--selection")
     this.sliderDragged = e.currentTarget
+
+    trigger("timeline:startDrag", { year: this.year })
   }
 
   sliderStopDrag() {
@@ -217,6 +219,8 @@ export default class extends Controller {
 
       this.setYear()
       this.sliderDragged = null
+
+      trigger("timeline:stopDrag", { year: this.year })
     }
   }
 

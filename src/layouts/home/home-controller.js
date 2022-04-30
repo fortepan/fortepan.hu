@@ -68,10 +68,15 @@ export default class extends Controller {
   onYearSelected(e) {
     if (e && e.detail && e.detail.year) {
       clearTimeout(this.timelineTimout)
-      // set some timeout so the seek animation on the timeline can finish first
-      this.timelineTimout = setTimeout(() => {
+
+      if (e.type === "timeline:yearSelected") {
+        // set some timeout so the seek animation on the timeline can finish first
+        this.timelineTimout = setTimeout(() => {
+          window.location = `/${getLocale()}/photos/?year=${e.detail.year}`
+        }, 500)
+      } else {
         window.location = `/${getLocale()}/photos/?year=${e.detail.year}`
-      }, 500)
+      }
     }
   }
 }
