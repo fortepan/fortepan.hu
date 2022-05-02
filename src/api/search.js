@@ -1,4 +1,4 @@
-import { slugify, getLocale } from "../js/utils"
+import { slugify, getLocale, getURLParams } from "../js/utils"
 import config from "../data/siteConfig"
 
 // simplify and localize the Elastic server response
@@ -46,11 +46,12 @@ const transformResults = resp => {
 }
 
 const elasticRequest = async data => {
-  const url = `${config.ELASTIC_HOST}/elasticsearch_index_fortepan_media/_search`
+  const q = getURLParams()
+  const url = q.esurl && q.esauth ? q.esurl : `${config.ELASTIC_HOST}/elasticsearch_index_fortepan_media/_search`
   const resp = await fetch(url, {
     method: "POST",
     headers: {
-      Authorization: `Basic ${btoa("fortepan:fortepan")}`,
+      Authorization: `Basic ${btoa(q.esurl && q.esauth ? q.esauth : "fortepan:fortepan")}`,
       "Content-Type": "application/json;charset=UTF-8",
     },
     body: JSON.stringify(data),
