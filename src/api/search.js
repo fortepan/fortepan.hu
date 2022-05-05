@@ -47,11 +47,14 @@ const transformResults = resp => {
 
 const elasticRequest = async data => {
   const q = getURLParams()
-  const url = q.esurl && q.esauth ? q.esurl : `${config.ELASTIC_HOST}/elasticsearch_index_fortepan_media/_search`
+  const url =
+    q.esurl && q.esauth
+      ? q.esurl
+      : `${config.ELASTIC_HOST}/elasticsearch_index_fortepandrupalmain_hd64t_media/_search?pretty`
   const resp = await fetch(url, {
     method: "POST",
     headers: {
-      Authorization: `Basic ${btoa(q.esurl && q.esauth ? q.esauth : "fortepan:fortepan")}`,
+      Authorization: `Basic ${btoa(q.esurl && q.esauth ? q.esauth : "reader:r3adm31024read")}`,
       "Content-Type": "application/json;charset=UTF-8",
     },
     body: JSON.stringify(data),

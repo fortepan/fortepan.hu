@@ -7,13 +7,13 @@ const KEYS = {
 }
 
 const client = new Client({
-  nodes: ["https://fortepan:fortepan@es.admin.fortepan.hu"],
+  nodes: ["https://reader:r3adm31024read@nginxes.main.fortepan-drupal-es-demo.de3.amazee.io"],
 })
 
 const getKeywords = (key, callback, error) => {
   client.search(
     {
-      index: "elasticsearch_index_fortepan_media",
+      index: "elasticsearch_index_fortepandrupalesdemomain_wv8d6_media",
       body: {
         size: 0,
         aggs: {
