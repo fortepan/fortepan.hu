@@ -7,7 +7,7 @@ const KEYS = {
 }
 
 const client = new Client({
-  nodes: ["https://reader:r3adm31024read@backend.fortepan.hu"],
+  nodes: ["https://reader:r3adm31024read@elastic.fortepan.hu"],
 })
 
 const getKeywords = (key, callback, error) => {
