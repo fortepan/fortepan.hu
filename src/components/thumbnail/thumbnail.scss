@@ -152,6 +152,20 @@
     justify-content: center;
 
     cursor: default;
+
+    @media screen and (max-width: ($breakpoint-phone - 1px)) {
+      padding: 1rem;
+    }
+  }
+
+  @media screen and (max-width: ($breakpoint-phone - 1px)) {
+    .age-restricted & .age-restriction {
+      &__title,
+      &__content,
+      &__link {
+        font-size: rem(11px);
+      }
+    }
   }
 
   .is-selected & {
@@ -162,7 +176,7 @@
 .photos-thumbnail__meta {
   position: relative;
   font-size: rem(12px);
-  line-height: rem(16px);
+  line-height: 1.33;
   font-weight: 400;
   white-space: nowrap;
   overflow: hidden;
