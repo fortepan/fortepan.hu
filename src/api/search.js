@@ -125,8 +125,8 @@ const search = params => {
     // then it'll search matches in adomanyozo, cimke, description, orszag, varos fields
     if (params.q && params.q !== "") {
       const words = params.q.split(", ")
-      const fieldsToSearch = ["mid^5", "year^2", "description_search"]
-      const availableFields = ["adomanyozo", "cimke", "orszag", "varos", "helyszin", "szerzo"]
+      const fieldsToSearch = ["mid^5", "year^2", "description_search", "adomanyozo_search", "szerzo_search"]
+      const availableFields = ["cimke", "orszag", "varos", "helyszin"]
 
       availableFields.forEach(s => fieldsToSearch.push(getLocale() === "hu" ? `${s}_search` : `${s}_en_search`))
 
