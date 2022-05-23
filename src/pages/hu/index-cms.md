@@ -11,7 +11,7 @@ announcement:
     városlakók a rendszerek és diktatúrák által megosztott Európában, a New York Times
     újságírójának kameráján keresztül. '
   actions:
-  - label: 110 fontos kép
+  - label: 120 fontos kép
     style: primary
     url: https://fortepan.hu/hu/photos/?latest&tag=best%20of
   - label: A teljes sorozat
