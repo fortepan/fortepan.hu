@@ -3,14 +3,15 @@ layout: home/home.liquid
 title: Fortepan — Home
 permalink: "/en/"
 announcement:
-  title: "<strong>3000 SHARP IMAGES</strong>"
+  title: "<strong>2000 IMAGES from HARRISON FORMAN</strong>"
   caption: New Collection
-  cover_image: "223794"
-  blurb: "<br>from the blurred 20th century. We have selected pictures from over forty
-    donors. Recurrent, but never boring venues, situations, places, from some haphazardly
-    related negative rolls"
+  cover_image: "258875"
+  blurb: "<br>Europe through the eyes of an American photojournalist. Travels from
+    England to Greece, from Paris – through Budapest and Cluj – to Warsaw. Street
+    vendors, craftsmen and city dwellers in a Europe divided by régimes and dictatorships,
+    through the lens of a New York Time journalist."
   actions:
-  - label: 75 favorites
+  - label: 120 favorites
     style: primary
     url: https://fortepan.hu/en/photos/?latest&tag=best%20of
   - label: All Collection
