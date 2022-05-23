@@ -1,4 +1,5 @@
 import config from "../data/siteConfig"
+import { appState } from "../js/app"
 
 const createList = async (name, description) => {
   // TODO: include the description on creating as well once the backend is ready
@@ -13,7 +14,7 @@ const createList = async (name, description) => {
       },
     },
   }
-  const url = `${config.DRUPAL_HOST}/jsonapi/taxonomy_term/private`
+  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/jsonapi/taxonomy_term/private`
   const resp = await fetch(url, {
     method: "POST",
     credentials: "include",
@@ -40,7 +41,7 @@ const editList = async (listId, name, description) => {
 
 const deleteList = async listId => {
   const authData = JSON.parse(localStorage.getItem("auth")) || {}
-  const url = `${config.DRUPAL_HOST}/jsonapi/taxonomy_term/${listId}`
+  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/jsonapi/taxonomy_term/${listId}`
   const resp = await fetch(url, {
     method: "DELETE",
     credentials: "include",
@@ -58,7 +59,7 @@ const deleteList = async listId => {
 }
 
 const addToList = async (photoId, listId) => {
-  const url = `${config.DRUPAL_HOST}/fortepan/flag/${photoId}/${listId}`
+  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/fortepan/flag/${photoId}/${listId}`
   const resp = await fetch(url, {
     method: "POST",
     credentials: "include",
@@ -73,7 +74,7 @@ const addToList = async (photoId, listId) => {
 }
 
 const deleteFromList = async (photoId, listId) => {
-  const url = `${config.DRUPAL_HOST}/fortepan/unflag/${photoId}/${listId}`
+  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/fortepan/unflag/${photoId}/${listId}`
   const resp = await fetch(url, {
     method: "POST",
     credentials: "include",
@@ -88,7 +89,7 @@ const deleteFromList = async (photoId, listId) => {
 }
 
 const getLists = async () => {
-  const url = `${config.DRUPAL_HOST}/fortepan/lists`
+  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/fortepan/lists`
   const resp = await fetch(url, {
     method: "GET",
     credentials: "include",
@@ -103,7 +104,7 @@ const getLists = async () => {
 }
 
 const getListPhotos = async id => {
-  const url = `${config.DRUPAL_HOST}/fortepan/flags/${id}/created/asc`
+  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/fortepan/flags/${id}/created/asc`
   const resp = await fetch(url, {
     method: "GET",
     credentials: "include",

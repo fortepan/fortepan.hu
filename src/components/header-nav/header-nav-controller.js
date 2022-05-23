@@ -3,10 +3,12 @@ import throttle from "lodash/throttle"
 import auth from "../../api/auth"
 import siteConfig from "../../data/siteConfig"
 import { getURLParams, trigger } from "../../js/utils"
+import { appState } from "../../js/app"
 
 export default class extends Controller {
   static get targets() {
     return [
+      "logoLabel",
       "notification",
       "profileName",
       "profileEmail",
@@ -26,6 +28,8 @@ export default class extends Controller {
 
     // TODO: remove when feature/lists is live
     this.checkFeatureLists()
+
+    this.displayDevStatus()
   }
 
   // show a popup
@@ -184,6 +188,12 @@ export default class extends Controller {
     if (!localStorage.getItem("lists")) {
       const button = document.getElementById("HeaderLists")
       if (button) button.remove()
+    }
+  }
+
+  displayDevStatus() {
+    if (appState("is-dev")) {
+      this.logoLabelTarget.innerHTML = `${this.logoLabelTarget.textContent}<i>:dev</i>`
     }
   }
 }

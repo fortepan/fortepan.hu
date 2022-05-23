@@ -98,9 +98,12 @@
     overflow: hidden;
 
     @media screen and (max-width: ($breakpoint-phone-sm - 1px)) {
-      opacity: 0;
-      pointer-events: none;
-      width: 0;
+      display: none;
+    }
+
+    i {
+      color: $red;
+      font-style: normal;
     }
   }
 }

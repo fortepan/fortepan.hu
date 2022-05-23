@@ -1,4 +1,5 @@
 import config from "../data/siteConfig"
+import { appState } from "../js/app"
 
 const addTags = async (tags, photoId) => {
   const data = {
@@ -6,7 +7,7 @@ const addTags = async (tags, photoId) => {
     image: photoId,
   }
 
-  const url = `${config.DRUPAL_HOST}/fortepan/cimke`
+  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/fortepan/cimke`
   const resp = await fetch(url, {
     method: "POST",
     credentials: "include",
@@ -22,7 +23,7 @@ const addTags = async (tags, photoId) => {
 }
 
 const getPendingTags = async photoId => {
-  const url = `${config.DRUPAL_HOST}/fortepan/cimke/list/?${photoId}`
+  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/fortepan/cimke/list/?${photoId}`
   const resp = await fetch(url, {
     method: "GET",
     credentials: "include",

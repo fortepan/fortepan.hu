@@ -4,6 +4,8 @@ module.exports = {
   SITE_DEV: "http://localhost:8888",
   DRUPAL_HOST: "https://backend.fortepan.hu",
   ELASTIC_HOST: "https://elastic.fortepan.hu",
+  DRUPAL_HOST_DEV: "https://backend-develop.fortepan.hu",
+  ELASTIC_HOST_DEV: "https://elastic-develop.fortepan.hu",
   PHOTO_SOURCE: "https://fortepan.download/_photo/",
   PHOTO_SOURCE_LARGE: "https://fortepan.download/_photo/download/fortepan_",
   THUMBNAILS_QUERY_LIMIT: 40,
