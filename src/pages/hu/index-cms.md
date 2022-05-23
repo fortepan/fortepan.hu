@@ -3,14 +3,15 @@ layout: home/home.liquid
 title: Fortepan — Főoldal
 permalink: "/"
 announcement:
-  title: "<strong>3000 ÉLES FÉNYKÉP</strong>"
+  title: "<strong>HARRISON FORMAN 2000 KÉPE</strong>"
   caption: Új sorozat
-  cover_image: "222664"
-  blurb: a homályos XX. századból. Közel negyven adományozó fotóiból készült a Fortepan
-    tavaszi válogatása. Ismétlődő, de megunhatatlan helyszínek, helyzetek, helyek,
-    a véletlen által összeérő negatív tekercsekről.
+  cover_image: "258858"
+  blurb: 'Európa egy amerikai fotóriporter szemével. Utazások Angliától Görögországig,
+    Párizstól - Budapesten és Kolozsváron át - Varsóig. Utcai árusok, iparosok és
+    városlakók a rendszerek és diktatúrák által megosztott Európában, a New York Times
+    újságírójának kameráján keresztül. '
   actions:
-  - label: 75 fontos kép
+  - label: 110 fontos kép
     style: primary
     url: https://fortepan.hu/hu/photos/?latest&tag=best%20of
   - label: A teljes sorozat
