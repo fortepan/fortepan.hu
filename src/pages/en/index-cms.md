@@ -3,13 +3,14 @@ layout: home/home.liquid
 title: Fortepan — Home
 permalink: "/en/"
 announcement:
-  title: "<strong>2000 IMAGES from HARRISON FORMAN</strong>"
+  title: "<strong>TRAVELS IN EUROPE</strong>"
   caption: New Collection
   cover_image: "258875"
-  blurb: "<br>Europe through the eyes of an American photojournalist. Travels from
-    England to Greece, from Paris – through Budapest and Cluj – to Warsaw. Street
+  blurb: "<br>A compilation from the photo collection of the University of Milwaukee.Travels
+    from England to Greece, from Paris – through Budapest and Cluj – to Warsaw. Street
     vendors, craftsmen and city dwellers in a Europe divided by régimes and dictatorships,
-    through the lens of a New York Time journalist."
+    through the lens of professional photojournalists — among them Harrison Foreman,
+    correspondent of the New York Times."
   actions:
   - label: 120 favorites
     style: primary
