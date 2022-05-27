@@ -3,13 +3,13 @@ layout: home/home.liquid
 title: Fortepan — Főoldal
 permalink: "/"
 announcement:
-  title: "<strong>HARRISON FORMAN 2000 KÉPE</strong>"
+  title: "<strong>UTAZÁSOK EURÓPÁBAN</strong>"
   caption: Új sorozat
   cover_image: "258875"
-  blurb: 'Európa egy amerikai fotóriporter szemével. Utazások Angliától Görögországig,
+  blurb: Válogatás a Milwaukee Egyetem fotógyűjteményéből. Utazások Angliától Görögországig,
     Párizstól - Budapesten és Kolozsváron át - Varsóig. Utcai árusok, iparosok és
-    városlakók a rendszerek és diktatúrák által megosztott Európában, a New York Times
-    újságírójának kameráján keresztül. '
+    városlakók a rendszerek és diktatúrák által megosztott Európában, profi fotósok
+    - köztük Harrison Forman New York Times tudósító - kameráján keresztül.
   actions:
   - label: 120 fontos kép
     style: primary
