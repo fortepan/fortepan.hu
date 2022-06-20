@@ -11,7 +11,7 @@ announcement:
     gazdasági tisztjeként. Útjai során több száz fotót készített a kórházvonat belső
     életéről és az ukrajnai háborús hétköznapokról.
   actions:
-  - label: 120 fontos kép
+  - label: 70 fontos kép
     style: primary
     url: https://fortepan.hu/hu/photos/?latest&tag=best%20of
   - label: A teljes sorozat
