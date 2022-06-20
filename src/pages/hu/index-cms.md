@@ -8,7 +8,7 @@ announcement:
   cover_image: "258116"
   blurb: A gyűjtemény fókuszában Reményi József főhadnagy második világháborús fotónaplója
     áll. A szerző 1942-43-ban 17 alkalommal járt a keleti fronton egy kórházvonat
-    gazdasági tisztjeként. Útjai során többszáz fotót készített a kórházvonat belső
+    gazdasági tisztjeként. Útjai során több száz fotót készített a kórházvonat belső
     életéről és az ukrajnai háborús hétköznapokról.
   actions:
   - label: 120 fontos kép
