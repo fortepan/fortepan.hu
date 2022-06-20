@@ -5,7 +5,7 @@ permalink: "/en/"
 announcement:
   title: "<strong>THE PHOTO LEGACY OF JÓZSEF REMÉNYI</strong>"
   caption: New Collection
-  cover_image: "258875"
+  cover_image: "258291"
   blurb: "<br>The focus of this collection is the photo journal of first lieutenant
     József Reményi. The author, a logistics officer of a hospital train, was part
     of Eastern front missions in 1942/43 altogether 17 times. During this time, he
