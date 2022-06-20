@@ -3,13 +3,13 @@ layout: home/home.liquid
 title: Fortepan — Főoldal
 permalink: "/"
 announcement:
-  title: "<strong>UTAZÁSOK EURÓPÁBAN</strong>"
+  title: "<strong>REMÉNYI JÓZSEF FOTÓHAGYATÉKA</strong>"
   caption: Új sorozat
-  cover_image: "258875"
-  blurb: Válogatás a Milwaukee Egyetem fotógyűjteményéből. Utazások Angliától Görögországig,
-    Párizstól - Budapesten és Kolozsváron át - Varsóig. Utcai árusok, iparosok és
-    városlakók a rendszerek és diktatúrák által megosztott Európában, profi fotósok
-    - köztük Harrison Forman New York Times tudósító - kameráján keresztül.
+  cover_image: "257787"
+  blurb: A gyűjtemény fókuszában Reményi József főhadnagy második világháborús fotónaplója
+    áll. A szerző 1942-43-ban 17 alkalommal járt a keleti fronton egy kórházvonat
+    gazdasági tisztjeként. Útjai során többszáz fotót készített a kórházvonat belső
+    életéről és az ukrajnai háborús hétköznapokról.
   actions:
   - label: 120 fontos kép
     style: primary
