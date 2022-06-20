@@ -3,16 +3,16 @@ layout: home/home.liquid
 title: Fortepan — Home
 permalink: "/en/"
 announcement:
-  title: "<strong>TRAVELS IN EUROPE</strong>"
+  title: "<strong>THE PHOTO LEGACY OF JÓZSEF REMÉNYI</strong>"
   caption: New Collection
   cover_image: "258875"
-  blurb: "<br>A compilation from the photo collection of the University of Milwaukee.Travels
-    from England to Greece, from Paris – through Budapest and Cluj – to Warsaw. Street
-    vendors, craftsmen and city dwellers in a Europe divided by régimes and dictatorships,
-    through the lens of professional photojournalists — among them Harrison Foreman,
-    correspondent of the New York Times."
+  blurb: "<br>The focus of this collection is the photo journal of first lieutenant
+    József Reményi. The author, a logistics officer of a hospital train, was part
+    of Eastern front missions in 1942/43 altogether 17 times. During this time, he
+    took hundreds of photos on the life of the hospital train and the wartime days
+    in the Ukraine."
   actions:
-  - label: 120 favorites
+  - label: 70 favorites
     style: primary
     url: https://fortepan.hu/en/photos/?latest&tag=best%20of
   - label: All Collection
