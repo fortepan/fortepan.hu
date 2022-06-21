@@ -103,9 +103,6 @@ export default class extends Controller {
 
     trigger("loader:show", { id: "loaderBase" })
 
-    // load photo data if it hasn't been loaded yet
-    if (!this.listData.photos) await listManager.loadListPhotosData(this.listData.id)
-
     // then load the extended photo data (from elastic search)
     await listManager.loadExtendedListPhotoData(this.listData.id)
 

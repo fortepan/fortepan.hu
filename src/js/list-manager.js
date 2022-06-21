@@ -9,9 +9,17 @@ const loadListData = async () => {
 
   listData.lists = []
 
-  Object.keys(rawResponse).forEach(key => {
-    const data = { id: key, name: rawResponse[key] }
+  Object.keys(rawResponse).forEach(async key => {
+    const data = { name: rawResponse[key].list_name }
+    data.id = key
     data.url = `/${getLocale()}/lists/${data.id}`
+    data.photos = []
+
+    if (rawResponse[key].images) {
+      rawResponse[key].images.forEach(mid => {
+        data.photos.push({ id: mid, mid })
+      })
+    }
 
     listData.lists.push(data)
   })
@@ -64,15 +72,7 @@ const loadListPhotosData = async listId => {
 
 const getListPhotos = async listId => {
   const list = getListById(listId)
-  if (list) {
-    if (!list.photos) {
-      await loadListPhotosData(listId)
-    }
-
-    return list.photos
-  }
-
-  return []
+  return list && list.photos ? list.photos : []
 }
 
 const getListPhotoById = (listId, photoId) => {

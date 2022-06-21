@@ -89,7 +89,7 @@ const deleteFromList = async (photoId, listId) => {
 }
 
 const getLists = async () => {
-  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/fortepan/lists`
+  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/fortepan/lists/created/desc`
   const resp = await fetch(url, {
     method: "GET",
     credentials: "include",
@@ -100,7 +100,7 @@ const getLists = async () => {
   })
 
   const respData = await resp.json()
-  return respData.listak
+  return respData.lists
 }
 
 const getListPhotos = async id => {
