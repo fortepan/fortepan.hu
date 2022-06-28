@@ -2,7 +2,7 @@ import config from "../data/siteConfig"
 import { appState } from "../js/app"
 
 const createList = async (name, description) => {
-  // TODO: include the description on creating as well once the backend is ready
+  // TODO: include the description on creating
 
   const authData = JSON.parse(localStorage.getItem("auth")) || {}
   const data = {
