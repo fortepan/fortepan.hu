@@ -25,7 +25,7 @@
 
         <h6>{{ lang[locale].list_add_to }}</h6>
 
-        <form class="dialog__form" data-dialog--lists-target="addToListForm">
+        <form class="dialog__form" data-dialog--lists-target="addToListForm" data-action="submit->dialog--lists#submitAddingToList">
           {% include select/select.liquid
                     label:lang[locale].list_choose
                     stimulus_target:'data-dialog--lists-target="select"'
@@ -52,7 +52,7 @@
 
       <section role="edit" data-dialog--lists-target="section sectionEdit">
         <h3 class="dialog__title">{{ lang[locale].list_edit_header }}</h3>
-        <form class="dialog__form" data-dialog--lists-target="editListForm">
+        <form class="dialog__form" data-dialog--lists-target="editListForm" data-action="submit->dialog--lists#submitEditList">
           {% include input/input.liquid
                     type:"text"
                     name:"name"

@@ -103,9 +103,6 @@ export default class extends Controller {
 
     trigger("loader:show", { id: "loaderBase" })
 
-    // load photo data if it hasn't been loaded yet
-    if (!this.listData.photos) await listManager.loadListPhotosData(this.listData.id)
-
     // then load the extended photo data (from elastic search)
     await listManager.loadExtendedListPhotoData(this.listData.id)
 
@@ -246,15 +243,16 @@ export default class extends Controller {
 
   onListsChanged(e) {
     if (this.element.classList.contains("is-visible")) {
-      if (e && e.action) {
-        switch (e.action) {
+      if (e && e.detail && e.detail.action) {
+        switch (e.detail.action) {
           case "delete":
             // upon delete jump back to the lists page
-            this.backToLists()
+            if (!e.detail.listId || e.detail.listId === this.listData.id) {
+              this.backToLists()
+            }
             break
           case "edit":
           default:
-            // TODO: modify the listItem
             this.reloadPhotos()
             break
         }
@@ -265,7 +263,9 @@ export default class extends Controller {
   }
 
   reloadPhotos() {
-    this.show()
+    // passing the current listId as it would be passed in an event
+    const e = { detail: { listId: this.listData.id } }
+    this.show(e)
   }
 
   jumpToPhotos(e) {

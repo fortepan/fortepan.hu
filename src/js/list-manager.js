@@ -10,8 +10,20 @@ const loadListData = async () => {
   listData.lists = []
 
   Object.keys(rawResponse).forEach(key => {
-    const data = { id: key, name: rawResponse[key] }
+    const data = {
+      name: rawResponse[key].list_name,
+      description: rawResponse[key].description,
+      uuid: rawResponse[key].uuid,
+    }
+    data.id = key
     data.url = `/${getLocale()}/lists/${data.id}`
+    data.photos = []
+
+    if (rawResponse[key].images) {
+      rawResponse[key].images.forEach(mid => {
+        data.photos.push({ id: mid, mid })
+      })
+    }
 
     listData.lists.push(data)
   })
@@ -34,7 +46,7 @@ const getLists = async () => {
 
 const getListById = listId => {
   if (listData.lists) {
-    return listData.lists.find(item => Number(item.id) === Number(listId))
+    return listData.lists.find(item => item.id.toString() === listId.toString())
   }
   return {}
 }
@@ -64,15 +76,7 @@ const loadListPhotosData = async listId => {
 
 const getListPhotos = async listId => {
   const list = getListById(listId)
-  if (list) {
-    if (!list.photos) {
-      await loadListPhotosData(listId)
-    }
-
-    return list.photos
-  }
-
-  return []
+  return list && list.photos ? list.photos : []
 }
 
 const getListPhotoById = (listId, photoId) => {
@@ -165,18 +169,23 @@ const createList = async (listName, description) => {
   return listId
 }
 
-const editList = async (listId, name, description) => {
-  if (listId && name) {
-    const resp = await listsAPI.editList(listId, name, description)
+const editList = async (uuid, name, description) => {
+  if (uuid && name) {
+    const resp = await listsAPI.editList(uuid, name, description)
+
+    // force to reload the list data in the listManager as a list has been deleted
+    clearAllData()
+    await loadListData()
+
     return resp
   }
-  return { errors: `Missing parameters: ${!listId ? "listId, " : ""}${!name ? "name" : ""}` }
+  return { errors: `Missing parameters: ${!uuid ? "uuid, " : ""}${!name ? "name" : ""}` }
 }
 
-const deleteList = async listId => {
-  const resp = await listsAPI.deleteList(listId)
+const deleteList = async uuid => {
+  const resp = await listsAPI.deleteList(uuid)
 
-  // force to reload the list data in the listManager as a new list has been created
+  // force to reload the list data in the listManager as a list has been deleted
   clearAllData()
   await loadListData()
 
@@ -210,9 +219,26 @@ const deletePhotoFromList = async (photoId, listId) => {
 
 // return all the lists of the current logged in user that contains a given image
 const getContainingLists = async photoId => {
-  // TODO
-  await listsAPI.getContainingLists(photoId)
-  return photoId
+  if (photoId) {
+    const containingLists = await listsAPI.getContainingLists(photoId)
+
+    if (containingLists.lists) {
+      // make sure we have all the list data loaded before clling getListById
+      await getLists()
+
+      const result = []
+
+      Object.keys(containingLists.lists).forEach(key => {
+        result.push(getListById(key))
+      })
+
+      return result
+    }
+
+    return []
+  }
+
+  return []
 }
 
 export default {

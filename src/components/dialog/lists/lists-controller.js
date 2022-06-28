@@ -25,11 +25,30 @@ export default class extends Controller {
     this.addToListFormTarget.submit = this.submitAddingToList.bind(this)
     this.role = "addPhotos"
     this.listId = 0
+    this.containingLists = null
     this.lastSelectedListId = 0
+
+    // setting up the input fields on the forms to submit the form on pressing Enter
+    if (!this.formSetupOnce) {
+      this.element.querySelectorAll("form").forEach(form => {
+        form.querySelectorAll("input").forEach(input => {
+          input.addEventListener("keydown", e => {
+            if (e.key && e.key === "Enter") {
+              e.preventDefault()
+              trigger("click", {}, form.querySelector("button"))
+            }
+          })
+        })
+      })
+      this.formSetupOnce = true
+    }
   }
 
   async submitAddingToList(e) {
     e.preventDefault()
+
+    this.element.classList.add("is-disabled")
+    trigger("loader:show", { id: "loaderBase" })
 
     let listId = Number(this.selectTarget.value)
     let listName = Array.from(this.selectTarget.getElementsByTagName("option")).find(
@@ -80,6 +99,9 @@ export default class extends Controller {
       }
     }
 
+    this.element.classList.remove("is-disabled")
+    trigger("loader:hide", { id: "loaderBase" })
+
     trigger("snackbar:show", { message: result.message, status: result.status, autoHide: true })
 
     if (result.status === "success") trigger("dialogLists:hide")
@@ -88,6 +110,9 @@ export default class extends Controller {
 
   async submitEditList(e) {
     e.preventDefault()
+
+    this.element.classList.add("is-disabled")
+    trigger("loader:show", { id: "loaderBase" })
 
     const nameInput = this.editListFormTarget.name
     const descriptionInput = this.editListFormTarget.description
@@ -107,7 +132,7 @@ export default class extends Controller {
         const listData = listManager.getListById(this.listId)
 
         if (listData.name !== nameInput.value || listData.description !== descriptionInput.value) {
-          const resp = await listManager.editList(this.listId, nameInput.value, descriptionInput.value)
+          const resp = await listManager.editList(listData.uuid, nameInput.value, descriptionInput.value)
 
           result.status = resp.errors ? "error" : "success"
           result.message = resp.errors ? lang("list_edit_error") : lang("list_edit_success")
@@ -125,6 +150,9 @@ export default class extends Controller {
       result.message = lang("list_submit_error_name_missing")
     }
 
+    this.element.classList.remove("is-disabled")
+    trigger("loader:hide", { id: "loaderBase" })
+
     trigger("snackbar:show", { message: result.message, status: result.status, autoHide: true })
 
     if (result.status === "success") {
@@ -136,15 +164,21 @@ export default class extends Controller {
   async deleteList(e) {
     if (e) e.preventDefault()
 
+    this.element.classList.add("is-disabled")
+    trigger("loader:show", { id: "loaderBase" })
+
     const result = {}
 
-    const resp = await listManager.deleteList(this.listId)
+    const resp = await listManager.deleteList(listManager.getListById(this.listId).uuid)
 
     result.status = resp.errors ? "error" : "success"
     result.message = resp.errors ? lang("list_delete_error") : lang("list_delete_success")
 
     // eslint-disable-next-line no-console
     if (resp.errors) console.error(resp.errors)
+
+    this.element.classList.remove("is-disabled")
+    trigger("loader:hide", { id: "loaderBase" })
 
     trigger("snackbar:show", { message: result.message, status: result.status, autoHide: true })
 
@@ -155,6 +189,9 @@ export default class extends Controller {
   }
 
   hide() {
+    this.element.classList.remove("is-disabled")
+    trigger("loader:hide", { id: "loaderBase" })
+
     this.element.classList.remove("is-visible")
   }
 
@@ -172,9 +209,17 @@ export default class extends Controller {
       innerHTML += `<option value="${lastListData.id}">${escapeHTML(lastListData.name)}</option>`
     }
 
+    if (!this.containingLists) {
+      this.containingLists = await listManager.getContainingLists(
+        appState("is-lists") ? listManager.getSelectedPhotoId() : photoManager.getSelectedPhotoId()
+      )
+    }
+
     lists.forEach(listData => {
-      // TODO: exclude the lists from the dropdown that already contains the photo
-      if (this.lastSelectedListId !== listData.id) {
+      if (
+        this.lastSelectedListId.toString() !== listData.id.toString() &&
+        this.containingLists.indexOf(listData) === -1
+      ) {
         innerHTML += `<option value="${listData.id}">${escapeHTML(listData.name)}</option>`
       }
     })
@@ -188,17 +233,18 @@ export default class extends Controller {
   }
 
   async renderContainingLists() {
-    // TODO: get the all the lists containing the photo
-    // const resp = await listManager.getContainingLists(appState("is-lists") ? listManager.getSelectedPhotoId() : photoManager.getSelectedPhotoId())
+    if (!this.containingLists) {
+      this.containingLists = await listManager.getContainingLists(
+        appState("is-lists") ? listManager.getSelectedPhotoId() : photoManager.getSelectedPhotoId()
+      )
+    }
 
-    const lists = await listManager.getLists()
-
-    if (lists.length) {
+    if (this.containingLists.length) {
       // remove all list tags first
       this.addedToListTarget.querySelectorAll(".dialog-lists__list-tag").forEach(item => item.remove())
 
       // list the list tags that contains the photo
-      lists.forEach(listData => {
+      this.containingLists.forEach(listData => {
         const template = document.getElementById("dialog-list-tag").content.firstElementChild
 
         const newTag = template.cloneNode(true)
@@ -228,9 +274,9 @@ export default class extends Controller {
       })
     }
 
-    this.addedToSectionTarget.classList.toggle("is-visible", lists.length > 0)
+    this.addedToSectionTarget.classList.toggle("is-visible", this.containingLists.length > 0)
 
-    return lists
+    return this.containingLists
   }
 
   async show(e) {
@@ -241,8 +287,12 @@ export default class extends Controller {
     }
 
     if (appState("auth-signed-in")) {
+      this.element.classList.add("is-disabled")
+      trigger("loader:show", { id: "loaderBase" })
+
       this.role = e && e.detail && e.detail.action ? e.detail.action : "addPhotos"
       this.listId = e && e.detail && e.detail.listId ? e.detail.listId : 0
+      this.containingLists = null
 
       this.sectionTargets.forEach(section => section.classList.remove("is-visible"))
 
@@ -270,6 +320,9 @@ export default class extends Controller {
         .classList.add("is-visible")
 
       this.element.classList.add("is-visible")
+
+      this.element.classList.remove("is-disabled")
+      trigger("loader:hide", { id: "loaderBase" })
     } else {
       trigger("snackbar:show", { message: lang("list_signin_alert"), status: "error", autoHide: true })
       trigger("dialogSignin:show")
@@ -278,6 +331,9 @@ export default class extends Controller {
 
   async deletePhotoFromList(e) {
     if (e) e.preventDefault()
+
+    this.element.classList.add("is-disabled")
+    trigger("loader:show", { id: "loaderBase" })
 
     if (e && e.currentTarget) {
       const listData = listManager.getListById(e.currentTarget.listId)
@@ -296,6 +352,9 @@ export default class extends Controller {
 
       // eslint-disable-next-line no-console
       if (resp.errors) console.error(resp.errors)
+
+      this.element.classList.remove("is-disabled")
+      trigger("loader:hide", { id: "loaderBase" })
 
       trigger("snackbar:show", { message: result.message, status: result.status, autoHide: true })
 

@@ -2,8 +2,6 @@ import config from "../data/siteConfig"
 import { appState } from "../js/app"
 
 const createList = async (name, description) => {
-  // TODO: include the description on creating as well once the backend is ready
-
   const authData = JSON.parse(localStorage.getItem("auth")) || {}
   const data = {
     data: {
@@ -31,17 +29,49 @@ const createList = async (name, description) => {
     return respData.data.attributes.drupal_internal__tid
   }
 
-  return 0
+  return null
 }
 
-const editList = async (listId, name, description) => {
-  // TODO: implement the backend solution if ready
-  return { errors: "Feature is not implemented yet", params: [listId, name, description] }
-}
-
-const deleteList = async listId => {
+const editList = async (uuid, name, description) => {
   const authData = JSON.parse(localStorage.getItem("auth")) || {}
-  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/jsonapi/taxonomy_term/${listId}`
+  const data = {
+    data: {
+      type: "taxonomy_term--private",
+      id: uuid,
+      attributes: {
+        name,
+        description,
+      },
+    },
+  }
+
+  const url = `${
+    appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST
+  }/jsonapi/taxonomy_term/private/${uuid}`
+
+  const resp = await fetch(url, {
+    method: "PATCH",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/vnd.api+json",
+      Accept: "application/vnd.api+json",
+      "X-CSRF-Token": authData.csrf_token,
+    },
+    body: JSON.stringify(data),
+  })
+
+  const respData = await resp.json()
+
+  return respData
+}
+
+const deleteList = async uuid => {
+  const authData = JSON.parse(localStorage.getItem("auth")) || {}
+
+  const url = `${
+    appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST
+  }/jsonapi/taxonomy_term/private/${uuid}`
+
   const resp = await fetch(url, {
     method: "DELETE",
     credentials: "include",
@@ -52,14 +82,16 @@ const deleteList = async listId => {
     },
   })
 
-  const respData = await resp.json().catch(error => {
-    return { errors: error }
-  })
-  return respData
+  return resp
 }
 
 const addToList = async (photoId, listId) => {
-  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/fortepan/flag/${photoId}/${listId}`
+  const authData = JSON.parse(localStorage.getItem("auth")) || {}
+
+  const url = `${
+    appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST
+  }/fortepan/flag/${photoId}/${listId}?token=${authData.csrf_token}`
+
   const resp = await fetch(url, {
     method: "POST",
     credentials: "include",
@@ -74,7 +106,12 @@ const addToList = async (photoId, listId) => {
 }
 
 const deleteFromList = async (photoId, listId) => {
-  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/fortepan/unflag/${photoId}/${listId}`
+  const authData = JSON.parse(localStorage.getItem("auth")) || {}
+
+  const url = `${
+    appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST
+  }/fortepan/unflag/${photoId}/${listId}?token=${authData.csrf_token}`
+
   const resp = await fetch(url, {
     method: "POST",
     credentials: "include",
@@ -89,7 +126,12 @@ const deleteFromList = async (photoId, listId) => {
 }
 
 const getLists = async () => {
-  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/fortepan/lists`
+  const authData = JSON.parse(localStorage.getItem("auth")) || {}
+
+  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/fortepan/lists/created/desc?token=${
+    authData.csrf_token
+  }`
+
   const resp = await fetch(url, {
     method: "GET",
     credentials: "include",
@@ -100,11 +142,15 @@ const getLists = async () => {
   })
 
   const respData = await resp.json()
-  return respData.listak
+  return respData.lists
 }
 
 const getListPhotos = async id => {
-  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/fortepan/flags/${id}/created/asc`
+  const authData = JSON.parse(localStorage.getItem("auth")) || {}
+
+  const url = `${
+    appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST
+  }/fortepan/flags/${id}/created/asc?token=${authData.csrf_token}`
   const resp = await fetch(url, {
     method: "GET",
     credentials: "include",
@@ -120,8 +166,23 @@ const getListPhotos = async id => {
 
 // return all the lists of the current logged in user that contains a given image
 const getContainingLists = async photoId => {
-  // TODO
-  return photoId
+  const authData = JSON.parse(localStorage.getItem("auth")) || {}
+
+  const url = `${
+    appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST
+  }/fortepan/lists/created/desc/${photoId}?token=${authData.csrf_token}`
+
+  const resp = await fetch(url, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  })
+
+  const respData = await resp.json()
+  return respData
 }
 
 export default {

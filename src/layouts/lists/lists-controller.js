@@ -327,24 +327,29 @@ export default class extends Controller {
   }
 
   onListsChanged(e) {
-    if (this.element.classList.contains("is-visible")) {
-      if (e && e.action) {
-        switch (e.action) {
-          /* case "create":
-          // TODO: add the new listItem
-          break
-        case "edit":
-          // TODO: modify the listItem
-          break
-        case "delete":
-          // TODO: remove the listItem
-          break */
-          default:
-            this.reloadLists()
+    this.reloadLists()
+
+    if (e && e.detail && e.detail.action) {
+      switch (e.detail.action) {
+        /* case "edit":
+            // TODO: modify the listItem
             break
-        }
-      } else {
-        this.reloadLists()
+          case "delete":
+            // TODO: remove the listItem
+            break */
+        case "create":
+          if (this.element.classList.contains("is-visible") && e.detail.listId) {
+            const listData = listManager.getListById(e.detail.listId)
+
+            if (listData && listData.url && window.location.pathname !== listData.url) {
+              window.history.pushState(null, escapeHTML(listData.name), listData.url)
+              this.show()
+            }
+          }
+          break
+
+        default:
+          break
       }
     }
   }
