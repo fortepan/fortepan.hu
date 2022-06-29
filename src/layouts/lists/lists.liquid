@@ -6,6 +6,8 @@ layout: base/base.liquid
      data-controller="lists"
      data-action="auth:loginStatus@document->lists#show
                   dialogLists:listsChanged@document->lists#onListsChanged
+                  dialogLists:photoRemoved@document->lists#onListsChanged
+                  listPhotos:photoRemoved@document->lists#onListsChanged
                   scroll->lists#loadListItemThumbnails
                   popstate@window->lists#onPopState"
 >

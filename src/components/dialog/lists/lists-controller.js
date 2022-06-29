@@ -239,10 +239,10 @@ export default class extends Controller {
       )
     }
 
-    if (this.containingLists.length) {
-      // remove all list tags first
-      this.addedToListTarget.querySelectorAll(".dialog-lists__list-tag").forEach(item => item.remove())
+    // remove all list tags first
+    this.addedToListTarget.querySelectorAll(".dialog-lists__list-tag").forEach(item => item.remove())
 
+    if (this.containingLists.length) {
       // list the list tags that contains the photo
       this.containingLists.forEach(listData => {
         const template = document.getElementById("dialog-list-tag").content.firstElementChild
@@ -332,18 +332,17 @@ export default class extends Controller {
   async deletePhotoFromList(e) {
     if (e) e.preventDefault()
 
-    this.element.classList.add("is-disabled")
-    trigger("loader:show", { id: "loaderBase" })
-
     if (e && e.currentTarget) {
-      const listData = listManager.getListById(e.currentTarget.listId)
-      const listTag = e.currentTarget.parentNode.parentNode
-      const result = {}
+      this.element.classList.add("is-disabled")
+      trigger("loader:show", { id: "loaderBase" })
 
-      const resp = await listManager.deletePhotoFromList(
-        appState("is-lists") ? listManager.getSelectedPhotoId() : photoManager.getSelectedPhotoId(),
-        listData.id
-      )
+      this.closeListTagDropdowns()
+
+      const listData = listManager.getListById(e.currentTarget.listId)
+      const result = {}
+      const photoId = appState("is-lists") ? listManager.getSelectedPhotoId() : photoManager.getSelectedPhotoId()
+
+      const resp = await listManager.deletePhotoFromList(photoId, listData.id)
 
       result.status = resp.errors ? "error" : "success"
       result.message = resp.errors
@@ -353,18 +352,22 @@ export default class extends Controller {
       // eslint-disable-next-line no-console
       if (resp.errors) console.error(resp.errors)
 
+      if (!resp.errors) {
+        // reset the continaing list
+        this.containingLists = null
+
+        // re-render the forms to exclude the deleted list
+        await this.renderContainingLists()
+        await this.renderOptions()
+        this.toggleInput()
+      }
+
       this.element.classList.remove("is-disabled")
       trigger("loader:hide", { id: "loaderBase" })
 
       trigger("snackbar:show", { message: result.message, status: result.status, autoHide: true })
 
-      // temporarily remove the list-tag (until the api callback returns, see below)
-      listTag.remove()
-
-      // re-render the forms to exclude the deleted list
-      await this.renderContainingLists()
-      await this.renderOptions()
-      this.toggleInput()
+      trigger("dialogLists:photoRemoved", { id: photoId })
     }
   }
 

@@ -284,6 +284,8 @@ export default class extends Controller {
     if (e) e.preventDefault()
 
     if (e && e.currentTarget) {
+      trigger("loader:show", { id: "loaderBase" })
+
       const thumbnail = Array.from(this.element.querySelectorAll(".photos-thumbnail")).find(thumb =>
         thumb.contains(e.currentTarget)
       )
@@ -299,15 +301,15 @@ export default class extends Controller {
       // eslint-disable-next-line no-console
       if (resp.errors) console.error(resp.errors)
 
+      if (result.status === "success") {
+        this.reloadPhotos()
+      }
+
+      trigger("loader:hide", { id: "loaderBase" })
+
       trigger("snackbar:show", { message: result.message, status: result.status, autoHide: true })
 
-      if (result.status === "success") {
-        // remove the thumbnail from the DOM on success
-        thumbnail.remove()
-
-        // update the photo counter
-        this.countTarget.textContent = this.listData.photos.length
-      }
+      trigger("listPhotos:photoRemoved", { id: thumbnail.photoId })
     }
   }
 

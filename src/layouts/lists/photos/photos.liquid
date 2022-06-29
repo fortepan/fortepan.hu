@@ -8,6 +8,7 @@
                   photosCarousel:photoSelected@document->lists--photos#onPhotoSelected
                   photosCarousel:hide@document->lists--photos#onCarouselClosed
                   dialogLists:listsChanged@document->lists--photos#onListsChanged
+                  dialogLists:photoRemoved@document->lists--photos#reloadPhotos
                   thumbnail:loaded@document->lists--photos#loadThumbnails"
 >
   <div class="list-title photos-title">
