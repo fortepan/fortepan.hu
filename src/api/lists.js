@@ -86,11 +86,7 @@ const deleteList = async uuid => {
 }
 
 const addToList = async (photoId, listId) => {
-  const authData = JSON.parse(localStorage.getItem("auth")) || {}
-
-  const url = `${
-    appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST
-  }/fortepan/flag/${photoId}/${listId}?token=${authData.csrf_token}`
+  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/fortepan/flag/${photoId}/${listId}`
 
   const resp = await fetch(url, {
     method: "POST",
@@ -106,11 +102,7 @@ const addToList = async (photoId, listId) => {
 }
 
 const deleteFromList = async (photoId, listId) => {
-  const authData = JSON.parse(localStorage.getItem("auth")) || {}
-
-  const url = `${
-    appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST
-  }/fortepan/unflag/${photoId}/${listId}?token=${authData.csrf_token}`
+  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/fortepan/unflag/${photoId}/${listId}`
 
   const resp = await fetch(url, {
     method: "POST",
@@ -126,11 +118,7 @@ const deleteFromList = async (photoId, listId) => {
 }
 
 const getLists = async () => {
-  const authData = JSON.parse(localStorage.getItem("auth")) || {}
-
-  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/fortepan/lists/created/desc?token=${
-    authData.csrf_token
-  }`
+  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/fortepan/lists/created/desc`
 
   const resp = await fetch(url, {
     method: "GET",
@@ -146,11 +134,7 @@ const getLists = async () => {
 }
 
 const getListPhotos = async id => {
-  const authData = JSON.parse(localStorage.getItem("auth")) || {}
-
-  const url = `${
-    appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST
-  }/fortepan/flags/${id}/created/asc?token=${authData.csrf_token}`
+  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/fortepan/flags/${id}/created/asc`
   const resp = await fetch(url, {
     method: "GET",
     credentials: "include",
@@ -166,11 +150,9 @@ const getListPhotos = async id => {
 
 // return all the lists of the current logged in user that contains a given image
 const getContainingLists = async photoId => {
-  const authData = JSON.parse(localStorage.getItem("auth")) || {}
-
   const url = `${
     appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST
-  }/fortepan/lists/created/desc/${photoId}?token=${authData.csrf_token}`
+  }/fortepan/lists/created/desc/${photoId}`
 
   const resp = await fetch(url, {
     method: "GET",
