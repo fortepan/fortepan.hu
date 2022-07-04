@@ -130,7 +130,7 @@ const getLists = async () => {
   })
 
   const respData = await resp.json()
-  return respData.lists
+  return respData
 }
 
 const getListPhotos = async id => {

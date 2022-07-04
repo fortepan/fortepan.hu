@@ -9,24 +9,26 @@ const loadListData = async () => {
 
   listData.lists = []
 
-  Object.keys(rawResponse).forEach(key => {
-    const data = {
-      name: rawResponse[key].list_name,
-      description: rawResponse[key].description,
-      uuid: rawResponse[key].uuid,
-    }
-    data.id = key
-    data.url = `/${getLocale()}/lists/${data.id}`
-    data.photos = []
+  if (rawResponse.lists) {
+    rawResponse.lists.forEach(item => {
+      const data = {
+        id: item.tid,
+        name: item.list_name,
+        description: item.description,
+        uuid: item.uuid,
+        url: `/${getLocale()}/lists/${item.tid}`,
+        photos: [],
+      }
 
-    if (rawResponse[key].images) {
-      rawResponse[key].images.forEach(mid => {
-        data.photos.push({ id: mid, mid })
-      })
-    }
+      if (item.images) {
+        item.images.forEach(mid => {
+          data.photos.push({ id: mid, mid })
+        })
+      }
 
-    listData.lists.push(data)
-  })
+      listData.lists.push(data)
+    })
+  }
 
   trigger("listManager:load", listData.lists)
 
@@ -228,8 +230,8 @@ const getContainingLists = async photoId => {
 
       const result = []
 
-      Object.keys(containingLists.lists).forEach(key => {
-        result.push(getListById(key))
+      containingLists.lists.forEach(item => {
+        result.push(getListById(item.tid))
       })
 
       return result

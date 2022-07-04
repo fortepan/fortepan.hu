@@ -204,16 +204,22 @@ export default class extends Controller {
     const lists = await listManager.getLists()
     let innerHTML = ""
 
-    if (this.lastSelectedListId !== 0) {
-      const lastListData = listManager.getListById(this.lastSelectedListId)
-      innerHTML += `<option value="${lastListData.id}">${escapeHTML(lastListData.name)}</option>`
-    }
-
     if (!this.containingLists) {
       this.containingLists = await listManager.getContainingLists(
         appState("is-lists") ? listManager.getSelectedPhotoId() : photoManager.getSelectedPhotoId()
       )
     }
+
+    if (
+      this.lastSelectedListId !== 0 &&
+      this.containingLists.indexOf(listManager.getListById(this.lastSelectedListId)) === -1
+    ) {
+      const lastListData = listManager.getListById(this.lastSelectedListId)
+      innerHTML += `<option value="${lastListData.id}">${escapeHTML(lastListData.name)}</option>`
+    }
+
+    // adding the option to create a new list at the end
+    innerHTML += `<option value="0">${lang("list_new")}</option>`
 
     lists.forEach(listData => {
       if (
@@ -223,9 +229,6 @@ export default class extends Controller {
         innerHTML += `<option value="${listData.id}">${escapeHTML(listData.name)}</option>`
       }
     })
-
-    // adding the option to create a new list at the end
-    innerHTML += `<option value="0">${lang("list_new")}</option>`
 
     this.selectTarget.innerHTML = innerHTML
 
