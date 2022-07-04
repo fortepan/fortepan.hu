@@ -409,6 +409,23 @@
     opacity: 1;
   }
 
+  &.is-open {
+    .context-menu--lists__button {
+      position: relative;
+
+      &:before {
+        display: block;
+        content: "";
+        position: absolute;
+        top: 100%;
+        height: rem(8px);
+        left: 0;
+        right: 0;
+        background-color: transparent;
+      }
+    }
+  }
+
   & .header-nav__popup {
     top: 3rem;
     right: rem(8px);

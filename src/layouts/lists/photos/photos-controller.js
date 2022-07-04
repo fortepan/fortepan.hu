@@ -200,6 +200,7 @@ export default class extends Controller {
 
       this.hideAllContextMenu(dropdown)
       dropdown.classList.toggle("is-visible")
+      listItemMenu.classList.toggle("is-open")
 
       dropdown.removeAttribute("style")
       const bounds = dropdown.getBoundingClientRect()
@@ -227,6 +228,7 @@ export default class extends Controller {
     this.element.querySelectorAll(".header-nav__popup").forEach(dropdown => {
       if (!elementToExclude || elementToExclude !== dropdown) {
         dropdown.classList.remove("is-visible")
+        dropdown.parentNode.classList.remove("is-open")
       }
     })
   }

@@ -267,6 +267,8 @@ export default class extends Controller {
       const dropdown = listItemMenu.querySelector(".header-nav__popup")
 
       this.hideAllContextMenu(dropdown)
+
+      listItemMenu.classList.toggle("is-open")
       dropdown.classList.toggle("is-visible")
 
       dropdown.removeAttribute("style")
@@ -295,6 +297,7 @@ export default class extends Controller {
     this.element.querySelectorAll(".header-nav__popup").forEach(dropdown => {
       if (!elementToExclude || elementToExclude !== dropdown) {
         dropdown.classList.remove("is-visible")
+        dropdown.parentNode.classList.remove("is-open")
       }
     })
   }
