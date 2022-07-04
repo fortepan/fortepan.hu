@@ -27,7 +27,6 @@
 
         <form class="dialog__form" data-dialog--lists-target="addToListForm" data-action="submit->dialog--lists#submitAddingToList">
           {% include select/select.liquid
-                    label:lang[locale].list_choose
                     stimulus_target:'data-dialog--lists-target="select"'
                     stimulus_action:'change->dialog--lists#toggleInput'
           %}

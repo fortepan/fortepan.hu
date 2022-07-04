@@ -47,10 +47,13 @@ export default class extends Controller {
   async submitAddingToList(e) {
     e.preventDefault()
 
+    let listId = Number(this.selectTarget.value)
+
+    if (listId < 0) return
+
     this.element.classList.add("is-disabled")
     trigger("loader:show", { id: "loaderBase" })
 
-    let listId = Number(this.selectTarget.value)
     let listName = Array.from(this.selectTarget.getElementsByTagName("option")).find(
       item => Number(item.getAttribute("value")) === listId
     ).innerText
@@ -216,6 +219,8 @@ export default class extends Controller {
     ) {
       const lastListData = listManager.getListById(this.lastSelectedListId)
       innerHTML += `<option value="${lastListData.id}">${escapeHTML(lastListData.name)}</option>`
+    } else {
+      innerHTML += `<option value="-1" disabled selected>${lang("list_select")}</option>`
     }
 
     // adding the option to create a new list at the end
