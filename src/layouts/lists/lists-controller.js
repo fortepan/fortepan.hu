@@ -34,12 +34,6 @@ export default class extends Controller {
   }
 
   async show() {
-    // TODO: remove when feature/lists is live
-    if (!localStorage.getItem("lists")) {
-      this.hide()
-      return
-    }
-
     if (appState("auth-signed-in")) {
       // hide the both the lists and list-photos first
       this.hide()

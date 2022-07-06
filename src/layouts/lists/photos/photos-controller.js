@@ -29,11 +29,6 @@ export default class extends Controller {
   async show(e) {
     this.hide()
 
-    // TODO: remove when feature/lists is live
-    if (!localStorage.getItem("lists")) {
-      return
-    }
-
     if (e && e.detail && e.detail.listId) {
       // flag the current list item as the selected one
       const listData = listManager.selectListById(e.detail.listId)

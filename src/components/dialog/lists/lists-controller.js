@@ -288,12 +288,6 @@ export default class extends Controller {
   }
 
   async show(e) {
-    // TODO: remove when feature/lists is live
-    if (!localStorage.getItem("lists")) {
-      this.hide()
-      return
-    }
-
     if (appState("auth-signed-in")) {
       this.element.classList.add("is-disabled")
       trigger("loader:show", { id: "loaderBase" })

@@ -2,7 +2,7 @@ import { Controller } from "stimulus"
 import throttle from "lodash/throttle"
 import auth from "../../api/auth"
 import siteConfig from "../../data/siteConfig"
-import { getURLParams, trigger } from "../../js/utils"
+import { trigger } from "../../js/utils"
 import { appState } from "../../js/app"
 
 export default class extends Controller {
@@ -25,9 +25,6 @@ export default class extends Controller {
     this.autoHideNavShadowOnScroll()
 
     this.checkIfUserIsSignedIn()
-
-    // TODO: remove when feature/lists is live
-    this.checkFeatureLists()
 
     this.displayDevStatus()
   }
@@ -171,24 +168,6 @@ export default class extends Controller {
       localStorage.setItem("notificationsLastSeen", lastMessageTimestamp.toString())
     }
     this.notificationIconTarget.classList.remove("has-badge")
-  }
-
-  // TODO: remove when feature/lists is live
-  checkFeatureLists() {
-    const params = getURLParams()
-
-    if (params.lists && params.lists === "1") {
-      localStorage.setItem("lists", 1)
-    }
-
-    if (params.lists && params.lists === "0") {
-      localStorage.removeItem("lists")
-    }
-
-    if (!localStorage.getItem("lists")) {
-      const button = document.getElementById("HeaderLists")
-      if (button) button.remove()
-    }
   }
 
   displayDevStatus() {
