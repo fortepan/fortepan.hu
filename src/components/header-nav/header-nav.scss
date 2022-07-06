@@ -177,6 +177,9 @@
   max-width: rem(400px);
   z-index: 700;
 
+  max-height: calc(100vh - 8rem);
+  overflow-y: auto;
+
   &--small {
     padding: 0.5rem 0;
     min-width: rem(128px);
