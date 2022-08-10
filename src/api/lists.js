@@ -1,7 +1,7 @@
 import config from "../data/siteConfig"
 import { appState } from "../js/app"
 
-const createList = async (name, description) => {
+const createList = async (name, description, isPrivate = false) => {
   const authData = JSON.parse(localStorage.getItem("auth")) || {}
   const data = {
     data: {
@@ -9,6 +9,7 @@ const createList = async (name, description) => {
       attributes: {
         name,
         description,
+        status: !isPrivate,
       },
     },
   }
@@ -32,7 +33,7 @@ const createList = async (name, description) => {
   return null
 }
 
-const editList = async (uuid, name, description) => {
+const editList = async (uuid, name, description, isPrivate = false) => {
   const authData = JSON.parse(localStorage.getItem("auth")) || {}
   const data = {
     data: {
@@ -41,6 +42,7 @@ const editList = async (uuid, name, description) => {
       attributes: {
         name,
         description,
+        status: !isPrivate,
       },
     },
   }

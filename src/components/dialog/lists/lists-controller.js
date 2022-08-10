@@ -14,6 +14,8 @@ export default class extends Controller {
       "addToListFormName",
       "addToListFormDescription",
       "editListForm",
+      "privacySwitch",
+      "privacySwitchLabel",
       "section",
       "sectionAddPhotos",
       "sectionEdit",
@@ -119,13 +121,14 @@ export default class extends Controller {
 
     const nameInput = this.editListFormTarget.name
     const descriptionInput = this.editListFormTarget.description
+    const isPrivate = this.privacySwitchTarget.private
 
     const result = {}
 
     if (nameInput.value && nameInput.value !== "") {
       if (this.listId === 0) {
         // adding a new list
-        this.listId = await listManager.createList(nameInput.value, descriptionInput.value)
+        this.listId = await listManager.createList(nameInput.value, descriptionInput.value, isPrivate)
 
         result.status = this.listId === 0 ? "error" : "success"
         result.message =
@@ -135,7 +138,7 @@ export default class extends Controller {
         const listData = listManager.getListById(this.listId)
 
         if (listData.name !== nameInput.value || listData.description !== descriptionInput.value) {
-          const resp = await listManager.editList(listData.uuid, nameInput.value, descriptionInput.value)
+          const resp = await listManager.editList(listData.uuid, nameInput.value, descriptionInput.value, isPrivate)
 
           result.status = resp.errors ? "error" : "success"
           result.message = resp.errors ? lang("list_edit_error") : lang("list_edit_success")
@@ -406,6 +409,8 @@ export default class extends Controller {
 
     this.editListFormTarget.description.value = listData ? listData.description || "" : ""
     trigger("change", null, this.editListFormTarget.description)
+
+    this.renderPrivacySwitch(listData ? listData.private : false)
   }
 
   renderDeleteSection(listId) {
@@ -413,5 +418,19 @@ export default class extends Controller {
     const title = this.sectionDeleteTarget.querySelector(".dialog-lists__delete-title")
 
     title.innerHTML = escapeHTML(listData.name)
+  }
+
+  togglePrivacySwitch() {
+    const isPrivate = !this.privacySwitchTarget.private
+    this.renderPrivacySwitch(isPrivate)
+  }
+
+  renderPrivacySwitch(isPrivate) {
+    this.privacySwitchTarget.private = isPrivate
+    this.privacySwitchTarget.classList.toggle("is-selected", isPrivate)
+
+    this.privacySwitchLabelTarget.innerHTML = isPrivate
+      ? lang("list_edit_private_label")
+      : lang("list_edit_public_label")
   }
 }

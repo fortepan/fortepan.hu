@@ -65,7 +65,13 @@
                     class:"dialog-lists__input"
                     input_options:'maxlength="140"'
           %}
-
+          <div class="input-wrapper dialog-lists__privacy-switch">
+            <div class="dialog-lists__switch-container">
+              <h5>{{ lang[locale].list_edit_private }}</h5>
+              <span class="toggle-switch" data-dialog--lists-target="privacySwitch" data-action="click->dialog--lists#togglePrivacySwitch"></span>
+            </div>
+            <label class="input-wrapper__label is-visible" data-dialog--lists-target="privacySwitchLabel"></label>
+          </div>
           <button class="button button--primary dialog__button" data-action="dialog--lists#submitEditList">{{ lang[locale].save }}</button>
         </form>
       </section>

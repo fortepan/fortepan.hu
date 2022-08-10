@@ -18,6 +18,7 @@ const loadListData = async () => {
         uuid: item.uuid,
         url: `/${getLocale()}/lists/${item.tid}`,
         photos: [],
+        private: !item.status,
       }
 
       if (item.images) {
@@ -161,8 +162,8 @@ const clearAllData = () => {
 
 // admin functions (creating and deleting lists, adding and removing photos to/from lists)
 
-const createList = async (listName, description) => {
-  const listId = await listsAPI.createList(listName, description)
+const createList = async (listName, description, isPrivate = false) => {
+  const listId = await listsAPI.createList(listName, description, isPrivate)
 
   // force to reload the list data in the listManager as a new list has been created
   clearAllData()
@@ -171,9 +172,9 @@ const createList = async (listName, description) => {
   return listId
 }
 
-const editList = async (uuid, name, description) => {
+const editList = async (uuid, name, description, isPrivate = false) => {
   if (uuid && name) {
-    const resp = await listsAPI.editList(uuid, name, description)
+    const resp = await listsAPI.editList(uuid, name, description, isPrivate)
 
     // force to reload the list data in the listManager as a list has been deleted
     clearAllData()
