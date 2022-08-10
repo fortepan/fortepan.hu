@@ -61,6 +61,17 @@
     margin-right: rem(4px);
   }
 
+  .photos-title__subtitle {
+    .lists-private-icon {
+      font-style: normal;
+
+      svg {
+        display: inline-block;
+        vertical-align: top;
+      }
+    }
+  }
+
   .context-menu--lists {
     position: relative;
     display: inline-block;

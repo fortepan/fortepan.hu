@@ -21,8 +21,9 @@
     <h1 class="photos-title__title" data-lists--photos-target="title"></h1>
     <h5 class="photos-title__subtitle" data-lists--photos-target="subtitle">
       <i class="lists-private-icon" title="{{ lang[locale].list_edit_private }}">
-        {% inlineSVG src:"src/static/images/icons/24/icon-lock.svg" %}
-      </i>&bull;&nbsp;<span data-lists--photos-target="count" class="photos-title__subtitle__count"></span>
+        {% inlineSVG src:"src/static/images/icons/24/icon-lock.svg" %}&bull;
+      </i>
+      <span data-lists--photos-target="count" class="photos-title__subtitle__count"></span>
       {{ lang[locale].photo_results }}
       &bull;&nbsp;{% include ./inc/context-menu role:"list-photos-edit" controller:"lists--photos" %}
     </h5>
