@@ -67,7 +67,12 @@
           %}
           <div class="input-wrapper dialog-lists__privacy-switch">
             <div class="dialog-lists__switch-container">
-              <h5>{{ lang[locale].list_edit_private }}</h5>
+              <h5>
+                <i class="lists-private-icon is-visible">
+                  {% inlineSVG src:"src/static/images/icons/24/icon-lock.svg" %}
+                </i>
+                {{ lang[locale].list_edit_private }}
+              </h5>
               <span class="toggle-switch" data-dialog--lists-target="privacySwitch" data-action="click->dialog--lists#togglePrivacySwitch"></span>
             </div>
             <label class="input-wrapper__label is-visible" data-dialog--lists-target="privacySwitchLabel"></label>

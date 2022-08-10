@@ -135,6 +135,8 @@ export default class extends Controller {
       newListItem.listId = listData.id
       listItemsCreated.push(newListItem)
 
+      newListItem.querySelector(".lists-private-icon").classList.toggle("is-visible", listData.private)
+
       const title = newListItem.querySelector(".lists__item__title")
       if (title) {
         title.innerHTML = escapeHTML(listData.name)
@@ -147,9 +149,6 @@ export default class extends Controller {
 
         if (listData.description) {
           description.innerHTML = escapeHTML(listData.description)
-          /* description.innerHTML = escapeHTML(
-            "Random lista leírás, maximum 140 karakter hosszú, és minden listához egyenként hozzáadható. Megjelenik a listákat listázó oldalon és máshol."
-            ) */
           description.classList.add("is-visible")
         }
       }

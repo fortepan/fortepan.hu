@@ -88,6 +88,8 @@ export default class extends Controller {
   }
 
   async renderPhotos() {
+    this.element.querySelector(".lists-private-icon").classList.toggle("is-visible", this.listData.private)
+
     this.titleTarget.innerHTML = escapeHTML(this.listData.name)
     this.subtitleTarget.classList.remove("is-visible")
 
