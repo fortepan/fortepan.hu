@@ -61,6 +61,9 @@ export default class extends Controller {
       }
     } else {
       this.hide()
+      this.listRendered = false
+      listManager.clearAllData()
+
       trigger("snackbar:show", { message: lang("list_signin_alert"), status: "error", autoHide: true })
       trigger("dialogSignin:show")
     }
