@@ -137,7 +137,11 @@ export default class extends Controller {
         // editing an existing list
         const listData = listManager.getListById(this.listId)
 
-        if (listData.name !== nameInput.value || listData.description !== descriptionInput.value) {
+        if (
+          listData.name !== nameInput.value ||
+          listData.description !== descriptionInput.value ||
+          listData.private !== isPrivate
+        ) {
           const resp = await listManager.editList(listData.uuid, nameInput.value, descriptionInput.value, isPrivate)
 
           result.status = resp.errors ? "error" : "success"
