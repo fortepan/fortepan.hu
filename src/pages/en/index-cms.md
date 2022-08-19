@@ -3,9 +3,9 @@ layout: home/home.liquid
 title: Fortepan — Home
 permalink: "/en/"
 announcement:
-  title: "<strong>THE PHOTO LEGACY OF JÓZSEF REMÉNYI</strong>"
+  title: "<strong>2 AUTHORS - 2000 IMAGES</strong>"
   caption: New Collection
-  cover_image: "258291"
+  cover_image: "262356"
   blurb: "<br>The focus of this collection is the photo journal of first lieutenant
     József Reményi. The author, a logistics officer of a hospital train, was part
     of Eastern front missions in 1942/43 altogether 17 times. During this time, he
