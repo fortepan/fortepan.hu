@@ -3,14 +3,14 @@ layout: home/home.liquid
 title: Fortepan — Home
 permalink: "/en/"
 announcement:
-  title: "<strong>2 AUTHORS - 2000 IMAGES</strong>"
+  title: "<strong>TWO AUTHORS - TWO THOUSAND IMAGES</strong>"
   caption: New Collection
   cover_image: "262356"
-  blurb: "<br>The focus of this collection is the photo journal of first lieutenant
-    József Reményi. The author, a logistics officer of a hospital train, was part
-    of Eastern front missions in 1942/43 altogether 17 times. During this time, he
-    took hundreds of photos on the life of the hospital train and the wartime days
-    in the Ukraine."
+  blurb: "<br>The most important photos from two legacies, those of György Faragó,
+    photo journalist, and of Krisztián Gyulai Gaál, director of photography, respectively.Two
+    thousand photos from the Communist period, on football fields, hikers, concerts
+    and friends. Everyday life and propaganda, through the cameras of two photographers,
+    both with a personal touch of their own kind."
   actions:
   - label: 100 favorites
     style: primary
