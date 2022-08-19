@@ -3,15 +3,15 @@ layout: home/home.liquid
 title: Fortepan — Főoldal
 permalink: "/"
 announcement:
-  title: "<strong>REMÉNYI JÓZSEF FOTÓHAGYATÉKA</strong>"
+  title: "<strong>KÉT SZERZŐ - KÉTEZER KÉP</strong>"
   caption: Új sorozat
   cover_image: "257904"
-  blurb: A gyűjtemény fókuszában Reményi József főhadnagy második világháborús fotónaplója
-    áll. A szerző 1942-43-ban 17 alkalommal járt a keleti fronton egy kórházvonat
-    gazdasági tisztjeként. Útjai során több száz fotót készített a kórházvonat belső
-    életéről és az ukrajnai háborús hétköznapokról.
+  blurb: Faragó György fotóriporter és Gyulai Gaál Krisztián operatőr hagyatékának
+    legfontosabb képei. Kétezer fotó a szocializmus időszakából, futballpályákról,
+    áruházakról, kirándulásokról, koncertekről és barátokról. Hétköznapok és propaganda
+    két személyes hangú fotós kameráján keresztül.
   actions:
-  - label: 70 fontos kép
+  - label: 100 fontos kép
     style: primary
     url: https://fortepan.hu/hu/photos/?latest&tag=best%20of
   - label: A teljes sorozat
