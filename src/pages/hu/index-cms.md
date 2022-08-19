@@ -5,7 +5,7 @@ permalink: "/"
 announcement:
   title: "<strong>KÉT SZERZŐ - KÉTEZER KÉP</strong>"
   caption: Új sorozat
-  cover_image: "257904"
+  cover_image: "221274"
   blurb: Faragó György fotóriporter és Gyulai Gaál Krisztián operatőr hagyatékának
     legfontosabb képei. Kétezer fotó a szocializmus időszakából, futballpályákról,
     áruházakról, kirándulásokról, koncertekről és barátokról. Hétköznapok és propaganda
