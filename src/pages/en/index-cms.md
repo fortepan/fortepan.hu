@@ -5,14 +5,14 @@ permalink: "/en/"
 announcement:
   title: "<strong>2 AUTHORS - 2000 IMAGES</strong>"
   caption: New Collection
-  cover_image: "262356"
+  cover_image: "262385"
   blurb: "<br>The focus of this collection is the photo journal of first lieutenant
     József Reményi. The author, a logistics officer of a hospital train, was part
     of Eastern front missions in 1942/43 altogether 17 times. During this time, he
     took hundreds of photos on the life of the hospital train and the wartime days
     in the Ukraine."
   actions:
-  - label: 70 favorites
+  - label: 100 favorites
     style: primary
     url: https://fortepan.hu/en/photos/?latest&tag=best%20of
   - label: All Collection
