@@ -1,6 +1,6 @@
 ---
 layout: donors/donors.liquid
-title: Adományozók
+title: Fotó adományozók
 permalink: /hu/donors/
 hide_search: true
 ---
