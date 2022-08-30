@@ -102,6 +102,7 @@
   <div class="header-nav__popup" data-header-nav-target="popup profile">
     <a href="#" class="header-nav__link header-nav__link--top is-hidden-when-signed-in" data-action="header-nav#showSigninDialog">{{ lang[locale].signin }}</a>
     <a href="#" class="header-nav__link header-nav__link--top header-nav__link--separator-after is-hidden-when-signed-in" data-action="header-nav#showSignupDialog">{{ lang[locale].signup }}</a>
+    <a href="/{{ locale }}/lists/" class="header-nav__link header-nav__link--top header-nav__link--separator-after" id="HeaderLists">{{ lang[locale].lists }}</a>
     {% comment %}
     TODO: Currently this part is not working due to a CORS error
     <a href="#" class="header-nav__link header-nav__link--top is-visible-when-signed-in">
@@ -109,7 +110,6 @@
       <span class="header-nav__link__small" data-header-nav-target="profileEmail"></span>
     </a>
     {% endcomment %}
-    <a href="/{{ locale }}/lists/" class="header-nav__link header-nav__link--top is-visible-when-signed-in" id="HeaderLists">{{ lang[locale].lists }}</a>
     <a href="#" class="header-nav__link header-nav__link--top header-nav__link--separator-after is-visible-when-signed-in" data-action="click->header-nav#signOut">{{ lang[locale].signout }}</a>
     <h6>{{ lang[locale].settings }}</h6>
     <a href="#" class="header-nav__link header-nav__link--top" data-controller="theme" data-action="click->header-nav#toggleTheme theme:toggleTheme@document->theme#toggleTheme">
