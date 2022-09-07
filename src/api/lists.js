@@ -169,6 +169,87 @@ const getContainingLists = async photoId => {
   return respData
 }
 
+// ElasticSearch related api calls
+
+const listsElasticRequest = async data => {
+  const url = appState("is-dev")
+    ? `${config.ELASTIC_HOST_DEV}/elasticsearch_index_fortepandrupaldevelop_cwoou_lists/_search?pretty`
+    : `${config.ELASTIC_HOST}/elasticsearch_index_fortepandrupaldevelop_cwoou_lists/_search?pretty`
+
+  const resp = await fetch(url, {
+    method: "POST",
+    headers: {
+      Authorization: `Basic ${btoa("reader:r3adm31024read")}`,
+      "Content-Type": "application/json;charset=UTF-8",
+    },
+    body: JSON.stringify(data),
+  })
+
+  return resp.json()
+}
+
+const listsContentElasticRequest = async data => {
+  const url = appState("is-dev")
+    ? `${config.ELASTIC_HOST_DEV}/elasticsearch_index_fortepandrupaldevelop_cwoou_list_content/_search?pretty`
+    : `${config.ELASTIC_HOST}/elasticsearch_index_fortepandrupaldevelop_cwoou_list_content/_search?pretty`
+
+  const resp = await fetch(url, {
+    method: "POST",
+    headers: {
+      Authorization: `Basic ${btoa("reader:r3adm31024read")}`,
+      "Content-Type": "application/json;charset=UTF-8",
+    },
+    body: JSON.stringify(data),
+  })
+
+  return resp.json()
+}
+
+const loadPublicListDataById = async id => {
+  return new Promise((resolve, reject) => {
+    const body = {
+      size: 1,
+      query: {
+        term: {
+          tid: {
+            value: id,
+          },
+        },
+      },
+    }
+
+    listsElasticRequest(body)
+      .then(resp => {
+        resolve(resp)
+      })
+      .catch(err => {
+        reject(err)
+      })
+  })
+}
+
+const loadPublicListContentById = async id => {
+  return new Promise((resolve, reject) => {
+    const body = {
+      query: {
+        term: {
+          lista: {
+            value: id,
+          },
+        },
+      },
+    }
+
+    listsContentElasticRequest(body)
+      .then(resp => {
+        resolve(resp)
+      })
+      .catch(err => {
+        reject(err)
+      })
+  })
+}
+
 export default {
   createList,
   editList,
@@ -178,4 +259,6 @@ export default {
   getLists,
   getListPhotos,
   getContainingLists,
+  loadPublicListDataById,
+  loadPublicListContentById,
 }

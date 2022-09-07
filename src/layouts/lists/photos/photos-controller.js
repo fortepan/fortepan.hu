@@ -33,6 +33,9 @@ export default class extends Controller {
       // flag the current list item as the selected one
       const listData = listManager.selectListById(e.detail.listId)
 
+      this.isPublic = !!e.detail.isPublic
+      this.element.classList.toggle("is-public", this.isPublic)
+
       if (listData) {
         this.listData = listData
         this.element.classList.add("is-visible")
@@ -85,6 +88,7 @@ export default class extends Controller {
     this.gridTarget.classList.add("is-hidden")
     this.placeholderTarget.classList.add("is-hidden")
     this.placeholderTarget.classList.remove("is-visible")
+    this.isPublic = false
   }
 
   async renderPhotos() {
@@ -119,6 +123,9 @@ export default class extends Controller {
       // apply year data to node
       thumbnail.year = item.year
 
+      //
+      thumbnail.photoData = item
+
       if (index === 0) {
         // set the meta image
         setPageMeta(null, null, `${config.PHOTO_SOURCE}480/fortepan_${item.mid}.jpg`)
@@ -129,9 +136,6 @@ export default class extends Controller {
 
     this.countTarget.textContent = this.listData.photos.length
     this.subtitleTarget.classList.add("is-visible")
-
-    /* this.listData.description =
-      "Random lista leírás, maximum 140 karakter hosszú, és minden listához egyenként hozzáadható. Megjelenik a listákat listázó oldalon és máshol." */
 
     this.descriptionTarget.innerHTML = escapeHTML(this.listData.description)
     this.descriptionTarget.classList.toggle("is-visible", !!this.listData.description)

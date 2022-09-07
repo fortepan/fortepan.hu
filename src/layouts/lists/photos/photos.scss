@@ -5,6 +5,12 @@
     display: block;
   }
 
+  &.is-public {
+    .hidden-when-public {
+      display: none !important;
+    }
+  }
+
   &,
   &.photos {
     padding: rem(104px) rem(24px) rem(96px);
