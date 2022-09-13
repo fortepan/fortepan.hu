@@ -135,7 +135,7 @@ export default class extends Controller {
       }
     } else {
       trigger("loader:show", { id: "loaderCarousel" })
-      photo.imageSrc = `${config.PHOTO_SOURCE}1600/fortepan_${id}.jpg`
+      photo.imageSrc = `${config.PHOTO_SOURCE}${window.innerWidth > 1600 ? 2560 : 1600}/fortepan_${id}.jpg`
       if (photo.imageLoader) photo.imageLoader.loadImage()
     }
   }
@@ -381,8 +381,9 @@ export default class extends Controller {
       if (!photo.largePhoto.imageLoaded) {
         trigger("loader:show", { id: "loaderCarousel" })
 
-        // photo.largePhoto.imageSrc = `${config.PHOTO_SOURCE_LARGE}${photo.mid}.jpg`
-        photo.largePhoto.imageSrc = `${config.PHOTO_SOURCE}1600/fortepan_${photo.mid}.jpg`
+        photo.largePhoto.imageSrc = `${config.PHOTO_SOURCE}${window.innerWidth > 1600 ? 2560 : 1600}/fortepan_${
+          photo.mid
+        }.jpg`
 
         photo.largePhoto.loadCallback = () => {
           photo.classList.add("large-photo-loaded")

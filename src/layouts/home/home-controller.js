@@ -34,7 +34,7 @@ export default class extends Controller {
     img.addEventListener("load", onLoad.bind(this))
 
     const id = bgIds[Math.floor(Math.random() * bgIds.length)]
-    img.src = `${config.PHOTO_SOURCE}1600/fortepan_${id}.jpg`
+    img.src = `${config.PHOTO_SOURCE}${window.innerWidth > 1600 ? 2560 : 1600}/fortepan_${id}.jpg`
 
     this.initTimeline(id)
   }
