@@ -381,9 +381,7 @@ export default class extends Controller {
       if (!photo.largePhoto.imageLoaded) {
         trigger("loader:show", { id: "loaderCarousel" })
 
-        photo.largePhoto.imageSrc = `${config.PHOTO_SOURCE}${window.innerWidth > 1600 ? 2560 : 1600}/fortepan_${
-          photo.mid
-        }.jpg`
+        photo.largePhoto.imageSrc = `${config.PHOTO_SOURCE}2560/fortepan_${photo.mid}.jpg`
 
         photo.largePhoto.loadCallback = () => {
           photo.classList.add("large-photo-loaded")
