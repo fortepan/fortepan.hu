@@ -93,6 +93,13 @@ export default class extends Controller {
   }
 
   async renderPhotos() {
+    // avoid duplicate overlapping renders
+    // - can happen because of the async nature, and multiple
+    //   call on the function before it finishes loading
+    if (this.renderingPhotos) return
+
+    this.renderingPhotos = true
+
     this.element.querySelector(".lists-private-icon").classList.toggle("is-visible", this.listData.private)
 
     this.usernameTarget.textContent = this.listData.username // only exists (and visible) when it's public
@@ -103,7 +110,8 @@ export default class extends Controller {
     setPageMeta(`${this.listData.name} — ${lang("lists")}`, this.listData.description, null)
 
     // remove any existing thumbnails from the grid
-    this.element.querySelectorAll(".photos-thumbnail").forEach(thumbnail => thumbnail.remove())
+    // this.element.querySelectorAll(".photos-thumbnail").forEach(thumbnail => thumbnail.remove())
+    this.gridTarget.textContent = ""
 
     trigger("loader:show", { id: "loaderBase" })
 
@@ -142,6 +150,8 @@ export default class extends Controller {
 
     this.descriptionTarget.innerHTML = escapeHTML(this.listData.description)
     this.descriptionTarget.classList.toggle("is-visible", !!this.listData.description)
+
+    delete this.renderingPhotos
   }
 
   onPhotoSelected(e) {
@@ -325,7 +335,9 @@ export default class extends Controller {
 
   loadThumbnails() {
     this.element.querySelectorAll(".photos-thumbnail:not(.is-loaded)").forEach(thumbnail => {
-      thumbnail.photosThumbnail.loadThumbnailImage()
+      if (thumbnail.photosThumbnail) {
+        thumbnail.photosThumbnail.loadThumbnailImage()
+      }
     })
   }
 
