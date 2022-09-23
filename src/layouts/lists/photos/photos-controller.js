@@ -5,6 +5,7 @@ import config from "../../../data/siteConfig"
 import { setAppState } from "../../../js/app"
 import listManager from "../../../js/list-manager"
 import {
+  copyToClipboard,
   escapeHTML,
   getLocale,
   getPrettyURLValues,
@@ -326,5 +327,11 @@ export default class extends Controller {
     this.element.querySelectorAll(".photos-thumbnail:not(.is-loaded)").forEach(thumbnail => {
       thumbnail.photosThumbnail.loadThumbnailImage()
     })
+  }
+
+  shareLink(e) {
+    e.preventDefault()
+
+    copyToClipboard(`${window.location.origin}/${getLocale()}/lists/${this.listData.id}`, "link")
   }
 }

@@ -8,6 +8,7 @@ import {
   isElementInViewport,
   getPrettyURLValues,
   setPageMeta,
+  copyToClipboard,
 } from "../../js/utils"
 import { appState } from "../../js/app"
 import config from "../../data/siteConfig"
@@ -402,5 +403,14 @@ export default class extends Controller {
   jumpToPhotos(e) {
     if (e) e.preventDefault()
     window.location = `/${getLocale()}/photos/`
+  }
+
+  shareLink(e) {
+    e.preventDefault()
+
+    const listItem = this.listItemTargets.find(item => item.contains(e.currentTarget))
+    const id = listItem ? listItem.listId : 0
+
+    copyToClipboard(`${window.location.origin}/${getLocale()}/lists/${id}`, "link")
   }
 }
