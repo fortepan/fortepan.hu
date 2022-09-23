@@ -292,6 +292,7 @@ const mapPublicListsData = resp => {
       item.url = `/${getLocale()}/lists/${item.id}`
       item.photos = []
       item.private = false
+      item.username = h.user_name || undefined
 
       r.items.push(item)
     })

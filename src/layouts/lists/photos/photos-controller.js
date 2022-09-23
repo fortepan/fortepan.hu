@@ -16,7 +16,7 @@ import {
 
 export default class extends Controller {
   static get targets() {
-    return ["title", "subtitle", "count", "description", "grid", "placeholder"]
+    return ["title", "subtitle", "username", "count", "description", "grid", "placeholder"]
   }
 
   connect() {
@@ -93,6 +93,8 @@ export default class extends Controller {
 
   async renderPhotos() {
     this.element.querySelector(".lists-private-icon").classList.toggle("is-visible", this.listData.private)
+
+    this.usernameTarget.textContent = this.listData.username // only exists (and visible) when it's public
 
     this.titleTarget.innerHTML = escapeHTML(this.listData.name)
     this.subtitleTarget.classList.remove("is-visible")

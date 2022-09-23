@@ -5,9 +5,17 @@
     display: block;
   }
 
+  .visible-when-public {
+    display: none;
+  }
+
   &.is-public {
     .hidden-when-public {
       display: none !important;
+    }
+
+    .visible-when-public {
+      display: initial;
     }
   }
 
@@ -63,17 +71,30 @@
 }
 
 .list-title {
-  .photos-title__label {
-    margin-right: rem(4px);
-  }
+  .photos-title {
+    &__username {
+      @include font-heading-demi();
+      font-size: rem(18px);
 
-  .photos-title__subtitle {
-    .lists-private-icon {
-      font-style: normal;
+      opacity: 0.3;
+    }
 
-      svg {
-        display: inline-block;
-        vertical-align: top;
+    /* &__title {
+      margin-bottom: 0.1em;
+    } */
+
+    &__label {
+      margin-right: rem(4px);
+    }
+
+    &__subtitle {
+      .lists-private-icon {
+        font-style: normal;
+
+        svg {
+          display: inline-block;
+          vertical-align: top;
+        }
       }
     }
   }
