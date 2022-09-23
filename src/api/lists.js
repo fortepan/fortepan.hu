@@ -238,6 +238,9 @@ const loadPublicListContentById = async id => {
           },
         },
       },
+      sort: {
+        weight: { order: "desc" },
+      },
     }
 
     listsContentElasticRequest(body)
