@@ -239,7 +239,9 @@ const loadPublicListContentById = async id => {
         },
       },
       sort: {
-        weight: { order: "desc" },
+        created: {
+          order: "desc",
+        },
       },
     }
 
