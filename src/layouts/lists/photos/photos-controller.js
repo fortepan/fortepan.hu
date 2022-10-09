@@ -101,6 +101,7 @@ export default class extends Controller {
     this.renderingPhotos = true
 
     this.element.querySelector(".lists-private-icon").classList.toggle("is-visible", this.listData.private)
+    this.element.querySelector(".header-nav__link--copy-url").classList.toggle("is-hidden", this.listData.private)
 
     this.usernameTarget.textContent = this.listData.username // only exists (and visible) when it's public
 

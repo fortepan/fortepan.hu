@@ -448,6 +448,10 @@
     &.is-visible {
       transform: translate(0, 0);
     }
+
+    & .header-nav__link.is-hidden {
+      display: none;
+    }
   }
 }
 

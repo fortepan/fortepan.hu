@@ -20,8 +20,8 @@
     <a href="#" class="header-nav__link header-nav__link--top"
     data-action="click->{{ controller }}#openList">{{ lang[locale].list_view }}</a>
     {% endunless %}
-    <a href="#" class="header-nav__link header-nav__link--top"
-    data-action="click->{{ controller }}#shareLink">{{ lang[locale].copy_link }}</a>
+    <a href="#" class="header-nav__link header-nav__link--top header-nav__link--copy-url"
+    data-action="click->{{ controller }}#shareLink">{{ lang[locale].list_copy_link }}</a>
     <a href="#" class="header-nav__link header-nav__link--top header-nav__link--separator-after"
     data-action="click->{{ controller }}#jumpToPhotos">{{ lang[locale].list_add_photos }}</a>
     <a href="#" class="header-nav__link header-nav__link--top"

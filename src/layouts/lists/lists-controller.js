@@ -180,6 +180,7 @@ export default class extends Controller {
       listItemsCreated.push(newListItem)
 
       newListItem.querySelector(".lists-private-icon").classList.toggle("is-visible", listData.private)
+      newListItem.querySelector(".header-nav__link--copy-url").classList.toggle("is-hidden", listData.private)
 
       const title = newListItem.querySelector(".lists__item__title")
       if (title) {
