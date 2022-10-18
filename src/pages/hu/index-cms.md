@@ -13,9 +13,9 @@ announcement:
   - label: 90 fontos kép
     style: primary
     url: https://fortepan.hu/hu/photos/?latest&tag=best%20of
-  - label: ''
+  - label: a teljes sorozat
     style: primary
-    url: ''
+    url: https://fortepan.hu/hu/photos/?latest
 
 ---
 A honlap 2010-ben indult ötezer, jórészt lomtalanításokon talált fotóval. Azóta többszáz család, amatőr és hivatásos fotós, illetve közgyűjtemény bővítette a Fortepant. A honlapon megjelenő képeket a szerkesztőség válogatja ki.
