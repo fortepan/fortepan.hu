@@ -57,6 +57,17 @@
   &.is-failed-loading {
     display: none;
   }
+
+  &__link {
+    display: block;
+
+    color: initial;
+    text-decoration: none;
+
+    .no-image & {
+      cursor: default;
+    }
+  }
 }
 
 .photos-thumbnail__image {

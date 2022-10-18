@@ -3,11 +3,13 @@
        data-action="click->thumbnail#clicked
                     dialogAgeRestriction:remove@document->thumbnail#removeAgeRestriction"
   >
-    <div class="photos-thumbnail__image" data-thumbnail-target="container">
-      <img alt="" draggable="false" data-thumbnail-target="image"/>
-    </div>
-    <div class="photos-thumbnail__meta photos-thumbnail__meta--location" data-thumbnail-target="location"></div>
-    <div class="photos-thumbnail__meta photos-thumbnail__meta--description" data-thumbnail-target="description"></div>
+    <a href="#" class="photos-thumbnail__link" data-thumbnail-target="link">
+      <div class="photos-thumbnail__image" data-thumbnail-target="container">
+        <img alt="" draggable="false" data-thumbnail-target="image"/>
+      </div>
+      <div class="photos-thumbnail__meta photos-thumbnail__meta--location" data-thumbnail-target="location"></div>
+      <div class="photos-thumbnail__meta photos-thumbnail__meta--description" data-thumbnail-target="description"></div>
+    </a>
     {% if role == "lists" %}
     {% include ./inc/context-menu role:"thumbnail" controller:"lists--photos" %}
     {% endif %}
