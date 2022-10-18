@@ -5,17 +5,17 @@ permalink: "/"
 announcement:
   title: "<strong>HORVÁTH JÓZSEF OPERATŐR, HADITUDÓSÍTÓ KÉPEI</strong>"
   caption: Új sorozat
-  cover_image: "262320"
+  cover_image: "265600"
   blurb: 1300 fotó egy filmes hagyatékából. Magyarország a vészterhes XX. század közepén,
     egy személyes hangú tudósító kameráján keresztül. A határrevíziók, a Doni katasztrófa
     és Horváth József családi történetei, fekete-fehérben és színesben.
   actions:
-  - label: 80 fontos kép
+  - label: 90 fontos kép
     style: primary
     url: https://fortepan.hu/hu/photos/?latest&tag=best%20of
-  - label: A teljes sorozat
-    style: light-transparent
-    url: https://fortepan.hu/hu/photos/?latest
+  - label: ''
+    style: primary
+    url: ''
 
 ---
 A honlap 2010-ben indult ötezer, jórészt lomtalanításokon talált fotóval. Azóta többszáz család, amatőr és hivatásos fotós, illetve közgyűjtemény bővítette a Fortepant. A honlapon megjelenő képeket a szerkesztőség válogatja ki.
