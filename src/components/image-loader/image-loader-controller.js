@@ -19,6 +19,11 @@ export default class extends Controller {
           if (typeof this.element.loadCallback === "function") this.element.loadCallback(this)
         }
       })
+
+      if (this.element.altText) {
+        this.img.alt = this.element.altText
+      }
+
       this.element.appendChild(this.img)
     } else {
       this.element.imageLoaded = false

@@ -1,7 +1,7 @@
 import { Controller } from "stimulus"
 
 import config from "../../data/siteConfig"
-import { trigger, lang, isElementInViewport, getLocale } from "../../js/utils"
+import { trigger, lang, isElementInViewport, getLocale, getImgAltText } from "../../js/utils"
 import photoManager from "../../js/photo-manager"
 import listManager from "../../js/list-manager"
 import { appState } from "../../js/app"
@@ -103,6 +103,8 @@ export default class extends Controller {
     if (!data.city && !data.place && data.country) locationArray.push(data.country)
     this.locationTarget.textContent = locationArray.filter(Boolean).join(" · ")
     this.descriptionTarget.textContent = data.description || ""
+
+    this.imageTarget.alt = getImgAltText(data)
 
     // fading the thumbnail in after displaying it
     Promise.resolve(true).then(() => {

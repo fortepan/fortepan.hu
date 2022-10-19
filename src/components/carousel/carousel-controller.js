@@ -1,7 +1,7 @@
 import { Controller } from "stimulus"
 
 import config from "../../data/siteConfig"
-import { trigger, lang, isTouchDevice } from "../../js/utils"
+import { trigger, lang, isTouchDevice, getImgAltText } from "../../js/utils"
 import { setAppState, removeAppState, appState } from "../../js/app"
 import photoManager from "../../js/photo-manager"
 import listManager from "../../js/list-manager"
@@ -86,6 +86,8 @@ export default class extends Controller {
         this.role === "lists"
           ? listManager.getListPhotoById(listManager.getSelectedListId(), id)
           : photoManager.getPhotoDataByID(id)
+
+      photo.altText = getImgAltText(photoData)
 
       if (this.role === "lists" && !photoData.isDataLoaded) {
         photo.noImage = true
@@ -373,6 +375,7 @@ export default class extends Controller {
         const container = document.createElement("div")
         container.dataset.controller = "image-loader"
         container.className = "large-image-loader"
+        container.altText = photo.altText
 
         photo.appendChild(container)
         photo.largePhoto = container
