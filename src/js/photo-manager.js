@@ -313,6 +313,76 @@ const selectPrevPhoto = async () => {
   }
 }
 
+const getNextPhotoId = async () => {
+  if (photoData.selectedIndex !== -1) {
+    // check first if we reached the absolute last picture of the current search context
+    // and if it is actually the selected photo
+    if (getLastPhotoDataInContext() && getLastPhotoDataInContext().id.toString() === photoData.selectedId.toString()) {
+      // this is the last photo in the context, no next one
+      return null
+    }
+
+    // if no match continue on
+    const nextIndex = photoData.selectedIndex + 1
+
+    if (nextIndex < photoData.result.items.length) {
+      return parseInt(photoData.result.items[nextIndex].mid, 10)
+    }
+
+    // if there's more photos in the search context that haven't been loaded yet
+    // load a new set of max 40 photos, and try selecting the next photo again
+    const result = await loadMorePhotoDataInContext()
+
+    // this is changing the current index positition, so we need to fix this
+    photoData.selectedIndex = getPhotoIndexByID(photoData.selectedId)
+
+    if (result.items && result.items.length) {
+      return parseInt(result.items[0].mid, 10)
+    }
+
+    return null
+  }
+
+  return null
+}
+
+const getPrevPhotoId = async () => {
+  if (photoData.selectedIndex !== -1) {
+    // check first if we reached the absolute last picture of the current search context
+    // and if it is actually the selected photo
+    if (
+      getFirstPhotoDataInContext() &&
+      getFirstPhotoDataInContext().id.toString() === photoData.selectedId.toString()
+    ) {
+      // this is the first in the context, no previous one
+      return null
+    }
+
+    // if no match continue on
+    const prevIndex = photoData.selectedIndex - 1
+
+    if (prevIndex >= 0) {
+      return parseInt(photoData.result.items[prevIndex].mid, 10)
+    }
+
+    // if there's more photos in the search context that haven't been loaded yet
+    // load a new set of previous max 40 photos, and try selecting the prev photo again
+    const insertBefore = true
+    const result = await loadMorePhotoDataInContext(insertBefore)
+
+    // this is changing the current index positition, so we need to fix this
+    photoData.selectedIndex = getPhotoIndexByID(photoData.selectedId)
+
+    if (result.items && result.items.length) {
+      return parseInt(result.items[result.items.length - 1].mid, 10)
+    }
+
+    return null
+  }
+
+  return null
+}
+
 const getYearsInContext = () => {
   if (photoData.result && photoData.result.years) {
     return photoData.result.years
@@ -493,4 +563,6 @@ export default {
   getLatestSearchContext,
   clearPhotoCache,
   clearAllData,
+  getNextPhotoId,
+  getPrevPhotoId,
 }
