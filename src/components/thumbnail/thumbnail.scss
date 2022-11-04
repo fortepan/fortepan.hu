@@ -61,8 +61,15 @@
   &__link {
     display: block;
 
-    color: initial;
     text-decoration: none;
+
+    .theme--light & {
+      color: $dark-base;
+    }
+
+    .theme--dark & {
+      color: $light-base;
+    }
 
     .no-image & {
       cursor: default;
