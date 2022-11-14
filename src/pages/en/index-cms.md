@@ -8,9 +8,8 @@ announcement:
   cover_image: "265600"
   blurb: "<br>1300 photographs from the legacy of a filmmaker. Hungary in the middle
     of the grim, fateful 20th century, through the camera of a correspondent with
-    a personal touch.<br><br>Shifting borders, the defeat of the Hungarian army at
-    the river Don, and the family stories of József Horváth in black and white and
-    colour."
+    a personal touch. Shifting borders, the defeat of the Hungarian army at the river
+    Don, and the family stories of József Horváth in black and white and colour."
   actions:
   - label: 90 favorites
     style: primary
