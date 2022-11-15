@@ -59,7 +59,7 @@ h6,
 
 p {
   font-size: rem(16px);
-  line-height: rem(28px);
+  line-height: 1.7;
   font-weight: 500;
 }
 
@@ -73,4 +73,12 @@ p a {
   &:hover {
     border-bottom: 1px solid $red;
   }
+}
+
+.text-medium {
+  font-size: rem(14px);
+}
+
+.text-small {
+  font-size: rem(12px);
 }

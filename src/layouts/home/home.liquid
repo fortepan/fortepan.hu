@@ -9,7 +9,7 @@ layout: base/base.liquid
     <div class="home__announcement">
         <div class="home__announcement__caption caption">{{ announcement.caption }}</div>
         <h1 class="home__announcement__title">{{ announcement.title }}</h1>
-        <div class="home__announcement__blurb p">{{ announcement.blurb | markdownify }}</div>
+        <div class="home__announcement__blurb p">{{ announcement.blurb }}</div>
         <div class="home__announcement__actions">
         {% for action in announcement.actions %}
           <a href="{{ action.url }}" class="button button--medium button--{{ action.style }}">
