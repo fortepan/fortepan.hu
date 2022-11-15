@@ -19,7 +19,7 @@ fields:
   hidden: true
 - type: field_group_list
   name: projects
-  label: projects
+  label: Projects
   fields:
   - type: text
     name: title
@@ -36,3 +36,4 @@ fields:
   - type: file
     name: funding_logo
     label: funding_logo
+    hidden: true
