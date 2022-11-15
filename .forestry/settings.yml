@@ -17,6 +17,7 @@ sections:
   match: "**/*-cms.md"
   exclude: src/pages/**/*(photos|donors).md
   templates:
+  - projects
   - article
   - home
 - type: document
