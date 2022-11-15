@@ -30,8 +30,18 @@ fields:
   - type: textarea
     name: description
     label: description
-  - type: text
-    name: funding_info
+    config:
+      wysiwyg: true
+      schema:
+        format: html-blocks
+  - name: funding_info
+    type: textarea
+    default: ''
+    config:
+      required: false
+      wysiwyg: true
+      schema:
+        format: html-blocks
     label: funding_info
   - type: file
     name: funding_logo
