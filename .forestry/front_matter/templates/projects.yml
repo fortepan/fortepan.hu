@@ -1,0 +1,35 @@
+---
+label: Projects
+hide_body: true
+fields:
+- type: text
+  name: layout
+  label: layout
+- type: text
+  name: title
+  label: title
+- type: text
+  name: permalink
+  label: permalink
+- type: boolean
+  name: hide_search
+  label: hide_search
+- type: field_group_list
+  name: projects
+  label: projects
+  fields:
+  - type: text
+    name: title
+    label: title
+  - type: text
+    name: project_date
+    label: project_date
+  - type: textarea
+    name: description
+    label: description
+  - type: text
+    name: funding_info
+    label: funding_info
+  - type: file
+    name: funding_logo
+    label: funding_logo
