@@ -5,15 +5,18 @@ fields:
 - type: text
   name: layout
   label: layout
+  hidden: true
 - type: text
   name: title
   label: title
 - type: text
   name: permalink
   label: permalink
+  hidden: true
 - type: boolean
   name: hide_search
   label: hide_search
+  hidden: true
 - type: field_group_list
   name: projects
   label: projects
