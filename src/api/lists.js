@@ -231,6 +231,7 @@ const loadPublicListDataById = async id => {
 const loadPublicListContentById = async id => {
   return new Promise((resolve, reject) => {
     const body = {
+      size: 10000,
       query: {
         term: {
           lista: {
