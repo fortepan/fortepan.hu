@@ -174,7 +174,7 @@ const getContainingLists = async photoId => {
 const listsElasticRequest = async data => {
   const url = appState("is-dev")
     ? `${config.ELASTIC_HOST_DEV}/elasticsearch_index_fortepandrupaldevelop_cwoou_lists/_search?pretty`
-    : `${config.ELASTIC_HOST}/elasticsearch_index_fortepandrupaldevelop_cwoou_lists/_search?pretty`
+    : `${config.ELASTIC_HOST}/elasticsearch_index_fortepandrupalmain_hd64t_lists/_search?pretty`
 
   const resp = await fetch(url, {
     method: "POST",
@@ -191,7 +191,7 @@ const listsElasticRequest = async data => {
 const listsContentElasticRequest = async data => {
   const url = appState("is-dev")
     ? `${config.ELASTIC_HOST_DEV}/elasticsearch_index_fortepandrupaldevelop_cwoou_list_content/_search?pretty`
-    : `${config.ELASTIC_HOST}/elasticsearch_index_fortepandrupaldevelop_cwoou_list_content/_search?pretty`
+    : `${config.ELASTIC_HOST}/elasticsearch_index_fortepandrupalmain_hd64t_list_content/_search?pretty`
 
   const resp = await fetch(url, {
     method: "POST",
