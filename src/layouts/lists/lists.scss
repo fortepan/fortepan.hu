@@ -386,6 +386,20 @@
   }
 }
 
+.lists-private-icon {
+  display: none;
+  margin-left: rem(-5px);
+
+  svg {
+    display: block;
+  }
+
+  &.is-visible {
+    display: inline-block;
+    vertical-align: top;
+  }
+}
+
 .lists__item__description {
   display: none;
   margin-top: rem(8px);
@@ -433,6 +447,10 @@
 
     &.is-visible {
       transform: translate(0, 0);
+    }
+
+    & .header-nav__link.is-hidden {
+      display: none;
     }
   }
 }

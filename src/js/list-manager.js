@@ -18,6 +18,7 @@ const loadListData = async () => {
         uuid: item.uuid,
         url: `/${getLocale()}/lists/${item.tid}`,
         photos: [],
+        private: !item.status,
       }
 
       if (item.images) {
@@ -39,6 +40,11 @@ const hasData = () => {
   return !!listData.lists
 }
 
+const debugData = () => {
+  // eslint-disable-next-line no-console
+  console.log(listData)
+}
+
 const getLists = async () => {
   if (!listData.lists) {
     await loadListData()
@@ -46,11 +52,33 @@ const getLists = async () => {
   return listData.lists
 }
 
-const getListById = listId => {
+// looks up a list by id in the user's lists
+const getUserListById = listId => {
   if (listData.lists) {
     return listData.lists.find(item => item.id.toString() === listId.toString())
   }
-  return {}
+  return null
+}
+
+// looks up a list in the public lists
+const getPublicListById = listId => {
+  if (listData.publicLists) {
+    return listData.publicLists.find(item => item.id.toString() === listId.toString())
+  }
+
+  return null
+}
+
+// looks up the list in both the user's and public lists that has been loaded
+const getListById = listId => {
+  let list = getUserListById(listId)
+
+  if (!list) {
+    // no match check among the loaded public lists
+    list = getPublicListById(listId)
+  }
+
+  return list
 }
 
 const getListBySlug = slug => {
@@ -84,7 +112,7 @@ const getListPhotos = async listId => {
 const getListPhotoById = (listId, photoId) => {
   const list = getListById(listId)
   if (list && list.photos && list.photos.length > 0) {
-    return list.photos.find(photo => Number(photo.id) === Number(photoId))
+    return list.photos.find(photo => photo.id.toString() === photoId.toString())
   }
 
   return null
@@ -168,6 +196,7 @@ const getPrevPhotoId = () => {
 const clearAllData = () => {
   // if the context of the search has changed destroy all photo data
   delete listData.lists
+  delete listData.publicLists
   delete listData.selectedList
 
   trigger("listManager:allDataCleared")
@@ -175,8 +204,8 @@ const clearAllData = () => {
 
 // admin functions (creating and deleting lists, adding and removing photos to/from lists)
 
-const createList = async (listName, description) => {
-  const listId = await listsAPI.createList(listName, description)
+const createList = async (listName, description, isPrivate = false) => {
+  const listId = await listsAPI.createList(listName, description, isPrivate)
 
   // force to reload the list data in the listManager as a new list has been created
   clearAllData()
@@ -185,9 +214,9 @@ const createList = async (listName, description) => {
   return listId
 }
 
-const editList = async (uuid, name, description) => {
+const editList = async (uuid, name, description, isPrivate = false) => {
   if (uuid && name) {
-    const resp = await listsAPI.editList(uuid, name, description)
+    const resp = await listsAPI.editList(uuid, name, description, isPrivate)
 
     // force to reload the list data in the listManager as a list has been deleted
     clearAllData()
@@ -257,10 +286,81 @@ const getContainingLists = async photoId => {
   return []
 }
 
+// public lists
+
+// simplify and map the Elastic server response
+const mapPublicListsData = resp => {
+  const r = {
+    items: [],
+  }
+
+  if (resp.hits.hits.length > 0) {
+    resp.hits.hits.forEach(hit => {
+      // eslint-disable-next-line no-underscore-dangle
+      const h = hit._source
+      const item = {}
+
+      item.id = h.tid.toString()
+      item.name = h.name.toString()
+      item.description = h.description.toString()
+      item.url = `/${getLocale()}/lists/${item.id}`
+      item.photos = []
+      item.private = false
+      item.username = h.user_name || undefined
+
+      r.items.push(item)
+    })
+  }
+
+  return r
+}
+
+// simplify and map the Elastic server response
+const mapPublicListsContentData = resp => {
+  const r = []
+
+  if (resp.hits.hits.length > 0) {
+    resp.hits.hits.forEach(hit => {
+      // eslint-disable-next-line no-underscore-dangle
+      const h = hit._source
+      r.push({ id: h.entity_id.toString(), mid: h.entity_id.toString() })
+    })
+  }
+
+  return r
+}
+
+const loadPublicListDataById = async id => {
+  // let's check first if the list is already loaded
+  // check either in the user's lists and the already loaded public lists
+  if (getPublicListById(id)) return getPublicListById(id)
+
+  // get the list data first
+  const rawResp = await listsAPI.loadPublicListDataById(id)
+  const r = mapPublicListsData(rawResp)
+
+  if (r.items.length > 0) {
+    // get the list content
+    const contentRawResp = await listsAPI.loadPublicListContentById(id)
+    r.items[0].photos = mapPublicListsContentData(contentRawResp) || []
+
+    // store & return the structured list data object
+    if (!listData.publicLists) listData.publicLists = []
+    listData.publicLists.push(r.items[0])
+
+    return r.items[0]
+  }
+
+  return null
+}
+
 export default {
   loadListData,
   hasData,
+  debugData,
   getLists,
+  getUserListById,
+  getPublicListById,
   getListById,
   getListBySlug,
   loadListPhotosData,
@@ -283,6 +383,7 @@ export default {
   addPhotoToList,
   deletePhotoFromList,
   getContainingLists,
+  loadPublicListDataById,
   getNextPhotoId,
   getPrevPhotoId,
 }

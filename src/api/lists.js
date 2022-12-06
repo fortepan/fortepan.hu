@@ -1,7 +1,7 @@
 import config from "../data/siteConfig"
 import { appState } from "../js/app"
 
-const createList = async (name, description) => {
+const createList = async (name, description, isPrivate = false) => {
   const authData = JSON.parse(localStorage.getItem("auth")) || {}
   const data = {
     data: {
@@ -9,6 +9,7 @@ const createList = async (name, description) => {
       attributes: {
         name,
         description,
+        status: !isPrivate,
       },
     },
   }
@@ -32,7 +33,7 @@ const createList = async (name, description) => {
   return null
 }
 
-const editList = async (uuid, name, description) => {
+const editList = async (uuid, name, description, isPrivate = false) => {
   const authData = JSON.parse(localStorage.getItem("auth")) || {}
   const data = {
     data: {
@@ -41,6 +42,7 @@ const editList = async (uuid, name, description) => {
       attributes: {
         name,
         description,
+        status: !isPrivate,
       },
     },
   }
@@ -167,6 +169,93 @@ const getContainingLists = async photoId => {
   return respData
 }
 
+// ElasticSearch related api calls
+
+const listsElasticRequest = async data => {
+  const url = appState("is-dev")
+    ? `${config.ELASTIC_HOST_DEV}/elasticsearch_index_fortepandrupaldevelop_cwoou_lists/_search?pretty`
+    : `${config.ELASTIC_HOST}/elasticsearch_index_fortepandrupalmain_hd64t_lists/_search?pretty`
+
+  const resp = await fetch(url, {
+    method: "POST",
+    headers: {
+      Authorization: `Basic ${btoa("reader:r3adm31024read")}`,
+      "Content-Type": "application/json;charset=UTF-8",
+    },
+    body: JSON.stringify(data),
+  })
+
+  return resp.json()
+}
+
+const listsContentElasticRequest = async data => {
+  const url = appState("is-dev")
+    ? `${config.ELASTIC_HOST_DEV}/elasticsearch_index_fortepandrupaldevelop_cwoou_list_content/_search?pretty`
+    : `${config.ELASTIC_HOST}/elasticsearch_index_fortepandrupalmain_hd64t_list_content/_search?pretty`
+
+  const resp = await fetch(url, {
+    method: "POST",
+    headers: {
+      Authorization: `Basic ${btoa("reader:r3adm31024read")}`,
+      "Content-Type": "application/json;charset=UTF-8",
+    },
+    body: JSON.stringify(data),
+  })
+
+  return resp.json()
+}
+
+const loadPublicListDataById = async id => {
+  return new Promise((resolve, reject) => {
+    const body = {
+      size: 1,
+      query: {
+        term: {
+          tid: {
+            value: id,
+          },
+        },
+      },
+    }
+
+    listsElasticRequest(body)
+      .then(resp => {
+        resolve(resp)
+      })
+      .catch(err => {
+        reject(err)
+      })
+  })
+}
+
+const loadPublicListContentById = async id => {
+  return new Promise((resolve, reject) => {
+    const body = {
+      size: 10000,
+      query: {
+        term: {
+          lista: {
+            value: id,
+          },
+        },
+      },
+      sort: {
+        created: {
+          order: "desc",
+        },
+      },
+    }
+
+    listsContentElasticRequest(body)
+      .then(resp => {
+        resolve(resp)
+      })
+      .catch(err => {
+        reject(err)
+      })
+  })
+}
+
 export default {
   createList,
   editList,
@@ -176,4 +265,6 @@ export default {
   getLists,
   getListPhotos,
   getContainingLists,
+  loadPublicListDataById,
+  loadPublicListContentById,
 }

@@ -5,6 +5,7 @@ import config from "../../../data/siteConfig"
 import { setAppState } from "../../../js/app"
 import listManager from "../../../js/list-manager"
 import {
+  copyToClipboard,
   escapeHTML,
   getLocale,
   getPrettyURLValues,
@@ -16,7 +17,7 @@ import {
 
 export default class extends Controller {
   static get targets() {
-    return ["title", "subtitle", "count", "description", "grid", "placeholder"]
+    return ["title", "subtitle", "username", "count", "description", "grid", "placeholder"]
   }
 
   connect() {
@@ -32,6 +33,9 @@ export default class extends Controller {
     if (e && e.detail && e.detail.listId) {
       // flag the current list item as the selected one
       const listData = listManager.selectListById(e.detail.listId)
+
+      this.isPublic = !!e.detail.isPublic
+      this.element.classList.toggle("is-public", this.isPublic)
 
       if (listData) {
         this.listData = listData
@@ -85,16 +89,30 @@ export default class extends Controller {
     this.gridTarget.classList.add("is-hidden")
     this.placeholderTarget.classList.add("is-hidden")
     this.placeholderTarget.classList.remove("is-visible")
+    this.isPublic = false
   }
 
   async renderPhotos() {
+    // avoid duplicate overlapping renders
+    // - can happen because of the async nature, and multiple
+    //   call on the function before it finishes loading
+    if (this.renderingPhotos) return
+
+    this.renderingPhotos = true
+
+    this.element.querySelector(".lists-private-icon").classList.toggle("is-visible", this.listData.private)
+    this.element.querySelector(".header-nav__link--copy-url").classList.toggle("is-hidden", this.listData.private)
+
+    this.usernameTarget.textContent = this.listData.username // only exists (and visible) when it's public
+
     this.titleTarget.innerHTML = escapeHTML(this.listData.name)
     this.subtitleTarget.classList.remove("is-visible")
 
     setPageMeta(`${this.listData.name} — ${lang("lists")}`, this.listData.description, null)
 
     // remove any existing thumbnails from the grid
-    this.element.querySelectorAll(".photos-thumbnail").forEach(thumbnail => thumbnail.remove())
+    // this.element.querySelectorAll(".photos-thumbnail").forEach(thumbnail => thumbnail.remove())
+    this.gridTarget.textContent = ""
 
     trigger("loader:show", { id: "loaderBase" })
 
@@ -117,6 +135,9 @@ export default class extends Controller {
       // apply year data to node
       thumbnail.year = item.year
 
+      //
+      thumbnail.photoData = item
+
       if (index === 0) {
         // set the meta image
         setPageMeta(null, null, `${config.PHOTO_SOURCE}480/fortepan_${item.mid}.jpg`)
@@ -128,11 +149,10 @@ export default class extends Controller {
     this.countTarget.textContent = this.listData.photos.length
     this.subtitleTarget.classList.add("is-visible")
 
-    /* this.listData.description =
-      "Random lista leírás, maximum 140 karakter hosszú, és minden listához egyenként hozzáadható. Megjelenik a listákat listázó oldalon és máshol." */
-
     this.descriptionTarget.innerHTML = escapeHTML(this.listData.description)
     this.descriptionTarget.classList.toggle("is-visible", !!this.listData.description)
+
+    delete this.renderingPhotos
   }
 
   onPhotoSelected(e) {
@@ -316,7 +336,15 @@ export default class extends Controller {
 
   loadThumbnails() {
     this.element.querySelectorAll(".photos-thumbnail:not(.is-loaded)").forEach(thumbnail => {
-      thumbnail.photosThumbnail.loadThumbnailImage()
+      if (thumbnail.photosThumbnail) {
+        thumbnail.photosThumbnail.loadThumbnailImage()
+      }
     })
+  }
+
+  shareLink(e) {
+    e.preventDefault()
+
+    copyToClipboard(`${window.location.origin}/${getLocale()}/lists/${this.listData.id}`, "link")
   }
 }

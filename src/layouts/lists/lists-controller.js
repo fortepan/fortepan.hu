@@ -8,6 +8,7 @@ import {
   isElementInViewport,
   getPrettyURLValues,
   setPageMeta,
+  copyToClipboard,
 } from "../../js/utils"
 import { appState } from "../../js/app"
 import config from "../../data/siteConfig"
@@ -34,35 +35,78 @@ export default class extends Controller {
   }
 
   async show() {
+    // hide the both the lists and list-photos first
+    this.hide()
+
+    // check for a list id in the url
+    const listId = getPrettyURLValues(window.location.pathname.split(`/${getLocale()}/lists/`).join("/"))[0] || null
+
     if (appState("auth-signed-in")) {
-      // hide the both the lists and list-photos first
-      this.hide()
+      // the user is logged in
 
-      // first check if we have a matching slug in the url to show the list photo page
-      const urlValues = getPrettyURLValues(window.location.pathname.split(`/${getLocale()}/lists/`).join("/"))
-
-      if (urlValues.length > 0) {
+      if (listId) {
         // load lists if it hasn't been loaded
-        if (!listManager.hasData()) await listManager.loadListData()
+        if (!listManager.hasData()) {
+          trigger("loader:show", { id: "loaderBase" })
+          await listManager.loadListData()
+          trigger("loader:hide", { id: "loaderBase" })
+        }
 
         // check for an existing list given the id (first of the url path values)
-        const listData = listManager.getListById(urlValues[0])
+        let listData = listManager.getUserListById(listId)
 
         if (listData) {
           // if the selected list exists trigger the event to show the list photos
           trigger("lists:showListPhotos", { listId: listData.id })
         } else {
-          // if the list doesn't exist fallback to the lists page
-          await this.open()
+          // the list might not one of the current user's, check if it's public
+          trigger("loader:show", { id: "loaderBase" })
+          listData = await listManager.loadPublicListDataById(listId)
+          trigger("loader:hide", { id: "loaderBase" })
+
+          if (listData) {
+            // the list exist in the public domain
+            trigger("lists:showListPhotos", { listId: listData.id, isPublic: true })
+          } else {
+            // the list doesn't exist in the public domain either, fallback to the lists page
+            trigger("snackbar:show", { message: lang("list_404"), status: "error", autoHide: true })
+            await this.open()
+          }
         }
       } else {
         // no id is given, show the lists page by default
         await this.open()
       }
     } else {
-      this.hide()
-      trigger("snackbar:show", { message: lang("list_signin_alert"), status: "error", autoHide: true })
-      trigger("dialogSignin:show")
+      // the user is logged out
+
+      // cleanup for the case of sign outs
+      this.listRendered = false
+      listManager.clearAllData()
+
+      if (listId) {
+        // we have a list id, check if the list is public
+        trigger("loader:show", { id: "loaderBase" })
+        const listData = await listManager.loadPublicListDataById(listId)
+        trigger("loader:hide", { id: "loaderBase" })
+
+        if (listData) {
+          // the list exist in the public domain
+          trigger("lists:showListPhotos", { listId: listData.id, isPublic: true })
+        } else {
+          // the list doesn't exist in the public domain, show the login screen instead
+          trigger("snackbar:show", {
+            message: `${lang("list_404")}<br>${lang("list_signin_alert")}`,
+            status: "error",
+            autoHide: true,
+          })
+          trigger("dialogSignin:show")
+        }
+      } else {
+        // just show the login screen
+        trigger("snackbar:show", { message: lang("list_signin_alert"), status: "error", autoHide: true })
+        trigger("dialogSignin:show")
+      }
     }
   }
 
@@ -135,6 +179,9 @@ export default class extends Controller {
       newListItem.listId = listData.id
       listItemsCreated.push(newListItem)
 
+      newListItem.querySelector(".lists-private-icon").classList.toggle("is-visible", listData.private)
+      newListItem.querySelector(".header-nav__link--copy-url").classList.toggle("is-hidden", listData.private)
+
       const title = newListItem.querySelector(".lists__item__title")
       if (title) {
         title.innerHTML = escapeHTML(listData.name)
@@ -147,9 +194,6 @@ export default class extends Controller {
 
         if (listData.description) {
           description.innerHTML = escapeHTML(listData.description)
-          /* description.innerHTML = escapeHTML(
-            "Random lista leírás, maximum 140 karakter hosszú, és minden listához egyenként hozzáadható. Megjelenik a listákat listázó oldalon és máshol."
-            ) */
           description.classList.add("is-visible")
         }
       }
@@ -360,5 +404,14 @@ export default class extends Controller {
   jumpToPhotos(e) {
     if (e) e.preventDefault()
     window.location = `/${getLocale()}/photos/`
+  }
+
+  shareLink(e) {
+    e.preventDefault()
+
+    const listItem = this.listItemTargets.find(item => item.contains(e.currentTarget))
+    const id = listItem ? listItem.listId : 0
+
+    copyToClipboard(`${window.location.origin}/${getLocale()}/lists/${id}`, "link")
   }
 }

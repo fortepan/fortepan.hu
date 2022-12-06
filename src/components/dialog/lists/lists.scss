@@ -158,3 +158,21 @@
 .dialog-lists__delete-title {
   color: $red;
 }
+
+.dialog-lists__privacy-switch {
+  margin-top: 2rem;
+
+  .dialog-lists__switch-container {
+    display: flex;
+    align-items: center;
+
+    h5 {
+      margin: 0;
+      flex-basis: calc(100% - 3rem);
+    }
+  }
+
+  .input-wrapper__label {
+    margin: rem(4px) 0 0 0;
+  }
+}

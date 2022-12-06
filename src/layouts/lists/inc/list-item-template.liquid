@@ -15,7 +15,12 @@
       </div>
     </div>
     <div class="lists__item__meta">
-      <h5><a href="#" class="lists__item__title" data-action="click->lists#openList"></a></h5>
+      <h5>
+        <i class="lists-private-icon" title="{{ lang[locale].list_edit_private }}">
+          {% inlineSVG src:"src/static/images/icons/24/icon-lock.svg" %}
+        </i>
+        <a href="#" class="lists__item__title" data-action="click->lists#openList"></a>
+      </h5>
       {% include ./inc/context-menu controller:"lists" %}
       <div class="lists__item__description"></div>
     </div>

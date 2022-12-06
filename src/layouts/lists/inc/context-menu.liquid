@@ -1,4 +1,4 @@
-<div class="context-menu context-menu--lists" data-action="mouseleave->{{ controller }}#hideAllContextMenu">
+<div class="context-menu context-menu--lists hidden-when-public" data-action="mouseleave->{{ controller }}#hideAllContextMenu">
 {% if role == "list-photos-edit" %}
   <a href="#" class="context-menu--lists__link"
     data-action="click->{{ controller }}#showContextMenu"
@@ -16,12 +16,14 @@
     <a href="#" class="header-nav__link"
     data-action="click->{{ controller }}#removePhoto">{{ lang[locale].list_remove_from }}</a>
   {% else %}
-    <a href="#" class="header-nav__link header-nav__link--top{% if role == "list-photos-edit" %} header-nav__link--separator-after{% endif %}"
-    data-action="click->{{ controller }}#jumpToPhotos">{{ lang[locale].list_add_photos }}</a>
     {% unless role == "list-photos-edit" %}
-    <a href="#" class="header-nav__link header-nav__link--top header-nav__link--separator-after"
+    <a href="#" class="header-nav__link header-nav__link--top"
     data-action="click->{{ controller }}#openList">{{ lang[locale].list_view }}</a>
     {% endunless %}
+    <a href="#" class="header-nav__link header-nav__link--top header-nav__link--copy-url"
+    data-action="click->{{ controller }}#shareLink">{{ lang[locale].list_copy_link }}</a>
+    <a href="#" class="header-nav__link header-nav__link--top header-nav__link--separator-after"
+    data-action="click->{{ controller }}#jumpToPhotos">{{ lang[locale].list_add_photos }}</a>
     <a href="#" class="header-nav__link header-nav__link--top"
     data-action="click->{{ controller }}#editList">{{ lang[locale].list_edit }}</a>
     <a href="#" class="header-nav__link header-nav__link--top"

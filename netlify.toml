@@ -30,6 +30,12 @@
   force = true
 
 [[redirects]]
+  from = "/:lang/lists"
+  to = "/:lang/lists/"
+  status = 200
+  force = true
+
+[[redirects]]
   from = "/:lang/lists/*"
   to = "/:lang/lists/"
   status = 200

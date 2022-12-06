@@ -5,6 +5,20 @@
     display: block;
   }
 
+  .visible-when-public {
+    display: none;
+  }
+
+  &.is-public {
+    .hidden-when-public {
+      display: none !important;
+    }
+
+    .visible-when-public {
+      display: initial;
+    }
+  }
+
   &,
   &.photos {
     padding: rem(104px) rem(24px) rem(96px);
@@ -57,8 +71,32 @@
 }
 
 .list-title {
-  .photos-title__label {
-    margin-right: rem(4px);
+  .photos-title {
+    &__username {
+      @include font-heading-demi();
+      font-size: rem(18px);
+
+      opacity: 0.3;
+    }
+
+    /* &__title {
+      margin-bottom: 0.1em;
+    } */
+
+    &__label {
+      margin-right: rem(4px);
+    }
+
+    &__subtitle {
+      .lists-private-icon {
+        font-style: normal;
+
+        svg {
+          display: inline-block;
+          vertical-align: top;
+        }
+      }
+    }
   }
 
   .context-menu--lists {
