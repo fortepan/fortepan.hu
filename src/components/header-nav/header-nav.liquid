@@ -82,7 +82,8 @@
     <a class="header-nav__link header-nav__link--top" href="https://hetifortepan.capacenter.hu{% if locale == "en" %}/{{locale}}{% endif %}" target="_blank">{{ lang[locale].weekly_fortepan }}</a>
     <a class="header-nav__link header-nav__link--top" href="https://forum.index.hu/Article/showArticle?t=9204653" target="_blank">{{ lang[locale].forum }}</a>
     <a class="header-nav__link header-nav__link--top" href="https://www.facebook.com/FortepanArchivum/" target="_blank">Facebook</a>
-    <a class="header-nav__link header-nav__link--top header-nav__link--separator-after" href="https://www.instagram.com/fortepan/" target="_blank">Instagram</a>
+    <a class="header-nav__link header-nav__link--top" href="https://www.instagram.com/fortepan/" target="_blank">Instagram</a>
+    <a class="header-nav__link header-nav__link--top header-nav__link--separator-after" href="/{{ locale }}/projects/">{{ lang[locale].projects }}</a>
     <a class="header-nav__link" href="mailto:fortepan@gmail.com">{{ lang[locale].contact_us }}</a>
     <a class="header-nav__link header-nav__link--desktop-only" href="/{{ locale }}/privacy/">{{ lang[locale].privacy_policy }}</a>
     <div class="header-nav__link--hide-on-desktop">
@@ -134,7 +135,7 @@
           <h5 class="header-nav__notifications__message__title">{{ notification.title }}</h5>
           <span class="header-nav__notifications__message__date">{% date notification.date, locale %}</span>
         </header>
-        <p class="header-nav__notifications__message__content">{{ notification.message | markdownify }}</p>
+        <p class="header-nav__notifications__message__content">{{ notification.message }}</p>
       </li>
       {% endif %}
       {% endfor %}

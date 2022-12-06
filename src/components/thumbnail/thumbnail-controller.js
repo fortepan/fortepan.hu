@@ -1,7 +1,7 @@
 import { Controller } from "stimulus"
 
 import config from "../../data/siteConfig"
-import { trigger, lang, isElementInViewport } from "../../js/utils"
+import { trigger, lang, isElementInViewport, getLocale, getImgAltText } from "../../js/utils"
 import photoManager from "../../js/photo-manager"
 import listManager from "../../js/list-manager"
 import { appState } from "../../js/app"
@@ -9,7 +9,7 @@ import { appState } from "../../js/app"
 const THUMBNAIL_HEIGHT = 160
 export default class extends Controller {
   static get targets() {
-    return ["image", "container", "description", "location"]
+    return ["link", "image", "container", "description", "location"]
   }
 
   connect() {
@@ -19,6 +19,10 @@ export default class extends Controller {
 
     // add stimulus class reference to node
     this.element.photosThumbnail = this
+
+    this.linkTarget.addEventListener("click", e => {
+      if (e) e.preventDefault()
+    })
 
     // apply element data & setting up loading event listeners
     this.initThumbnail()
@@ -90,10 +94,17 @@ export default class extends Controller {
         ? listManager.getListPhotoById(listManager.getSelectedListId(), this.element.photoId)
         : photoManager.getPhotoDataByID(this.element.photoId)
 
+    this.linkTarget.href =
+      this.role === "lists"
+        ? `/${getLocale()}/lists/${listManager.getSelectedListId()}/photos/${this.element.photoId}`
+        : `/${getLocale()}/photos/?id=${this.element.photoId}`
+
     const locationArray = [data.year, data.city, data.place]
     if (!data.city && !data.place && data.country) locationArray.push(data.country)
     this.locationTarget.textContent = locationArray.filter(Boolean).join(" · ")
     this.descriptionTarget.textContent = data.description || ""
+
+    this.imageTarget.alt = getImgAltText(data)
 
     // fading the thumbnail in after displaying it
     Promise.resolve(true).then(() => {

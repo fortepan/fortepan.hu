@@ -1,0 +1,35 @@
+.projects {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.project-item {
+  margin-bottom: 6rem;
+}
+
+.project-title + .project-date {
+  margin-top: -1.5rem;
+}
+
+.project-funding {
+  .project-logo {
+    margin-top: 3rem;
+
+    img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .theme--dark & img {
+      padding: rem(12px);
+      background-color: $light-base;
+      border-radius: rem(3px);
+    }
+  }
+
+  .project-funding-info {
+    margin-top: 1.5rem;
+  }
+}

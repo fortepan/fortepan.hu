@@ -57,6 +57,24 @@
   &.is-failed-loading {
     display: none;
   }
+
+  &__link {
+    display: block;
+
+    text-decoration: none;
+
+    .theme--light & {
+      color: $dark-base;
+    }
+
+    .theme--dark & {
+      color: $light-base;
+    }
+
+    .no-image & {
+      cursor: default;
+    }
+  }
 }
 
 .photos-thumbnail__image {

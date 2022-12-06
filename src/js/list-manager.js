@@ -179,6 +179,20 @@ const selectPrevPhoto = () => {
   return selectPhotoById(listData.selectedList.id, listData.selectedList.photos[i].id)
 }
 
+const getNextPhotoId = () => {
+  if (getSelectedPhotoIndex() === listData.selectedList.photos.length - 1) return null
+
+  const i = Math.min(getSelectedPhotoIndex() + 1, listData.selectedList.photos.length - 1)
+  return listData.selectedList.photos[i].id
+}
+
+const getPrevPhotoId = () => {
+  if (getSelectedPhotoIndex() === 0) return null
+
+  const i = Math.max(getSelectedPhotoIndex() - 1, 0)
+  return listData.selectedList.photos[i].id
+}
+
 const clearAllData = () => {
   // if the context of the search has changed destroy all photo data
   delete listData.lists
@@ -370,4 +384,6 @@ export default {
   deletePhotoFromList,
   getContainingLists,
   loadPublicListDataById,
+  getNextPhotoId,
+  getPrevPhotoId,
 }

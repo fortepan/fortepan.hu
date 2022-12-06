@@ -20,19 +20,19 @@
 
         {% include loader/loader.liquid class:"carousel__photos__loader is-delayed" id:"loaderCarousel" %}
 
-        <div class="button-circular button-circular--has-background carousel__photos__pager carousel__photos__pager--left disable"
-          data-carousel-target="pager"
+        <a href="#" class="button-circular button-circular--has-background carousel__photos__pager carousel__photos__pager--left is-disabled"
+          data-carousel-target="pagerPrev"
           data-action="click->carousel#showPrevPhoto">
             {% inlineSVG src:"src/static/images/icons/24/icon-previous.svg" class:"button-circular__icon" %}
             <div class="button-circular__label">{{ lang[locale].prev }}</div>
-        </div>
+        </a>
 
-        <div class="button-circular button-circular--has-background carousel__photos__pager carousel__photos__pager--right disable"
-          data-carousel-target="pager"
+        <a href="#" class="button-circular button-circular--has-background carousel__photos__pager carousel__photos__pager--right is-disabled"
+          data-carousel-target="pagerNext"
           data-action="click->carousel#showNextPhoto">
             {% inlineSVG src:"src/static/images/icons/24/icon-next.svg" class:"button-circular__icon" %}
             <div class="button-circular__label">{{ lang[locale].next }}</div>
-        </div>
+        </a>
 
         <div class="carousel__photos__all" data-carousel-target="photos"></div>
 

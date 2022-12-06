@@ -3,16 +3,15 @@ layout: home/home.liquid
 title: Fortepan — Home
 permalink: "/en/"
 announcement:
-  title: "<strong>TWO AUTHORS - TWO THOUSAND IMAGES</strong>"
+  title: "<strong>THE PHOTOS OF JÓZSEF HORVÁTH CAMERAMAN</strong>"
   caption: New Collection
-  cover_image: "262356"
-  blurb: "<br>The most important photos from two legacies, those of György Faragó,
-    photo journalist, and of Krisztián Gyulai Gaál, director of photography, respectively.Two
-    thousand photos from the Communist period, on football fields, hikers, concerts
-    and friends. Everyday life and propaganda, through the cameras of two photographers,
-    both with a personal touch of their own kind."
+  cover_image: "265600"
+  blurb: "<br>1300 photographs from the legacy of a filmmaker. Hungary in the middle
+    of the grim, fateful 20th century, through the camera of a correspondent with
+    a personal touch. Shifting borders, the defeat of the Hungarian army at the river
+    Don, and the family stories of József Horváth in black and white and colour."
   actions:
-  - label: 100 favorites
+  - label: 90 favorites
     style: primary
     url: https://fortepan.hu/en/photos/?latest&tag=best%20of
   - label: All Collection

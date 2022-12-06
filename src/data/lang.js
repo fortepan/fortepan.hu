@@ -144,6 +144,7 @@ module.exports = {
       cancel_label: "Nem múltam el 18 éves",
       remove_action_label: "Megtekintés",
     },
+    projects: "Projektek",
   },
   en: {
     about_us: "About us",
@@ -290,5 +291,6 @@ module.exports = {
       cancel_label: "I'm not 18 yet",
       remove_action_label: "Show",
     },
+    projects: "Projects",
   },
 }

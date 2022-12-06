@@ -3,19 +3,18 @@ layout: home/home.liquid
 title: Fortepan — Főoldal
 permalink: "/"
 announcement:
-  title: "<strong>KÉT SZERZŐ - KÉTEZER KÉP</strong>"
+  title: "<strong>HORVÁTH JÓZSEF OPERATŐR, HADITUDÓSÍTÓ KÉPEI</strong>"
   caption: Új sorozat
-  cover_image: "262320"
-  blurb: Faragó György fotóriporter és Gyulai Gaál Krisztián operatőr hagyatékának
-    legfontosabb képei. Kétezer fotó a szocializmus időszakából, futballpályákról,
-    áruházakról, kirándulásokról, koncertekről és barátokról. Hétköznapok és propaganda
-    két személyes hangú fotós kameráján keresztül.
+  cover_image: "265600"
+  blurb: 1300 fotó egy filmes hagyatékából. Magyarország a vészterhes XX. század közepén,
+    egy személyes hangú tudósító kameráján keresztül. A határrevíziók, a Doni katasztrófa
+    és Horváth József családi történetei, fekete-fehérben és színesben.
   actions:
-  - label: 100 fontos kép
+  - label: 90 fontos kép
     style: primary
     url: https://fortepan.hu/hu/photos/?latest&tag=best%20of
-  - label: A teljes sorozat
-    style: light-transparent
+  - label: a teljes sorozat
+    style: primary
     url: https://fortepan.hu/hu/photos/?latest
 
 ---

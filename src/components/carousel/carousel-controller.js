@@ -1,14 +1,14 @@
 import { Controller } from "stimulus"
 
 import config from "../../data/siteConfig"
-import { trigger, lang, isTouchDevice } from "../../js/utils"
+import { trigger, lang, isTouchDevice, getImgAltText, getLocale } from "../../js/utils"
 import { setAppState, removeAppState, appState } from "../../js/app"
 import photoManager from "../../js/photo-manager"
 import listManager from "../../js/list-manager"
 
 export default class extends Controller {
   static get targets() {
-    return ["background", "pager", "photo", "photos", "photosContainer"]
+    return ["background", "pagerPrev", "pagerNext", "photo", "photos", "photosContainer"]
   }
 
   connect() {
@@ -18,6 +18,9 @@ export default class extends Controller {
 
     this.slideshowTimeout = 0
     this.touchTimeout = 0
+
+    this.prevPhotoId = null
+    this.nextPhotoId = null
 
     if (isTouchDevice()) setAppState("is-touch-device")
   }
@@ -87,6 +90,8 @@ export default class extends Controller {
           ? listManager.getListPhotoById(listManager.getSelectedListId(), id)
           : photoManager.getPhotoDataByID(id)
 
+      photo.altText = getImgAltText(photoData)
+
       if (this.role === "lists" && !photoData.isDataLoaded) {
         photo.noImage = true
         photo.classList.add("image-loader--no-image", "is-active")
@@ -140,38 +145,58 @@ export default class extends Controller {
     }
   }
 
-  togglePager() {
+  setPagers() {
+    this.pagerPrevTarget.href =
+      this.role === "lists"
+        ? `/${getLocale()}/lists/${listManager.getSelectedListId()}/photos/${this.prevPhotoId}`
+        : `/${getLocale()}/photos/?id=${this.prevPhotoId}`
+
+    this.pagerNextTarget.href =
+      this.role === "lists"
+        ? `/${getLocale()}/lists/${listManager.getSelectedListId()}/photos/${this.nextPhotoId}`
+        : `/${getLocale()}/photos/?id=${this.nextPhotoId}`
+
     const total =
       this.role === "lists" ? listManager.getSelectedList().photos.length : photoManager.getTotalPhotoCountInContext()
-    // keep pager disabled if there's only one photo thumbnail in the photos list
-    this.pagerTargets.forEach(pager => {
-      pager.classList.toggle("disable", total === 1)
-    })
+
+    this.pagerPrevTarget.classList.toggle("is-disabled", total === 1 || !this.prevPhotoId)
+    this.pagerNextTarget.classList.toggle("is-disabled", total === 1 || !this.nextPhotoId)
   }
 
-  showPhoto(e, photoId) {
+  async showPhoto(e, photoId) {
     const id = e && e.detail && e.detail.data ? e.detail.data.mid : photoId
 
     if (id) {
+      if (!this.element.classList.contains("is-visible")) this.show()
+
       this.hideAllPhotos()
       this.hideLargePhotoView()
+
+      trigger("loader:show", { id: "loaderCarousel" })
+
+      // get the next and previous photo id for SEO
+      // in the case of photos this will also triggering the load the previous and the next 40 photo data if needed
+      // and will cause to fill the photo list in the background too
+      this.prevPhotoId = this.role === "lists" ? listManager.getPrevPhotoId() : await photoManager.getPrevPhotoId()
+      this.nextPhotoId = this.role === "lists" ? listManager.getNextPhotoId() : await photoManager.getNextPhotoId()
+
+      trigger("loader:hide", { id: "loaderCarousel" })
+
       this.setCarouselBackground(id)
       this.loadPhoto(id)
-      this.togglePager()
+      this.setPagers()
 
       trigger("carouselSidebar:init")
       trigger("dialogDownload:init")
       trigger("dialogShare:init")
 
-      if (!this.element.classList.contains("is-visible")) {
-        this.show()
-      }
-
       trigger("photosCarousel:photoSelected", { photoId: id })
     }
   }
 
-  async showNextPhoto() {
+  async showNextPhoto(e) {
+    if (e) e.preventDefault()
+
     // hide dialogs
     trigger("dialogs:hide")
 
@@ -192,7 +217,9 @@ export default class extends Controller {
     trigger("photos:selectThumbnail", { index })
   }
 
-  async showPrevPhoto() {
+  async showPrevPhoto(e) {
+    if (e) e.preventDefault()
+
     // hide dialogs
     trigger("dialogs:hide")
 
@@ -373,6 +400,7 @@ export default class extends Controller {
         const container = document.createElement("div")
         container.dataset.controller = "image-loader"
         container.className = "large-image-loader"
+        container.altText = photo.altText
 
         photo.appendChild(container)
         photo.largePhoto = container

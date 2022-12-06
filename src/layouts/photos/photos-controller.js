@@ -52,6 +52,7 @@ export default class extends Controller {
     if (
       !this.thumbnailsLoading &&
       this.thumbnailsCount > 0 &&
+      !document.querySelector(".carousel").classList.contains("is-visible") &&
       ((this.element.scrollTop + this.element.offsetHeight >= this.element.scrollHeight - 150 &&
         !photoManager.getLastPhotoDataInContext()) ||
         (this.element.scrollTop <= 0 && !photoManager.getFirstPhotoDataInContext()))
@@ -84,7 +85,7 @@ export default class extends Controller {
     }
 
     // don't set the year if the carousel is open and it is controlling the timeline component
-    const carouselElement = document.querySelector(".photos-carousel")
+    const carouselElement = document.querySelector(".carousel")
 
     if (!carouselElement || (carouselElement && !carouselElement.classList.contains("is-visible"))) {
       let year = -1
@@ -281,14 +282,8 @@ export default class extends Controller {
           return
         }
 
-        // open carousel if @id parameter is present in the url's query string
         if (getURLParams().id > 0) {
-          // load the next photos to fill up the grid in the background
-          if (this.thumbnailsCount < 2) {
-            photoManager.loadMorePhotoDataInContext()
-          }
-
-          // show carousel with an image
+          // open carousel if @id parameter is present in the url's query string
           const selectedPhoto = photoManager.selectPhotoById(getURLParams().id)
           trigger("photosThumbnail:select", { data: selectedPhoto.data })
         } else {
@@ -355,6 +350,8 @@ export default class extends Controller {
     if (this.selectedThumbnail) {
       this.scrollToSelectedThumbnail()
     }
+
+    this.onScroll()
   }
 
   // event listener for timeline:yearSelected

@@ -109,6 +109,22 @@ export const setPageMeta = (title, description, imgSrc) => {
   }
 }
 
+export const getImgAltText = data => {
+  return [
+    data.country,
+    data.place,
+    data.city,
+    data.description,
+    data.year,
+    data.donor,
+    data.author,
+    (data.tags || []).join(", "),
+    data.mid ? `Fortepan #${data.mid}` : false,
+  ]
+    .filter(Boolean)
+    .join(", ")
+}
+
 export const onClassChange = (node, callback) => {
   const classObserver = new window.MutationObserver(() => {
     callback(node)
