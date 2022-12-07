@@ -5,10 +5,10 @@ permalink: "/"
 announcement:
   title: "<strong>50 ADOMÁNYOZÓ 5000 FÉNYKÉPE A FORTEPAN ÚJ KIADÁSÁBAN</strong>"
   caption: Új sorozat
-  cover_image: "264213"
+  cover_image: "263195"
   blurb: 'Mit láttunk a múltból 2022-ben? Családok, fényképészek és gyűjtők legfontosabb
-    képei a személyes válogatásunkban. Egy évszázad százféle nézőpontból, 5000 "sosemlátott
-    fotón". '
+    képei a mi személyes válogatásunkban. Egy évszázad százféle nézőpontból, 5000
+    "sosemlátott fotón". '
   actions:
   - label: 200 fontos kép
     style: primary
