@@ -5,7 +5,7 @@ permalink: "/en/"
 announcement:
   title: "<strong>THE PHOTOS OF JÓZSEF HORVÁTH CAMERAMAN</strong>"
   caption: New Collection
-  cover_image: "264189"
+  cover_image: "264407"
   blurb: "<br>1300 photographs from the legacy of a filmmaker. Hungary in the middle
     of the grim, fateful 20th century, through the camera of a correspondent with
     a personal touch. Shifting borders, the defeat of the Hungarian army at the river
