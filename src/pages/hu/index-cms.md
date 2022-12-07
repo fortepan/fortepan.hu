@@ -10,7 +10,7 @@ announcement:
     egy személyes hangú tudósító kameráján keresztül. A határrevíziók, a Doni katasztrófa
     és Horváth József családi történetei, fekete-fehérben és színesben.
   actions:
-  - label: 90 fontos kép
+  - label: 200 fontos kép
     style: primary
     url: https://fortepan.hu/hu/photos/?latest&tag=best%20of
   - label: a teljes sorozat
