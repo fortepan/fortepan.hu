@@ -3,15 +3,14 @@ layout: home/home.liquid
 title: Fortepan — Home
 permalink: "/en/"
 announcement:
-  title: "<strong>THE PHOTOS OF JÓZSEF HORVÁTH CAMERAMAN</strong>"
+  title: "<strong>50 DONORS, 5000 NEW IMAGES ON FORTEPAN</strong>"
   caption: New Collection
-  cover_image: "264407"
-  blurb: "<br>1300 photographs from the legacy of a filmmaker. Hungary in the middle
-    of the grim, fateful 20th century, through the camera of a correspondent with
-    a personal touch. Shifting borders, the defeat of the Hungarian army at the river
-    Don, and the family stories of József Horváth in black and white and colour."
+  cover_image: "257518"
+  blurb: What was we happened to see of the past in 2022? Paramount photos of families,
+    photographers, collectors, selected by the Fortepan team. A century, glanced from
+    a hundred points of view, on 5000 photos “hitherto never seen”
   actions:
-  - label: 90 favorites
+  - label: 230 favorites
     style: primary
     url: https://fortepan.hu/en/photos/?latest&tag=best%20of
   - label: All Collection
