@@ -10,7 +10,7 @@ announcement:
     képei a személyes válogatásunkban. Egy évszázad százféle nézőpontból, 5000 "sosemlátott
     fotón". Ime a legfrissebb emlékeink.
   actions:
-  - label: 200 fontos kép
+  - label: 230 fontos kép
     style: primary
     url: https://fortepan.hu/hu/photos/?latest&tag=best%20of
   - label: a teljes sorozat
