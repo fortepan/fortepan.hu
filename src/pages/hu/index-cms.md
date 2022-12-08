@@ -7,8 +7,8 @@ announcement:
   caption: Új sorozat
   cover_image: "264407"
   blurb: Mit kaptunk a múltból 2022-ben? Családok, fotósok és gyűjtők legfontosabb
-    képei a mi személyes válogatásunkban. Egy évszázad százféle nézőpontból, 5000
-    "sosemlátott fotón".
+    képei a személyes válogatásunkban. Egy évszázad százféle nézőpontból, 5000 "sosemlátott
+    fotón". Ime a legfrissebb emlékeink.
   actions:
   - label: 200 fontos kép
     style: primary
