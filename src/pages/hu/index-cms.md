@@ -13,7 +13,7 @@ announcement:
   - label: 230 fontos kép
     style: primary
     url: https://fortepan.hu/hu/photos/?latest&tag=best%20of
-  - label: a teljes sorozat
+  - label: A teljes sorozat
     style: primary
     url: https://fortepan.hu/hu/photos/?latest
 
