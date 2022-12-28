@@ -14,7 +14,7 @@ announcement:
     style: primary
     url: https://fortepan.hu/en/photos/?latest&tag=best%20of
   - label: All Collection
-    style: light-transparent
+    style: primary
     url: https://fortepan.hu/en/photos/?latest
 
 ---
