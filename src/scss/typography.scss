@@ -35,6 +35,14 @@ h1,
   }
 }
 
+h2,
+.h2 {
+  font-size: rem(36px);
+  line-height: 1.1;
+  @include font-heading-bold();
+  letter-spacing: -1px;
+}
+
 h3,
 .h3 {
   font-size: rem(28px);
@@ -81,4 +89,8 @@ p a {
 
 .text-small {
   font-size: rem(12px);
+}
+
+.text-secondary {
+  opacity: 0.64;
 }

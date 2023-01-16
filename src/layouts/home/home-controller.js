@@ -17,8 +17,12 @@ export default class extends Controller {
       bgIds = this.heroBgTarget.dataset.bgId.split(",")
     }
 
-    this.loadBackgroundImage()
-    this.getTotalItemsNumber()
+    if (!this.once) {
+      this.loadBackgroundImage()
+      this.getTotalItemsNumber()
+
+      this.once = true
+    }
   }
 
   /**
@@ -49,8 +53,17 @@ export default class extends Controller {
     // request loading photos through the photoManager module
     // to get the functionalities the timeline requires
     await photoManager.loadPhotoData(params)
+
+    // load the previous and next photos too
+    await photoManager.loadMorePhotoDataInContext()
+    await photoManager.loadMorePhotoDataInContext(true)
+
     // select the photo by the id to get the right date displayed on the timeline
     photoManager.selectPhotoById(id)
+
+    const photoData = photoManager.getData().result
+
+    // generate the thumbnails
 
     this.element.querySelector(".photos-timeline").classList.add("is-visible")
   }

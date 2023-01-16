@@ -94,6 +94,10 @@ const hasData = () => {
   return photoData.result && photoData.result.items && photoData.result.items.length
 }
 
+const getData = () => {
+  return photoData
+}
+
 const getPhotoDataByID = id => {
   let data = null
   if (photoData.result && photoData.result.items && photoData.result.items.length) {
@@ -542,6 +546,7 @@ const clearAllData = () => {
 export default {
   loadPhotoData,
   hasData,
+  getData,
   getSelectedPhotoId,
   getSelectedPhotoData,
   getSelectedPhotoIndex,
