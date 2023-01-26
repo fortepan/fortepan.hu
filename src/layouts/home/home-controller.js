@@ -83,6 +83,9 @@ export default class extends Controller {
 
       // apply year data to node
       thumbnail.year = item.year
+
+      // forcing to display the thumbnail always in small
+      thumbnail.forceSmallSize = true
     })
 
     this.element.querySelector(".photos-timeline").classList.add("is-visible")
