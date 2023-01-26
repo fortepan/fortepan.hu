@@ -58,33 +58,6 @@ layout: base/base.liquid
       <div class="home__intro__text">{{ content }}</div>
     </div>
 
-    <div class="home__usp home__usp--collections">
-      <div class="home__usp__header">
-        <h2>{{ best_of_collections.title }}</h2>
-        <p class="text-medium">{{ best_of_collections.caption }}</p>
-      </div>
-
-      <ul class="home__usp__list">
-        {% assign count = 0 %}
-        {% for collection in best_of_collections.content %}
-        {% if count < 3 %}
-        {% assign count = count | plus: 1 %}
-        <li class="list-item" data-action="click->home#onUspItemClick">
-          <div class="list-item__cover">
-            <div class="list-item__photo">
-              <img src="{{ siteConfig.PHOTO_SOURCE }}480/fortepan_{{ collection.cover_image }}.jpg" alt="{{ collection.title }}">
-            </div>
-            <div class="list-item__cover-overlay"><span class="h1">{{ collection.counter }}</span></div>
-          </div>
-          <div class="list-item__meta">
-            <h5><a href="{{ collection.url }}" class="list-item__title">{{ collection.title }}</a></h5>
-          </div>
-        </li>
-        {% endif %}
-        {% endfor %}
-      </ul>
-    </div>
-
     <div class="home__usp home__usp--blog-summary">
       <div class="home__usp__header">
         <h2>{{ blog.title }}</h2>
