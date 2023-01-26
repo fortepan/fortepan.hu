@@ -4,7 +4,15 @@ layout: base/base.liquid
 
 {% include header-nav/header-nav.liquid hide_search:true header_class:"header-nav--transparent" %}
 
-<div class="home scrollview" data-controller="home" data-action="timeline:yearSelected@document->home#onYearSelected timeline:stopDrag@document->home#onYearSelected">
+<div class="home scrollview" data-controller="home"
+  data-action="timeline:yearSelected@document->home#onYearSelected
+               timeline:stopDrag@document->home#onYearSelected
+               scroll->home#onScroll
+               resize@window->home#onScroll
+               resize@window->home#resizeThumbnails
+               thumbnail:loaded@document->home#centerSelectedThumbnail
+               photosThumbnail:select@document->home#onThumbnailClicked"
+>
   <section class="home__hero">
     <div class="home__announcement">
         <div class="home__announcement__caption caption">{{ announcement.caption }}</div>
@@ -26,7 +34,9 @@ layout: base/base.liquid
 
   <section class="home__photos">
     {% include timeline/timeline.liquid %}
+    <div class="home__thumbnails-wrapper"><div class="home__thumbnails" data-home-target="thumbnails"></div></div>
   </section>
+
 
   <section class="home__content">
     <div class="home__search-wrapper">
@@ -59,7 +69,7 @@ layout: base/base.liquid
         {% for collection in best_of_collections.content %}
         {% if count < 3 %}
         {% assign count = count | plus: 1 %}
-        <li class="list-item">
+        <li class="list-item" data-action="click->home#onUspItemClick">
           <div class="list-item__cover">
             <div class="list-item__photo">
               <img src="{{ siteConfig.PHOTO_SOURCE }}480/fortepan_{{ collection.cover_image }}.jpg" alt="{{ collection.title }}">
@@ -86,7 +96,7 @@ layout: base/base.liquid
         {% for blog in blogContent[locale] %}
         {% if count < 4 %}
         {% assign count = count | plus: 1 %}
-        <li class="list-item">
+        <li class="list-item" data-action="click->home#onUspItemClick">
           <div class="list-item__cover">
             <div class="list-item__photo">
               <img src="{{ siteConfig.PHOTO_SOURCE }}480/fortepan_{{ blog.cover_image }}.jpg" alt="{{ blog.title }}">
@@ -101,27 +111,33 @@ layout: base/base.liquid
         {% endif %}
         {% endfor %}
       </ul>
+
+      <div class="home__usp__action">
+        <a href="{{ blog.action.url }}" class="button button--medium button--primary" target="_blank">
+            <span>{{ blog.action.label }}</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="10" viewBox="0 0 14 10">
+              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2,6 L6,10 L10,6 M6,-2 L6,9" transform="rotate(-90 7 4)"/>
+            </svg>
+          </a>
+      </div>
     </div>
 
-    <div class="home__usp home__usp--latest-photos">
+    <div class="home__usp home__usp--latest-photos" data-home-target="latest">
       <div class="home__usp__header">
-        <h2>Friss feltöltések</h2>
-        <p class="text-medium">Egy-két havonta frissítjük oldalunkat kb. 2-3000 képpel, amelyekben gyakran sok adományozó családi fotói keverednek, de előfordul, hogy egy szerző vagy egy cég fotódokumentációja kerül fel egyben az oldalra.</p>
+        <h2>{{ latest.title }}</h2>
+        <p class="text-medium">{{ latest.caption }}</p>
       </div>
 
-      <ul class="home__usp__list">
-        <li class="list-item">
-          <div class="list-item__cover">
-            <div class="list-item__photo">
-              <img src="" alt="Kétszáz legjobb képünk">
-            </div>
-          </div>
-          <div class="list-item__meta">
-            <h5><a href="#" class="list-item__title">Kétszáz legjobb képünk</a></h5>
-            <div class="list-item__description"></div>
-          </div>
-        </li>
-      </ul>
+      <div class="home__latest_thumbnails" data-home-target="latestThumbnails"></div>
+
+      <div class="home__usp__action">
+        <a href="{{ latest.action.url }}" class="button button--medium button--primary">
+            <span>{{ latest.action.label }}</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="10" viewBox="0 0 14 10">
+              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2,6 L6,10 L10,6 M6,-2 L6,9" transform="rotate(-90 7 4)"/>
+            </svg>
+          </a>
+      </div>
     </div>
   </section>
 
