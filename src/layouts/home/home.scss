@@ -243,6 +243,14 @@
   @media screen and (min-width: $breakpoint-phone) {
     padding-top: 0.5rem;
   }
+
+  .photos-thumbnail {
+    min-width: rem(192px * 2 / 3);
+  }
+
+  .photos-thumbnail__image {
+    height: rem(160px * 2 / 3);
+  }
 }
 
 .home__usp {
