@@ -48,19 +48,21 @@ export default class extends Controller {
       return
     }
 
-    let selectedPhotoData
+    let selectedPhotoData = this.element.photoData
     let index
 
-    if (this.role === "lists") {
-      selectedPhotoData = listManager.selectPhotoById(listManager.getSelectedListId(), this.element.photoId)
-      index = listManager.getSelectedPhotoIndex()
+    if (!selectedPhotoData) {
+      if (this.role === "lists") {
+        selectedPhotoData = listManager.selectPhotoById(listManager.getSelectedListId(), this.element.photoId)
+        index = listManager.getSelectedPhotoIndex()
 
-      if (!selectedPhotoData.isDataLoaded) {
-        return
+        if (!selectedPhotoData.isDataLoaded) {
+          return
+        }
+      } else {
+        selectedPhotoData = photoManager.selectPhotoById(this.element.photoId).data
+        index = photoManager.getSelectedPhotoIndex()
       }
-    } else {
-      selectedPhotoData = photoManager.selectPhotoById(this.element.photoId).data
-      index = photoManager.getSelectedPhotoIndex()
     }
 
     // select thumbnail in photos list
@@ -89,10 +91,13 @@ export default class extends Controller {
 
   initThumbnail() {
     // applying thumbnail meta data
-    const data =
-      this.role === "lists"
-        ? listManager.getListPhotoById(listManager.getSelectedListId(), this.element.photoId)
-        : photoManager.getPhotoDataByID(this.element.photoId)
+    let data = this.element.photoData
+
+    if (!data)
+      data =
+        this.role === "lists"
+          ? listManager.getListPhotoById(listManager.getSelectedListId(), this.element.photoId)
+          : photoManager.getPhotoDataByID(this.element.photoId)
 
     this.linkTarget.href =
       this.role === "lists"
