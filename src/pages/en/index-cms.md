@@ -33,6 +33,15 @@ best_of_collections:
 blog:
   title: "Weekly Fortepan blog"
   caption: "In this blog, updated weekly in Hungarian and fortnightly in English, we explore the background stories of the Fortepan photos and donors in richly illustrated articles. All our posts can be republished under a CC licence."
+  action:
+    label: "More Weekly Fortepan"
+    url: "https://hetifortepan.capacenter.hu/en/"
+latest:
+  title: "Recent uploads"
+  caption: "Every month or two, we update our site with around 2-3000 images, often mixing family photos of many donors, but sometimes a photo documentation of an author or a company is added to the archive."
+  action:
+    label: "All recent uploads"
+    url: "/en/photos/?latest"
 ---
 
 This website was launched in 2010 and it initially contained photographs found randomly in the streets of Budapest. The archive has expanded since then through donations from families, amateur and professional photographers, along with public collections. The images on the website are selected by editors.

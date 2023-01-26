@@ -1,7 +1,8 @@
 import { Controller } from "stimulus"
 
+import throttle from "lodash/throttle"
 import searchAPI from "../../api/search"
-import { getLocale, numberWithCommas } from "../../js/utils"
+import { getLocale, isElementInViewport, numberWithCommas } from "../../js/utils"
 import config from "../../data/siteConfig"
 import photoManager from "../../js/photo-manager"
 
@@ -9,7 +10,7 @@ let bgIds = [50563, 52724, 54176, 54178, 55558, 55617, 58473, 60057, 60155, 6049
 
 export default class extends Controller {
   static get targets() {
-    return ["heroBg", "total", "totalVal"]
+    return ["heroBg", "thumbnails", "total", "totalVal", "latest", "latestThumbnails"]
   }
 
   connect() {
@@ -17,12 +18,13 @@ export default class extends Controller {
       bgIds = this.heroBgTarget.dataset.bgId.split(",")
     }
 
-    if (!this.once) {
-      this.loadBackgroundImage()
-      this.getTotalItemsNumber()
+    this.loadBackgroundImage()
+    this.getTotalItemsNumber()
+    this.initUspImages()
 
-      this.once = true
-    }
+    // Throttle resize and scroll functions
+    this.onScroll = throttle(this.onScroll, 200)
+    this.resizeThumbnails = throttle(this.resizeThumbnails, 500)
   }
 
   /**
@@ -48,15 +50,17 @@ export default class extends Controller {
     const params = {
       id,
       from: 0, // needs to pass this to get years parameter back
+      size: 10,
+      exclude: [{ term: { cimke_search: "18+" } }, { term: { cimke_en_search: "18+" } }],
     }
 
     // request loading photos through the photoManager module
     // to get the functionalities the timeline requires
     await photoManager.loadPhotoData(params)
 
-    // load the previous and next photos too
+    // load the previous and next photos too - the # of photos is defined in params.size
     await photoManager.loadMorePhotoDataInContext()
-    await photoManager.loadMorePhotoDataInContext(true)
+    await photoManager.loadMorePhotoDataInContext(true) // passing true loads a set before the first
 
     // select the photo by the id to get the right date displayed on the timeline
     photoManager.selectPhotoById(id)
@@ -64,8 +68,65 @@ export default class extends Controller {
     const photoData = photoManager.getData().result
 
     // generate the thumbnails
+    photoData.items.forEach(item => {
+      // clone thumnail template
+      const template = document.getElementById("photos-thumbnail")
+      const thumbnail = template.content.firstElementChild.cloneNode(true)
+
+      this.thumbnailsTarget.appendChild(thumbnail)
+
+      // set thumnail node element index
+      thumbnail.index = Array.prototype.indexOf.call(thumbnail.parentElement.children, thumbnail) + 1
+
+      // apply photo id to node
+      thumbnail.photoId = item.mid
+
+      // apply year data to node
+      thumbnail.year = item.year
+    })
 
     this.element.querySelector(".photos-timeline").classList.add("is-visible")
+
+    // selecting the current thumbnail
+    this.element
+      .querySelectorAll(".photos-thumbnail")
+      [photoManager.getSelectedPhotoIndex()].classList.add("is-selected")
+
+    this.centerSelectedThumbnail()
+
+    Promise.resolve(true).then(() => {
+      this.onScroll()
+      this.resizeThumbnails()
+    })
+  }
+
+  async loadLatestPhotos() {
+    const data = await searchAPI.search({
+      from: 0,
+      latest: true,
+      size: 20,
+      exclude: [{ term: { cimke_search: "18+" } }, { term: { cimke_en_search: "18+" } }],
+    })
+
+    // generate the thumbnails
+    data.items.forEach(item => {
+      // clone thumnail template
+      const template = document.getElementById("photos-thumbnail")
+      const thumbnail = template.content.firstElementChild.cloneNode(true)
+
+      this.latestThumbnailsTarget.appendChild(thumbnail)
+
+      thumbnail.photoData = item
+
+      // set thumnail node element index
+      thumbnail.index = Array.prototype.indexOf.call(thumbnail.parentElement.children, thumbnail) + 1
+
+      // apply photo id to node
+      thumbnail.photoId = item.mid
+
+      // apply year data to node
+      thumbnail.year = item.year
+    })
   }
 
   /**
@@ -90,6 +151,90 @@ export default class extends Controller {
       } else {
         window.location = `/${getLocale()}/photos/?year=${e.detail.year}`
       }
+    }
+  }
+
+  // init USP list images
+  initUspImages() {
+    this.element.querySelectorAll(".home__usp__list .list-item__photo").forEach(item => {
+      const img = item.querySelector("img")
+
+      item.src = img.src
+      item.srcset = img.srcset
+
+      img.removeAttribute("src")
+      img.removeAttribute("srcset")
+
+      img.addEventListener("load", () => {
+        item.classList.remove("is-loading")
+        item.classList.add("is-loaded")
+      })
+
+      img.addEventListener("error", () => {
+        item.classList.remove("is-loading")
+        item.classList.add("has-error")
+      })
+    })
+  }
+
+  // USP list items click handler
+  onUspItemClick(e) {
+    if (e) {
+      e.preventDefault()
+      e.stopImmediatePropagation()
+
+      const link = e.currentTarget.querySelector("a")
+      if (link && link.href) {
+        if (link.target === "_blank") {
+          window.open(link.href, "_blank")
+        } else {
+          window.location = link.href
+        }
+      }
+    }
+  }
+
+  // auto-load new items when scrolling reaches the bottom of the page
+  onScroll() {
+    this.element.querySelectorAll(".photos-thumbnail:not(.is-loaded)").forEach(thumbnail => {
+      thumbnail.photosThumbnail.loadThumbnailImage()
+    })
+
+    this.element.querySelectorAll(".home__usp__list .list-item__photo:not(.is-loaded)").forEach(item => {
+      if (isElementInViewport(item, false) && item.src && !item.classList.contains("is-loading")) {
+        item.classList.add("is-loading")
+
+        const img = item.querySelector("img")
+        img.src = item.src
+        if (item.srcset) img.srcset = item.srcset
+      }
+    })
+
+    if (!this.latestLoaded && isElementInViewport(this.latestTarget, false)) {
+      this.loadLatestPhotos()
+      this.latestLoaded = true
+    }
+  }
+
+  // resize thumbnails when window gets resized
+  resizeThumbnails() {
+    this.element.querySelectorAll(".photos-thumbnail").forEach(thumbnail => {
+      thumbnail.photosThumbnail.resize()
+    })
+
+    this.centerSelectedThumbnail()
+  }
+
+  // centering the selected thumbnail
+  centerSelectedThumbnail() {
+    const thumb = this.thumbnailsTarget.querySelector(".photos-thumbnail.is-selected")
+    this.element.querySelector(".home__thumbnails-wrapper").scrollLeft =
+      thumb.offsetLeft - (window.innerWidth - thumb.offsetWidth) / 2
+  }
+
+  onThumbnailClicked(e) {
+    if (e?.detail?.data?.mid) {
+      window.location = `/${getLocale()}/photos/?id=${e?.detail?.data?.mid}`
     }
   }
 }

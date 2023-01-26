@@ -232,7 +232,21 @@
   }
 }
 
+.home__thumbnails-wrapper {
+  width: 100%;
+  overflow: hidden;
+}
+
+.home__thumbnails {
+  display: flex;
+
+  @media screen and (min-width: $breakpoint-phone) {
+    padding-top: 0.5rem;
+  }
+}
+
 .home__usp {
+  position: relative;
   padding: 4.5rem 0;
 
   @media screen and (max-width: ($breakpoint-phone - 1px)) {
@@ -252,6 +266,10 @@
 
 .home__usp__header {
   margin-bottom: rem(48px);
+
+  @media screen and (min-width: $breakpoint-tablet) {
+    margin-right: 33%;
+  }
 
   h2,
   p {
@@ -308,7 +326,7 @@
       overflow: hidden;
 
       .theme--light & {
-        background-color: $light-secondary;
+        background-color: $light-primary;
       }
 
       .theme--dark & {
@@ -355,6 +373,38 @@
         left: 0;
         width: 100%;
         height: 100%;
+        opacity: 0;
+
+        transition: opacity 0.8s $ease-out-expo;
+      }
+
+      &.is-loading {
+        &:after {
+          display: block;
+          content: "";
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          transform: translateX(-100%);
+
+          .theme--light & {
+            background: linear-gradient(90deg, transparent, rgba($dark-base, 0.03), transparent);
+          }
+
+          .theme--dark & {
+            background: linear-gradient(90deg, transparent, rgba($light-base, 0.03), transparent);
+          }
+
+          animation: skeleton-loading 1.8s $ease-out-quart infinite;
+        }
+      }
+
+      &.is-loaded {
+        img {
+          opacity: 1;
+        }
       }
     }
 
@@ -410,5 +460,55 @@
     @media screen and (max-width: ($breakpoint-phone - 1px)) {
       flex-basis: auto;
     }
+  }
+}
+
+.home__latest_thumbnails {
+  display: flex;
+  height: rem(232px * 2);
+  overflow: hidden;
+  flex-wrap: wrap;
+  margin: rem(-16px) rem(-8px) 0;
+
+  @media screen and (max-width: ($breakpoint-phone - 1px)) {
+    height: rem(178px * 3);
+  }
+
+  .photos-thumbnail__meta--description {
+    min-height: 1rem;
+  }
+}
+
+.home__usp__action {
+  margin-top: 4.5rem;
+  text-align: center;
+
+  @media screen and (max-width: ($breakpoint-phone - 1px)) {
+    margin-top: 3rem;
+  }
+
+  .button {
+    display: inline-block;
+
+    @media screen and (max-width: ($breakpoint-phone - 1px)) {
+      display: block;
+      text-align: center;
+    }
+  }
+
+  @media screen and (min-width: $breakpoint-tablet) {
+    position: absolute;
+    top: 4.5rem;
+    right: 0;
+    margin-top: 0;
+  }
+}
+
+@keyframes skeleton-loading {
+  66% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(100%);
   }
 }
