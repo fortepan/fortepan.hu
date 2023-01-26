@@ -212,6 +212,11 @@ const search = params => {
     // if there's a range set
     query.bool.must.push(range)
 
+    // if there's exclusions
+    if (params.exclude) {
+      query.bool.must_not = params.exclude
+    }
+
     const body = {
       size: params.size || 30,
       sort,
