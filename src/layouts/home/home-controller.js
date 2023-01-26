@@ -154,7 +154,7 @@ export default class extends Controller {
     }
   }
 
-  // init USP list images
+  // init USP list images (lazyload)
   initUspImages() {
     this.element.querySelectorAll(".home__usp__list .list-item__photo").forEach(item => {
       const img = item.querySelector("img")
