@@ -74,7 +74,7 @@ export default class extends Controller {
 
   // resize thumbnail when the browser window gets resized
   resize() {
-    const h = window.innerWidth < 640 ? (THUMBNAIL_HEIGHT * 2) / 3 : THUMBNAIL_HEIGHT
+    const h = window.innerWidth < 640 || this.element.forceSmallSize ? (THUMBNAIL_HEIGHT * 2) / 3 : THUMBNAIL_HEIGHT
 
     if (!this.naturalWidth) return
     const w = Math.min(240, (this.naturalWidth / this.naturalHeight) * h)
