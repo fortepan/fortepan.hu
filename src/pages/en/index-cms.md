@@ -14,22 +14,6 @@ announcement:
     - label: All Collection
       style: primary
       url: https://fortepan.hu/en/photos/?latest
-best_of_collections:
-  title: "Best of"
-  caption: "If you’re not sure where to start browsing our evergrowing image archive, these three collections are a good place to start."
-  content:
-    - cover_image: "216071"
-      counter: "200"
-      url: "#"
-      title: "Two Hundred of Our Best Images"
-    - cover_image: "216071"
-      counter: "15"
-      url: "#"
-      title: "Fifteen of Our Most Outstanding Authors"
-    - cover_image: "216071"
-      counter: "12"
-      url: "#"
-      title: "Twelve of Our Most Notable Donors"
 blog:
   title: "Weekly Fortepan blog"
   caption: "In this blog, updated weekly in Hungarian and fortnightly in English, we explore the background stories of the Fortepan photos and donors in richly illustrated articles. All our posts can be republished under a CC licence."
