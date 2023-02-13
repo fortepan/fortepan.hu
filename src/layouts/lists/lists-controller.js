@@ -215,7 +215,7 @@ export default class extends Controller {
 
         photosData.forEach((photoItem, index) => {
           if (index < 3) {
-            const photoId = photoItem.id
+            const photoId = photoItem.photo
             const photoElement = newListItem.querySelectorAll(".lists__item__photo")[index]
             const imageTarget = photoElement.querySelector(".lists__item__photo__img")
             const img = new Image()
@@ -232,7 +232,7 @@ export default class extends Controller {
             })
 
             imageTarget.img = img
-            imageTarget.src = `${config.PHOTO_SOURCE}480/fortepan_${photoId}.jpg`
+            imageTarget.src = `${config.PHOTO_SOURCE}photo/thumbnail-240-${photoId}`
           }
         })
 

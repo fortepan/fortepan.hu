@@ -90,7 +90,7 @@ export default class extends Controller {
       } else {
         // saving the last selected list to be displayed as the first option in the dropdown
         this.lastSelectedListId = listId
-
+        console.log(listId, 'listID')
         const resp = await listManager.addPhotoToList(
           appState("is-lists") ? listManager.getSelectedPhotoId() : photoManager.getSelectedPhotoId(),
           listId

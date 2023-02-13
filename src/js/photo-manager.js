@@ -22,7 +22,6 @@ const loadPhotoData = async (params, silent, lockContext) => {
   }
 
   const resp = await searchAPI.search(params)
-
   // storing the items so it can be accessed later
   if (!photoData.result) {
     photoData.result = {}
@@ -86,7 +85,6 @@ const loadPhotoData = async (params, silent, lockContext) => {
     // dispatch an event that new photos have been loaded in the search context
     trigger("photoManager:load", result)
   }
-
   return result
 }
 
@@ -121,7 +119,8 @@ const getSelectedPhotoIndex = () => {
   return photoData.selectedIndex
 }
 
-const selectPhotoById = id => {
+const selectPhotoById = (id, noMeta) => {
+  console.log('selected photo id is->' , id)
   photoData.selectedId = id
   photoData.selectedItem = getPhotoDataByID(id)
   photoData.selectedIndex = getPhotoIndexByID(id)
@@ -129,13 +128,16 @@ const selectPhotoById = id => {
   const result = { id: photoData.selectedId, data: photoData.selectedItem, index: photoData.selectedIndex }
 
   // set html page meta for social sharing
-  setPageMeta(
-    `#${result.data.mid}`,
-    `${result.data.description ? `${result.data.description} — ` : ""}${lang("donor")}: ${result.data.donor} (${
-      result.data.year
-    })`,
-    `${config.PHOTO_SOURCE}${result.data.mid}.jpg`
-  )
+  if (noMeta != false) {
+    setPageMeta(
+      `#${result.data.mid}`,
+      `${result.data.description ? `${result.data.description} — ` : ""}${lang("donor")}: ${result.data.donor} (${
+        result.data.year
+      })`,
+      `${config.PHOTO_SOURCE}${result.data.photo}`
+    )    
+  }
+
 
   trigger("photoManager:photoSelected", result)
 
@@ -184,7 +186,6 @@ const getLastPhotoDataInContext = () => {
       photoData.context && photoData.context.year > 0
         ? photoData.result.years.find(item => parseInt(item.year, 10) === parseInt(photoData.context.year, 10))
         : photoData.result.years[photoData.result.years.length - 1]
-
     // check if we have the data of the absolute last picture of the current search context
     // look for the photo data of the last year
     const end = photoData.result.items.filter(item => parseInt(item.year, 10) === parseInt(lastYear.year, 10))

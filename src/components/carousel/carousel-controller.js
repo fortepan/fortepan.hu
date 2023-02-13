@@ -66,7 +66,7 @@ export default class extends Controller {
       return
     }
 
-    this.backgroundTarget.style.backgroundImage = `url(${config.PHOTO_SOURCE}240/fortepan_${id}.jpg)`
+    this.backgroundTarget.style.backgroundImage = `url(${config.PHOTO_SOURCE}/photo/thumbnail-240-${id})`
     this.backgroundTarget.classList.remove("fade-in")
     setTimeout(() => {
       this.backgroundTarget.classList.add("fade-in")
@@ -82,16 +82,18 @@ export default class extends Controller {
       photo.setAttribute("data-carousel-target", "photo")
       photo.dataset.action = "mouseup->carousel#onPhotoClick touchstart->carousel#onPhotoClick"
       photo.className = "image-loader carousel__photo"
-      photo.id = `Fortepan-${id}`
       photo.mid = id
 
       const photoData =
         this.role === "lists"
           ? listManager.getListPhotoById(listManager.getSelectedListId(), id)
           : photoManager.getPhotoDataByID(id)
-
+      photo.id = photoData.photo
+      photo.mid = photoData.photo
+      photo.imageSrc = photoData.photo
       photo.altText = getImgAltText(photoData)
-
+      console.log(photoData, 'photoData')
+      this.setCarouselBackground(photoData.photo)
       if (this.role === "lists" && !photoData.isDataLoaded) {
         photo.noImage = true
         photo.classList.add("image-loader--no-image", "is-active")
@@ -139,8 +141,13 @@ export default class extends Controller {
         trigger("dialogAgeRestriction:show")
       }
     } else {
+      console.log('de mégis', photo.imageSrc)
       trigger("loader:show", { id: "loaderCarousel" })
-      photo.imageSrc = `${config.PHOTO_SOURCE}${window.innerWidth > 1600 ? 2560 : 1600}/fortepan_${id}.jpg`
+      if (photo.imageSrc === null) {
+        photo.imageSrc = `${config.PHOTO_SOURCE}/photo/thumbnail-${window.innerWidth > 1600 ? 2560 : 1600}-${photoManager.getPhotoDataByID(id).photo}`  
+      } else {
+        photo.imageSrc = `${config.PHOTO_SOURCE}/photo/thumbnail-${window.innerWidth > 1600 ? 2560 : 1600}-${photo.imageSrc}`
+      }
       if (photo.imageLoader) photo.imageLoader.loadImage()
     }
   }
@@ -182,7 +189,6 @@ export default class extends Controller {
 
       trigger("loader:hide", { id: "loaderCarousel" })
 
-      this.setCarouselBackground(id)
       this.loadPhoto(id)
       this.setPagers()
 
@@ -409,7 +415,7 @@ export default class extends Controller {
       if (!photo.largePhoto.imageLoaded) {
         trigger("loader:show", { id: "loaderCarousel" })
 
-        photo.largePhoto.imageSrc = `${config.PHOTO_SOURCE}2560/fortepan_${photo.mid}.jpg`
+        photo.largePhoto.imageSrc = `${photo.imageSrc}`
 
         photo.largePhoto.loadCallback = () => {
           photo.classList.add("large-photo-loaded")

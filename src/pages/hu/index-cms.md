@@ -1,19 +1,19 @@
 ---
 layout: home/home.liquid
 title: Fortepan — Főoldal
-permalink: "/"
+permalink: "/hu/home/"
 announcement:
-  title: "<strong>50 ADOMÁNYOZÓ 5000 FÉNYKÉPE A FORTEPAN ÚJ KIADÁSÁBAN</strong>"
+  title: "<strong>HORVÁTH JÓZSEF OPERATŐR, HADITUDÓSÍTÓ KÉPEI</strong>"
   caption: Új sorozat
-  cover_image: "264407"
-  blurb: Mit kaptunk a múltból 2022-ben? Családok, fotósok és gyűjtők legfontosabb
-    képei a személyes válogatásunkban. Egy évszázad százféle nézőpontból, 5000 "sosemlátott
-    fotón". Ime a legfrissebb emlékeink.
+  cover_image: "265600"
+  blurb: 1300 fotó egy filmes hagyatékából. Magyarország a vészterhes XX. század közepén,
+    egy személyes hangú tudósító kameráján keresztül. A határrevíziók, a Doni katasztrófa
+    és Horváth József családi történetei, fekete-fehérben és színesben.
   actions:
-  - label: 230 fontos kép
+  - label: 90 fontos kép
     style: primary
     url: https://fortepan.hu/hu/photos/?latest&tag=best%20of
-  - label: A teljes sorozat
+  - label: a teljes sorozat
     style: primary
     url: https://fortepan.hu/hu/photos/?latest
 

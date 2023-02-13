@@ -369,15 +369,38 @@
   }
 }
 
-.toggle-switch.toggle-switch--header-nav {
+.header-nav__toggle-switch {
   position: absolute;
+  width: 3rem;
+  height: 1.5rem;
+  border-radius: 0.75rem;
   right: 1rem;
   top: 0.25rem;
+  transition: background-color 0.3s $ease-out-expo;
+
+  .theme--light & {
+    background-color: rgba($dark-base, 0.1);
+  }
 
   .theme--dark & {
     background-color: $red;
+  }
 
-    &:after {
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0.25rem;
+    top: 0.25rem;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    transition: transform 0.6s $ease-out-expo, background-color 0.3s $ease-out-expo;
+
+    .theme--light & {
+      background-color: $light-base;
+    }
+
+    .theme--dark & {
       transform: translateX(24px);
       background-color: $light-base;
     }

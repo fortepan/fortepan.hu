@@ -1,12 +1,12 @@
 import { getURLParams } from "./utils"
 
 // redirect calls from fortepan.eu and beta.fortepan.hu
-const redirectDomains = ["fortepan.eu", "beta.fortepan.hu"]
-redirectDomains.forEach(domain => {
-  if (window.location.hostname.indexOf(domain) > -1) {
-    window.location.href = window.location.href.replace(domain, "fortepan.hu")
-  }
-})
+// const redirectDomains = ["fortepan.eu", "beta.fortepan.hu"]
+// redirectDomains.forEach(domain => {
+//   if (window.location.hostname.indexOf(domain) > -1) {
+//     window.location.href = window.location.href.replace(domain, "fortepan.hu")
+//   }
+// })
 
 // redirect old search params
 if (

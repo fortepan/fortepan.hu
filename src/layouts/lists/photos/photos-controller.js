@@ -130,7 +130,8 @@ export default class extends Controller {
       thumbnail.index = index
 
       // apply photo id to node
-      thumbnail.photoId = item.mid
+      thumbnail.photoId = item.id
+      thumbnail.photo = item.photo
 
       // apply year data to node
       thumbnail.year = item.year

@@ -167,6 +167,7 @@ export default class extends Controller {
 
       // apply photo id to node
       thumbnail.photoId = item.mid
+      thumbnail.photo = item.photo
 
       // apply year data to node
       thumbnail.year = item.year

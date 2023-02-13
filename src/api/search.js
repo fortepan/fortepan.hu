@@ -1,4 +1,4 @@
-import { slugify, getLocale, getURLParams } from "../js/utils"
+import { slugify, getLocale, getURLParams, getOrg } from "../js/utils"
 import config from "../data/siteConfig"
 import { appState } from "../js/app"
 
@@ -23,21 +23,23 @@ const transformResults = resp => {
   if (resp.hits.hits.length > 0) {
     resp.hits.hits.forEach(hit => {
       // eslint-disable-next-line no-underscore-dangle
-      const h = hit._source
+      const h = hit.source
       const item = {}
 
+      item.id = hit.id
       item.year = h.year
       item.mid = h.mid
+      item.photo = h.photo
       item.uuid = h.uuid
       item.created = h.created
       item.description = h.description
       item.search_after = hit.sort
       item.donor = h.adomanyozo_name
-      item.author = l === "hu" ? h.szerzo_name : h.szerzo_en
-      item.tags = l === "hu" ? h.cimke_name : h.cimke_en
-      item.country = l === "hu" ? h.orszag_name : h.orszag_en
-      item.city = l === "hu" ? h.varos_name : h.varos_en
-      item.place = l === "hu" ? h.helyszin_name : h.helyszin_en
+      item.author = hit.author
+      item.tags = h.tags
+      item.country = h.country
+      item.city = h.city
+      item.place = h.place
 
       r.items.push(item)
     })
@@ -49,18 +51,64 @@ const transformResults = resp => {
 const elasticRequest = async data => {
   let url = appState("is-dev")
     ? `${config.ELASTIC_HOST_DEV}/elasticsearch_index_fortepandrupaldevelop_cwoou_media/_search?pretty`
-    : `${config.ELASTIC_HOST}/elasticsearch_index_fortepandrupalmain_hd64t_media/_search?pretty`
+    : `${config.ELASTIC_HOST}/api/media/search`
 
   const q = getURLParams()
   if (q.esurl && q.esauth) {
     url = q.esurl
   }
-
+  const org = { org: getOrg() }
   const resp = await fetch(url, {
     method: "POST",
     headers: {
       Authorization: `Basic ${btoa(q.esurl && q.esauth ? q.esauth : "reader:r3adm31024read")}`,
       "Content-Type": "application/json;charset=UTF-8",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({ data, ...org }),
+  })
+
+  return resp.json()
+}
+
+const staticRequest = async data => {
+  let url = appState("is-dev")
+    ? `${config.ELASTIC_HOST_DEV}/elasticsearch_index_fortepandrupaldevelop_cwoou_media/_search?pretty`
+    : `${config.ELASTIC_HOST}/api/contents/view`
+
+  const q = getURLParams()
+  if (q.esurl && q.esauth) {
+    url = q.esurl
+  }
+  const resp = await fetch(url, {
+    method: "POST",
+    headers: {
+      // Authorization: `Basic ${btoa(q.esurl && q.esauth ? q.esauth : "reader:r3adm31024read")}`,
+      "Content-Type": "application/json;charset=UTF-8",
+      Accept: "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+
+  return resp.json()
+}
+
+
+const landingRequest = async data => {
+  let url = appState("is-dev")
+    ? `${config.ELASTIC_HOST_DEV}/elasticsearch_index_fortepandrupaldevelop_cwoou_media/_search?pretty`
+    : `${config.ELASTIC_HOST}/api/homepages/view`
+
+    const q = getURLParams()
+    if (q.esurl && q.esauth) {
+      url = q.esurl
+    }
+    
+  const resp = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json;charset=UTF-8",
+      Accept: "application/json",
     },
     body: JSON.stringify(data),
   })
@@ -190,7 +238,7 @@ const search = params => {
     // if there's a photographer search attribute defined (advanced search)
     if (params.photographer) {
       const photographer = slugify(params.photographer)
-      query.bool.must.push({ term: { szerzo_search: `${photographer}` } })
+      query.bool.must.push({ "Donor.name": `${photographer}` })
     }
 
     // if there's an id search attribute defined (advanced search)
@@ -307,6 +355,43 @@ const getDonators = () => {
   })
 }
 
+// get a static page from the backend
+const getStatic = slug => {
+  return new Promise((resolve, reject) => {
+    const body = {
+      content: slug,
+      org: getOrg(),
+      lang: getLocale()
+    }
+
+    staticRequest(body)
+      .then(resp => {
+        resolve(resp)
+      })
+      .catch(err => {
+        reject(err)
+      })
+  })
+}
+
+// get a static landing page for the organization
+const getLanding = slug => {
+  return new Promise((resolve, reject) => {
+    const body = {
+      org: getOrg(),
+      lang: getLocale()
+    }
+
+    landingRequest(body)
+      .then(resp => {
+        resolve(resp)
+      })
+      .catch(err => {
+        reject(err)
+      })
+  })
+}
+
 // get a random records from Elastic
 const getRandom = (size = 1) => {
   return new Promise((resolve, reject) => {
@@ -356,8 +441,8 @@ const getDataById = array => {
     const body = {
       size: array.length,
       query: {
-        ids: {
-          values: array.map(item => `entity:media/${item}:hu`),
+        id: {
+          values: array.map(item => item),
         },
       },
     }
@@ -400,6 +485,8 @@ export default {
   search,
   getTotal,
   getDonators,
+  getStatic,
+  getLanding,
   getRandom,
   getDataById,
   getAggregatedYears,

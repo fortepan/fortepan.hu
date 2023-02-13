@@ -63,13 +63,13 @@
 
       </div>
 
-      {% if  locale == "hu" %}{% assign newLocale = "en" %}{% else %}{% assign newLocale = "hu" %}{% endif %}
-      <a href="/{{ newLocale }}/" class="button-circular button-circular--language header-nav__link--desktop-only"
-        data-lang="{{ newLocale }}"
-        data-action="click->header-nav#switchLocale">
-          <span class="button-circular__text">{{ newLocale }}</span>
-          <div class="button-circular__label">{{ siteConfig.LOCALES[newLocale] }}</div>
-        </a>
+      {% for locale in siteConfig.LOCALES %}
+      <a href="/{{locale.code}}/" class="button-circular button-circular--language header-nav__link--desktop-only"
+        data-lang="{{ locale.code }}" data-action="click->header-nav#switchLocale">
+        <span class="button-circular__text">{{ locale.code }}</span>
+        <div class="button-circular__label">{{ locale.text }}</div>
+      </a>
+      {% endfor %}
     </div>
   </div>
 
@@ -115,7 +115,7 @@
     <h6>{{ lang[locale].settings }}</h6>
     <a href="#" class="header-nav__link header-nav__link--top" data-controller="theme" data-action="click->header-nav#toggleTheme theme:toggleTheme@document->theme#toggleTheme">
       {{ lang[locale].darkmode }}
-      <span class="toggle-switch toggle-switch--header-nav"></span>
+      <span class="header-nav__toggle-switch"></span>
     </a>
   </div>
 

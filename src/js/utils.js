@@ -15,7 +15,7 @@ export const isTouchDevice = () => {
 }
 
 export const trigger = (eventId, obj = {}, scope = document, doBubble = false) => {
-  if (window.location.hostname === "localhost") {
+  if (window.location.hostname === "one.fortepan.eu") {
     // eslint-disable-next-line no-console
     console.log(eventId, obj)
   }
@@ -32,6 +32,15 @@ export const click = () => {
 
 export const getURLParams = () => {
   return Object.fromEntries(new URLSearchParams(window.location.search.substring(1)))
+}
+
+export const getOrg = () => {
+  const locationArr = window.location.hostname.split(".")
+  if (locationArr.length <= 2) {
+    // we are on localhost or bare domain
+    return null
+  }
+  return locationArr[0]
 }
 
 export const getPrettyURLValues = path => {

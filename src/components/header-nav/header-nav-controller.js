@@ -139,15 +139,11 @@ export default class extends Controller {
   switchLocale(e) {
     e.preventDefault()
     const l = e.currentTarget.dataset.lang
-    let href = document.location.href
-      .split("/")
-      .map(s => (Object.keys(siteConfig.LOCALES).indexOf(s) > -1 ? l : s))
-      .join("/")
-
-    // if location is the siteroot
-    if (href.indexOf(l) === -1) href += `${l}/`
-
-    document.location.href = href
+    if (l !== "en") {
+      document.location.href = `/${l}`
+    } else {
+      document.location.href = `/`
+    }
   }
 
   // show badge on the notification icon when there's a new notification

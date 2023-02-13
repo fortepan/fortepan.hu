@@ -14,17 +14,18 @@ export default class extends Controller {
   submit(e) {
     e.preventDefault()
     const credentials = {}
-    credentials.name = { value: this.nameTarget.value }
-    credentials.mail = { value: this.emailTarget.value }
-    credentials.pass = { value: this.passwordTarget.value }
+    credentials.username = this.nameTarget.value
+    credentials.email = this.emailTarget.value
+    credentials.password = this.passwordTarget.value
+    credentials.password_confirm = this.passwordTarget.value
+    credentials.tos = true
 
     trigger("loader:show", { id: "loaderBase" })
     this.element.classList.add("is-disabled")
 
-    auth
-      .signup(credentials)
-      .then(this.success.bind(this))
-      .catch(this.error.bind(this))
+    auth.signup(credentials)
+      // .then(this.success.bind(this))
+      // .catch(this.error.bind(this))
   }
 
   // localize Drupal server auth response

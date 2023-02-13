@@ -24,15 +24,18 @@ const setLoginStatus = isUserSignedIn => {
 }
 
 const signin = async body => {
-  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/user/login?_format=json`
-
+  const url = `${config.DRUPAL_HOST}/login?format=json`
+  const formData = new FormData()
+  formData.append("username", body.name)
+  formData.append("password", body.pass)
   const resp = await fetch(url, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
     credentials: "include",
-    body: body ? JSON.stringify(body) : null,
+    headers: {
+      // "Content-Type": "application/json;charset=UTF-8",
+      Accept: "application/vnd.api+json",
+    },
+    body: formData,
   })
 
   const respData = await resp.json()
@@ -40,34 +43,28 @@ const signin = async body => {
     localStorage.setItem("auth", JSON.stringify(respData))
     trigger("auth:signedIn")
   } else {
-    throw respData.message
+    throw Error("Wrong username / password")
   }
 }
 
 const signout = async () => {
   const authData = JSON.parse(localStorage.getItem("auth")) || {}
-  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/user/logout?_format=json&token=${
-    authData.logout_token
-  }`
-
+  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/users/logout`
   const resp = await fetch(url, {
-    method: "POST",
+    method: "GET",
     credentials: "include",
     headers: {
-      "Content-Type": "application/json",
-      "X-CSRF-Token": authData.csrf_token,
+      // "Content-Type": "application/json",
+      // "X-CSRF-Token": authData.csrf_token,
     },
   })
-
-  if (resp.status === 204) {
-    trigger("auth:signedOut")
-    setLoginStatus(false)
-  }
+  trigger("auth:signedOut")
+  setLoginStatus(false)
 }
 
 const signup = async body => {
-  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/user/register?_format=json`
-
+  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/users/register`
+  // console.log(rdata)
   const resp = await fetch(url, {
     method: "POST",
     credentials: "include",
@@ -156,12 +153,13 @@ const resetPassword = async pass => {
 }
 
 const getUserStatus = async () => {
-  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/user/login_status?_format=json`
+  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/api/users/login_status`
   const resp = await fetch(url, {
     method: "GET",
     credentials: "include",
     headers: {
-      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Content-Type": "application/json;charset=UTF-8",
     },
   })
 

@@ -19,7 +19,7 @@ export default class extends Controller {
 
     // add stimulus class reference to node
     this.element.photosThumbnail = this
-
+    console.log(this.element.photosThumbnail, 'photosthumb')
     this.linkTarget.addEventListener("click", e => {
       if (e) e.preventDefault()
     })
@@ -158,10 +158,10 @@ export default class extends Controller {
       !this.loadInitiated &&
       isElementInViewport(this.element, false)
     ) {
-      const mediaId = this.element.photoId
-
-      this.imageTarget.srcset = `${config.PHOTO_SOURCE}240/fortepan_${mediaId}.jpg 1x, ${config.PHOTO_SOURCE}480/fortepan_${mediaId}.jpg 2x`
-      this.imageTarget.src = `${config.PHOTO_SOURCE}240/fortepan_${mediaId}.jpg`
+      console.log('elemke', this.element)
+      const mediaId = this.element.photo
+      this.imageTarget.srcset = `${config.PHOTO_SOURCE}photo/thumbnail-240-${mediaId} 1x, ${config.PHOTO_SOURCE}photo/thumbnail-480-${mediaId} 2x`
+      this.imageTarget.src = `${config.PHOTO_SOURCE}photo/thumbnail-240-${mediaId}`
 
       this.element.classList.add("is-loading")
       this.loadInitiated = true

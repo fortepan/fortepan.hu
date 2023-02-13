@@ -23,7 +23,7 @@ const addTags = async (tags, photoId) => {
 }
 
 const getPendingTags = async photoId => {
-  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/fortepan/cimke/list/?${photoId}`
+  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/tags/listpending/${photoId}`
   const resp = await fetch(url, {
     method: "GET",
     credentials: "include",

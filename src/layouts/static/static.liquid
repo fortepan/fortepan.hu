@@ -1,0 +1,15 @@
+---
+layout: base/base.liquid
+---
+
+<div class="static scrollview" data-controller="static">
+    <section class="static__content">
+        <h1 data-static-target="title"></h1>
+        <div data-static-target="content">Content</div>
+    </section>
+    {% include footer/footer.liquid %}
+
+</div>
+
+{% include background-icon/background-icon.liquid %}
+{% include header-nav/header-nav.liquid %}

@@ -12,18 +12,34 @@ const loadListData = async () => {
   if (rawResponse.lists) {
     rawResponse.lists.forEach(item => {
       const data = {
-        id: item.tid,
-        name: item.list_name,
+        id: item.id,
+        name: item.name,
         description: item.description,
-        uuid: item.uuid,
-        url: `/${getLocale()}/lists/${item.tid}`,
+        uuid: item.id,
+        url: `/${getLocale()}/lists/${item.id}`,
         photos: [],
-        private: !item.status,
+        private: !item.public,
       }
 
-      if (item.images) {
-        item.images.forEach(mid => {
-          data.photos.push({ id: mid, mid })
+      if (item.media) {
+        item.media.forEach(hit => {
+          const h = hit.source
+          const photo = {}
+          photo.id = hit.id
+          photo.year = h.year
+          photo.mid = h.mid
+          photo.photo = h.photo
+          photo.uuid = h.uuid
+          photo.created = h.created
+          photo.description = h.description
+          photo.search_after = hit.sort
+          photo.donor = h.adomanyozo_name
+          photo.author = hit.author
+          photo.tags = h.tags
+          photo.country = h.country
+          photo.city = h.city
+          photo.place = h.place
+          data.photos.push(photo)
         })
       }
 
@@ -111,7 +127,9 @@ const getListPhotos = async listId => {
 
 const getListPhotoById = (listId, photoId) => {
   const list = getListById(listId)
+  console.log('list', listId, photoId, list)
   if (list && list.photos && list.photos.length > 0) {
+    console.log('filterresult', list.photos.find(photo => photo.id.toString() === photoId.toString()))
     return list.photos.find(photo => photo.id.toString() === photoId.toString())
   }
 
@@ -120,15 +138,15 @@ const getListPhotoById = (listId, photoId) => {
 
 const loadExtendedListPhotoData = async listId => {
   const list = getListById(listId)
-  if (list.photos && !list.extendedPhotoDataLoaded) {
-    const resp = await searchAPI.getDataById(list.photos.map(item => item.id))
-
-    if (resp.items && resp.items.length > 0) {
-      resp.items.forEach(data => {
+  if (list.photos.length > 0 && !list.extendedPhotoDataLoaded) {
+    // const resp = await searchAPI.getDataById(list.photos.map(item => item.id))
+    const resp = list
+    if (resp.photos && resp.photos.length > 0) {
+      resp.photos.forEach(data => {
         // copy the properties of the loaded data over the stored object
-        const photoData = getListPhotoById(listId, data.mid)
-
+        const photoData = getListPhotoById(listId, data.id)
         Object.assign(photoData, data)
+        photoData.mid = photoData.id
         photoData.isDataLoaded = true
       })
     }
@@ -238,6 +256,7 @@ const deleteList = async uuid => {
 }
 
 const addPhotoToList = async (photoId, listId) => {
+  console.log(photoId, listId, 'addPhotoToList')
   const resp = await listsAPI.addToList(photoId, listId)
 
   // update photo data of the list item
@@ -296,8 +315,8 @@ const mapPublicListsData = resp => {
 
   if (resp.hits.hits.length > 0) {
     resp.hits.hits.forEach(hit => {
-      // eslint-disable-next-line no-underscore-dangle
-      const h = hit._source
+
+      const h = hit.source
       const item = {}
 
       item.id = h.tid.toString()
@@ -322,7 +341,7 @@ const mapPublicListsContentData = resp => {
   if (resp.hits.hits.length > 0) {
     resp.hits.hits.forEach(hit => {
       // eslint-disable-next-line no-underscore-dangle
-      const h = hit._source
+      const h = hit.source
       r.push({ id: h.entity_id.toString(), mid: h.entity_id.toString() })
     })
   }
