@@ -28,6 +28,13 @@ module.exports = eleventyConfig => {
     })
     return dateFormat.format(new Date(parseInt(timestamp)))
   })
+  eleventyConfig.addLiquidShortcode("date_iso", (timestamp, full = false) => {
+    if (timestamp) {
+      const iso = new Date(parseInt(timestamp)).toISOString()
+      return full ? iso : iso.split("T")[0].toString()
+    }
+    return ""
+  })
 
   // Minify html in production
   if (process.env.ENV === "production") {
