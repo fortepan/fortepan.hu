@@ -2,7 +2,7 @@ import { Controller } from "stimulus"
 
 import throttle from "lodash/throttle"
 import searchAPI from "../../api/search"
-import { getLocale, isElementInViewport, numberWithCommas } from "../../js/utils"
+import { getLocale, numberWithCommas, trigger } from "../../js/utils"
 import config from "../../data/siteConfig"
 import photoManager from "../../js/photo-manager"
 
@@ -10,7 +10,7 @@ let bgIds = [50563, 52724, 54176, 54178, 55558, 55617, 58473, 60057, 60155, 6049
 
 export default class extends Controller {
   static get targets() {
-    return ["heroBg", "thumbnails", "total", "totalVal", "latest", "latestThumbnails"]
+    return ["heroBg", "thumbnails", "total", "totalVal"]
   }
 
   connect() {
@@ -20,7 +20,6 @@ export default class extends Controller {
 
     this.loadBackgroundImage()
     this.getTotalItemsNumber()
-    this.initUspImages()
 
     // Throttle resize and scroll functions
     this.onScroll = throttle(this.onScroll, 200)
@@ -103,35 +102,6 @@ export default class extends Controller {
     })
   }
 
-  async loadLatestPhotos() {
-    const data = await searchAPI.search({
-      from: 0,
-      latest: true,
-      size: 20,
-      exclude: [{ term: { cimke_search: "18+" } }, { term: { cimke_en_search: "18+" } }],
-    })
-
-    // generate the thumbnails
-    data.items.forEach(item => {
-      // clone thumnail template
-      const template = document.getElementById("photos-thumbnail")
-      const thumbnail = template.content.firstElementChild.cloneNode(true)
-
-      this.latestThumbnailsTarget.appendChild(thumbnail)
-
-      thumbnail.photoData = item
-
-      // set thumnail node element index
-      thumbnail.index = Array.prototype.indexOf.call(thumbnail.parentElement.children, thumbnail) + 1
-
-      // apply photo id to node
-      thumbnail.photoId = item.mid
-
-      // apply year data to node
-      thumbnail.year = item.year
-    })
-  }
-
   /**
    * Get the total number of photos and inject the result
    */
@@ -157,36 +127,12 @@ export default class extends Controller {
     }
   }
 
-  // init USP list images (lazyload)
-  initUspImages() {
-    this.element.querySelectorAll(".home__usp__list .list-item__photo").forEach(item => {
-      const img = item.querySelector("img")
-
-      item.src = img.src
-      item.srcset = img.srcset
-
-      img.removeAttribute("src")
-      img.removeAttribute("srcset")
-
-      img.addEventListener("load", () => {
-        item.classList.remove("is-loading")
-        item.classList.add("is-loaded")
-      })
-
-      img.addEventListener("error", () => {
-        item.classList.remove("is-loading")
-        item.classList.add("has-error")
-      })
-    })
-  }
-
   // USP list items click handler
-  onUspItemClick(e) {
+  onUspCoverClick(e) {
     if (e) {
       e.preventDefault()
-      e.stopImmediatePropagation()
 
-      const link = e.currentTarget.querySelector("a")
+      const link = e.currentTarget.parentElement.querySelector("h5 a")
       if (link && link.href) {
         if (link.target === "_blank") {
           window.open(link.href, "_blank")
@@ -197,26 +143,13 @@ export default class extends Controller {
     }
   }
 
-  // auto-load new items when scrolling reaches the bottom of the page
+  // loading thumbnail images when scrolling
   onScroll() {
     this.element.querySelectorAll(".photos-thumbnail:not(.is-loaded)").forEach(thumbnail => {
       thumbnail.photosThumbnail.loadThumbnailImage()
     })
 
-    this.element.querySelectorAll(".home__usp__list .list-item__photo:not(.is-loaded)").forEach(item => {
-      if (isElementInViewport(item, false) && item.src && !item.classList.contains("is-loading")) {
-        item.classList.add("is-loading")
-
-        const img = item.querySelector("img")
-        img.src = item.src
-        if (item.srcset) img.srcset = item.srcset
-      }
-    })
-
-    if (!this.latestLoaded && isElementInViewport(this.latestTarget, false)) {
-      this.loadLatestPhotos()
-      this.latestLoaded = true
-    }
+    trigger("scrollView:scroll")
   }
 
   // resize thumbnails when window gets resized

@@ -3,17 +3,7 @@ layout: home/home.liquid
 title: Fortepan — Főoldal
 permalink: "/"
 announcement:
-  title: "<strong>50 ADOMÁNYOZÓ 5000 FÉNYKÉPE A FORTEPAN ÚJ KIADÁSÁBAN</strong>"
   caption: Új sorozat
-  cover_image: "264407"
-  blurb: Mit kaptunk a múltból 2022-ben? Családok, fotósok és gyűjtők legfontosabb képei a személyes válogatásunkban. Egy évszázad százféle nézőpontból, 5000 "sosemlátott fotón". Ime a legfrissebb emlékeink.
-  actions:
-    - label: 230 fontos kép
-      style: primary
-      url: https://fortepan.hu/hu/photos/?latest&tag=best%20of
-    - label: A teljes sorozat
-      style: primary
-      url: https://fortepan.hu/hu/photos/?latest
 best_of_collections:
   title: "Legérdekesebb tartalmaink"
   caption: "Ha nem tudja merre induljon egyre növekvő archívumunkban, akkor ez a három gyűjtés jó kiindulópont lehet."
@@ -40,8 +30,8 @@ latest:
   title: "Friss feltöltések"
   caption: "Egy-két havonta frissítjük oldalunkat kb. 2-3000 képpel, amelyekben gyakran sok adományozó családi fotói keverednek, de előfordul, hogy egy szerző vagy egy cég fotódokumentációja kerül fel egyben az oldalra."
   action:
-    label: "Összes friss fotó"
-    url: "/hu/photos/?latest"
+    label: "Összes sorozat"
+    url: "/hu/photo-collections/"
 ---
 
 A honlap 2010-ben indult ötezer, jórészt lomtalanításokon talált fotóval. Azóta többszáz család, amatőr és hivatásos fotós, illetve közgyűjtemény bővítette a Fortepant. A honlapon megjelenő képeket a szerkesztőség válogatja ki.

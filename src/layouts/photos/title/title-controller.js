@@ -1,17 +1,26 @@
 import { Controller } from "stimulus"
-import { lang, getURLParams, numberWithCommas } from "../../../js/utils"
+import { lang, getURLParams, numberWithCommas, getLocale } from "../../../js/utils"
 
 export default class extends Controller {
   static get targets() {
-    return ["title", "searchExpression", "count", "subtitle"]
+    return ["titleLink", "title", "searchExpression", "count", "subtitle"]
   }
 
   setTitle(e) {
     const photosCount = e.detail.count
     const q = getURLParams()
 
+    this.titleLinkTarget.classList.remove("is-visible")
+
     // set main title
-    if (typeof q.latest !== "undefined") {
+    if (Object.keys(q).indexOf("collection") > -1) {
+      this.titleLinkTarget.classList.add("is-visible")
+      this.titleLinkTarget.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="10" viewBox="0 0 14 10"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2,6 L6,10 L10,6 M6,-2 L6,9" transform="rotate(90 7 6)"/></svg> ${lang(
+        "photo_collections"
+      )}`
+      this.titleLinkTarget.href = `/${getLocale()}/photo-collections/`
+      this.titleTarget.textContent = q.collection
+    } else if (typeof q.latest !== "undefined") {
       this.titleTarget.textContent = lang("latest")
     } else if (Object.keys(q).length === 0 || !q.q || (q.q === "" && !q.latest === "")) {
       this.titleTarget.textContent = lang("photos")
@@ -54,7 +63,7 @@ export default class extends Controller {
     // set photo counter
     this.countTarget.textContent = numberWithCommas(photosCount)
 
-    // fade in subtitle
-    this.subtitleTarget.classList.add("is-visible")
+    // fade in the whole element
+    this.element.classList.add("is-visible")
   }
 }

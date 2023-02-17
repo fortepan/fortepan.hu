@@ -4,20 +4,42 @@
   margin: 0 auto rem(32px);
   padding: 0 rem(8px);
   box-sizing: border-box;
+  opacity: 0;
+  transition: opacity 0.4s ease-out;
 
   > * {
     margin: 0;
   }
-}
-
-.photos-title__subtitle {
-  opacity: 0;
-  transition: opacity 0.4s ease-out;
 
   &.is-visible {
     opacity: 1;
   }
+}
 
+.photos-title__title-link {
+  display: none;
+
+  @include font-heading-demi();
+  font-size: rem(18px);
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s $ease-out-expo, border-color 0.2s $ease-out-expo, opacity 0.2s $ease-out-expo;
+
+  opacity: 0.3;
+
+  &:hover {
+    color: $red;
+    border-color: $red;
+    opacity: 1;
+  }
+
+  &.is-visible {
+    display: inline;
+  }
+}
+
+.photos-title__subtitle {
   .theme--light & {
     color: $grey;
   }

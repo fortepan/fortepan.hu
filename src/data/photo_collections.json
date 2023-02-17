@@ -1,0 +1,298 @@
+{
+  "defaults": {
+    "hu": {
+      "actions": {
+        "best_of": "Fontos képek",
+        "all": "A teljes sorozat"
+      }
+    },
+    "en": {
+      "actions": {
+        "best_of": "Our favorites",
+        "all": "Full collection"
+      }
+    }
+  },
+  "collections": [
+    {
+      "date": "1670371200000",
+      "cover_image": "264407",
+      "hu": {
+        "title": "50 adományozó 5000 fénykép a Fortepan új kiadásában",
+        "blurb": "Mit kaptunk a múltból 2022-ben? Családok, fotósok és gyűjtők legfontosabb képei a személyes válogatásunkban. Egy évszázad százféle nézőpontból, 5000 \"sosemlátott fotón\". Íme a legfrissebb emlékeink.",
+        "actions": {
+          "best_of": "230 fontos kép",
+          "all": "A teljes sorozat"
+        }
+      },
+      "en": {
+        "title": "50 Donors, 5000 New Images on Fortepan",
+        "blurb": "What was we happened to see of the past in 2022? Paramount photos of families, photographers, collectors, selected by the Fortepan team. A century, glanced from a hundred points of view, on 5000 photos “hitherto never seen”",
+        "actions": {
+          "best_of": "230 favorites",
+          "all": "Full collection"
+        }
+      }
+    },
+    {
+      "date": "1665878400000",
+      "cover_image": "265600",
+      "hu": {
+        "title": "Horváth József operatőr, haditudósító képei",
+        "blurb": "1300 fotó egy filmes hagyatékából. Magyarország a vészterhes XX. század közepén, egy személyes hangú tudósító kameráján keresztül. A határrevíziók, a Doni katasztrófa és Horváth József családi történetei, fekete-fehérben és színesben.",
+        "actions": {
+          "best_of": "90 fontos kép",
+          "all": "A teljes sorozat"
+        }
+      },
+      "en": {
+        "title": "Photos of József Horváth cameraman, reporter",
+        "blurb": "1300 photographs from the legacy of a filmmaker. Hungary in the middle of the grim, fateful 20th century, through the camera of a correspondent with a personal touch. Shifting borders, the defeat of the Hungarian army at the river Don, and the family stories of József Horváth in black and white and colour.",
+        "actions": {
+          "best_of": "90 favorites",
+          "all": "Full collection"
+        }
+      }
+    },
+    {
+      "date": "1660867200000",
+      "cover_image": "262320",
+      "hu": {
+        "title": "Két szerző - kétezer kép",
+        "blurb": "Faragó György fotóriporter és Gyulai Gaál Krisztián operatőr hagyatékának legfontosabb képei. Kétezer fotó a szocializmus időszakából, futballpályákról, áruházakról, kirándulásokról, koncertekről és barátokról. Hétköznapok és propaganda két személyes hangú fotós kameráján keresztül.",
+        "actions": {
+          "best_of": "100 fontos kép",
+          "all": "A teljes sorozat"
+        }
+      },
+      "en": {
+        "title": "Two authors – Two Thousand Images",
+        "blurb": "The most important photos from two legacies, those of György Faragó, photo journalist, and of Krisztián Gyulai Gaál, director of photography, respectively. Two thousand photos from the Communist period, on football fields, hikers, concerts and friends. Everyday life and propaganda, through the cameras of two photographers, both with a personal touch of their own kind.",
+        "actions": {
+          "best_of": "100 favorites",
+          "all": "Full collection"
+        }
+      }
+    },
+    {
+      "date": "1655596800000",
+      "cover_image": "257904",
+      "hu": {
+        "title": "Reményi József fotóhagyatéka",
+        "blurb": "A gyűjtemény fókuszában Reményi József főhadnagy második világháborús fotónaplója áll. A szerző 1942-43-ban 17 alkalommal járt a keleti fronton egy kórházvonat gazdasági tisztjeként. Útjai során több száz fotót készített a kórházvonat belső életéről és az ukrajnai háborús hétköznapokról.",
+        "actions": {
+          "best_of": "70 fontos kép",
+          "all": "A teljes sorozat"
+        }
+      },
+      "en": {
+        "title": "The Photo Legacy of József Reményi",
+        "blurb": "The focus of this collection is the photo journal of first lieutenant József Reményi. The author, a logistics officer of a hospital train, was part of Eastern front missions in 1942/43 altogether 17 times. During this time, he took hundreds of photos on the life of the hospital train and the wartime days in the Ukraine.",
+        "actions": {
+          "best_of": "70 favorites",
+          "all": "Full collection"
+        }
+      }
+    },
+    {
+      "date": "1653091200000",
+      "cover_image": "258875",
+      "hu": {
+        "title": "Utazások Európában",
+        "blurb": "Válogatás a Milwaukee Egyetem fotógyűjteményéből. Utazások Angliától Görögországig, Párizstól - Budapesten és Kolozsváron át - Varsóig. Utcai árusok, iparosok és városlakók a rendszerek és diktatúrák által megosztott Európában, profi fotósok - köztük Harrison Forman New York Times tudósító - kameráján keresztül.",
+        "actions": {
+          "best_of": "120 fontos kép",
+          "all": "A teljes sorozat"
+        }
+      },
+      "en": {
+        "title": "Travels in Europe",
+        "blurb": "A compilation from the photo collection of the University of Milwaukee.Travels from England to Greece, from Paris – through Budapest and Cluj – to Warsaw. Street vendors, craftsmen and city dwellers in a Europe divided by régimes and dictatorships, through the lens of professional photojournalists — among them Harrison Foreman, correspondent of the New York Times.",
+        "actions": {
+          "best_of": "120 favorites",
+          "all": "Full collection"
+        }
+      }
+    },
+    {
+      "date": "1648944000000",
+      "cover_image": "222664",
+      "hu": {
+        "title": "3000 éles fénykép",
+        "blurb": "a homályos XX. századból. Közel negyven adományozó fotóiból készült a Fortepan tavaszi válogatása. Ismétlődő, de megunhatatlan helyszínek, helyzetek, helyek, a véletlenül összeérő negatív tekercsekről.",
+        "actions": {
+          "best_of": "75 fontos kép",
+          "all": "A teljes sorozat"
+        }
+      },
+      "en": {
+        "title": "3000 sharp images",
+        "blurb": "from the blurred 20th century. We have selected pictures from over forty donors. Recurrent, but never boring venues, situations, places, from some haphazardly related negative rolls",
+        "actions": {
+          "best_of": "75 favorites",
+          "all": "Full collection"
+        }
+      }
+    },
+    {
+      "date": "1644537600000",
+      "cover_image": "252768",
+      "hu": {
+        "title": "3000 fotó a FŐMTERV archívumából",
+        "blurb": "Válogatás a FŐMTERV (Fővárosi Mélyépítési Tervező Vállalat) archívumából. A Kádár-korszak Budapestjének építkezései, villamospályák és bekötőutak építése, strandok és fürdők rekonstrukciója. Felül- és aluljárók, Budafok, Pesterzsébet, Zugló utcái, piacok, buszgarázsok és szanálásra ítélt tömbök épületei. Egy nagyvállalat mintaszerűen megőrzött fotóarchívuma.",
+        "actions": {
+          "best_of": "66 kedvenc kép",
+          "all": "A teljes sorozat"
+        }
+      },
+      "en": {
+        "title": "3000 Photos from the FOMTERV Archive",
+        "blurb": "Selected from the archive of FŐMTERV (Municipal Civil Engineering Design Company). The grand construction projects of the Kádár Era. Over-and underpasses in Budafok, Pesterzsébet, the streets of Zugló, markets, bus depots and blocs soon to be demolished. The archive of a large construction company, preserved in an exemplary manner.",
+        "actions": {
+          "best_of": "66 favorites",
+          "all": "Full collection"
+        }
+      }
+    },
+    {
+      "date": "1640044800000",
+      "cover_image": "250141",
+      "hu": {
+        "title": "2700 friss fotó",
+        "blurb": "Ebben a sorozatban húsz adományozó negatívjaiból válogattunk. Jórészt családi, amatőr fotókon keresztül láthatjuk a drámai-megunhatatlan XX. századot. Az első nyugati utazást, vagy az első albérletet, az első tekercs filmen. 2700 jelentős fotót a jelentéktelen pillanatokról.",
+        "actions": {
+          "best_of": "60 kedvenc kép",
+          "all": "A teljes sorozat"
+        }
+      },
+      "en": {
+        "title": "2700 New Photos",
+        "blurb": "In this series we have included some of the best negatives from twenty different donors. It is through home-made, amateur snapshots that we can let you have a glance at the dramatic 20th century, nobody can ever get tired of.The first journey to the West, or the very first rented apartment, taken on the first roll of film. 2700 meaningful photos, recording negligible moments.",
+        "actions": {
+          "best_of": "60 favorites",
+          "all": "Full collection"
+        }
+      }
+    },
+    {
+      "date": "1636243200000",
+      "cover_image": "222484",
+      "hu": {
+        "title": "2200 papírkép",
+        "blurb": "Ebben a sorozatban több mint hatvan adományozó papírképeiből válogattunk. A családi albumok fotói mellett négy nagyobb gyűjteményt is bemutatunk: Révész György filmrendező hagyatékát, a Vörös Hadsereg 1945-ös budapesti fotóit, Nasztanovics Ferenc repüléstörténeti képeit és Milkó szabadkai, helytörténeti gyűjteményét. 2200 fotó időutazóknak a cikk-cakkos XX. századba!",
+        "actions": {
+          "best_of": "50 fontos kép",
+          "all": "2200 friss fotó"
+        }
+      },
+      "en": {
+        "title": "2200 Prints",
+        "blurb": "In this series you can browse images scanned from printed photos from over 60 donors. Apart from family albums we represent here some  larger collections: the legacy of György Révész, film director, the photos of the Red Army taken in 1945, the aviation archive of Ferenc Nasztanovics, and the local history photos covering Subotica, Serbia (Szabadka in Hungarian).",
+        "actions": {
+          "best_of": "50 favorites",
+          "all": "Full collection"
+        }
+      }
+    },
+    {
+      "date": "1631923200000",
+      "cover_image": "215627",
+      "hu": {
+        "title": "FŐFOTÓ - II. rész",
+        "blurb": "A tavasszal elindult Főfotó anyag második, befejező része. 2200 fénykép három nagy témával a középpontban: moziplakátok és filmgrafikák az utcán, reklám- és divatfotók a reklámfotózás hőskorából, házról-házra készített utcaképek Budapest belső kerületeiből. Több száz színes fotó modern épületekkel, eladhatatlan termékekkel, megmosolyogtató ruhákkal. Profi képek a barkácsvilágból.",
+        "actions": {
+          "best_of": "60 fontos kép",
+          "all": "2200 friss fotó"
+        }
+      },
+      "en": {
+        "title": "FŐFOTÓ - 2nd edition",
+        "blurb": "Below you can find the second, concluding part of what we have chosen from the FŐFOTO (Municipal Photo Company) archive, the continuation of the spring instalment. You’ll find 2200 images, focusing on three subjects: film posters and hand-painted film ads on large canvases, advertising and fashion photos from the advent of Hungarian advertising photography, street photography block by block, from the inner districts of Budapest. Several hundreds of colour photos, on classic modern buildings, on products impossible to sell, on clothes difficult not to smile at. Professional photos from a DIY world.",
+        "actions": {
+          "best_of": "60 favorites",
+          "all": "Full collection"
+        }
+      }
+    },
+    {
+      "date": "1625961600000",
+      "cover_image": "212359",
+      "hu": {
+        "title": "Legújabb régi képeink '21. nyár",
+        "blurb": "22 adományozó, 2200 fényképét töltöttük fel a Fortepan Friss sorozatába. Az ismerősnek tűnő, de megunhatatlan amatőr fotós hagyatékok mellett két fontos szerzőnk - Szalay Zoltán és Urbán Tamás - életművéből is mutatunk új képeket. Közel négyszáz fotót pedig az osztrák Nemzeti Könyvtár első világháborús gyűjteményéből válogattunk.",
+        "actions": {
+          "best_of": "80 fontos kép",
+          "all": "2200 friss fotó"
+        }
+      },
+      "en": {
+        "title": "Our Most Recent Old Photos Summer '21",
+        "blurb": "This time we have uploaded 2200 photos from 22 donors to the Fresh section of Fortepan. Apart from the ever familiar amateur photo legacies (ones we can never grow tired of), we included images from the oeuvre of two of our pivotally important photo journalists, of Zoltán Szalay and Tamás Urbán. Moreover, we selected close to 400 photos from the WWI collection of the National Library of Austria.",
+        "actions": {
+          "best_of": "80 favorites",
+          "all": "Full collection"
+        }
+      }
+    },
+    {
+      "date": "1620777600000",
+      "cover_image": "209871",
+      "hu": {
+        "title": "Legújabb régi képeink",
+        "blurb": "65 adományozó 2300 ismeretlen fényképe a Fortepan Friss sorozatában. A családi fotóalbumok és negatívtekercsek képeit egymás mellé téve, végiglépegethetünk az egész huszadik századon. Ime a legújabb szubjektív válogatásunk a létezésről és az elmúlásról. Nyaralások, költözések, egyenruhák, ünnepek. Beszkártosok, disszidensek, úttörők. Ezek mind mi voltunk és ez mind velünk történt egykor.",
+        "actions": {
+          "best_of": "100 fontos kép",
+          "all": "2300 friss fotó"
+        }
+      },
+      "en": {
+        "title": "Our Most Recent Old Photos",
+        "blurb": "Have a look at 2300 hitherto unknown images from 65 donors in the “Fresh” section of Fortepan. If we place the images from family albums and negative rolls close to one another, we can sort of stroll along the entire 20th century. Here you can find our highly personal selection, the subject of which is human being and human passing. Holidays, relocation calamities, uniforms, public and private holidays. Transit employees, emigrants, pioneers. Our earlier selves – all this once happened to us.",
+        "actions": {
+          "best_of": "100 favorites",
+          "all": "Full collection"
+        }
+      }
+    },
+    {
+      "date": "1617235200000",
+      "cover_image": "207613",
+      "hu": {
+        "title": "FŐFOTÓ I",
+        "blurb": "A 60-as 70-es évek a Fővárosi Fotóipari Vállalat kameráján keresztül. A FŐFOTÓ több, mint 200.000 negatívkockából álló hagyatékából 5000 képet választottunk ki a Fortepanra. Válogatásunk első részében utcaképek, épület- és városfotók, szállodák, presszók, munkahelyek belső enteriőrjei szerepelnek. Többszáz fotót választottunk a palánkokra, villamosokra, hírdetőtáblákra tervezett egyedi mozifilm plakátokból. A gyűjtemény külön értéke a számtalan - sokszor színes negatívra készült - reklám és divatfotó. A korszak design-története iránt érdeklődőknek kötelező!",
+        "actions": {
+          "best_of": "100 kedvenc",
+          "all": "2600 FŐFOTÓ kép"
+        }
+      },
+      "en": {
+        "title": "FŐFOTÓ I.",
+        "blurb": "Have a look at the 60s and the 70s through the cameras of Budapest Municipal Photography Company (FŐFOTO). Out of a legacy of more than 200 000 negatives, we have uploaded about 5000 frames. In this first instalment there are street photos, building- and street views, images of hotels, espressos, and workplace interiors. Also, we have included several hundred outdoor movie ads, uniquely produced to fit the sites, fences, tram stops, or notice boards. Also, this special collection abounds in advertising and fashion photos – often survived on colour negatives. If you are interested in the design history of the period, you mustn’t miss all this.",
+        "actions": {
+          "best_of": "100 favorites",
+          "all": "Full FŐFOTÓ collection"
+        }
+      }
+    },
+    {
+      "date": "1614211200000",
+      "cover_image": "205844",
+      "hu": {
+        "title": "Kereki Sándor",
+        "blurb": "Kereki Sándor 1952-ben született Budapesten és 16 évesen kezdett el fényképezni. Képein egyszerre groteszk és érzelmes jelenetek elevenednek meg a 70-es évek mindennapjaiból. Ötven év után előkerült fotói egy eddig ismeretlen színt hoznak a Fortepanba, az elsősorban emberekre, figurákra, karakterekre fókuszáló street-fotós világát. A tíz év alatt készült többezer negatív kockájából 1850 fotót választottunk ki a Fortepanra és a száz kedvenc Kereki-fotónkat külön is ajánljuk.",
+        "actions": {
+          "best_of": "100 kedvenc",
+          "all": "Az összes Kereki-fotó"
+        }
+      },
+      "en": {
+        "title": "Sándor Kereki",
+        "blurb": "Sándor Kereki was born in Budapest in 1952 and started photographing at the age of 16. On his images, grotesque as well as emotional scenes come to life from the everyday life of socialist Hungary in the 70s. After fifty years he decided to pulish his images that depict the world of a street photographer focusing primarily on people, special figures and odd characters. From the thousands of negatives taken by him over ten years, we selected 1,850 photographs for Fortepan and we also recommend to check out our hundred favorite Kereki photos.",
+        "actions": {
+          "best_of": "100 favorites",
+          "all": "All Kereki photos"
+        }
+      }
+    }
+  ]
+}

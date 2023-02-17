@@ -15,21 +15,30 @@ layout: base/base.liquid
 >
   <section class="home__hero">
     <div class="home__announcement">
+        {% assign latest_set = photo_collections.collections[0] %}
         <div class="home__announcement__caption caption">{{ announcement.caption }}</div>
-        <h1 class="home__announcement__title">{{ announcement.title }}</h1>
-        <div class="home__announcement__blurb p">{{ announcement.blurb }}</div>
+        <h1 class="home__announcement__title"><strong>{{ latest_set[locale].title }}</strong></h1>
+        <div class="home__announcement__blurb p">{{ latest_set[locale].blurb }}</div>
         <div class="home__announcement__actions">
-        {% for action in announcement.actions %}
-          <a href="{{ action.url }}" class="button button--medium button--{{ action.style }}">
-            <span>{{ action.label }}</span>
+        {% if latest_set[locale].actions.best_of %}
+          <a href="/{{ locale }}/photos/?latest&tag=best%20of&collection={{ latest_set[locale].title }}" class="button button--medium button--primary">
+            <span>{{ latest_set[locale].actions.best_of }}</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="10" viewBox="0 0 14 10">
               <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2,6 L6,10 L10,6 M6,-2 L6,9" transform="rotate(-90 7 4)"/>
             </svg>
           </a>
-        {% endfor %}
+        {% endif %}
+        {% if latest_set[locale].actions.all %}
+          <a href="/{{ locale }}/photos/?latest&collection={{ latest_set[locale].title }}" class="button button--medium button--primary">
+            <span>{{ latest_set[locale].actions.all }}</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="10" viewBox="0 0 14 10">
+              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2,6 L6,10 L10,6 M6,-2 L6,9" transform="rotate(-90 7 4)"/>
+            </svg>
+          </a>
+        {% endif %}
         </div>
     </div>
-    <div class="home__hero__background" data-home-target="heroBg" data-bg-id="{{ announcement.cover_image }}"></div>
+    <div class="home__hero__background" data-home-target="heroBg" data-bg-id="{{ latest_set.cover_image }}"></div>
   </section>
 
   <section class="home__photos">
@@ -69,11 +78,10 @@ layout: base/base.liquid
         {% for collection in best_of_collections.content %}
         {% if count < 3 %}
         {% assign count = count | plus: 1 %}
-        <li class="list-item" data-action="click->home#onUspItemClick">
-          <div class="list-item__cover">
-            <div class="list-item__photo">
-              <img src="{{ siteConfig.PHOTO_SOURCE }}480/fortepan_{{ collection.cover_image }}.jpg" alt="{{ collection.title }}">
-            </div>
+        <li class="list-item">
+          <div class="list-item__cover" data-action="click->home#onUspCoverClick">
+            {% capture img_src %}{{ siteConfig.PHOTO_SOURCE }}480/fortepan_{{ collection.cover_image }}.jpg{% endcapture %}
+            {% include image-lazyloader/image-lazyloader.liquid src:img_src alt:collection.title custom_class:"list-item__photo" %}
             <div class="list-item__cover-overlay"><span class="h1">{{ collection.counter }}</span></div>
           </div>
           <div class="list-item__meta">
@@ -93,19 +101,18 @@ layout: base/base.liquid
 
       <ul class="home__usp__list">
         {% assign count = 0 %}
-        {% for blog in blogContent[locale] %}
+        {% for blog in blog_content[locale] %}
         {% if count < 4 %}
         {% assign count = count | plus: 1 %}
-        <li class="list-item" data-action="click->home#onUspItemClick">
-          <div class="list-item__cover">
-            <div class="list-item__photo">
-              <img src="{{ siteConfig.PHOTO_SOURCE }}480/fortepan_{{ blog.cover_image }}.jpg" alt="{{ blog.title }}">
-            </div>
+        <li class="list-item">
+          <div class="list-item__cover" data-action="click->home#onUspCoverClick">
+            {% capture img_src %}{{ siteConfig.PHOTO_SOURCE }}480/fortepan_{{ blog.cover_image }}.jpg{% endcapture %}
+            {% include image-lazyloader/image-lazyloader.liquid src:img_src alt:blog.title custom_class:"list-item__photo" %}
           </div>
           <div class="list-item__meta">
             <p class="text-small text-secondary">{% date blog.date, locale %}</p>
             <h5><a href="{{ blog.url }}" class="list-item__title" target="_blank">{{ blog.title }}</a></h5>
-            <p class="text-small text-secondary">{{ blog.excerpt | truncatewords: 24, '…' }}</p>
+            <p class="text-medium text-secondary">{{ blog.excerpt | truncatewords: 24, '…' }}</p>
           </div>
         </li>
         {% endif %}
@@ -122,13 +129,55 @@ layout: base/base.liquid
       </div>
     </div>
 
-    <div class="home__usp home__usp--latest-photos" data-home-target="latest">
+    <div class="home__usp home__usp--collections">
       <div class="home__usp__header">
         <h2>{{ latest.title }}</h2>
         <p class="text-medium">{{ latest.caption }}</p>
       </div>
 
-      <div class="home__latest_thumbnails" data-home-target="latestThumbnails"></div>
+      <ul class="home__usp__list">
+        {% assign count = 0 %}
+        {% for photo_set in photo_collections.collections %}
+        {% if count > 0 and count < 5 %}
+        {% capture query_url %}cfrom={% date_iso photo_set.date %}{% if until_date %}&cto={% date_iso until_date %}{% endif %}&collection={{ photo_set[locale].title }}{% endcapture %}
+        <li class="list-item">
+          <div class="list-item__cover" data-action="click->home#onUspCoverClick">
+            {% capture img_src %}{{ siteConfig.PHOTO_SOURCE }}480/fortepan_{{ photo_set.cover_image }}.jpg{% endcapture %}
+            {% include image-lazyloader/image-lazyloader.liquid src:img_src alt:photo_set[locale].title custom_class:"list-item__photo" %}
+          </div>
+          <div class="list-item__meta">
+            <p class="text-small text-secondary">{% date photo_set.date, locale %}</p>
+            <h5><a href="/{{ locale }}/photos/?{{ query_url }}" class="list-item__title">{{ photo_set[locale].title }}</a></h5>
+            <p class="text-medium text-secondary">{{ photo_set[locale].blurb }}</p>
+
+            {% if photo_set[locale].actions.best_of or photo_set[locale].actions.all %}
+            <div class="list-item__actions">
+              {% if photo_set[locale].actions.best_of %}
+              <a href="/{{ locale }}/photos/?tag=best%20of&{{ query_url }}" class="button button--small button--secondary button--inline">
+                <span>{{ photo_set[locale].actions.best_of }}</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="10" viewBox="0 0 14 10">
+                  <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2,6 L6,10 L10,6 M6,-2 L6,9" transform="rotate(-90 7 4)"/>
+                </svg>
+              </a>
+              {% endif %}
+              {% if photo_set[locale].actions.all %}
+              <a href="/{{ locale }}/photos/?{{ query_url }}" class="button button--small button--secondary button--inline">
+                <span>{{ photo_set[locale].actions.all }}</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="10" viewBox="0 0 14 10">
+                  <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2,6 L6,10 L10,6 M6,-2 L6,9" transform="rotate(-90 7 4)"/>
+                </svg>
+              </a>
+              {% endif %}
+            </div>
+            {% endif %}
+
+          </div>
+        </li>
+        {% endif %}
+        {% assign until_date = photo_set.date %}
+        {% assign count = count | plus: 1 %}
+        {% endfor %}
+      </ul>
 
       <div class="home__usp__action">
         <a href="{{ latest.action.url }}" class="button button--medium button--primary">
