@@ -24,13 +24,5 @@
 
   .dialog__button {
     margin-top: 0.5rem;
-
-    .theme--light & {
-      color: $dark-base;
-    }
-
-    .theme--dark & {
-      color: $light-base;
-    }
   }
 }
