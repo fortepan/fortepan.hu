@@ -1,4 +1,5 @@
 import { Controller } from "stimulus"
+import { trigger } from "../../js/utils"
 
 export default class ScrollView extends Controller {
   connect() {
@@ -13,5 +14,7 @@ export default class ScrollView extends Controller {
         .element.scrollTop / 10}px)`
       this.backgroundSVG.style.opacity = Math.max(0, 100 - this.element.scrollTop / 20) / 100
     }
+
+    trigger("scrollView:scroll")
   }
 }

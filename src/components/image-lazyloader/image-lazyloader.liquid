@@ -1,0 +1,8 @@
+<div class="lazy-image{% if custom_class %} {{ custom_class }}{% endif %}"
+  data-controller="image-lazyloader"
+  data-action="scroll@window->image-lazyloader#onScroll
+               scrollView:scroll@document->image-lazyloader#onScroll
+               resize@window->image-lazyloader#onScroll"
+>
+  <img src="{{ src }}" srcset="{{ srcset }}" alt="{{ alt }}" data-image-lazyloader-target="image">
+</div>
