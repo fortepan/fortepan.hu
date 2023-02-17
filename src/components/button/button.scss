@@ -33,24 +33,22 @@ button,
 
 .button--secondary {
   .theme--light & {
-    color: $grey;
+    color: $dark-base;
     background-color: $light-secondary;
   }
 
   .theme--dark & {
-    color: $grey;
+    color: $light-base;
     background-color: $dark-tertiary;
   }
 
   &:hover,
   &:active {
     .theme--light & {
-      color: darken($grey, 5);
       background-color: darken($light-secondary, 5);
     }
 
     .theme--dark & {
-      color: lighten($grey, 5);
       background-color: lighten($dark-tertiary, 5);
     }
   }
@@ -58,6 +56,11 @@ button,
 
 .button--medium {
   padding: 0.75rem 1rem;
+}
+
+.button--small {
+  font-size: rem(16px);
+  padding: 0.5rem 0.75rem;
 }
 
 .button--inline {
