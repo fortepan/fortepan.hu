@@ -209,6 +209,19 @@ const search = params => {
       if (params.year_to) y.lte = params.year_to
       range.range.year = y
     }
+
+    // filtering for created date (from is included to is excluded)
+    if (params.cfrom || params.cto) {
+      const created = {}
+      if (params.cfrom) created.gte = params.cfrom
+      if (params.cto) created.lt = params.cto
+      query.bool.must.push({
+        range: {
+          created,
+        },
+      })
+    }
+
     // if there's a range set
     query.bool.must.push(range)
 
