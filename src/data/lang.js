@@ -145,6 +145,7 @@ module.exports = {
       remove_action_label: "Megtekintés",
     },
     projects: "Projektek",
+    photo_collections: "Fotósorozatok",
   },
   en: {
     about_us: "About us",
@@ -292,5 +293,6 @@ module.exports = {
       remove_action_label: "Show",
     },
     projects: "Projects",
+    photo_collections: "Photo collections",
   },
 }

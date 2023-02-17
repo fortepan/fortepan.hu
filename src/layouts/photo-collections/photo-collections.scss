@@ -1,0 +1,73 @@
+.photo-collections {
+  display: flex;
+  gap: 4rem 2rem;
+  flex-wrap: wrap;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  border: 0;
+
+  .collection-item {
+    flex-basis: 100%;
+
+    @media screen and (min-width: $breakpoint-tablet) {
+      flex-basis: calc((100% - 2rem) / 2);
+    }
+
+    &:hover {
+      .collection-item__photo {
+        filter: brightness(0.7);
+      }
+    }
+
+    &__cover {
+      cursor: pointer;
+      border-radius: rem(4px);
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+
+      &:hover {
+        & + h6 + h3 a {
+          color: $red;
+          border-color: $red;
+        }
+      }
+    }
+
+    h6 {
+      margin: 0;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    h3 {
+      margin: 0;
+
+      a {
+        color: inherit;
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: color 0.2s $ease-out-expo, border-color 0.2s $ease-out-expo;
+      }
+
+      &:hover a {
+        color: $red;
+        border-color: $red;
+      }
+    }
+
+    h3 + p {
+      margin-top: 1rem;
+    }
+
+    &__actions {
+      margin-top: 1rem;
+
+      .button {
+        margin: 0.5rem 0.25rem 0 0;
+      }
+    }
+  }
+}

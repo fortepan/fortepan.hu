@@ -3,17 +3,7 @@ layout: home/home.liquid
 title: Fortepan — Home
 permalink: "/en/"
 announcement:
-  title: "<strong>50 DONORS, 5000 NEW IMAGES ON FORTEPAN</strong>"
   caption: New Collection
-  cover_image: "257518"
-  blurb: What was we happened to see of the past in 2022? Paramount photos of families, photographers, collectors, selected by the Fortepan team. A century, glanced from a hundred points of view, on 5000 photos “hitherto never seen”
-  actions:
-    - label: 230 favorites
-      style: primary
-      url: https://fortepan.hu/en/photos/?latest&tag=best%20of
-    - label: All Collection
-      style: primary
-      url: https://fortepan.hu/en/photos/?latest
 best_of_collections:
   title: "Best of"
   caption: "If you’re not sure where to start browsing our evergrowing image archive, these three collections are a good place to start."
@@ -40,8 +30,8 @@ latest:
   title: "Recent uploads"
   caption: "Every month or two, we update our site with around 2-3000 images, often mixing family photos of many donors, but sometimes a photo documentation of an author or a company is added to the archive."
   action:
-    label: "All recent uploads"
-    url: "/en/photos/?latest"
+    label: "All collections"
+    url: "/en/photo-collections/"
 ---
 
 This website was launched in 2010 and it initially contained photographs found randomly in the streets of Budapest. The archive has expanded since then through donations from families, amateur and professional photographers, along with public collections. The images on the website are selected by editors.
