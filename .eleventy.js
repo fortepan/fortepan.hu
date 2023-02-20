@@ -13,6 +13,7 @@ module.exports = eleventyConfig => {
   eleventyConfig.addPassthroughCopy({ "src/static/images": "/images/" })
   eleventyConfig.addPassthroughCopy({ "src/static/uploads": "/uploads/" })
   eleventyConfig.addPassthroughCopy({ "src/static/": "/" })
+  eleventyConfig.addPassthroughCopy({ "src/data/photo_collections.json": "/photo_collections.json" })
   eleventyConfig.addPassthroughCopy({ "node_modules/@webcomponents/webcomponentsjs": "/webcomponents-polyfill" })
 
   // Define custom liquid tags and shortcodes

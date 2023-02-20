@@ -4,7 +4,7 @@ layout: article/article.liquid
 
 <ul class="photo-collections" data-controller="photo-collections">
   {% for collection in photo_collections.collections %}
-  {% capture query_url %}cfrom={% date_iso collection.date %}{% if until_date %}&cto={% date_iso until_date %}{% endif %}&collection={{ collection[locale].title }}{% endcapture %}
+  {% capture query_url %}cfrom={% date_iso collection.date %}{% if until_date %}&cto={% date_iso until_date %}{% endif %}&collection={{ collection.date }}{% endcapture %}
     <li class="collection-item">
       <div class="collection-item__cover" data-action="click->photo-collections#onCoverClick">
         {% capture img_src %}{{ siteConfig.PHOTO_SOURCE }}480/fortepan_{{ collection.cover_image }}.jpg{% endcapture %}
