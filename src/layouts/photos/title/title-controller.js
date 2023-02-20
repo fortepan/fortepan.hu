@@ -1,12 +1,13 @@
 import { Controller } from "stimulus"
 import { lang, getURLParams, numberWithCommas, getLocale } from "../../../js/utils"
+import collectionManager from "../../../js/photo-collections-manager"
 
 export default class extends Controller {
   static get targets() {
     return ["titleLink", "title", "searchExpression", "count", "subtitle"]
   }
 
-  setTitle(e) {
+  async setTitle(e) {
     const photosCount = e.detail.count
     const q = getURLParams()
 
@@ -19,7 +20,9 @@ export default class extends Controller {
         "photo_collections"
       )}`
       this.titleLinkTarget.href = `/${getLocale()}/photo-collections/`
-      this.titleTarget.textContent = q.collection
+
+      const collectionData = await collectionManager.getCollection(q.collection)
+      if (collectionData) this.titleTarget.textContent = collectionData[getLocale()].title
     } else if (typeof q.latest !== "undefined") {
       this.titleTarget.textContent = lang("latest")
     } else if (Object.keys(q).length === 0 || !q.q || (q.q === "" && !q.latest === "")) {
@@ -29,8 +32,21 @@ export default class extends Controller {
     }
 
     // set search expression tag content
-    if (Object.keys(q).length === 0 || q.q === "" || Object.keys(q).indexOf("latest") > -1) {
+    if (
+      Object.keys(q).length === 0 ||
+      q.q === "" ||
+      Object.keys(q).indexOf("latest") > -1 ||
+      Object.keys(q).indexOf("collection") > -1
+    ) {
       this.searchExpressionTarget.classList.remove("is-visible")
+
+      if (Object.keys(q).indexOf("collection") > -1 && Object.keys(q).indexOf("tag") > -1 && q.tag === "best of") {
+        const collectionData = await collectionManager.getCollection(q.collection)
+        if (collectionData) {
+          this.searchExpressionTarget.classList.add("is-visible")
+          this.searchExpressionTarget.innerHTML = `${collectionData[getLocale()]?.actions.best_of}`
+        }
+      }
     } else if (Object.keys(q).indexOf("advancedSearch") > -1) {
       this.searchExpressionTarget.classList.add("is-visible")
       this.searchExpressionTarget.innerHTML = `${lang("advanced_search")}`
