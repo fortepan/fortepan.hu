@@ -30,8 +30,8 @@ latest:
   title: "Friss feltöltések"
   caption: "Egy-két havonta frissítjük oldalunkat kb. 2-3000 képpel, amelyekben gyakran sok adományozó családi fotói keverednek, de előfordul, hogy egy szerző vagy egy cég fotódokumentációja kerül fel egyben az oldalra."
   action:
-    label: "Összes sorozat"
-    url: "/hu/photo-collections/"
+    label: "Összes feltöltés"
+    url: "/hu/photo-uploads/"
 ---
 
 A honlap 2010-ben indult ötezer, jórészt lomtalanításokon talált fotóval. Azóta többszáz család, amatőr és hivatásos fotós, illetve közgyűjtemény bővítette a Fortepant. A honlapon megjelenő képeket a szerkesztőség válogatja ki.
