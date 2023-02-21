@@ -135,7 +135,7 @@ module.exports = {
     user_signup_username_taken: "A megadott felhasználónévvel már regisztráltak.",
     username: "Felhasználónév",
     username_or_email: "Felhasználónév vagy Email",
-    weekly_fortepan: "Heti Fortepan",
+    weekly_fortepan: "Heti Fortepan blog",
     year: "Év",
     age_restriction: {
       title: "Korhatáros tartalom",
@@ -145,7 +145,7 @@ module.exports = {
       remove_action_label: "Megtekintés",
     },
     projects: "Projektek",
-    photo_collections: "Fotósorozatok",
+    photo_uploads: "Korábbi feltöltések",
   },
   en: {
     about_us: "About us",
@@ -283,7 +283,7 @@ module.exports = {
     user_signup_username_taken: "Username is already taken.",
     username: "Username",
     username_or_email: "Username or Email",
-    weekly_fortepan: "Weekly Fortepan",
+    weekly_fortepan: "Weekly Fortepan blog",
     year: "Year",
     age_restriction: {
       title: "Age-restricted content",
@@ -293,6 +293,6 @@ module.exports = {
       remove_action_label: "Show",
     },
     projects: "Projects",
-    photo_collections: "Photo collections",
+    photo_uploads: "Previous uploads",
   },
 }

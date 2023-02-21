@@ -30,8 +30,8 @@ latest:
   title: "Recent uploads"
   caption: "Every month or two, we update our site with around 2-3000 images, often mixing family photos of many donors, but sometimes a photo documentation of an author or a company is added to the archive."
   action:
-    label: "All collections"
-    url: "/en/photo-collections/"
+    label: "All uploads"
+    url: "/en/photo-uploads/"
 ---
 
 This website was launched in 2010 and it initially contained photographs found randomly in the streets of Budapest. The archive has expanded since then through donations from families, amateur and professional photographers, along with public collections. The images on the website are selected by editors.

@@ -2,11 +2,11 @@
 layout: article/article.liquid
 ---
 
-<ul class="photo-collections" data-controller="photo-collections">
-  {% for collection in photo_collections.collections %}
-  {% capture query_url %}cfrom={% date_iso collection.date %}{% if until_date %}&cto={% date_iso until_date %}{% endif %}&collection={{ collection.date }}{% endcapture %}
+<ul class="photo-uploads" data-controller="photo-uploads">
+  {% for collection in photo_uploads.collections %}
+  {% capture query_url %}cfrom={% date_iso collection.date %}{% if until_date %}&cto={% date_iso until_date %}{% endif %}&upload={{ collection.date }}{% endcapture %}
     <li class="collection-item">
-      <div class="collection-item__cover" data-action="click->photo-collections#onCoverClick">
+      <div class="collection-item__cover" data-action="click->photo-uploads#onCoverClick">
         {% capture img_src %}{{ siteConfig.PHOTO_SOURCE }}480/fortepan_{{ collection.cover_image }}.jpg{% endcapture %}
         {% include image-lazyloader/image-lazyloader.liquid src:img_src alt:collection[locale].title custom_class:"collection-item__photo" %}
       </div>

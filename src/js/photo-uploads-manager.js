@@ -1,7 +1,7 @@
 const collectionData = {}
 
 const loadCollectionData = async () => {
-  const url = `/photo_collections.json`
+  const url = `/photo_uploads.json`
 
   const resp = await fetch(url, {
     method: "GET",
