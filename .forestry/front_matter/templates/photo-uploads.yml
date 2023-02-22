@@ -6,46 +6,56 @@ fields:
   name: collections
   label: collections
   fields:
+  - name: date
+    type: datetime
+    label: Date
+    description: ''
+    config:
+      required: false
+      date_format: YYYY-MM-DD
+      time_format: 
+      display_utc: false
+      export_format: x
   - type: text
     name: cover_image
-    label: cover_image
+    label: Cover image
   - type: field_group
     name: hu
-    label: hu
+    label: Magyar
     fields:
     - type: text
       name: title
-      label: title
+      label: Title
     - type: textarea
       name: blurb
-      label: blurb
+      label: Description
     - type: field_group
       name: actions
-      label: actions
+      label: Button labels
       fields:
       - type: text
         name: best_of
-        label: best_of
+        label: Best of
       - type: text
         name: all
-        label: all
+        label: All
   - type: field_group
     name: en
-    label: en
+    label: English
     fields:
     - type: text
       name: title
-      label: title
+      label: Title
     - type: textarea
       name: blurb
-      label: blurb
+      label: Description
     - type: field_group
       name: actions
-      label: actions
+      label: Button labels
       fields:
       - type: text
         name: best_of
-        label: best_of
+        label: Best of
       - type: text
         name: all
-        label: all
+        label: All
