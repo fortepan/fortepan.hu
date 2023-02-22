@@ -4,7 +4,7 @@ hide_body: true
 fields:
 - type: field_group_list
   name: collections
-  label: collections
+  label: Photo uploads
   fields:
   - name: date
     type: datetime
