@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/richardgazdik/fortepan.hu#readme",
   "devDependencies": {
-    "@11ty/eleventy": "^0.11.1",
+    "@11ty/eleventy": "^2.0.0",
     "@elastic/elasticsearch": "^7.10.0",
     "acorn": "^8.0.4",
     "autoprefixer": "10.1.0",
