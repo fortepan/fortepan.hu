@@ -60,6 +60,6 @@ fields:
                 name: all
                 label: All
     config:
-      labelField: hu/title
+      labelField: cover_image
 pages:
   - src/data/photo_uploads.json
