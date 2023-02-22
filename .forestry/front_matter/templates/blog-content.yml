@@ -4,39 +4,55 @@ hide_body: true
 fields:
 - type: field_group_list
   name: hu
-  label: hu
+  label: Magyar
   fields:
-  - type: text
-    name: date
-    label: date
+  - name: date
+    type: datetime
+    label: Date
+    description: ''
+    config:
+      required: false
+      date_format: 
+      time_format: 
+      display_utc: false
   - type: text
     name: cover_image
-    label: cover_image
-  - type: text
-    name: url
-    label: url
+    label: Cover image
   - type: text
     name: title
-    label: title
+    label: Title
   - type: textarea
     name: excerpt
-    label: excerpt
+    label: Excerpt
+  - type: text
+    name: url
+    label: URL
+  config:
+    labelField: title
 - type: field_group_list
   name: en
-  label: en
   fields:
-  - type: text
-    name: date
-    label: date
+  - name: date
+    type: datetime
+    label: Date
+    description: ''
+    config:
+      required: false
+      date_format: 
+      time_format: 
+      display_utc: false
   - type: text
     name: cover_image
-    label: cover_image
-  - type: text
-    name: url
-    label: url
+    label: Cover image
   - type: text
     name: title
-    label: title
+    label: Title
   - type: textarea
     name: excerpt
-    label: excerpt
+    label: Excerpt
+  - type: text
+    name: url
+    label: URL
+  label: English
+  config:
+    labelField: title
