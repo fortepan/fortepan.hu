@@ -6,12 +6,13 @@ fields:
   name: collections
   label: Photo uploads
   fields:
-  - name: id
+  - name: name
     type: text
     config:
       required: false
-    label: ID
-    description: "(Nem jelenik meg az oldalon)"
+    label: Name
+    description: "(Nem jelenik meg az oldalon, ez csak az admin felületen segít az
+      azonosításban)"
   - name: date
     type: datetime
     label: Date
