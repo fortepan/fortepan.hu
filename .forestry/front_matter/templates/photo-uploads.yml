@@ -16,9 +16,10 @@ fields:
   - name: date
     type: datetime
     label: Date
-    description: ''
+    description: 'Figyelem: ennek a dátumnak azonosnak kell lennie a Friss dátummal
+      minden újabb felöltés esetén!'
     config:
-      required: false
+      required: true
       date_format: YYYY-MM-DD
       time_format: 
       display_utc: false
