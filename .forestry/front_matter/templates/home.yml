@@ -22,12 +22,12 @@ fields:
     type: text
     config:
       required: false
-    label: Blokk címe
+    label: Title
   - name: caption
     type: text
     config:
       required: false
-    label: Leírás
+    label: Caption
   - name: content
     type: field_group_list
     fields:
@@ -61,7 +61,7 @@ fields:
       max: 
       labelField: 
     label: Content
-  label: Legérdekesebb tartalmaink
+  label: Best of collections
 pages:
 - src/pages/en/index-cms.md
 - src/pages/hu/index-cms.md
