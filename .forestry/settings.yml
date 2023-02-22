@@ -5,6 +5,13 @@ admin_path: ''
 webhook_url: 
 sections:
 - type: document
+  path: src/data/photo_uploads.json
+  label: Photo uploads
+  match: "**/*"
+- type: document
+  path: src/data/blog_content.json
+  label: Blog content
+- type: document
   path: src/data/notifications.json
   label: Notifications
 - type: document
@@ -23,9 +30,6 @@ sections:
 - type: document
   path: src/data/lang.json
   label: Dictionary
-- type: document
-  path: src/data/blog_content.json
-  label: Blog content
 upload_dir: src/static/uploads
 public_path: "/images/uploads"
 front_matter_path: ''
