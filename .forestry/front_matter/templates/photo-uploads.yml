@@ -2,64 +2,70 @@
 label: Photo uploads
 hide_body: true
 fields:
-  - type: field_group_list
-    name: collections
-    label: Photo uploads
-    fields:
-      - name: date
-        type: datetime
-        label: Date
-        description: ""
-        config:
-          required: false
-          date_format: YYYY-MM-DD
-          time_format:
-          display_utc: false
-          export_format: x
-      - type: text
-        name: cover_image
-        label: Cover image
-      - type: field_group
-        name: hu
-        label: Magyar
-        fields:
-          - type: text
-            name: title
-            label: Title
-          - type: textarea
-            name: blurb
-            label: Description
-          - type: field_group
-            name: actions
-            label: Button labels
-            fields:
-              - type: text
-                name: best_of
-                label: Best of
-              - type: text
-                name: all
-                label: All
-      - type: field_group
-        name: en
-        label: English
-        fields:
-          - type: text
-            name: title
-            label: Title
-          - type: textarea
-            name: blurb
-            label: Description
-          - type: field_group
-            name: actions
-            label: Button labels
-            fields:
-              - type: text
-                name: best_of
-                label: Best of
-              - type: text
-                name: all
-                label: All
+- type: field_group_list
+  name: collections
+  label: Photo uploads
+  fields:
+  - name: id
+    type: text
     config:
-      labelField: cover_image
+      required: false
+    label: ID
+    description: "(Nem jelenik meg az oldalon)"
+  - name: date
+    type: datetime
+    label: Date
+    description: ''
+    config:
+      required: false
+      date_format: YYYY-MM-DD
+      time_format: 
+      display_utc: false
+      export_format: x
+  - type: text
+    name: cover_image
+    label: Cover image
+  - type: field_group
+    name: hu
+    label: Magyar
+    fields:
+    - type: text
+      name: title
+      label: Title
+    - type: textarea
+      name: blurb
+      label: Description
+    - type: field_group
+      name: actions
+      label: Button labels
+      fields:
+      - type: text
+        name: best_of
+        label: Best of
+      - type: text
+        name: all
+        label: All
+  - type: field_group
+    name: en
+    label: English
+    fields:
+    - type: text
+      name: title
+      label: Title
+    - type: textarea
+      name: blurb
+      label: Description
+    - type: field_group
+      name: actions
+      label: Button labels
+      fields:
+      - type: text
+        name: best_of
+        label: Best of
+      - type: text
+        name: all
+        label: All
+  config:
+    labelField: id
 pages:
-  - src/data/photo_uploads.json
+- src/data/photo_uploads.json
