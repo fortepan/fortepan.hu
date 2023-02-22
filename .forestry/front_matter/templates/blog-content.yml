@@ -56,3 +56,5 @@ fields:
   label: English
   config:
     labelField: title
+pages:
+- src/data/blog_content.json
