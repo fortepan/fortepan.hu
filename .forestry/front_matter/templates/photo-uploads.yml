@@ -61,3 +61,5 @@ fields:
         label: All
   config:
     labelField: cover_image
+pages:
+- src/data/photo_uploads.json
