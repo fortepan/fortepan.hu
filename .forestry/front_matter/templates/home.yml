@@ -24,9 +24,13 @@ fields:
       required: false
     label: Title
   - name: caption
-    type: text
+    type: textarea
+    default: ''
     config:
       required: false
+      wysiwyg: false
+      schema:
+        format: markdown
     label: Caption
   - name: content
     type: field_group_list
@@ -62,6 +66,40 @@ fields:
       labelField: 
     label: Content
   label: Best of collections
+- name: blog
+  type: field_group
+  config: {}
+  fields:
+  - name: title
+    type: text
+    config:
+      required: false
+    label: Title
+  - name: caption
+    type: textarea
+    default: ''
+    config:
+      required: false
+      wysiwyg: false
+      schema:
+        format: markdown
+    label: Caption
+  - name: action
+    type: field_group
+    config: {}
+    fields:
+    - name: label
+      type: text
+      config:
+        required: false
+      label: Label
+    - name: url
+      type: text
+      config:
+        required: false
+      label: URL
+    label: More button
+  label: Blog section
 pages:
 - src/pages/en/index-cms.md
 - src/pages/hu/index-cms.md
