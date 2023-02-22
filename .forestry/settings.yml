@@ -23,6 +23,10 @@ sections:
 - type: document
   path: src/data/lang.json
   label: Dictionary
+- type: document
+  path: src/data/blog_content.json
+  label: Blog content
+  match: "**/*"
 upload_dir: src/static/uploads
 public_path: "/images/uploads"
 front_matter_path: ''
