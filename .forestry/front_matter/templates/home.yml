@@ -59,7 +59,7 @@ fields:
       type: text
       config:
         required: false
-      label: Url
+      label: URL
     config:
       min: 
       max: 
@@ -100,6 +100,40 @@ fields:
       label: URL
     label: More button
   label: Blog section
+- name: uploads
+  type: field_group
+  config: {}
+  fields:
+  - name: title
+    type: text
+    config:
+      required: false
+    label: Title
+  - name: caption
+    type: textarea
+    default: ''
+    config:
+      required: false
+      wysiwyg: false
+      schema:
+        format: markdown
+    label: Caption
+  - name: action
+    type: field_group
+    config: {}
+    fields:
+    - name: label
+      type: text
+      config:
+        required: false
+      label: Label
+    - name: url
+      type: text
+      config:
+        required: false
+      label: URL
+    label: More button
+  label: Recent uploads section
 pages:
 - src/pages/en/index-cms.md
 - src/pages/hu/index-cms.md
