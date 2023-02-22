@@ -84,3 +84,5 @@ fields:
         name: all
         label: all
   hidden: true
+pages:
+- src/data/photo_uploads.json
