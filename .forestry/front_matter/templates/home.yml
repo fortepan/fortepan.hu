@@ -100,7 +100,7 @@ fields:
       label: URL
     label: More button
   label: Blog section
-- name: uploads
+- name: latest
   type: field_group
   config: {}
   fields:
