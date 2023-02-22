@@ -1,6 +1,6 @@
 ---
 label: Photo uploads
-hide_body: true
+hide_body: false
 fields:
 - type: field_group_list
   name: collections
@@ -51,38 +51,5 @@ fields:
         label: All
   config:
     labelField: date
-- type: field_group
-  name: defaults
-  label: defaults
-  fields:
-  - type: field_group
-    name: hu
-    label: hu
-    fields:
-    - type: field_group
-      name: actions
-      label: actions
-      fields:
-      - type: text
-        name: best_of
-        label: best_of
-      - type: text
-        name: all
-        label: all
-  - type: field_group
-    name: en
-    label: en
-    fields:
-    - type: field_group
-      name: actions
-      label: actions
-      fields:
-      - type: text
-        name: best_of
-        label: best_of
-      - type: text
-        name: all
-        label: all
-  hidden: true
 pages:
 - src/data/photo_uploads.json
