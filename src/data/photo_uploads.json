@@ -15,6 +15,7 @@
   },
   "collections": [
     {
+      "name": "50 adományozó 5000 fényképe a Fortepan új kiadásában",
       "date": "1670371200000",
       "cover_image": "264407",
       "hu": {
@@ -32,10 +33,10 @@
           "best_of": "230 favorites",
           "all": "Full collection"
         }
-      },
-      "id": "50 adományozó 5000 fényképe a Fortepan új kiadásában"
+      }
     },
     {
+      "name": "Horváth József operatőr, haditudósító képei",
       "date": "1665878400000",
       "cover_image": "265600",
       "hu": {
@@ -53,10 +54,10 @@
           "best_of": "90 favorites",
           "all": "Full collection"
         }
-      },
-      "id": "Horváth József operatőr, haditudósító képei"
+      }
     },
     {
+      "name": "Két szerző - kétezer kép",
       "date": "1660867200000",
       "cover_image": "262320",
       "hu": {
@@ -74,10 +75,10 @@
           "best_of": "100 favorites",
           "all": "Full collection"
         }
-      },
-      "id": "Két szerző - kétezer kép"
+      }
     },
     {
+      "name": "Reményi József fotóhagyatéka",
       "date": "1655596800000",
       "cover_image": "257904",
       "hu": {
@@ -95,10 +96,10 @@
           "best_of": "70 favorites",
           "all": "Full collection"
         }
-      },
-      "id": "Reményi József fotóhagyatéka"
+      }
     },
     {
+      "name": "Utazások Európában",
       "date": "1653091200000",
       "cover_image": "258875",
       "hu": {
@@ -116,10 +117,10 @@
           "best_of": "120 favorites",
           "all": "Full collection"
         }
-      },
-      "id": "Utazások Európában"
+      }
     },
     {
+      "name": "3000 éles fénykép",
       "date": "1648944000000",
       "cover_image": "222664",
       "hu": {
@@ -137,10 +138,10 @@
           "best_of": "75 favorites",
           "all": "Full collection"
         }
-      },
-      "id": "3000 éles fénykép"
+      }
     },
     {
+      "name": "3000 fotó a FŐMTERV archívumából",
       "date": "1644537600000",
       "cover_image": "252768",
       "hu": {
@@ -158,10 +159,10 @@
           "best_of": "66 favorites",
           "all": "Full collection"
         }
-      },
-      "id": "3000 fotó a FŐMTERV archívumából"
+      }
     },
     {
+      "name": "2700 friss fotó",
       "date": "1640044800000",
       "cover_image": "250141",
       "hu": {
@@ -179,10 +180,10 @@
           "best_of": "60 favorites",
           "all": "Full collection"
         }
-      },
-      "id": ""
+      }
     },
     {
+      "name": "2200 papírkép",
       "date": "1636243200000",
       "cover_image": "222484",
       "hu": {
@@ -200,10 +201,10 @@
           "best_of": "50 favorites",
           "all": "Full collection"
         }
-      },
-      "id": ""
+      }
     },
     {
+      "name": "FŐFOTÓ - II. rész",
       "date": "1631923200000",
       "cover_image": "215627",
       "hu": {
@@ -221,10 +222,10 @@
           "best_of": "60 favorites",
           "all": "Full collection"
         }
-      },
-      "id": ""
+      }
     },
     {
+      "name": "Legújabb régi képeink '21. nyár",
       "date": "1625961600000",
       "cover_image": "212359",
       "hu": {
@@ -242,10 +243,10 @@
           "best_of": "80 favorites",
           "all": "Full collection"
         }
-      },
-      "id": ""
+      }
     },
     {
+      "name": "Legújabb régi képeink",
       "date": "1620777600000",
       "cover_image": "209871",
       "hu": {
@@ -263,10 +264,10 @@
           "best_of": "100 favorites",
           "all": "Full collection"
         }
-      },
-      "id": ""
+      }
     },
     {
+      "name": "FŐFOTÓ I",
       "date": "1617235200000",
       "cover_image": "207613",
       "hu": {
@@ -284,10 +285,10 @@
           "best_of": "100 favorites",
           "all": "Full FŐFOTÓ collection"
         }
-      },
-      "id": ""
+      }
     },
     {
+      "name": "Kereki Sándor",
       "date": "1614211200000",
       "cover_image": "205844",
       "hu": {
@@ -305,8 +306,7 @@
           "best_of": "100 favorites",
           "all": "All Kereki photos"
         }
-      },
-      "id": ""
+      }
     }
   ]
 }
