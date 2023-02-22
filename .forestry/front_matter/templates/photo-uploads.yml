@@ -59,3 +59,5 @@ fields:
       - type: text
         name: all
         label: All
+  config:
+    labelField: cover_image
