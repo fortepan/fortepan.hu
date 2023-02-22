@@ -67,6 +67,6 @@ fields:
         name: all
         label: All
   config:
-    labelField: id
+    labelField: name
 pages:
 - src/data/photo_uploads.json
