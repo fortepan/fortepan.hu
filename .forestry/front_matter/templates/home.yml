@@ -14,72 +14,51 @@ fields:
   name: permalink
   label: permalink
   hidden: true
-- name: announcement
+- name: best_of_collections
   type: field_group
   config: {}
   fields:
   - name: title
-    type: textarea
-    default: ''
+    type: text
     config:
       required: false
-      wysiwyg: true
-      schema:
-        format: html
-    label: Title
+    label: Blokk címe
   - name: caption
     type: text
     config:
       required: false
-    label: Caption
-  - name: cover_image
-    type: text
-    config:
-      required: false
-    label: Cover image
-  - name: blurb
-    type: textarea
-    default: ''
-    config:
-      required: false
-      wysiwyg: true
-      schema:
-        format: html
-    label: Blurb
-  - name: actions
-    type: field_group_list
+    label: Leírás
+  - name: content
+    type: field_group
+    config: {}
     fields:
-    - name: label
+    - name: title
       type: text
       config:
         required: false
-      label: Label
-    - name: style
-      type: select
-      default: primary
+      label: Cím
+    - name: counter
+      type: number
+      label: Számláló
+      description: ''
+      default: 0
+      required: true
+      config:
+        min: 
+        max: 
+        step: 
+    - name: cover_image
+      type: text
       config:
         required: false
-        options:
-        - primary
-        - light-transparent
-        - secondary
-        source:
-          type: simple
-          section: 
-          file: 
-          path: 
-      label: Style
+      label: Kép id
     - name: url
       type: text
       config:
         required: false
-      label: URL
-    config:
-      min: 
-      max: 
-      labelField: 
-    label: Actions
-  label: Announcement
+      label: Link
+    label: Tartalom lista
+  label: Legérdekesebb tartalmaink
 pages:
 - src/pages/en/index-cms.md
 - src/pages/hu/index-cms.md
