@@ -29,17 +29,16 @@ fields:
       required: false
     label: Leírás
   - name: content
-    type: field_group
-    config: {}
+    type: field_group_list
     fields:
     - name: title
       type: text
       config:
         required: false
-      label: Cím
+      label: Title
     - name: counter
       type: number
-      label: Számláló
+      label: Counter
       description: ''
       default: 0
       required: true
@@ -51,13 +50,17 @@ fields:
       type: text
       config:
         required: false
-      label: Kép id
+      label: Cover image
     - name: url
       type: text
       config:
         required: false
-      label: Link
-    label: Tartalom lista
+      label: Url
+    config:
+      min: 
+      max: 
+      labelField: 
+    label: Content
   label: Legérdekesebb tartalmaink
 pages:
 - src/pages/en/index-cms.md
