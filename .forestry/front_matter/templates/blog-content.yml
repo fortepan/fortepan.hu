@@ -1,0 +1,42 @@
+---
+label: Blog content
+hide_body: true
+fields:
+- type: field_group_list
+  name: hu
+  label: hu
+  fields:
+  - type: text
+    name: date
+    label: date
+  - type: text
+    name: cover_image
+    label: cover_image
+  - type: text
+    name: url
+    label: url
+  - type: text
+    name: title
+    label: title
+  - type: textarea
+    name: excerpt
+    label: excerpt
+- type: field_group_list
+  name: en
+  label: en
+  fields:
+  - type: text
+    name: date
+    label: date
+  - type: text
+    name: cover_image
+    label: cover_image
+  - type: text
+    name: url
+    label: url
+  - type: text
+    name: title
+    label: title
+  - type: textarea
+    name: excerpt
+    label: excerpt
