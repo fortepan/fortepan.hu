@@ -67,6 +67,7 @@ layout: base/base.liquid
       <div class="home__intro__text">{{ content }}</div>
     </div>
 
+    {% comment %}
     <div class="home__usp home__usp--collections">
       <div class="home__usp__header">
         <h2>{{ best_of_collections.title }}</h2>
@@ -92,6 +93,7 @@ layout: base/base.liquid
         {% endfor %}
       </ul>
     </div>
+    {% endcomment %}
 
     <div class="home__usp home__usp--blog-summary">
       <div class="home__usp__header">
