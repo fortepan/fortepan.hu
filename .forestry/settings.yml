@@ -7,7 +7,6 @@ sections:
 - type: document
   path: src/data/photo_uploads.json
   label: Photo uploads
-  match: "**/*"
 - type: document
   path: src/data/blog_content.json
   label: Blog content
