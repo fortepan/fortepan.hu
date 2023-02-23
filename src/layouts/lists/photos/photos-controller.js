@@ -135,9 +135,6 @@ export default class extends Controller {
       // apply year data to node
       thumbnail.year = item.year
 
-      //
-      thumbnail.photoData = item
-
       if (index === 0) {
         // set the meta image
         setPageMeta(null, null, `${config.PHOTO_SOURCE}480/fortepan_${item.mid}.jpg`)
