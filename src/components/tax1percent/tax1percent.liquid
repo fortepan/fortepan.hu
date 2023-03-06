@@ -1,0 +1,18 @@
+<div class="cookie-consent tax1percent" data-controller="tax1percent"
+  data-action="cookieConsent:cookiesAllowed@document->tax1percent#show"
+>
+  <div class="cookie-consent__wrapper">
+      <div class="cookie-consent__blurb">
+        <h5>{{ lang[locale].tax1percent.header }}</h5>
+        <p class="text-medium">{{ lang[locale].tax1percent.blurb }}</p>
+      </div>
+      <div class="cookie-consent__form__actions">
+        <button class="button button--secondary button--medium" data-action="tax1percent#hide">
+          {{ lang[locale].tax1percent.close_button }}
+        </button>
+        <button href="/hu/ado-1-szazalek/" class="button button--primary button--medium" data-action="tax1percent#showDetails">
+          {{ lang[locale].tax1percent.more_button }}
+        </button>
+      </div>
+  </div>
+</div>

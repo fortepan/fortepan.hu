@@ -146,6 +146,13 @@ module.exports = {
     },
     projects: "Projektek",
     photo_uploads: "Korábbi feltöltések",
+    tax1percent: {
+      menu_label: "Adó 1%",
+      header: "1% ADÓ - 100% FOTÓ",
+      blurb: "Támogassa Ön és családja adója egy százalékával a Fortepant!",
+      close_button: "Bezárás",
+      more_button: "Részletek",
+    },
   },
   en: {
     about_us: "About us",

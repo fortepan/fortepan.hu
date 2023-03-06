@@ -10,6 +10,55 @@
   @media screen and (max-width: ($breakpoint-tablet - 1px)) {
     padding: rem(80px) rem(20px) 0;
   }
+
+  ol:not([class]),
+  ul:not([class]) {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+    li:not([class]) {
+      padding: 0 0 0 1.5rem;
+      position: relative;
+      font-weight: 500;
+
+      &:not(:last-child) {
+        margin-bottom: 0.25rem;
+      }
+
+      &:before {
+        content: "•";
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-weight: 900;
+        color: $red;
+      }
+
+      a {
+        color: $red;
+        font-weight: 600;
+        text-decoration: none;
+        border-bottom: 1px solid transparent;
+        transition: border-color 0.6s $ease-out-expo;
+
+        &:hover {
+          border-bottom: 1px solid $red;
+        }
+      }
+    }
+  }
+
+  ol:not([class]) {
+    li:not([class]) {
+      counter-increment: fortepan_counter;
+
+      &:before {
+        content: counter(fortepan_counter) ".";
+        font-weight: 500;
+      }
+    }
+  }
 }
 
 .article__content {

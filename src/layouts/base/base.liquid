@@ -57,6 +57,7 @@
     {% include dialog/search/search.liquid %}
 
     {% include cookie-consent/cookie-consent.liquid %}
+    {% if locale == "hu" and cmsConfig.tax1percent == "1" and permalink != "/hu/ado-1-szazalek/" %}{% include tax1percent/tax1percent.liquid %}{% endif %}
 
     {% include loader/loader.liquid id:"loaderBase" %}
     {% include snackbar/snackbar.liquid %}

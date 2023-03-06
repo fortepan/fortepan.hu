@@ -1,0 +1,26 @@
+.tax1percent {
+  .cookie-consent__wrapper {
+    display: flex;
+    align-items: flex-end;
+
+    @media screen and (max-width: ($breakpoint-phone - 1px)) {
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+  }
+
+  .cookie-consent__blurb {
+    h5,
+    p {
+      margin: 0;
+    }
+
+    @media screen and (max-width: ($breakpoint-phone - 1px)) {
+      width: 100%;
+    }
+  }
+
+  a.button {
+    display: inline-block;
+  }
+}
