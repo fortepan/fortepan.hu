@@ -27,7 +27,7 @@ export default class CookieConsent extends Controller {
       const ls = localStorage.getItem("tax1percent")
 
       // if stored date is older than 7 days, show the notification again
-      if (!ls || ls < Date.now() - 7 * 24 * 60 * 60 * 1000) {
+      if (!ls || ls < Date.now() - 4 * 24 * 60 * 60 * 1000) {
         this.element.classList.add("is-visible")
       }
     }
