@@ -12,5 +12,19 @@ fields:
     time_format: 
     display_utc: true
     export_format: ''
+- name: tax1percent
+  type: select
+  default: '0'
+  config:
+    required: false
+    options:
+    - '1'
+    - '0'
+    source:
+      type: simple
+      section: 
+      file: 
+      path: 
+  label: Adó 1% banner megjelenítése
 pages:
 - src/data/cmsConfig.json
