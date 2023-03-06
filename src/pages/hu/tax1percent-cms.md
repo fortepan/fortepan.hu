@@ -3,8 +3,8 @@ layout: article/article.liquid
 title: 1% ADÓ - 100% FOTÓ
 permalink: "/hu/ado-1-szazalek/"
 hide_search: true
----
 
+---
 ### Az 1% felajánlásához szükséges adatok
 
 Summa Artium Alapítvány <br> Adószám: 18128510-1-42
