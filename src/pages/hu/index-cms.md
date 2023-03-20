@@ -31,7 +31,7 @@ blog:
     url: https://hetifortepan.capacenter.hu/
 latest:
   title: Korábbi feltöltések
-  caption: Egy-két havonta frissítjük oldalunkat kb. 2-3000 képpel, amelyekben gyakran
+  caption: Két-három havonta frissítjük oldalunkat kb. 2-3000 képpel, amelyekben gyakran
     sok adományozó családi fotói keverednek, de előfordul, hogy egy szerző vagy egy
     cég fotódokumentációja kerül fel egyben az oldalra.
   action:
