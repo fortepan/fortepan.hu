@@ -23,8 +23,8 @@ best_of_collections:
     title: Tizenkét legjelentősebb fotó-adományozónk
 blog:
   title: Heti Fortepan blog
-  caption: Magyarul hetente, angolul pedig kéthetente frissülő blogunkon a Fortepanra
-    felkerülő fényképek és adományozóik háttértörténetét dolgozzuk fel gazdagon illusztrált
+  caption: Magyarul hetente, angolul ritkábban frissülő blogunkon a Fortepanra felkerülő
+    fényképek és adományozóik háttértörténetét dolgozzuk fel gazdagon illusztrált
     írásokban. Minden cikkünk CC licensz alatt újraközölhető.
   action:
     label: Még több Heti Fortepan
