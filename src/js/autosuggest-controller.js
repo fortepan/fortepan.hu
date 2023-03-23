@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
-import throttle from "lodash/throttle"
+import throttle from "import { Controller } from "@hotwired/stimulus"/throttle"
 
 import autoSuggest from "../../api/autosuggest"
 

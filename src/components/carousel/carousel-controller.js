@@ -1,4 +1,4 @@
-import { Controller } from "stimulus"
+import { Controller } from "@hotwired/stimulus"
 
 import config from "../../data/siteConfig"
 import { trigger, lang, isTouchDevice, getImgAltText, getLocale } from "../../js/utils"
@@ -56,7 +56,7 @@ export default class extends Controller {
       clearTimeout(this.slideshowTimeout)
       this.slideshowTimeout = setTimeout(() => {
         this.showNextPhoto()
-      }, config.CAROUSEL_SLIDESHOW_DELAY)
+      }, config().CAROUSEL_SLIDESHOW_DELAY)
     }
   }
 
@@ -66,7 +66,7 @@ export default class extends Controller {
       return
     }
 
-    this.backgroundTarget.style.backgroundImage = `url(${config.PHOTO_SOURCE}240/fortepan_${id}.jpg)`
+    this.backgroundTarget.style.backgroundImage = `url(${config().PHOTO_SOURCE}240/fortepan_${id}.jpg)`
     this.backgroundTarget.classList.remove("fade-in")
     setTimeout(() => {
       this.backgroundTarget.classList.add("fade-in")
@@ -107,7 +107,7 @@ export default class extends Controller {
       if (
         !appState("age-restriction-removed") &&
         photoData.tags &&
-        photoData.tags.indexOf(config.AGE_RESTRICTION_TAG) > -1
+        photoData.tags.indexOf(config().AGE_RESTRICTION_TAG) > -1
       ) {
         photo.noImage = true
         photo.ageRestricted = true
@@ -140,7 +140,7 @@ export default class extends Controller {
       }
     } else {
       trigger("loader:show", { id: "loaderCarousel" })
-      photo.imageSrc = `${config.PHOTO_SOURCE}${window.innerWidth > 1600 ? 2560 : 1600}/fortepan_${id}.jpg`
+      photo.imageSrc = `${config().PHOTO_SOURCE}${window.innerWidth > 1600 ? 2560 : 1600}/fortepan_${id}.jpg`
       if (photo.imageLoader) photo.imageLoader.loadImage()
     }
   }
@@ -266,7 +266,7 @@ export default class extends Controller {
     // start slideshow
     this.slideshowTimeout = setTimeout(() => {
       this.showNextPhoto()
-    }, config.CAROUSEL_SLIDESHOW_DELAY)
+    }, config().CAROUSEL_SLIDESHOW_DELAY)
 
     this.wasFullScreen = appState("carousel-fullscreen")
 
@@ -409,7 +409,7 @@ export default class extends Controller {
       if (!photo.largePhoto.imageLoaded) {
         trigger("loader:show", { id: "loaderCarousel" })
 
-        photo.largePhoto.imageSrc = `${config.PHOTO_SOURCE}2560/fortepan_${photo.mid}.jpg`
+        photo.largePhoto.imageSrc = `${config().PHOTO_SOURCE}2560/fortepan_${photo.mid}.jpg`
 
         photo.largePhoto.loadCallback = () => {
           photo.classList.add("large-photo-loaded")
@@ -572,7 +572,7 @@ export default class extends Controller {
       (this.role === "lists" && !photoData.isDataLoaded) ||
       (!appState("age-restriction-removed") &&
         photoData.tags &&
-        photoData.tags.indexOf(config.AGE_RESTRICTION_TAG) > -1)
+        photoData.tags.indexOf(config().AGE_RESTRICTION_TAG) > -1)
     ) {
       return false
     }

@@ -129,11 +129,11 @@
   }
 
   .theme--light &:after {
-    background-image: svg-load("static/images/icons/16/icon-arrow-down.svg", fill=none, stroke=$dark-base);
+    background-image: svg-load("src/static/images/icons/16/icon-arrow-down.svg", fill=none, stroke=$dark-base);
   }
 
   .theme--dark &:after {
-    background-image: svg-load("static/images/icons/16/icon-arrow-down.svg", fill=none, stroke=$light-base);
+    background-image: svg-load("src/static/images/icons/16/icon-arrow-down.svg", fill=none, stroke=$light-base);
   }
 
   &:hover:after {

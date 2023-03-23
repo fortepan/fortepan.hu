@@ -24,7 +24,7 @@ const setLoginStatus = isUserSignedIn => {
 }
 
 const signin = async body => {
-  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/user/login?_format=json`
+  const url = `${appState("is-dev") ? config().DRUPAL_HOST_DEV : config().DRUPAL_HOST}/user/login?_format=json`
 
   const resp = await fetch(url, {
     method: "POST",
@@ -46,7 +46,7 @@ const signin = async body => {
 
 const signout = async () => {
   const authData = JSON.parse(localStorage.getItem("auth")) || {}
-  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/user/logout?_format=json&token=${
+  const url = `${appState("is-dev") ? config().DRUPAL_HOST_DEV : config().DRUPAL_HOST}/user/logout?_format=json&token=${
     authData.logout_token
   }`
 
@@ -66,7 +66,7 @@ const signout = async () => {
 }
 
 const signup = async body => {
-  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/user/register?_format=json`
+  const url = `${appState("is-dev") ? config().DRUPAL_HOST_DEV : config().DRUPAL_HOST}/user/register?_format=json`
 
   const resp = await fetch(url, {
     method: "POST",
@@ -96,7 +96,7 @@ const forgot = async val => {
   if (validateEmail(val)) body.data.attributes.mail = val
   else body.data.attributes.name = val
 
-  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/jsonapi/user/password/reset`
+  const url = `${appState("is-dev") ? config().DRUPAL_HOST_DEV : config().DRUPAL_HOST}/jsonapi/user/password/reset`
   const resp = await fetch(url, {
     method: "POST",
     credentials: "include",
@@ -125,7 +125,7 @@ const resetPassword = async pass => {
     return acc
   }, {})
   credentials.pass = pass
-  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/jsonapi/user/${
+  const url = `${appState("is-dev") ? config().DRUPAL_HOST_DEV : config().DRUPAL_HOST}/jsonapi/user/${
     credentials.user
   }/password/update`
   delete credentials.user
@@ -156,7 +156,7 @@ const resetPassword = async pass => {
 }
 
 const getUserStatus = async () => {
-  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/user/login_status?_format=json`
+  const url = `${appState("is-dev") ? config().DRUPAL_HOST_DEV : config().DRUPAL_HOST}/user/login_status?_format=json`
   const resp = await fetch(url, {
     method: "GET",
     credentials: "include",
@@ -173,7 +173,7 @@ const getUserStatus = async () => {
 
 const requestUserData = async id => {
   // check localstorage auth data
-  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/jsonapi/user/user/${id}`
+  const url = `${appState("is-dev") ? config().DRUPAL_HOST_DEV : config().DRUPAL_HOST}/jsonapi/user/user/${id}`
   const resp = await fetch(url, {
     method: "GET",
     credentials: "include",
@@ -187,7 +187,7 @@ const requestUserData = async id => {
 }
 
 const getUserId = async () => {
-  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/jsonapi`
+  const url = `${appState("is-dev") ? config().DRUPAL_HOST_DEV : config().DRUPAL_HOST}/jsonapi`
   const resp = await fetch(url, {
     method: "GET",
     credentials: "include",

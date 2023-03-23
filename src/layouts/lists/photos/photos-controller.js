@@ -1,5 +1,5 @@
-import { throttle } from "lodash"
-import { Controller } from "stimulus"
+import { Controller } from "@hotwired/stimulus"
+import throttle from "lodash/throttle"
 
 import config from "../../../data/siteConfig"
 import { setAppState } from "../../../js/app"
@@ -137,7 +137,7 @@ export default class extends Controller {
 
       if (index === 0) {
         // set the meta image
-        setPageMeta(null, null, `${config.PHOTO_SOURCE}480/fortepan_${item.mid}.jpg`)
+        setPageMeta(null, null, `${config().PHOTO_SOURCE}480/fortepan_${item.mid}.jpg`)
       }
     })
 
@@ -159,7 +159,7 @@ export default class extends Controller {
     setPageMeta(
       `${this.listData.name} — #${id}`,
       this.listData.description,
-      `${config.PHOTO_SOURCE}480/fortepan_${id}.jpg`
+      `${config().PHOTO_SOURCE}480/fortepan_${id}.jpg`
     )
 
     if (window.location.pathname !== url) {

@@ -13,7 +13,7 @@ const createList = async (name, description, isPrivate = false) => {
       },
     },
   }
-  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/jsonapi/taxonomy_term/private`
+  const url = `${appState("is-dev") ? config().DRUPAL_HOST_DEV : config().DRUPAL_HOST}/jsonapi/taxonomy_term/private`
   const resp = await fetch(url, {
     method: "POST",
     credentials: "include",
@@ -48,7 +48,7 @@ const editList = async (uuid, name, description, isPrivate = false) => {
   }
 
   const url = `${
-    appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST
+    appState("is-dev") ? config().DRUPAL_HOST_DEV : config().DRUPAL_HOST
   }/jsonapi/taxonomy_term/private/${uuid}`
 
   const resp = await fetch(url, {
@@ -71,7 +71,7 @@ const deleteList = async uuid => {
   const authData = JSON.parse(localStorage.getItem("auth")) || {}
 
   const url = `${
-    appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST
+    appState("is-dev") ? config().DRUPAL_HOST_DEV : config().DRUPAL_HOST
   }/jsonapi/taxonomy_term/private/${uuid}`
 
   const resp = await fetch(url, {
@@ -88,7 +88,9 @@ const deleteList = async uuid => {
 }
 
 const addToList = async (photoId, listId) => {
-  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/fortepan/flag/${photoId}/${listId}`
+  const url = `${
+    appState("is-dev") ? config().DRUPAL_HOST_DEV : config().DRUPAL_HOST
+  }/fortepan/flag/${photoId}/${listId}`
 
   const resp = await fetch(url, {
     method: "POST",
@@ -104,7 +106,9 @@ const addToList = async (photoId, listId) => {
 }
 
 const deleteFromList = async (photoId, listId) => {
-  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/fortepan/unflag/${photoId}/${listId}`
+  const url = `${
+    appState("is-dev") ? config().DRUPAL_HOST_DEV : config().DRUPAL_HOST
+  }/fortepan/unflag/${photoId}/${listId}`
 
   const resp = await fetch(url, {
     method: "POST",
@@ -120,7 +124,7 @@ const deleteFromList = async (photoId, listId) => {
 }
 
 const getLists = async () => {
-  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/fortepan/lists/created/desc`
+  const url = `${appState("is-dev") ? config().DRUPAL_HOST_DEV : config().DRUPAL_HOST}/fortepan/lists/created/desc`
 
   const resp = await fetch(url, {
     method: "GET",
@@ -136,7 +140,7 @@ const getLists = async () => {
 }
 
 const getListPhotos = async id => {
-  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/fortepan/flags/${id}/created/asc`
+  const url = `${appState("is-dev") ? config().DRUPAL_HOST_DEV : config().DRUPAL_HOST}/fortepan/flags/${id}/created/asc`
   const resp = await fetch(url, {
     method: "GET",
     credentials: "include",
@@ -153,7 +157,7 @@ const getListPhotos = async id => {
 // return all the lists of the current logged in user that contains a given image
 const getContainingLists = async photoId => {
   const url = `${
-    appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST
+    appState("is-dev") ? config().DRUPAL_HOST_DEV : config().DRUPAL_HOST
   }/fortepan/lists/created/desc/${photoId}`
 
   const resp = await fetch(url, {
@@ -173,8 +177,8 @@ const getContainingLists = async photoId => {
 
 const listsElasticRequest = async data => {
   const url = appState("is-dev")
-    ? `${config.ELASTIC_HOST_DEV}/elasticsearch_index_fortepandrupaldevelop_cwoou_lists/_search?pretty`
-    : `${config.ELASTIC_HOST}/elasticsearch_index_fortepandrupalmain_hd64t_lists/_search?pretty`
+    ? `${config().ELASTIC_HOST_DEV}/elasticsearch_index_fortepandrupaldevelop_cwoou_lists/_search?pretty`
+    : `${config().ELASTIC_HOST}/elasticsearch_index_fortepandrupalmain_hd64t_lists/_search?pretty`
 
   const resp = await fetch(url, {
     method: "POST",
@@ -190,8 +194,8 @@ const listsElasticRequest = async data => {
 
 const listsContentElasticRequest = async data => {
   const url = appState("is-dev")
-    ? `${config.ELASTIC_HOST_DEV}/elasticsearch_index_fortepandrupaldevelop_cwoou_list_content/_search?pretty`
-    : `${config.ELASTIC_HOST}/elasticsearch_index_fortepandrupalmain_hd64t_list_content/_search?pretty`
+    ? `${config().ELASTIC_HOST_DEV}/elasticsearch_index_fortepandrupaldevelop_cwoou_list_content/_search?pretty`
+    : `${config().ELASTIC_HOST}/elasticsearch_index_fortepandrupalmain_hd64t_list_content/_search?pretty`
 
   const resp = await fetch(url, {
     method: "POST",

@@ -1,4 +1,4 @@
-import { Controller } from "stimulus"
+import { Controller } from "@hotwired/stimulus"
 
 import throttle from "lodash/throttle"
 import config from "../../data/siteConfig"
@@ -186,7 +186,7 @@ export default class extends Controller {
   async loadPhotos(insertBefore) {
     // get default and seatch query params
     const params = {
-      size: config.THUMBNAILS_QUERY_LIMIT,
+      size: config().THUMBNAILS_QUERY_LIMIT,
     }
 
     // merge params with query params

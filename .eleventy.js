@@ -5,11 +5,7 @@ module.exports = eleventyConfig => {
   // Disable .gitignore and use eleventy's own ignore file instead
   eleventyConfig.setUseGitIgnore(false)
 
-  // Watch the compiled assets for changes
-  eleventyConfig.addWatchTarget("./_compiled-assets/")
-
   // Copy assets
-  eleventyConfig.addPassthroughCopy({ "_compiled-assets": "/" })
   eleventyConfig.addPassthroughCopy({ "src/static/images": "/images/" })
   eleventyConfig.addPassthroughCopy({ "src/static/uploads": "/uploads/" })
   eleventyConfig.addPassthroughCopy({ "src/static/": "/" })
@@ -17,6 +13,11 @@ module.exports = eleventyConfig => {
   eleventyConfig.addPassthroughCopy({ "node_modules/@webcomponents/webcomponentsjs": "/webcomponents-polyfill" })
 
   // Define custom liquid tags and shortcodes
+
+  eleventyConfig.setLiquidOptions({
+    dynamicPartials: false,
+  })
+
   eleventyConfig.addLiquidTag("inlineSVG", inlineSVG)
   eleventyConfig.addLiquidShortcode("now", () => {
     return Date.now()
@@ -35,6 +36,14 @@ module.exports = eleventyConfig => {
       return full ? iso : iso.split("T")[0].toString()
     }
     return ""
+  })
+
+  eleventyConfig.addLiquidFilter("escapeHTML", unsafe => {
+    return unsafe
+      ? unsafe.replace(/[\u00A0-\u9999<>&]/g, i => {
+          return `&#${i.charCodeAt(0)};`
+        })
+      : ""
   })
 
   // Minify html in production

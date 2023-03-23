@@ -1,4 +1,4 @@
-import { Controller } from "stimulus"
+import { Controller } from "@hotwired/stimulus"
 import { trigger } from "../../js/utils"
 
 export default class ScrollView extends Controller {
