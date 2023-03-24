@@ -12,7 +12,9 @@
     "webpack:serve": "webpack -- --watch",
     "postcss": "postcss 'src/scss/styles.scss' --verbose --dir _dist/css/ --ext css",
     "postcss:serve": "npm run postcss -- --watch",
-    "build": "ENV=production npm-run-all clean import-autocomplete-data webpack postcss eleventy",
+    "tinacms": "npx tinacms build",
+    "tinacms:serve": "npx tinacms dev",
+    "build": "ENV=production npm-run-all clean import-autocomplete-data tinacms webpack postcss eleventy",
     "dev": "ENV=development npm-run-all -l --silent clean import-autocomplete-data webpack postcss --parallel *:serve"
   },
   "repository": {
@@ -64,6 +66,8 @@
   "dependencies": {
     "@hotwired/stimulus": "^3.2.1",
     "@hotwired/stimulus-webpack-helpers": "^1.0.1",
-    "lodash": "^4.17.15"
+    "@tinacms/cli": "^1.4.0",
+    "lodash": "^4.17.15",
+    "tinacms": "^1.4.0"
   }
 }

@@ -1,0 +1,133 @@
+fragment Pages_huParts on Pages_hu {
+  ... on Pages_huProjects {
+    body
+    layout
+    title
+    permalink
+    hide_search
+    projects {
+      __typename
+      title
+      project_date
+      description
+      funding_info
+      funding_logo
+    }
+  }
+  ... on Pages_huArticle {
+    layout
+    title
+    permalink
+    body
+  }
+  ... on Pages_huHome {
+    body
+    layout
+    title
+    permalink
+    best_of_collections {
+      __typename
+      title
+      caption
+      content {
+        __typename
+        title
+        counter
+        cover_image
+        url
+      }
+    }
+    blog {
+      __typename
+      title
+      caption
+      action {
+        __typename
+        label
+        url
+      }
+    }
+    latest {
+      __typename
+      title
+      caption
+      action {
+        __typename
+        label
+        url
+      }
+    }
+  }
+  ... on Pages_huDefault {
+    layout
+    title
+    permalink
+  }
+}
+
+fragment Pages_enParts on Pages_en {
+  ... on Pages_enProjects {
+    body
+    layout
+    title
+    permalink
+    hide_search
+    projects {
+      __typename
+      title
+      project_date
+      description
+      funding_info
+      funding_logo
+    }
+  }
+  ... on Pages_enArticle {
+    layout
+    title
+    permalink
+    body
+  }
+  ... on Pages_enHome {
+    body
+    layout
+    title
+    permalink
+    best_of_collections {
+      __typename
+      title
+      caption
+      content {
+        __typename
+        title
+        counter
+        cover_image
+        url
+      }
+    }
+    blog {
+      __typename
+      title
+      caption
+      action {
+        __typename
+        label
+        url
+      }
+    }
+    latest {
+      __typename
+      title
+      caption
+      action {
+        __typename
+        label
+        url
+      }
+    }
+  }
+  ... on Pages_enDefault {
+    layout
+    title
+    permalink
+  }
+}

@@ -3,6 +3,7 @@ layout: projects/projects.liquid
 title: Projektek
 permalink: /hu/projects/
 hide_search: true
+_template: projects
 projects:
   - title: Fortepan Method - Making Europe’s private visual history freely accessible
     project_date: 2022. szeptember 1 - 2025. augusztus 31.

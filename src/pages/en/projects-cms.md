@@ -19,4 +19,5 @@ projects:
     description: In 2022 we are digiziting, editing, providing data to and sharing further photographs photographers Sándor Bojár, József Hunyady, Károly Vimola and Faragó György and the former Public Construction Company.<br>Selected images will be shared with a Creative Commons-based, free to use license on fortepan.hu website.
     funding_info: The project is funded by the National Cultural Fund.
     funding_logo: /images/project_logos/nka.svg
+_template: projects
 ---
