@@ -15,6 +15,27 @@
   },
   "collections": [
     {
+      "name": "Lipovits Károly fotói",
+      "date": "1682015400000",
+      "cover_image": "271811",
+      "hu": {
+        "title": "Lipovits Károly fotói",
+        "blurb": "Egy dunántúli főiskolai diák és egy kisváros iskolai élete az ötvenes-hatvanas években, Lipovits Károly testnevelő tanár kameráján keresztül. 1200 kép gyerekekről, fiatalokról és Csornáról a szocializmus évtizedeiből.",
+        "actions": {
+          "best_of": "70 jó kép",
+          "all": "A teljes sorozat"
+        }
+      },
+      "en": {
+        "title": "Photos of Károly Lipovits",
+        "blurb": "The life of a college student, and that of a small town school in Western Hungary, in the 1950s and 60s, through the lens of Károly Lipovits, PE teacher. 1200 photos of children and youngsters, from the decades of socialism.",
+        "actions": {
+          "best_of": "70 best of",
+          "all": "All collection"
+        }
+      }
+    },
+    {
       "name": "4000 kép",
       "date": "1679007600000",
       "cover_image": "268236",
