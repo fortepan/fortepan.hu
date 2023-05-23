@@ -129,7 +129,7 @@ export default class extends Controller {
     }
 
     // age-restriction
-    if (!appState("age-restriction-removed") && data.tags && data.tags.indexOf(config().AGE_RESTRICTION_TAG) > -1) {
+    if (!data.ageRestrictionRemoved && data.tags && data.tags.indexOf(config.AGE_RESTRICTION_TAG) > -1) {
       this.element.classList.remove("is-loading")
       this.element.classList.add("is-loaded", "no-image", "age-restricted")
       const el = document.getElementById("age-restriction-template").content.firstElementChild.cloneNode(true)
@@ -178,11 +178,14 @@ export default class extends Controller {
   showAgeRestrictionDialog(e) {
     if (e) e.preventDefault()
 
-    trigger("dialogAgeRestriction:show")
+    trigger("dialogAgeRestriction:show", { photoId: this.element.photoId.toString() })
   }
 
-  removeAgeRestriction() {
-    if (this.element.classList.contains("age-restricted")) {
+  removeAgeRestriction(e) {
+    if (
+      this.element.classList.contains("age-restricted") &&
+      e?.detail?.photoId.toString() === this.element.photoId.toString()
+    ) {
       this.element.classList.remove("is-loaded", "no-image", "age-restricted")
       this.containerTarget.querySelector(".age-restriction").remove()
       this.loadThumbnailImage()

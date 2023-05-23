@@ -1,6 +1,8 @@
 import { Controller } from "@hotwired/stimulus"
-import { setAppState } from "../../../js/app"
 import { trigger } from "../../../js/utils"
+import photoManager from "../../../js/photo-manager"
+import listManager from "../../../js/list-manager"
+import { appState } from "../../../js/app"
 
 export default class extends Controller {
   static get targets() {
@@ -12,17 +14,29 @@ export default class extends Controller {
   remove(e) {
     if (e) e.preventDefault()
 
-    setAppState("age-restriction-removed")
-    trigger("dialogAgeRestriction:remove")
+    const params = {}
+    if (this.photoId) {
+      params.photoId = this.photoId
+
+      const photoData = appState("is-lists")
+        ? listManager.getListPhotoById(listManager.getSelectedListId(), this.photoId)
+        : photoManager.getPhotoDataByID(this.photoId)
+
+      if (photoData) photoData.ageRestrictionRemoved = true
+    }
+
+    trigger("dialogAgeRestriction:remove", params)
 
     this.hide()
   }
 
-  show() {
+  show(e) {
+    this.photoId = e?.detail?.photoId
     this.element.classList.add("is-visible")
   }
 
   hide() {
+    delete this.photoId
     this.element.classList.remove("is-visible")
   }
 }

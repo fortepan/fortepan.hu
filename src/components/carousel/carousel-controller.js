@@ -105,7 +105,7 @@ export default class extends Controller {
 
       // age-restriction
       if (
-        !appState("age-restriction-removed") &&
+        !photoData.ageRestrictionRemoved &&
         photoData.tags &&
         photoData.tags.indexOf(config().AGE_RESTRICTION_TAG) > -1
       ) {
@@ -136,7 +136,7 @@ export default class extends Controller {
 
       if (photo.ageRestricted && !this.slideshowIsPlaying) {
         // open age restriction dialog
-        trigger("dialogAgeRestriction:show")
+        trigger("dialogAgeRestriction:show", { photoId: id.toString() })
       }
     } else {
       trigger("loader:show", { id: "loaderCarousel" })
@@ -570,9 +570,7 @@ export default class extends Controller {
 
     if (
       (this.role === "lists" && !photoData.isDataLoaded) ||
-      (!appState("age-restriction-removed") &&
-        photoData.tags &&
-        photoData.tags.indexOf(config().AGE_RESTRICTION_TAG) > -1)
+      (!photoData.ageRestrictionRemoved && photoData.tags && photoData.tags.indexOf(config.AGE_RESTRICTION_TAG) > -1)
     ) {
       return false
     }
@@ -601,12 +599,13 @@ export default class extends Controller {
   showAgeRestrictionDialog(e) {
     if (e) e.preventDefault()
 
-    trigger("dialogAgeRestriction:show")
+    const photoData = this.role === "lists" ? listManager.getSelectedPhoto() : photoManager.getSelectedPhotoData()
+    trigger("dialogAgeRestriction:show", { photoId: photoData.mid.toString() })
   }
 
-  removeAgeRestriction() {
+  removeAgeRestriction(e) {
     this.photoTargets.forEach(photo => {
-      if (photo.noImage && photo.ageRestricted) {
+      if (photo.noImage && photo.ageRestricted && e?.detail?.photoId.toString() === photo.mid.toString()) {
         delete photo.noImage
         delete photo.ageRestricted
 

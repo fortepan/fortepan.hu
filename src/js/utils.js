@@ -31,7 +31,8 @@ export const click = () => {
 }
 
 export const getURLParams = () => {
-  return Object.fromEntries(new URLSearchParams(window.location.search.substring(1)))
+  const s = window.location.search.split("+").join(encodeURIComponent("+"))
+  return Object.fromEntries(new URLSearchParams(s))
 }
 
 export const getPrettyURLValues = path => {
