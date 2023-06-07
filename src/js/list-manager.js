@@ -39,6 +39,7 @@ const loadListData = async () => {
           photo.country = h.country
           photo.city = h.city
           photo.place = h.place
+          photo.approximate = h.approximate
           data.photos.push(photo)
         })
       }

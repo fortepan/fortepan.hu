@@ -3,11 +3,10 @@
     <form
       class="cookie-consent__form"
       data-cookie-consent-target="form"
-      data-action="submit->cookie-consent#disableFormSubmit keypress->cookie-consent#disableFormSubmitOnEnter"
-    >
+      data-action="submit->cookie-consent#disableFormSubmit keypress->cookie-consent#disableFormSubmitOnEnter">
       <div class="cookie-consent__blurb styled-links">
         {{ lang[locale].cookieinfo }}
-        <a href="{{lang[locale]}}/static/?content=privacy">{{ lang[locale].more_info }}</a> 
+        <a href="/{{locale}}/static/?content=privacy">{{ lang[locale].more_info }}</a>
       </div>
       <div class="cookie-consent__form__actions">
         <button class="button button--secondary button--medium" data-action="cookie-consent#hide">

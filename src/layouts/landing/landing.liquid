@@ -10,7 +10,7 @@ layout: base/base.liquid
   data-action="timeline:yearSelected@document->landing#onYearSelected timeline:stopDrag@document->landing#onYearSelected">
   <section class="home__hero">
     <div class="home__announcement">
-      <div class="home__announcement__caption caption" data-landing-target="announcementcaption"></div>
+      <div class="home__announcement__caption caption" data-landing-target="announcementcaption">{{ Loading }}</div>
       <h1 class="home__announcement__title">
         <strong data-landing-target="announcementtitle"></strong>
       </h1>
@@ -27,36 +27,28 @@ layout: base/base.liquid
   <section class="home__content">
     <div class="home__search-wrapper">
       {% include search/search.liquid class: "home__search__input" type: "large" %}
-      {% if locale == "hu" %}
-        <div class="home__search__total h3" data-landing-target="total">
-          Összesen
-          <a href="/{{ locale }}/photos/">
-            <span data-landing-target="totalVal"></span>
-            fénykép
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="14"
-              height="10"
-              viewBox="0 0 14 10">
-              <path
-                fill="none"
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M2,6 L6,10 L10,6 M6,-2 L6,9"
-                transform="rotate(-90 7 4)" />
-            </svg>
-          </a>
-        </div>
-      {% else %}
-        <div class="home__search__total h3" data-landing-target="total">
-          <a href="/{{ locale }}/photos/">
-            <span data-landing-target="totalVal"></span>
-            photos</a>
-          in total
-        </div>
-      {% endif %}
+      <div class="home__search__total h3" data-landing-target="total">
+        <a href="/{{ locale }}/photos/">
+          <span data-landing-target="totalVal"></span>
+          <span data-landing-target="extraText"></span>
+        </a>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="14"
+          height="10"
+          viewBox="0 0 14 10">
+          <path
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M2,6 L6,10 L10,6 M6,-2 L6,9"
+            transform="rotate(-90 7 4)" />
+            <br>
+          <a href="/{{ locale }}"><span data-landing-target="homeText"></span></a>
+        </svg>
+      </div>
     </div>
 
     {% include timeline/timeline.liquid %}

@@ -1,4 +1,5 @@
 import langData from "../data/lang"
+import config from "../data/siteConfig"
 
 export const getLocale = () => {
   return document.querySelector("body").dataset.lang
@@ -15,7 +16,7 @@ export const isTouchDevice = () => {
 }
 
 export const trigger = (eventId, obj = {}, scope = document, doBubble = false) => {
-  if (window.location.hostname === "one.fortepan.eu") {
+  if (window.location.hostname === "oness.fortepan.eu") {
     // eslint-disable-next-line no-console
     console.log(eventId, obj)
   }
@@ -28,6 +29,29 @@ export const trigger = (eventId, obj = {}, scope = document, doBubble = false) =
 
 export const click = () => {
   return isTouchDevice() ? "touchstart" : "click"
+}
+
+export const photoRes = (size, photo) => {
+  let imageRequest = {
+    bucket: config.PHOTO_BUCKET,
+    key: photo,
+    edits: {
+      resize: {}
+    }
+  }
+  if (size === 'large') {
+    imageRequest.edits.resize.width = `${window.innerWidth > 1600 ? 2560 : 1600}`
+  }
+  if (size === 240) {
+    imageRequest.edits.resize.width = 240
+  }
+  if (size === 480) {
+    imageRequest.edits.resize.width = 480
+  }
+  // console.log('imageRequest: ', imageRequest)
+  let encoded = btoa(JSON.stringify(imageRequest))
+  return `${config.PHOTO_SOURCE}/${encoded}`
+
 }
 
 export const getURLParams = () => {

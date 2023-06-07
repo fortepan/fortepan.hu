@@ -1,7 +1,7 @@
 import { Controller } from "stimulus"
 
 import config from "../../data/siteConfig"
-import { trigger, lang, isTouchDevice, getImgAltText, getLocale } from "../../js/utils"
+import { trigger, lang, isTouchDevice, getImgAltText, getLocale, photoRes } from "../../js/utils"
 import { setAppState, removeAppState, appState } from "../../js/app"
 import photoManager from "../../js/photo-manager"
 import listManager from "../../js/list-manager"
@@ -65,8 +65,7 @@ export default class extends Controller {
       this.backgroundTarget.classList.remove("fade-in")
       return
     }
-
-    this.backgroundTarget.style.backgroundImage = `url(${config.PHOTO_SOURCE}/photo/thumbnail-240-${id})`
+    this.backgroundTarget.style.backgroundImage = `url(${photoRes(240, id)})`
     this.backgroundTarget.classList.remove("fade-in")
     setTimeout(() => {
       this.backgroundTarget.classList.add("fade-in")
@@ -141,12 +140,11 @@ export default class extends Controller {
         trigger("dialogAgeRestriction:show")
       }
     } else {
-      console.log('de mégis', photo.imageSrc)
       trigger("loader:show", { id: "loaderCarousel" })
       if (photo.imageSrc === null) {
-        photo.imageSrc = `${config.PHOTO_SOURCE}/photo/thumbnail-${window.innerWidth > 1600 ? 2560 : 1600}-${photoManager.getPhotoDataByID(id).photo}`  
+        photo.imageSrc = photoRes('large', photoManager.getPhotoDataByID(id).photo)
       } else {
-        photo.imageSrc = `${config.PHOTO_SOURCE}/photo/thumbnail-${window.innerWidth > 1600 ? 2560 : 1600}-${photo.imageSrc}`
+        photo.imageSrc = photoRes('large', photo.imageSrc)
       }
       if (photo.imageLoader) photo.imageLoader.loadImage()
     }

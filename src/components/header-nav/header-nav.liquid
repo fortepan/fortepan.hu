@@ -6,7 +6,7 @@
   <div class="header-nav__logo">
     <a href="/{{ locale }}/" class="header-nav__logo__link">
       {% inlineSVG src:"src/static/images/header-logo.svg" class:"header-nav__logo" %}
-      <span data-header-nav-target="logoLabel">Fortepan</span>
+      <span data-header-nav-target="logoLabel">Fortepan<br>Method</span>
     </a>
   </div>
 
@@ -39,6 +39,7 @@
         {% inlineSVG src:"src/static/images/icons/24/icon-menu.svg" class:"button-circular__icon" %}
         <div class="button-circular__label">{{ lang[locale].menu }}</div>
       </a>
+      <!--
       <a href="#" class="button-circular header-nav__notification-icon"
            data-popup="notifications"
            data-header-nav-target="notificationIcon"
@@ -46,6 +47,7 @@
         {% inlineSVG src:"src/static/images/icons/24/icon-notification.svg" class:"button-circular__icon" %}
         <div class="button-circular__label">{{ lang[locale].notifications }}</div>
       </a>
+      -->
 
       <div class="header-nav__profile-icon">
         <a href="#" class="button-circular is-hidden-when-signed-in"
@@ -74,27 +76,16 @@
   </div>
 
   <div class="header-nav__popup" data-header-nav-target="popup menu">
-    <a class="header-nav__link header-nav__link--top header-nav__link--hide-on-desktop" href="/{{ locale }}/photos/">{{ lang[locale].photos }}</a>
-    <a class="header-nav__link header-nav__link--top header-nav__link--separator-after header-nav__link--hide-on-desktop" href="/{{ locale }}/photos/?latest">{{ lang[locale].latest }}</a>
-    <a class="header-nav__link header-nav__link--top" href="/{{ locale }}/about-us/">{{ lang[locale].about_us }}</a>
-    <a class="header-nav__link header-nav__link--top" href="/{{ locale }}/donors/">{{ lang[locale].donors }}</a>
-    <a class="header-nav__link header-nav__link--top" href="https://www.donably.com/fortepan" target="_blank">{{ lang[locale].donate }}</a>
-    <a class="header-nav__link header-nav__link--top" href="https://hetifortepan.capacenter.hu{% if locale == "en" %}/{{locale}}{% endif %}" target="_blank">{{ lang[locale].weekly_fortepan }}</a>
-    <a class="header-nav__link header-nav__link--top" href="https://forum.index.hu/Article/showArticle?t=9204653" target="_blank">{{ lang[locale].forum }}</a>
-    <a class="header-nav__link header-nav__link--top" href="https://www.facebook.com/FortepanArchivum/" target="_blank">Facebook</a>
-    <a class="header-nav__link header-nav__link--top" href="https://www.instagram.com/fortepan/" target="_blank">Instagram</a>
-    <a class="header-nav__link header-nav__link--top header-nav__link--separator-after" href="/{{ locale }}/projects/">{{ lang[locale].projects }}</a>
-    <a class="header-nav__link" href="mailto:fortepan@gmail.com">{{ lang[locale].contact_us }}</a>
-    <a class="header-nav__link header-nav__link--desktop-only" href="/{{ locale }}/privacy/">{{ lang[locale].privacy_policy }}</a>
+    <a class="header-nav__link" href="{{siteConfig.SITE}}/{{ locale }}/static/?content=privacy-policy">{{ lang[locale].privacy_policy }}</a>
     <div class="header-nav__link--hide-on-desktop">
-      <a class="header-nav__link header-nav__link--separator-after" href="/{{ locale }}/privacy/">{{ lang[locale].privacy_policy }}</a>
+      
       <h6>{{ lang[locale].language }}</h6>
       {% for l in siteConfig.LOCALES %}
-      <a class="header-nav__link header-nav__link--top header-nav__link__lang lang-{{ l[0] }}{% if class %} {{ class }}{% endif %}"
-        data-lang="{{ l[0] }}"
-        href="/{{ l[0] }}/"
+      <a class="header-nav__link header-nav__link--top header-nav__link__lang lang-{{ l.code }}{% if class %} {{ class }}{% endif %}"
+        data-lang="{{ l.code }}"
+        href="/{{ l.code }}/"
         data-action="click->header-nav#switchLocale">
-        {{ l[1] }}
+        {{ l.text }}
       </a>
       {% endfor %}
     </div>
@@ -118,7 +109,7 @@
       <span class="header-nav__toggle-switch"></span>
     </a>
   </div>
-
+  <!--
   <div class="header-nav__popup header-nav__notifications" data-header-nav-target="popup notifications">
     <h3 class="header-nav__popup__heading">{{ lang[locale].notifications }}</h3>
     <ul class="header-nav__notifications__messages">
@@ -143,7 +134,7 @@
       <li class="header-nav__notifications__message">{{ lang[locale].notifications_empty }}</li>
       {% endif %}
     </ul>
-  </div>
+  </div>-->
 
   {% if hasTimeline %}
   {% include timeline/timeline.liquid %}

@@ -7,7 +7,7 @@ const createList = async (name, description, isPrivate) => {
     description,
     isPrivate,
   }
-  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/api/albums/add`
+  const url = `${appState("is-dev") ? config.BACKEND_DEV : config.BACKEND}/api/albums/add`
   const resp = await fetch(url, {
     method: "POST",
     credentials: "include",
@@ -40,7 +40,7 @@ const editList = async (uuid, name, description) => {
   }
 
   const url = `${
-    appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST
+    appState("is-dev") ? config.BACKEND_DEV : config.BACKEND
   }/jsonapi/taxonomy_term/private/${uuid}`
 
   const resp = await fetch(url, {
@@ -62,7 +62,7 @@ const editList = async (uuid, name, description) => {
 const deleteList = async uuid => {
   const authData = JSON.parse(localStorage.getItem("auth")) || {}
 
-  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/api/albums/delete/${uuid}`
+  const url = `${appState("is-dev") ? config.BACKEND_DEV : config.BACKEND}/api/albums/delete/${uuid}`
 
   const resp = await fetch(url, {
     method: "DELETE",
@@ -78,7 +78,7 @@ const deleteList = async uuid => {
 
 const addToList = async (photoId, listId) => {
   const url = `${
-    appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST
+    appState("is-dev") ? config.BACKEND_DEV : config.BACKEND
   }/api/albums/add-to-album/${photoId}/${listId}`
 
   const resp = await fetch(url, {
@@ -95,8 +95,8 @@ const addToList = async (photoId, listId) => {
 }
 
 const deleteFromList = async (photoId, listId) => {
-  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/api/albums/remove-from-album/${photoId}/${listId}`
-  // const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/api/fortepan/unflag/${photoId}/${listId}`
+  const url = `${appState("is-dev") ? config.BACKEND_DEV : config.BACKEND}/api/albums/remove-from-album/${photoId}/${listId}`
+  // const url = `${appState("is-dev") ? config.BACKEND_DEV : config.BACKEND}/api/fortepan/unflag/${photoId}/${listId}`
 
   const resp = await fetch(url, {
     method: "POST",
@@ -112,7 +112,7 @@ const deleteFromList = async (photoId, listId) => {
 }
 
 const getLists = async () => {
-  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/api/albums`
+  const url = `${appState("is-dev") ? config.BACKEND_DEV : config.BACKEND}/api/albums`
 
   const resp = await fetch(url, {
     method: "GET",
@@ -127,7 +127,7 @@ const getLists = async () => {
 }
 
 const getListPhotos = async id => {
-  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/api/albums/media-by-album/${id}`
+  const url = `${appState("is-dev") ? config.BACKEND_DEV : config.BACKEND}/api/albums/media-by-album/${id}`
   const resp = await fetch(url, {
     method: "GET",
     credentials: "include",
@@ -143,7 +143,7 @@ const getListPhotos = async id => {
 
 // return all the lists of the current logged in user that contains a given image
 const getContainingLists = async photoId => {
-  const url = `${appState("is-dev") ? config.DRUPAL_HOST_DEV : config.DRUPAL_HOST}/api/albums/by-user/${photoId}`
+  const url = `${appState("is-dev") ? config.BACKEND_DEV : config.BACKEND}/api/albums/by-user/${photoId}`
 
   const resp = await fetch(url, {
     method: "GET",
@@ -162,8 +162,8 @@ const getContainingLists = async photoId => {
 
 const listsElasticRequest = async data => {
   const url = appState("is-dev")
-    ? `${config.ELASTIC_HOST_DEV}/elasticsearch_index_fortepandrupaldevelop_cwoou_lists/_search?pretty`
-    : `${config.ELASTIC_HOST}/elasticsearch_index_fortepandrupalmain_hd64t_lists/_search?pretty`
+    ? `${config.BACKEND_DEV}/api/albums`
+    : `${config.BACKEND}/api/albums`
 
   const resp = await fetch(url, {
     method: "POST",
@@ -179,8 +179,8 @@ const listsElasticRequest = async data => {
 
 const listsContentElasticRequest = async data => {
   const url = appState("is-dev")
-    ? `${config.ELASTIC_HOST_DEV}/elasticsearch_index_fortepandrupaldevelop_cwoou_list_content/_search?pretty`
-    : `${config.ELASTIC_HOST}/api/media/search?pretty`
+    ? `${config.BACKEND_DEV}/elasticsearch_index_fortepandrupaldevelop_cwoou_list_content/_search?pretty`
+    : `${config.BACKEND}/api/media/search?pretty`
 
   const resp = await fetch(url, {
     method: "POST",

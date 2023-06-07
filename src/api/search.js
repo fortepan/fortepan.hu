@@ -40,6 +40,7 @@ const transformResults = resp => {
       item.country = h.country
       item.city = h.city
       item.place = h.place
+      item.approximate = h.approximate
 
       r.items.push(item)
     })
@@ -48,16 +49,49 @@ const transformResults = resp => {
   return r
 }
 
+const getMenu = async () => {
+  let url = `${config.BACKEND}/api/menus`
+  const org = { org: getOrg() }
+  const lang = { lang: getLocale()} 
+  const resp = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json;charset=UTF-8",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({ ...org, ...lang }),
+  })
+  return resp.json()
+}
+
+const totalRequest = async data => {
+  let url = `${config.BACKEND}/api/media/get-total`
+  const org = { org: getOrg() }
+  const lang = { lang: getLocale()} 
+  const resp = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json;charset=UTF-8",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({ data, ...org, ...lang }),
+  })
+
+  return resp.json()
+
+}
+
 const elasticRequest = async data => {
   let url = appState("is-dev")
-    ? `${config.ELASTIC_HOST_DEV}/elasticsearch_index_fortepandrupaldevelop_cwoou_media/_search?pretty`
-    : `${config.ELASTIC_HOST}/api/media/search`
+    ? `${config.BACKEND_DEV}/elasticsearch_index_fortepandrupaldevelop_cwoou_media/_search?pretty`
+    : `${config.BACKEND}/api/media/search`
 
   const q = getURLParams()
   if (q.esurl && q.esauth) {
     url = q.esurl
   }
   const org = { org: getOrg() }
+  const lang = { lang: getLocale()} 
   const resp = await fetch(url, {
     method: "POST",
     headers: {
@@ -65,7 +99,7 @@ const elasticRequest = async data => {
       "Content-Type": "application/json;charset=UTF-8",
       Accept: "application/json",
     },
-    body: JSON.stringify({ data, ...org }),
+    body: JSON.stringify({ data, ...org, ...lang }),
   })
 
   return resp.json()
@@ -73,8 +107,8 @@ const elasticRequest = async data => {
 
 const staticRequest = async data => {
   let url = appState("is-dev")
-    ? `${config.ELASTIC_HOST_DEV}/elasticsearch_index_fortepandrupaldevelop_cwoou_media/_search?pretty`
-    : `${config.ELASTIC_HOST}/api/contents/view`
+    ? `${config.BACKEND_DEV}/elasticsearch_index_fortepandrupaldevelop_cwoou_media/_search?pretty`
+    : `${config.BACKEND}/api/contents/view`
 
   const q = getURLParams()
   if (q.esurl && q.esauth) {
@@ -96,8 +130,8 @@ const staticRequest = async data => {
 
 const landingRequest = async data => {
   let url = appState("is-dev")
-    ? `${config.ELASTIC_HOST_DEV}/elasticsearch_index_fortepandrupaldevelop_cwoou_media/_search?pretty`
-    : `${config.ELASTIC_HOST}/api/homepages/view`
+    ? `${config.BACKEND_DEV}/api/homepages/view`
+    : `${config.BACKEND}/api/homepages/view`
 
     const q = getURLParams()
     if (q.esurl && q.esauth) {
@@ -120,53 +154,37 @@ const search = params => {
   return new Promise((resolve, reject) => {
     // init the default query params
     const query = {
-      bool: {
-        must: [],
-        should: [],
-      },
+      where: [],
+      matching: [],
+      sort: [],
+      multi: []
+    }
+    console.log('params for search', params)
+    let sortOrder = "asc"
+    if (params && params.reverseOrder === "asc") {
+      sortOrder = "desc"
     }
 
-    const sortOrder = params && params.reverseOrder ? "desc" : "asc"
-    const sortOrderIverse = params && params.reverseOrder ? "asc" : "desc"
-
-    const sort = [
-      { year: { order: sortOrder } },
-      {
-        _script: {
-          type: "string",
-          script: {
-            lang: "painless",
-            source:
-              "DateTimeFormatter df = DateTimeFormatter.ofPattern('yyyy-MM-dd'); return doc['created'].size()==0 ? '1970-01-01' : df.format(doc['created'].value);",
-          },
-          order: sortOrderIverse,
-        },
-      },
-      { mid: { order: sortOrder } },
-    ]
-
-    const range = {
-      range: {
-        year: {
-          gt: 0,
-        },
-      },
-    }
+    const sort = { field: "Media.year", order: `${sortOrder}` }
 
     // returns all records when query field is empty
     if (!params || (params && params.q === "")) {
-      query.bool.must.push({ match_all: {} })
+      query.match_all = true;
+      // Why need a filter if we are not filtering?
+      // query.bool.must.push({ match_all: {} })
     }
 
     // set a query for getting the recently added items
     if (params.latest === "") {
-      query.bool.must.push({
-        range: {
-          created: {
-            gt: Date.parse(window.latestDate) / 1000,
-          },
-        },
-      })
+      query.where.push({ "latest IS": true })
+      // Why need?
+      // query.bool.must.push({
+      //   range: {
+      //     created: {
+      //       gt: Date.parse(window.latestDate) / 1000,
+      //     },
+      //   },
+      // })
     }
 
     // if query (search term) exists
@@ -179,86 +197,73 @@ const search = params => {
       availableFields.forEach(s => fieldsToSearch.push(getLocale() === "hu" ? `${s}_search` : `${s}_en_search`))
 
       words.forEach(word => {
-        query.bool.must.push({
-          multi_match: {
-            query: `${slugify(word)}`,
-            fields: fieldsToSearch,
-            type: "bool_prefix",
-            lenient: true,
-            operator: "and",
-            tie_breaker: 0.8,
-          },
-        })
+        query.multi.push(`${slugify(word)}`)
+        // query.bool.must.push({
+        //   multi_match: {
+        //     query: ,
+        //     fields: fieldsToSearch,
+        //     type: "bool_prefix",
+        //     lenient: true,
+        //     operator: "and",
+        //     tie_breaker: 0.8,
+        //   },
+        // })
       })
     }
 
     // if there's a tag search attribute defined (advanced search)
     if (params.tag) {
       const tag = slugify(params.tag)
-      query.bool.must.push(
-        getLocale() === "hu" ? { term: { cimke_search: `${tag}` } } : { term: { cimke_en_search: `${tag}` } }
-      )
+      query.matching.push({ model: "Tags", field: "name", value: `${tag}` })
     }
 
     // if there's a year search attribute defined (advanced search)
     if (params.year) {
-      query.bool.must.push({ term: { year: `${params.year}` } })
+      query.where.push({ year: `${params.year}` })
     }
 
     // if there's a city search attribute defined (advanced search)
     if (params.place) {
       const place = slugify(params.place)
-      query.bool.must.push(
-        getLocale() === "hu" ? { term: { helyszin_search: `${place}` } } : { term: { helyszin_en_search: `${place}` } }
-      )
+      query.matching.push({ model: "Places", field: "name", value: `${place}` })
     }
 
     // if there's a city search attribute defined (advanced search)
     if (params.city) {
       const city = slugify(params.city)
-      query.bool.must.push(
-        getLocale() === "hu" ? { term: { varos_search: `${city}` } } : { term: { varos_en_search: `${city}` } }
-      )
+      query.matching.push({ model: "Localities", field: "name", value: `${city}` })
     }
 
     // if there's a country search attribute defined (advanced search)
     if (params.country) {
       const country = slugify(params.country)
-      query.bool.must.push(
-        getLocale() === "hu" ? { term: { orszag_search: `${country}` } } : { term: { orszag_en_search: `${country}` } }
-      )
+      query.matching.push({ model: "Countries", field: "name", value: `${country}` })
     }
 
     // if there's a donor search attribute defined (advanced search)
     if (params.donor) {
       const donor = slugify(params.donor)
-      query.bool.must.push({ term: { adomanyozo_search: `${donor}` } })
+      query.matching.push({ model: "Donors", field: "name", value: `${donor}` })
     }
 
     // if there's a photographer search attribute defined (advanced search)
     if (params.photographer) {
       const photographer = slugify(params.photographer)
-      query.bool.must.push({ "Donor.name": `${photographer}` })
+      query.where.push({ "author": photographer })
     }
 
     // if there's an id search attribute defined (advanced search)
     if (params.id) {
       const id = slugify(params.id)
-      query.bool.must.push({ term: { mid: `${id}` } })
-      if (params.year && params.created) {
-        params.search_after = [slugify(params.year), slugify(params.created), slugify(params.id)]
-      }
+      query.where.push({ "Media.id": `${id}` })
     }
 
     // if there's a year range defined (advanced search / range filter)
     if (params.year_from || params.year_to) {
-      const y = {}
-      if (params.year_from) y.gte = params.year_from
-      if (params.year_to) y.lte = params.year_to
-      range.range.year = y
+      if (params.year_from) query.where.push({ "year >=": `${params.from}` })
+      if (params.year_to) query.where.push({ "year <=": `${params.year_to}` })
     }
     // if there's a range set
-    query.bool.must.push(range)
 
     const body = {
       size: params.size || 30,
@@ -268,7 +273,11 @@ const search = params => {
     }
 
     if (params.search_after) {
-      body.search_after = params.search_after
+      console.log('search after:', params.search_after)
+      query.where.push({ "Media.year >=": `${params.search_after[0]}` })
+      // query.where.push({ "Media.created >=": `${params.search_after[1]}` })
+      query.where.push({ "Media.id >": `${params.search_after[2]}` })
+      // body.search_after = params.search_after
     } else {
       body.from = params.from || 0
     }
@@ -319,7 +328,7 @@ const getTotal = () => {
       },
     }
 
-    elasticRequest(body)
+    totalRequest(body)
       .then(resp => {
         resolve(transformResults(resp))
       })
@@ -483,6 +492,7 @@ const getAggregatedYears = () => {
 
 export default {
   search,
+  getMenu,
   getTotal,
   getDonators,
   getStatic,

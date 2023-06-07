@@ -1,14 +1,14 @@
 import { Controller } from "stimulus"
 import throttle from "lodash/throttle"
 import auth from "../../api/auth"
-import siteConfig from "../../data/siteConfig"
+import searchAPI from "../../api/search"
 import { trigger } from "../../js/utils"
 import { appState } from "../../js/app"
 
 export default class extends Controller {
   static get targets() {
     return [
-      "logoLabel",
+      "logoImage",
       "notification",
       "profileName",
       "profileEmail",
@@ -27,8 +27,30 @@ export default class extends Controller {
     this.checkIfUserIsSignedIn()
 
     this.displayDevStatus()
+    this.getMenuEntries()
+    // this.setLogoImage()
   }
 
+  getMenuEntries() {
+    searchAPI.getMenu().then(menuitems => {
+      if (menuitems) {
+        //add menu items elements to menu
+        menuitems.forEach(menuitem => {
+          let menuElem = document.createElement('a');
+          let linkText = document.createTextNode(menuitem.text);
+          menuElem.href = menuitem.link;
+          if (menuitem.class && menuitem.class.includes('separator'))
+            menuElem.classList.add('header-nav__link--separator-after')
+          if (menuitem.class && menuitem.class.includes('bold'))
+            menuElem.classList.add('header-nav__link--top')
+          menuElem.classList.add('header-nav__link')
+          menuElem.appendChild(linkText)
+          this.menuTarget.prepend(menuElem)
+        });
+      }
+
+    })
+  }
   // show a popup
   togglePopup(e) {
     e.preventDefault()

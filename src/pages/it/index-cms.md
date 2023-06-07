@@ -1,7 +1,7 @@
 ---
 layout: home/home.liquid
 title: Fortepan — Home
-permalink: "/it/"
+permalink: "/it/home"
 locale: it
 announcement:
   title: "<strong>THE PHOTOS OF JÓZSEF HORVÁTH CAMERAMAN</strong>"

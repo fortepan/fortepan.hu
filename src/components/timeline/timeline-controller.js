@@ -80,7 +80,7 @@ export default class extends Controller {
 
   setTimelineLabels() {
     this.sliderYearLabelTarget.textContent = this.year
-
+    console.log('Year is ' + this.year)
     // check if selected year (this.year) has photos at all (not already loaded)
     // and if not, grey out the slider
     if (photoManager.getYearsInContext().find(item => item.year === this.year)) {

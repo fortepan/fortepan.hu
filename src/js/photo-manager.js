@@ -1,5 +1,5 @@
 import config from "../data/siteConfig"
-import { lang, trigger, setPageMeta } from "./utils"
+import { lang, trigger, setPageMeta, photoRes } from "./utils"
 import searchAPI from "../api/search"
 
 // creating a context object to store the latest request parameters and results
@@ -134,7 +134,7 @@ const selectPhotoById = (id, noMeta) => {
       `${result.data.description ? `${result.data.description} — ` : ""}${lang("donor")}: ${result.data.donor} (${
         result.data.year
       })`,
-      `${config.PHOTO_SOURCE}${result.data.photo}`
+      photoRes(480, result.data.photo)
     )    
   }
 
@@ -245,6 +245,7 @@ const selectNextPhoto = async () => {
 
 const getFirstPhotoDataInContext = () => {
   if (hasData()) {
+    console.log('contect', photoData.context)
     const firstYear =
       photoData.context && photoData.context.year > 0
         ? photoData.result.years.find(item => parseInt(item.year, 10) === parseInt(photoData.context.year, 10))

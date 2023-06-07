@@ -9,6 +9,7 @@ import {
   getPrettyURLValues,
   setPageMeta,
   copyToClipboard,
+  photoRes,
 } from "../../js/utils"
 import { appState } from "../../js/app"
 import config from "../../data/siteConfig"
@@ -232,7 +233,8 @@ export default class extends Controller {
             })
 
             imageTarget.img = img
-            imageTarget.src = `${config.PHOTO_SOURCE}photo/thumbnail-240-${photoId}`
+
+            imageTarget.src = photoRes('240', photoId)
           }
         })
 

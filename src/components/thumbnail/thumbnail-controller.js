@@ -1,7 +1,7 @@
 import { Controller } from "stimulus"
 
 import config from "../../data/siteConfig"
-import { trigger, lang, isElementInViewport, getLocale, getImgAltText } from "../../js/utils"
+import { trigger, lang, isElementInViewport, getLocale, getImgAltText, photoRes } from "../../js/utils"
 import photoManager from "../../js/photo-manager"
 import listManager from "../../js/list-manager"
 import { appState } from "../../js/app"
@@ -19,7 +19,7 @@ export default class extends Controller {
 
     // add stimulus class reference to node
     this.element.photosThumbnail = this
-    console.log(this.element.photosThumbnail, 'photosthumb')
+    // console.log(this.element.photosThumbnail, 'photosthumb')
     this.linkTarget.addEventListener("click", e => {
       if (e) e.preventDefault()
     })
@@ -158,10 +158,11 @@ export default class extends Controller {
       !this.loadInitiated &&
       isElementInViewport(this.element, false)
     ) {
-      console.log('elemke', this.element)
       const mediaId = this.element.photo
-      this.imageTarget.srcset = `${config.PHOTO_SOURCE}photo/thumbnail-240-${mediaId} 1x, ${config.PHOTO_SOURCE}photo/thumbnail-480-${mediaId} 2x`
-      this.imageTarget.src = `${config.PHOTO_SOURCE}photo/thumbnail-240-${mediaId}`
+      const photoRes240 = photoRes(240, mediaId);
+      const photoRes480 = photoRes(480, mediaId);
+      this.imageTarget.srcset = `${photoRes240} 1x, ${photoRes480} 2x`
+      this.imageTarget.src = `${photoRes240}`
 
       this.element.classList.add("is-loading")
       this.loadInitiated = true

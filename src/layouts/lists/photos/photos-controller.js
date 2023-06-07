@@ -13,6 +13,7 @@ import {
   lang,
   setPageMeta,
   trigger,
+  photoRes,
 } from "../../../js/utils"
 
 export default class extends Controller {
@@ -141,7 +142,8 @@ export default class extends Controller {
 
       if (index === 0) {
         // set the meta image
-        setPageMeta(null, null, `${config.PHOTO_SOURCE}480/fortepan_${item.mid}.jpg`)
+        const metaUrl = photoRes(480, item.mid)
+        setPageMeta(null, null, metaUrl)
       }
     })
 
@@ -159,11 +161,11 @@ export default class extends Controller {
   onPhotoSelected(e) {
     const id = e && e.detail && e.detail.photoId ? e.detail.photoId : listManager.getSelectedPhotoId()
     const url = `${listManager.getSelectedList().url}/photos/${id}`
-
+    const metaUrl = photoRes(480, id)
     setPageMeta(
       `${this.listData.name} — #${id}`,
       this.listData.description,
-      `${config.PHOTO_SOURCE}480/fortepan_${id}.jpg`
+      metaUrl
     )
 
     if (window.location.pathname !== url) {
