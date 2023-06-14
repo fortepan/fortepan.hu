@@ -1,10 +1,7 @@
 fragment Pages_huParts on Pages_hu {
   ... on Pages_huProjects {
-    body
-    layout
     title
-    permalink
-    hide_search
+    body
     projects {
       __typename
       title
@@ -15,16 +12,13 @@ fragment Pages_huParts on Pages_hu {
     }
   }
   ... on Pages_huArticle {
-    layout
     title
     permalink
     body
   }
   ... on Pages_huHome {
-    body
-    layout
     title
-    permalink
+    body
     best_of_collections {
       __typename
       title
@@ -59,19 +53,14 @@ fragment Pages_huParts on Pages_hu {
     }
   }
   ... on Pages_huDefault {
-    layout
     title
-    permalink
   }
 }
 
 fragment Pages_enParts on Pages_en {
   ... on Pages_enProjects {
-    body
-    layout
     title
-    permalink
-    hide_search
+    body
     projects {
       __typename
       title
@@ -82,16 +71,13 @@ fragment Pages_enParts on Pages_en {
     }
   }
   ... on Pages_enArticle {
-    layout
     title
     permalink
     body
   }
   ... on Pages_enHome {
-    body
-    layout
     title
-    permalink
+    body
     best_of_collections {
       __typename
       title
@@ -126,8 +112,30 @@ fragment Pages_enParts on Pages_en {
     }
   }
   ... on Pages_enDefault {
-    layout
     title
-    permalink
   }
+}
+
+fragment HetifortepanParts on Hetifortepan {
+  hu {
+    __typename
+    date
+    cover_image
+    title
+    excerpt
+    url
+  }
+  en {
+    __typename
+    date
+    cover_image
+    title
+    excerpt
+    url
+  }
+}
+
+fragment SettingsParts on Settings {
+  latestDate
+  tax1percent
 }

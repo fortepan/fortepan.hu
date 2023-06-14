@@ -77,6 +77,10 @@ export type Query = {
   pages_huConnection: Pages_HuConnection;
   pages_en: Pages_En;
   pages_enConnection: Pages_EnConnection;
+  hetifortepan: Hetifortepan;
+  hetifortepanConnection: HetifortepanConnection;
+  settings: Settings;
+  settingsConnection: SettingsConnection;
 };
 
 
@@ -130,9 +134,41 @@ export type QueryPages_EnConnectionArgs = {
   filter?: InputMaybe<Pages_EnFilter>;
 };
 
+
+export type QueryHetifortepanArgs = {
+  relativePath?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryHetifortepanConnectionArgs = {
+  before?: InputMaybe<Scalars['String']>;
+  after?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Float']>;
+  last?: InputMaybe<Scalars['Float']>;
+  sort?: InputMaybe<Scalars['String']>;
+  filter?: InputMaybe<HetifortepanFilter>;
+};
+
+
+export type QuerySettingsArgs = {
+  relativePath?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QuerySettingsConnectionArgs = {
+  before?: InputMaybe<Scalars['String']>;
+  after?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Float']>;
+  last?: InputMaybe<Scalars['Float']>;
+  sort?: InputMaybe<Scalars['String']>;
+  filter?: InputMaybe<SettingsFilter>;
+};
+
 export type DocumentFilter = {
   pages_hu?: InputMaybe<Pages_HuFilter>;
   pages_en?: InputMaybe<Pages_EnFilter>;
+  hetifortepan?: InputMaybe<HetifortepanFilter>;
+  settings?: InputMaybe<SettingsFilter>;
 };
 
 export type DocumentConnectionEdges = {
@@ -171,7 +207,7 @@ export type CollectionDocumentsArgs = {
   filter?: InputMaybe<DocumentFilter>;
 };
 
-export type DocumentNode = Pages_HuProjects | Pages_HuArticle | Pages_HuHome | Pages_HuDefault | Pages_EnProjects | Pages_EnArticle | Pages_EnHome | Pages_EnDefault;
+export type DocumentNode = Pages_HuProjects | Pages_HuArticle | Pages_HuHome | Pages_HuDefault | Pages_EnProjects | Pages_EnArticle | Pages_EnHome | Pages_EnDefault | Hetifortepan | Settings;
 
 export type Pages_HuProjectsProjects = {
   __typename?: 'Pages_huProjectsProjects';
@@ -184,11 +220,8 @@ export type Pages_HuProjectsProjects = {
 
 export type Pages_HuProjects = Node & Document & {
   __typename?: 'Pages_huProjects';
-  body?: Maybe<Scalars['JSON']>;
-  layout?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
-  permalink?: Maybe<Scalars['String']>;
-  hide_search?: Maybe<Scalars['Boolean']>;
+  body?: Maybe<Scalars['JSON']>;
   projects?: Maybe<Array<Maybe<Pages_HuProjectsProjects>>>;
   id: Scalars['ID'];
   _sys: SystemInfo;
@@ -197,7 +230,6 @@ export type Pages_HuProjects = Node & Document & {
 
 export type Pages_HuArticle = Node & Document & {
   __typename?: 'Pages_huArticle';
-  layout?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   permalink?: Maybe<Scalars['String']>;
   body?: Maybe<Scalars['JSON']>;
@@ -249,10 +281,8 @@ export type Pages_HuHomeLatest = {
 
 export type Pages_HuHome = Node & Document & {
   __typename?: 'Pages_huHome';
-  body?: Maybe<Scalars['JSON']>;
-  layout?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
-  permalink?: Maybe<Scalars['String']>;
+  body?: Maybe<Scalars['JSON']>;
   best_of_collections?: Maybe<Pages_HuHomeBest_Of_Collections>;
   blog?: Maybe<Pages_HuHomeBlog>;
   latest?: Maybe<Pages_HuHomeLatest>;
@@ -263,21 +293,13 @@ export type Pages_HuHome = Node & Document & {
 
 export type Pages_HuDefault = Node & Document & {
   __typename?: 'Pages_huDefault';
-  layout?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
-  permalink?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   _sys: SystemInfo;
   _values: Scalars['JSON'];
 };
 
 export type Pages_Hu = Pages_HuProjects | Pages_HuArticle | Pages_HuHome | Pages_HuDefault;
-
-export type RichTextFilter = {
-  startsWith?: InputMaybe<Scalars['String']>;
-  eq?: InputMaybe<Scalars['String']>;
-  exists?: InputMaybe<Scalars['Boolean']>;
-};
 
 export type StringFilter = {
   startsWith?: InputMaybe<Scalars['String']>;
@@ -286,8 +308,9 @@ export type StringFilter = {
   in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
-export type BooleanFilter = {
-  eq?: InputMaybe<Scalars['Boolean']>;
+export type RichTextFilter = {
+  startsWith?: InputMaybe<Scalars['String']>;
+  eq?: InputMaybe<Scalars['String']>;
   exists?: InputMaybe<Scalars['Boolean']>;
 };
 
@@ -307,16 +330,12 @@ export type Pages_HuProjectsProjectsFilter = {
 };
 
 export type Pages_HuProjectsFilter = {
-  body?: InputMaybe<RichTextFilter>;
-  layout?: InputMaybe<StringFilter>;
   title?: InputMaybe<StringFilter>;
-  permalink?: InputMaybe<StringFilter>;
-  hide_search?: InputMaybe<BooleanFilter>;
+  body?: InputMaybe<RichTextFilter>;
   projects?: InputMaybe<Pages_HuProjectsProjectsFilter>;
 };
 
 export type Pages_HuArticleFilter = {
-  layout?: InputMaybe<StringFilter>;
   title?: InputMaybe<StringFilter>;
   permalink?: InputMaybe<StringFilter>;
   body?: InputMaybe<RichTextFilter>;
@@ -368,19 +387,15 @@ export type Pages_HuHomeLatestFilter = {
 };
 
 export type Pages_HuHomeFilter = {
-  body?: InputMaybe<RichTextFilter>;
-  layout?: InputMaybe<StringFilter>;
   title?: InputMaybe<StringFilter>;
-  permalink?: InputMaybe<StringFilter>;
+  body?: InputMaybe<RichTextFilter>;
   best_of_collections?: InputMaybe<Pages_HuHomeBest_Of_CollectionsFilter>;
   blog?: InputMaybe<Pages_HuHomeBlogFilter>;
   latest?: InputMaybe<Pages_HuHomeLatestFilter>;
 };
 
 export type Pages_HuDefaultFilter = {
-  layout?: InputMaybe<StringFilter>;
   title?: InputMaybe<StringFilter>;
-  permalink?: InputMaybe<StringFilter>;
 };
 
 export type Pages_HuFilter = {
@@ -414,11 +429,8 @@ export type Pages_EnProjectsProjects = {
 
 export type Pages_EnProjects = Node & Document & {
   __typename?: 'Pages_enProjects';
-  body?: Maybe<Scalars['JSON']>;
-  layout?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
-  permalink?: Maybe<Scalars['String']>;
-  hide_search?: Maybe<Scalars['Boolean']>;
+  body?: Maybe<Scalars['JSON']>;
   projects?: Maybe<Array<Maybe<Pages_EnProjectsProjects>>>;
   id: Scalars['ID'];
   _sys: SystemInfo;
@@ -427,7 +439,6 @@ export type Pages_EnProjects = Node & Document & {
 
 export type Pages_EnArticle = Node & Document & {
   __typename?: 'Pages_enArticle';
-  layout?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
   permalink?: Maybe<Scalars['String']>;
   body?: Maybe<Scalars['JSON']>;
@@ -459,10 +470,8 @@ export type Pages_EnHomeLatest = {
 
 export type Pages_EnHome = Node & Document & {
   __typename?: 'Pages_enHome';
-  body?: Maybe<Scalars['JSON']>;
-  layout?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
-  permalink?: Maybe<Scalars['String']>;
+  body?: Maybe<Scalars['JSON']>;
   best_of_collections?: Maybe<Pages_EnHomeBest_Of_Collections>;
   blog?: Maybe<Pages_EnHomeBlog>;
   latest?: Maybe<Pages_EnHomeLatest>;
@@ -473,9 +482,7 @@ export type Pages_EnHome = Node & Document & {
 
 export type Pages_EnDefault = Node & Document & {
   __typename?: 'Pages_enDefault';
-  layout?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
-  permalink?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   _sys: SystemInfo;
   _values: Scalars['JSON'];
@@ -492,16 +499,12 @@ export type Pages_EnProjectsProjectsFilter = {
 };
 
 export type Pages_EnProjectsFilter = {
-  body?: InputMaybe<RichTextFilter>;
-  layout?: InputMaybe<StringFilter>;
   title?: InputMaybe<StringFilter>;
-  permalink?: InputMaybe<StringFilter>;
-  hide_search?: InputMaybe<BooleanFilter>;
+  body?: InputMaybe<RichTextFilter>;
   projects?: InputMaybe<Pages_EnProjectsProjectsFilter>;
 };
 
 export type Pages_EnArticleFilter = {
-  layout?: InputMaybe<StringFilter>;
   title?: InputMaybe<StringFilter>;
   permalink?: InputMaybe<StringFilter>;
   body?: InputMaybe<RichTextFilter>;
@@ -526,19 +529,15 @@ export type Pages_EnHomeLatestFilter = {
 };
 
 export type Pages_EnHomeFilter = {
-  body?: InputMaybe<RichTextFilter>;
-  layout?: InputMaybe<StringFilter>;
   title?: InputMaybe<StringFilter>;
-  permalink?: InputMaybe<StringFilter>;
+  body?: InputMaybe<RichTextFilter>;
   best_of_collections?: InputMaybe<Pages_EnHomeBest_Of_CollectionsFilter>;
   blog?: InputMaybe<Pages_EnHomeBlogFilter>;
   latest?: InputMaybe<Pages_EnHomeLatestFilter>;
 };
 
 export type Pages_EnDefaultFilter = {
-  layout?: InputMaybe<StringFilter>;
   title?: InputMaybe<StringFilter>;
-  permalink?: InputMaybe<StringFilter>;
 };
 
 export type Pages_EnFilter = {
@@ -561,6 +560,102 @@ export type Pages_EnConnection = Connection & {
   edges?: Maybe<Array<Maybe<Pages_EnConnectionEdges>>>;
 };
 
+export type HetifortepanHu = {
+  __typename?: 'HetifortepanHu';
+  date?: Maybe<Scalars['String']>;
+  cover_image?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  excerpt?: Maybe<Scalars['String']>;
+  url?: Maybe<Scalars['String']>;
+};
+
+export type HetifortepanEn = {
+  __typename?: 'HetifortepanEn';
+  date?: Maybe<Scalars['String']>;
+  cover_image?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  excerpt?: Maybe<Scalars['String']>;
+  url?: Maybe<Scalars['String']>;
+};
+
+export type Hetifortepan = Node & Document & {
+  __typename?: 'Hetifortepan';
+  hu?: Maybe<Array<Maybe<HetifortepanHu>>>;
+  en?: Maybe<Array<Maybe<HetifortepanEn>>>;
+  id: Scalars['ID'];
+  _sys: SystemInfo;
+  _values: Scalars['JSON'];
+};
+
+export type HetifortepanHuFilter = {
+  date?: InputMaybe<StringFilter>;
+  cover_image?: InputMaybe<StringFilter>;
+  title?: InputMaybe<StringFilter>;
+  excerpt?: InputMaybe<StringFilter>;
+  url?: InputMaybe<StringFilter>;
+};
+
+export type HetifortepanEnFilter = {
+  date?: InputMaybe<StringFilter>;
+  cover_image?: InputMaybe<StringFilter>;
+  title?: InputMaybe<StringFilter>;
+  excerpt?: InputMaybe<StringFilter>;
+  url?: InputMaybe<StringFilter>;
+};
+
+export type HetifortepanFilter = {
+  hu?: InputMaybe<HetifortepanHuFilter>;
+  en?: InputMaybe<HetifortepanEnFilter>;
+};
+
+export type HetifortepanConnectionEdges = {
+  __typename?: 'HetifortepanConnectionEdges';
+  cursor: Scalars['String'];
+  node?: Maybe<Hetifortepan>;
+};
+
+export type HetifortepanConnection = Connection & {
+  __typename?: 'HetifortepanConnection';
+  pageInfo: PageInfo;
+  totalCount: Scalars['Float'];
+  edges?: Maybe<Array<Maybe<HetifortepanConnectionEdges>>>;
+};
+
+export type Settings = Node & Document & {
+  __typename?: 'Settings';
+  latestDate?: Maybe<Scalars['String']>;
+  tax1percent?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  _sys: SystemInfo;
+  _values: Scalars['JSON'];
+};
+
+export type DatetimeFilter = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  eq?: InputMaybe<Scalars['String']>;
+  exists?: InputMaybe<Scalars['Boolean']>;
+  in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type SettingsFilter = {
+  latestDate?: InputMaybe<DatetimeFilter>;
+  tax1percent?: InputMaybe<StringFilter>;
+};
+
+export type SettingsConnectionEdges = {
+  __typename?: 'SettingsConnectionEdges';
+  cursor: Scalars['String'];
+  node?: Maybe<Settings>;
+};
+
+export type SettingsConnection = Connection & {
+  __typename?: 'SettingsConnection';
+  pageInfo: PageInfo;
+  totalCount: Scalars['Float'];
+  edges?: Maybe<Array<Maybe<SettingsConnectionEdges>>>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addPendingDocument: DocumentNode;
@@ -571,6 +666,10 @@ export type Mutation = {
   createPages_hu: Pages_Hu;
   updatePages_en: Pages_En;
   createPages_en: Pages_En;
+  updateHetifortepan: Hetifortepan;
+  createHetifortepan: Hetifortepan;
+  updateSettings: Settings;
+  createSettings: Settings;
 };
 
 
@@ -624,15 +723,43 @@ export type MutationCreatePages_EnArgs = {
   params: Pages_EnMutation;
 };
 
+
+export type MutationUpdateHetifortepanArgs = {
+  relativePath: Scalars['String'];
+  params: HetifortepanMutation;
+};
+
+
+export type MutationCreateHetifortepanArgs = {
+  relativePath: Scalars['String'];
+  params: HetifortepanMutation;
+};
+
+
+export type MutationUpdateSettingsArgs = {
+  relativePath: Scalars['String'];
+  params: SettingsMutation;
+};
+
+
+export type MutationCreateSettingsArgs = {
+  relativePath: Scalars['String'];
+  params: SettingsMutation;
+};
+
 export type DocumentUpdateMutation = {
   pages_hu?: InputMaybe<Pages_HuMutation>;
   pages_en?: InputMaybe<Pages_EnMutation>;
+  hetifortepan?: InputMaybe<HetifortepanMutation>;
+  settings?: InputMaybe<SettingsMutation>;
   relativePath?: InputMaybe<Scalars['String']>;
 };
 
 export type DocumentMutation = {
   pages_hu?: InputMaybe<Pages_HuMutation>;
   pages_en?: InputMaybe<Pages_EnMutation>;
+  hetifortepan?: InputMaybe<HetifortepanMutation>;
+  settings?: InputMaybe<SettingsMutation>;
 };
 
 export type Pages_HuProjectsProjectsMutation = {
@@ -644,16 +771,12 @@ export type Pages_HuProjectsProjectsMutation = {
 };
 
 export type Pages_HuProjectsMutation = {
-  body?: InputMaybe<Scalars['JSON']>;
-  layout?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
-  permalink?: InputMaybe<Scalars['String']>;
-  hide_search?: InputMaybe<Scalars['Boolean']>;
+  body?: InputMaybe<Scalars['JSON']>;
   projects?: InputMaybe<Array<InputMaybe<Pages_HuProjectsProjectsMutation>>>;
 };
 
 export type Pages_HuArticleMutation = {
-  layout?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
   permalink?: InputMaybe<Scalars['String']>;
   body?: InputMaybe<Scalars['JSON']>;
@@ -695,19 +818,15 @@ export type Pages_HuHomeLatestMutation = {
 };
 
 export type Pages_HuHomeMutation = {
-  body?: InputMaybe<Scalars['JSON']>;
-  layout?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
-  permalink?: InputMaybe<Scalars['String']>;
+  body?: InputMaybe<Scalars['JSON']>;
   best_of_collections?: InputMaybe<Pages_HuHomeBest_Of_CollectionsMutation>;
   blog?: InputMaybe<Pages_HuHomeBlogMutation>;
   latest?: InputMaybe<Pages_HuHomeLatestMutation>;
 };
 
 export type Pages_HuDefaultMutation = {
-  layout?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
-  permalink?: InputMaybe<Scalars['String']>;
 };
 
 export type Pages_HuMutation = {
@@ -726,16 +845,12 @@ export type Pages_EnProjectsProjectsMutation = {
 };
 
 export type Pages_EnProjectsMutation = {
-  body?: InputMaybe<Scalars['JSON']>;
-  layout?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
-  permalink?: InputMaybe<Scalars['String']>;
-  hide_search?: InputMaybe<Scalars['Boolean']>;
+  body?: InputMaybe<Scalars['JSON']>;
   projects?: InputMaybe<Array<InputMaybe<Pages_EnProjectsProjectsMutation>>>;
 };
 
 export type Pages_EnArticleMutation = {
-  layout?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
   permalink?: InputMaybe<Scalars['String']>;
   body?: InputMaybe<Scalars['JSON']>;
@@ -760,19 +875,15 @@ export type Pages_EnHomeLatestMutation = {
 };
 
 export type Pages_EnHomeMutation = {
-  body?: InputMaybe<Scalars['JSON']>;
-  layout?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
-  permalink?: InputMaybe<Scalars['String']>;
+  body?: InputMaybe<Scalars['JSON']>;
   best_of_collections?: InputMaybe<Pages_EnHomeBest_Of_CollectionsMutation>;
   blog?: InputMaybe<Pages_EnHomeBlogMutation>;
   latest?: InputMaybe<Pages_EnHomeLatestMutation>;
 };
 
 export type Pages_EnDefaultMutation = {
-  layout?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
-  permalink?: InputMaybe<Scalars['String']>;
 };
 
 export type Pages_EnMutation = {
@@ -782,32 +893,62 @@ export type Pages_EnMutation = {
   default?: InputMaybe<Pages_EnDefaultMutation>;
 };
 
-type Pages_HuParts_Pages_HuProjects_Fragment = { __typename?: 'Pages_huProjects', body?: any | null, layout?: string | null, title?: string | null, permalink?: string | null, hide_search?: boolean | null, projects?: Array<{ __typename: 'Pages_huProjectsProjects', title?: string | null, project_date?: string | null, description?: string | null, funding_info?: string | null, funding_logo?: string | null } | null> | null };
+export type HetifortepanHuMutation = {
+  date?: InputMaybe<Scalars['String']>;
+  cover_image?: InputMaybe<Scalars['String']>;
+  title?: InputMaybe<Scalars['String']>;
+  excerpt?: InputMaybe<Scalars['String']>;
+  url?: InputMaybe<Scalars['String']>;
+};
 
-type Pages_HuParts_Pages_HuArticle_Fragment = { __typename?: 'Pages_huArticle', layout?: string | null, title?: string | null, permalink?: string | null, body?: any | null };
+export type HetifortepanEnMutation = {
+  date?: InputMaybe<Scalars['String']>;
+  cover_image?: InputMaybe<Scalars['String']>;
+  title?: InputMaybe<Scalars['String']>;
+  excerpt?: InputMaybe<Scalars['String']>;
+  url?: InputMaybe<Scalars['String']>;
+};
 
-type Pages_HuParts_Pages_HuHome_Fragment = { __typename?: 'Pages_huHome', body?: any | null, layout?: string | null, title?: string | null, permalink?: string | null, best_of_collections?: { __typename: 'Pages_huHomeBest_of_collections', title?: string | null, caption?: string | null, content?: Array<{ __typename: 'Pages_enHomeBest_of_collectionsContent', title?: string | null, counter?: number | null, cover_image?: string | null, url?: string | null } | null> | null } | null, blog?: { __typename: 'Pages_huHomeBlog', title?: string | null, caption?: string | null, action?: { __typename: 'Pages_enHomeBlogAction', label?: string | null, url?: string | null } | null } | null, latest?: { __typename: 'Pages_huHomeLatest', title?: string | null, caption?: string | null, action?: { __typename: 'Pages_enHomeLatestAction', label?: string | null, url?: string | null } | null } | null };
+export type HetifortepanMutation = {
+  hu?: InputMaybe<Array<InputMaybe<HetifortepanHuMutation>>>;
+  en?: InputMaybe<Array<InputMaybe<HetifortepanEnMutation>>>;
+};
 
-type Pages_HuParts_Pages_HuDefault_Fragment = { __typename?: 'Pages_huDefault', layout?: string | null, title?: string | null, permalink?: string | null };
+export type SettingsMutation = {
+  latestDate?: InputMaybe<Scalars['String']>;
+  tax1percent?: InputMaybe<Scalars['String']>;
+};
+
+type Pages_HuParts_Pages_HuProjects_Fragment = { __typename?: 'Pages_huProjects', title?: string | null, body?: any | null, projects?: Array<{ __typename: 'Pages_huProjectsProjects', title?: string | null, project_date?: string | null, description?: string | null, funding_info?: string | null, funding_logo?: string | null } | null> | null };
+
+type Pages_HuParts_Pages_HuArticle_Fragment = { __typename?: 'Pages_huArticle', title?: string | null, permalink?: string | null, body?: any | null };
+
+type Pages_HuParts_Pages_HuHome_Fragment = { __typename?: 'Pages_huHome', title?: string | null, body?: any | null, best_of_collections?: { __typename: 'Pages_huHomeBest_of_collections', title?: string | null, caption?: string | null, content?: Array<{ __typename: 'Pages_enHomeBest_of_collectionsContent', title?: string | null, counter?: number | null, cover_image?: string | null, url?: string | null } | null> | null } | null, blog?: { __typename: 'Pages_huHomeBlog', title?: string | null, caption?: string | null, action?: { __typename: 'Pages_enHomeBlogAction', label?: string | null, url?: string | null } | null } | null, latest?: { __typename: 'Pages_huHomeLatest', title?: string | null, caption?: string | null, action?: { __typename: 'Pages_enHomeLatestAction', label?: string | null, url?: string | null } | null } | null };
+
+type Pages_HuParts_Pages_HuDefault_Fragment = { __typename?: 'Pages_huDefault', title?: string | null };
 
 export type Pages_HuPartsFragment = Pages_HuParts_Pages_HuProjects_Fragment | Pages_HuParts_Pages_HuArticle_Fragment | Pages_HuParts_Pages_HuHome_Fragment | Pages_HuParts_Pages_HuDefault_Fragment;
 
-type Pages_EnParts_Pages_EnProjects_Fragment = { __typename?: 'Pages_enProjects', body?: any | null, layout?: string | null, title?: string | null, permalink?: string | null, hide_search?: boolean | null, projects?: Array<{ __typename: 'Pages_enProjectsProjects', title?: string | null, project_date?: string | null, description?: string | null, funding_info?: string | null, funding_logo?: string | null } | null> | null };
+type Pages_EnParts_Pages_EnProjects_Fragment = { __typename?: 'Pages_enProjects', title?: string | null, body?: any | null, projects?: Array<{ __typename: 'Pages_enProjectsProjects', title?: string | null, project_date?: string | null, description?: string | null, funding_info?: string | null, funding_logo?: string | null } | null> | null };
 
-type Pages_EnParts_Pages_EnArticle_Fragment = { __typename?: 'Pages_enArticle', layout?: string | null, title?: string | null, permalink?: string | null, body?: any | null };
+type Pages_EnParts_Pages_EnArticle_Fragment = { __typename?: 'Pages_enArticle', title?: string | null, permalink?: string | null, body?: any | null };
 
-type Pages_EnParts_Pages_EnHome_Fragment = { __typename?: 'Pages_enHome', body?: any | null, layout?: string | null, title?: string | null, permalink?: string | null, best_of_collections?: { __typename: 'Pages_enHomeBest_of_collections', title?: string | null, caption?: string | null, content?: Array<{ __typename: 'Pages_enHomeBest_of_collectionsContent', title?: string | null, counter?: number | null, cover_image?: string | null, url?: string | null } | null> | null } | null, blog?: { __typename: 'Pages_enHomeBlog', title?: string | null, caption?: string | null, action?: { __typename: 'Pages_enHomeBlogAction', label?: string | null, url?: string | null } | null } | null, latest?: { __typename: 'Pages_enHomeLatest', title?: string | null, caption?: string | null, action?: { __typename: 'Pages_enHomeLatestAction', label?: string | null, url?: string | null } | null } | null };
+type Pages_EnParts_Pages_EnHome_Fragment = { __typename?: 'Pages_enHome', title?: string | null, body?: any | null, best_of_collections?: { __typename: 'Pages_enHomeBest_of_collections', title?: string | null, caption?: string | null, content?: Array<{ __typename: 'Pages_enHomeBest_of_collectionsContent', title?: string | null, counter?: number | null, cover_image?: string | null, url?: string | null } | null> | null } | null, blog?: { __typename: 'Pages_enHomeBlog', title?: string | null, caption?: string | null, action?: { __typename: 'Pages_enHomeBlogAction', label?: string | null, url?: string | null } | null } | null, latest?: { __typename: 'Pages_enHomeLatest', title?: string | null, caption?: string | null, action?: { __typename: 'Pages_enHomeLatestAction', label?: string | null, url?: string | null } | null } | null };
 
-type Pages_EnParts_Pages_EnDefault_Fragment = { __typename?: 'Pages_enDefault', layout?: string | null, title?: string | null, permalink?: string | null };
+type Pages_EnParts_Pages_EnDefault_Fragment = { __typename?: 'Pages_enDefault', title?: string | null };
 
 export type Pages_EnPartsFragment = Pages_EnParts_Pages_EnProjects_Fragment | Pages_EnParts_Pages_EnArticle_Fragment | Pages_EnParts_Pages_EnHome_Fragment | Pages_EnParts_Pages_EnDefault_Fragment;
+
+export type HetifortepanPartsFragment = { __typename?: 'Hetifortepan', hu?: Array<{ __typename: 'HetifortepanHu', date?: string | null, cover_image?: string | null, title?: string | null, excerpt?: string | null, url?: string | null } | null> | null, en?: Array<{ __typename: 'HetifortepanEn', date?: string | null, cover_image?: string | null, title?: string | null, excerpt?: string | null, url?: string | null } | null> | null };
+
+export type SettingsPartsFragment = { __typename?: 'Settings', latestDate?: string | null, tax1percent?: string | null };
 
 export type Pages_HuQueryVariables = Exact<{
   relativePath: Scalars['String'];
 }>;
 
 
-export type Pages_HuQuery = { __typename?: 'Query', pages_hu: { __typename?: 'Pages_huProjects', id: string, body?: any | null, layout?: string | null, title?: string | null, permalink?: string | null, hide_search?: boolean | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, projects?: Array<{ __typename: 'Pages_huProjectsProjects', title?: string | null, project_date?: string | null, description?: string | null, funding_info?: string | null, funding_logo?: string | null } | null> | null } | { __typename?: 'Pages_huArticle', id: string, layout?: string | null, title?: string | null, permalink?: string | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | { __typename?: 'Pages_huHome', id: string, body?: any | null, layout?: string | null, title?: string | null, permalink?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, best_of_collections?: { __typename: 'Pages_huHomeBest_of_collections', title?: string | null, caption?: string | null, content?: Array<{ __typename: 'Pages_enHomeBest_of_collectionsContent', title?: string | null, counter?: number | null, cover_image?: string | null, url?: string | null } | null> | null } | null, blog?: { __typename: 'Pages_huHomeBlog', title?: string | null, caption?: string | null, action?: { __typename: 'Pages_enHomeBlogAction', label?: string | null, url?: string | null } | null } | null, latest?: { __typename: 'Pages_huHomeLatest', title?: string | null, caption?: string | null, action?: { __typename: 'Pages_enHomeLatestAction', label?: string | null, url?: string | null } | null } | null } | { __typename?: 'Pages_huDefault', id: string, layout?: string | null, title?: string | null, permalink?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
+export type Pages_HuQuery = { __typename?: 'Query', pages_hu: { __typename?: 'Pages_huProjects', id: string, title?: string | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, projects?: Array<{ __typename: 'Pages_huProjectsProjects', title?: string | null, project_date?: string | null, description?: string | null, funding_info?: string | null, funding_logo?: string | null } | null> | null } | { __typename?: 'Pages_huArticle', id: string, title?: string | null, permalink?: string | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | { __typename?: 'Pages_huHome', id: string, title?: string | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, best_of_collections?: { __typename: 'Pages_huHomeBest_of_collections', title?: string | null, caption?: string | null, content?: Array<{ __typename: 'Pages_enHomeBest_of_collectionsContent', title?: string | null, counter?: number | null, cover_image?: string | null, url?: string | null } | null> | null } | null, blog?: { __typename: 'Pages_huHomeBlog', title?: string | null, caption?: string | null, action?: { __typename: 'Pages_enHomeBlogAction', label?: string | null, url?: string | null } | null } | null, latest?: { __typename: 'Pages_huHomeLatest', title?: string | null, caption?: string | null, action?: { __typename: 'Pages_enHomeLatestAction', label?: string | null, url?: string | null } | null } | null } | { __typename?: 'Pages_huDefault', id: string, title?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
 
 export type Pages_HuConnectionQueryVariables = Exact<{
   before?: InputMaybe<Scalars['String']>;
@@ -819,14 +960,14 @@ export type Pages_HuConnectionQueryVariables = Exact<{
 }>;
 
 
-export type Pages_HuConnectionQuery = { __typename?: 'Query', pages_huConnection: { __typename?: 'Pages_huConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'Pages_huConnectionEdges', cursor: string, node?: { __typename?: 'Pages_huProjects', id: string, body?: any | null, layout?: string | null, title?: string | null, permalink?: string | null, hide_search?: boolean | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, projects?: Array<{ __typename: 'Pages_huProjectsProjects', title?: string | null, project_date?: string | null, description?: string | null, funding_info?: string | null, funding_logo?: string | null } | null> | null } | { __typename?: 'Pages_huArticle', id: string, layout?: string | null, title?: string | null, permalink?: string | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | { __typename?: 'Pages_huHome', id: string, body?: any | null, layout?: string | null, title?: string | null, permalink?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, best_of_collections?: { __typename: 'Pages_huHomeBest_of_collections', title?: string | null, caption?: string | null, content?: Array<{ __typename: 'Pages_enHomeBest_of_collectionsContent', title?: string | null, counter?: number | null, cover_image?: string | null, url?: string | null } | null> | null } | null, blog?: { __typename: 'Pages_huHomeBlog', title?: string | null, caption?: string | null, action?: { __typename: 'Pages_enHomeBlogAction', label?: string | null, url?: string | null } | null } | null, latest?: { __typename: 'Pages_huHomeLatest', title?: string | null, caption?: string | null, action?: { __typename: 'Pages_enHomeLatestAction', label?: string | null, url?: string | null } | null } | null } | { __typename?: 'Pages_huDefault', id: string, layout?: string | null, title?: string | null, permalink?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
+export type Pages_HuConnectionQuery = { __typename?: 'Query', pages_huConnection: { __typename?: 'Pages_huConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'Pages_huConnectionEdges', cursor: string, node?: { __typename?: 'Pages_huProjects', id: string, title?: string | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, projects?: Array<{ __typename: 'Pages_huProjectsProjects', title?: string | null, project_date?: string | null, description?: string | null, funding_info?: string | null, funding_logo?: string | null } | null> | null } | { __typename?: 'Pages_huArticle', id: string, title?: string | null, permalink?: string | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | { __typename?: 'Pages_huHome', id: string, title?: string | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, best_of_collections?: { __typename: 'Pages_huHomeBest_of_collections', title?: string | null, caption?: string | null, content?: Array<{ __typename: 'Pages_enHomeBest_of_collectionsContent', title?: string | null, counter?: number | null, cover_image?: string | null, url?: string | null } | null> | null } | null, blog?: { __typename: 'Pages_huHomeBlog', title?: string | null, caption?: string | null, action?: { __typename: 'Pages_enHomeBlogAction', label?: string | null, url?: string | null } | null } | null, latest?: { __typename: 'Pages_huHomeLatest', title?: string | null, caption?: string | null, action?: { __typename: 'Pages_enHomeLatestAction', label?: string | null, url?: string | null } | null } | null } | { __typename?: 'Pages_huDefault', id: string, title?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
 
 export type Pages_EnQueryVariables = Exact<{
   relativePath: Scalars['String'];
 }>;
 
 
-export type Pages_EnQuery = { __typename?: 'Query', pages_en: { __typename?: 'Pages_enProjects', id: string, body?: any | null, layout?: string | null, title?: string | null, permalink?: string | null, hide_search?: boolean | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, projects?: Array<{ __typename: 'Pages_enProjectsProjects', title?: string | null, project_date?: string | null, description?: string | null, funding_info?: string | null, funding_logo?: string | null } | null> | null } | { __typename?: 'Pages_enArticle', id: string, layout?: string | null, title?: string | null, permalink?: string | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | { __typename?: 'Pages_enHome', id: string, body?: any | null, layout?: string | null, title?: string | null, permalink?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, best_of_collections?: { __typename: 'Pages_enHomeBest_of_collections', title?: string | null, caption?: string | null, content?: Array<{ __typename: 'Pages_enHomeBest_of_collectionsContent', title?: string | null, counter?: number | null, cover_image?: string | null, url?: string | null } | null> | null } | null, blog?: { __typename: 'Pages_enHomeBlog', title?: string | null, caption?: string | null, action?: { __typename: 'Pages_enHomeBlogAction', label?: string | null, url?: string | null } | null } | null, latest?: { __typename: 'Pages_enHomeLatest', title?: string | null, caption?: string | null, action?: { __typename: 'Pages_enHomeLatestAction', label?: string | null, url?: string | null } | null } | null } | { __typename?: 'Pages_enDefault', id: string, layout?: string | null, title?: string | null, permalink?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
+export type Pages_EnQuery = { __typename?: 'Query', pages_en: { __typename?: 'Pages_enProjects', id: string, title?: string | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, projects?: Array<{ __typename: 'Pages_enProjectsProjects', title?: string | null, project_date?: string | null, description?: string | null, funding_info?: string | null, funding_logo?: string | null } | null> | null } | { __typename?: 'Pages_enArticle', id: string, title?: string | null, permalink?: string | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | { __typename?: 'Pages_enHome', id: string, title?: string | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, best_of_collections?: { __typename: 'Pages_enHomeBest_of_collections', title?: string | null, caption?: string | null, content?: Array<{ __typename: 'Pages_enHomeBest_of_collectionsContent', title?: string | null, counter?: number | null, cover_image?: string | null, url?: string | null } | null> | null } | null, blog?: { __typename: 'Pages_enHomeBlog', title?: string | null, caption?: string | null, action?: { __typename: 'Pages_enHomeBlogAction', label?: string | null, url?: string | null } | null } | null, latest?: { __typename: 'Pages_enHomeLatest', title?: string | null, caption?: string | null, action?: { __typename: 'Pages_enHomeLatestAction', label?: string | null, url?: string | null } | null } | null } | { __typename?: 'Pages_enDefault', id: string, title?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
 
 export type Pages_EnConnectionQueryVariables = Exact<{
   before?: InputMaybe<Scalars['String']>;
@@ -838,16 +979,51 @@ export type Pages_EnConnectionQueryVariables = Exact<{
 }>;
 
 
-export type Pages_EnConnectionQuery = { __typename?: 'Query', pages_enConnection: { __typename?: 'Pages_enConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'Pages_enConnectionEdges', cursor: string, node?: { __typename?: 'Pages_enProjects', id: string, body?: any | null, layout?: string | null, title?: string | null, permalink?: string | null, hide_search?: boolean | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, projects?: Array<{ __typename: 'Pages_enProjectsProjects', title?: string | null, project_date?: string | null, description?: string | null, funding_info?: string | null, funding_logo?: string | null } | null> | null } | { __typename?: 'Pages_enArticle', id: string, layout?: string | null, title?: string | null, permalink?: string | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | { __typename?: 'Pages_enHome', id: string, body?: any | null, layout?: string | null, title?: string | null, permalink?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, best_of_collections?: { __typename: 'Pages_enHomeBest_of_collections', title?: string | null, caption?: string | null, content?: Array<{ __typename: 'Pages_enHomeBest_of_collectionsContent', title?: string | null, counter?: number | null, cover_image?: string | null, url?: string | null } | null> | null } | null, blog?: { __typename: 'Pages_enHomeBlog', title?: string | null, caption?: string | null, action?: { __typename: 'Pages_enHomeBlogAction', label?: string | null, url?: string | null } | null } | null, latest?: { __typename: 'Pages_enHomeLatest', title?: string | null, caption?: string | null, action?: { __typename: 'Pages_enHomeLatestAction', label?: string | null, url?: string | null } | null } | null } | { __typename?: 'Pages_enDefault', id: string, layout?: string | null, title?: string | null, permalink?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
+export type Pages_EnConnectionQuery = { __typename?: 'Query', pages_enConnection: { __typename?: 'Pages_enConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'Pages_enConnectionEdges', cursor: string, node?: { __typename?: 'Pages_enProjects', id: string, title?: string | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, projects?: Array<{ __typename: 'Pages_enProjectsProjects', title?: string | null, project_date?: string | null, description?: string | null, funding_info?: string | null, funding_logo?: string | null } | null> | null } | { __typename?: 'Pages_enArticle', id: string, title?: string | null, permalink?: string | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | { __typename?: 'Pages_enHome', id: string, title?: string | null, body?: any | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, best_of_collections?: { __typename: 'Pages_enHomeBest_of_collections', title?: string | null, caption?: string | null, content?: Array<{ __typename: 'Pages_enHomeBest_of_collectionsContent', title?: string | null, counter?: number | null, cover_image?: string | null, url?: string | null } | null> | null } | null, blog?: { __typename: 'Pages_enHomeBlog', title?: string | null, caption?: string | null, action?: { __typename: 'Pages_enHomeBlogAction', label?: string | null, url?: string | null } | null } | null, latest?: { __typename: 'Pages_enHomeLatest', title?: string | null, caption?: string | null, action?: { __typename: 'Pages_enHomeLatestAction', label?: string | null, url?: string | null } | null } | null } | { __typename?: 'Pages_enDefault', id: string, title?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
+
+export type HetifortepanQueryVariables = Exact<{
+  relativePath: Scalars['String'];
+}>;
+
+
+export type HetifortepanQuery = { __typename?: 'Query', hetifortepan: { __typename?: 'Hetifortepan', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, hu?: Array<{ __typename: 'HetifortepanHu', date?: string | null, cover_image?: string | null, title?: string | null, excerpt?: string | null, url?: string | null } | null> | null, en?: Array<{ __typename: 'HetifortepanEn', date?: string | null, cover_image?: string | null, title?: string | null, excerpt?: string | null, url?: string | null } | null> | null } };
+
+export type HetifortepanConnectionQueryVariables = Exact<{
+  before?: InputMaybe<Scalars['String']>;
+  after?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Float']>;
+  last?: InputMaybe<Scalars['Float']>;
+  sort?: InputMaybe<Scalars['String']>;
+  filter?: InputMaybe<HetifortepanFilter>;
+}>;
+
+
+export type HetifortepanConnectionQuery = { __typename?: 'Query', hetifortepanConnection: { __typename?: 'HetifortepanConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'HetifortepanConnectionEdges', cursor: string, node?: { __typename?: 'Hetifortepan', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, hu?: Array<{ __typename: 'HetifortepanHu', date?: string | null, cover_image?: string | null, title?: string | null, excerpt?: string | null, url?: string | null } | null> | null, en?: Array<{ __typename: 'HetifortepanEn', date?: string | null, cover_image?: string | null, title?: string | null, excerpt?: string | null, url?: string | null } | null> | null } | null } | null> | null } };
+
+export type SettingsQueryVariables = Exact<{
+  relativePath: Scalars['String'];
+}>;
+
+
+export type SettingsQuery = { __typename?: 'Query', settings: { __typename?: 'Settings', id: string, latestDate?: string | null, tax1percent?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } };
+
+export type SettingsConnectionQueryVariables = Exact<{
+  before?: InputMaybe<Scalars['String']>;
+  after?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Float']>;
+  last?: InputMaybe<Scalars['Float']>;
+  sort?: InputMaybe<Scalars['String']>;
+  filter?: InputMaybe<SettingsFilter>;
+}>;
+
+
+export type SettingsConnectionQuery = { __typename?: 'Query', settingsConnection: { __typename?: 'SettingsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'SettingsConnectionEdges', cursor: string, node?: { __typename?: 'Settings', id: string, latestDate?: string | null, tax1percent?: string | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
 
 export const Pages_HuPartsFragmentDoc = gql`
     fragment Pages_huParts on Pages_hu {
   ... on Pages_huProjects {
-    body
-    layout
     title
-    permalink
-    hide_search
+    body
     projects {
       __typename
       title
@@ -858,16 +1034,13 @@ export const Pages_HuPartsFragmentDoc = gql`
     }
   }
   ... on Pages_huArticle {
-    layout
     title
     permalink
     body
   }
   ... on Pages_huHome {
-    body
-    layout
     title
-    permalink
+    body
     best_of_collections {
       __typename
       title
@@ -902,20 +1075,15 @@ export const Pages_HuPartsFragmentDoc = gql`
     }
   }
   ... on Pages_huDefault {
-    layout
     title
-    permalink
   }
 }
     `;
 export const Pages_EnPartsFragmentDoc = gql`
     fragment Pages_enParts on Pages_en {
   ... on Pages_enProjects {
-    body
-    layout
     title
-    permalink
-    hide_search
+    body
     projects {
       __typename
       title
@@ -926,16 +1094,13 @@ export const Pages_EnPartsFragmentDoc = gql`
     }
   }
   ... on Pages_enArticle {
-    layout
     title
     permalink
     body
   }
   ... on Pages_enHome {
-    body
-    layout
     title
-    permalink
+    body
     best_of_collections {
       __typename
       title
@@ -970,10 +1135,34 @@ export const Pages_EnPartsFragmentDoc = gql`
     }
   }
   ... on Pages_enDefault {
-    layout
     title
-    permalink
   }
+}
+    `;
+export const HetifortepanPartsFragmentDoc = gql`
+    fragment HetifortepanParts on Hetifortepan {
+  hu {
+    __typename
+    date
+    cover_image
+    title
+    excerpt
+    url
+  }
+  en {
+    __typename
+    date
+    cover_image
+    title
+    excerpt
+    url
+  }
+}
+    `;
+export const SettingsPartsFragmentDoc = gql`
+    fragment SettingsParts on Settings {
+  latestDate
+  tax1percent
 }
     `;
 export const Pages_HuDocument = gql`
@@ -1086,6 +1275,116 @@ export const Pages_EnConnectionDocument = gql`
   }
 }
     ${Pages_EnPartsFragmentDoc}`;
+export const HetifortepanDocument = gql`
+    query hetifortepan($relativePath: String!) {
+  hetifortepan(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...HetifortepanParts
+  }
+}
+    ${HetifortepanPartsFragmentDoc}`;
+export const HetifortepanConnectionDocument = gql`
+    query hetifortepanConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: HetifortepanFilter) {
+  hetifortepanConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...HetifortepanParts
+      }
+    }
+  }
+}
+    ${HetifortepanPartsFragmentDoc}`;
+export const SettingsDocument = gql`
+    query settings($relativePath: String!) {
+  settings(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...SettingsParts
+  }
+}
+    ${SettingsPartsFragmentDoc}`;
+export const SettingsConnectionDocument = gql`
+    query settingsConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: SettingsFilter) {
+  settingsConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...SettingsParts
+      }
+    }
+  }
+}
+    ${SettingsPartsFragmentDoc}`;
 export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R>
   export function getSdk<C>(requester: Requester<C>) {
     return {
@@ -1100,6 +1399,18 @@ export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) 
       },
     pages_enConnection(variables?: Pages_EnConnectionQueryVariables, options?: C): Promise<{data: Pages_EnConnectionQuery, variables: Pages_EnConnectionQueryVariables, query: string}> {
         return requester<{data: Pages_EnConnectionQuery, variables: Pages_EnConnectionQueryVariables, query: string}, Pages_EnConnectionQueryVariables>(Pages_EnConnectionDocument, variables, options);
+      },
+    hetifortepan(variables: HetifortepanQueryVariables, options?: C): Promise<{data: HetifortepanQuery, variables: HetifortepanQueryVariables, query: string}> {
+        return requester<{data: HetifortepanQuery, variables: HetifortepanQueryVariables, query: string}, HetifortepanQueryVariables>(HetifortepanDocument, variables, options);
+      },
+    hetifortepanConnection(variables?: HetifortepanConnectionQueryVariables, options?: C): Promise<{data: HetifortepanConnectionQuery, variables: HetifortepanConnectionQueryVariables, query: string}> {
+        return requester<{data: HetifortepanConnectionQuery, variables: HetifortepanConnectionQueryVariables, query: string}, HetifortepanConnectionQueryVariables>(HetifortepanConnectionDocument, variables, options);
+      },
+    settings(variables: SettingsQueryVariables, options?: C): Promise<{data: SettingsQuery, variables: SettingsQueryVariables, query: string}> {
+        return requester<{data: SettingsQuery, variables: SettingsQueryVariables, query: string}, SettingsQueryVariables>(SettingsDocument, variables, options);
+      },
+    settingsConnection(variables?: SettingsConnectionQueryVariables, options?: C): Promise<{data: SettingsConnectionQuery, variables: SettingsConnectionQueryVariables, query: string}> {
+        return requester<{data: SettingsConnectionQuery, variables: SettingsConnectionQueryVariables, query: string}, SettingsConnectionQueryVariables>(SettingsConnectionDocument, variables, options);
       }
     };
   }

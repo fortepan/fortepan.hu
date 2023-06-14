@@ -1,31 +1,16 @@
 export default {
   fields: [
     {
-      type: "rich-text",
-      name: "body",
-      label: "Body of Document",
-      description: "This is the markdown body",
-      isBody: true,
-    },
-    {
-      type: "string",
-      name: "layout",
-      label: "layout",
-    },
-    {
       type: "string",
       name: "title",
       label: "title",
     },
     {
-      type: "string",
-      name: "permalink",
-      label: "permalink",
-    },
-    {
-      type: "boolean",
-      name: "hide_search",
-      label: "hide_search",
+      type: "rich-text",
+      name: "body",
+      label: "Body of Document",
+      description: "This is the markdown body",
+      isBody: true,
     },
     {
       type: "object",

@@ -8,11 +8,8 @@ export function gql(strings, ...args) {
 export const Pages_HuPartsFragmentDoc = gql`
     fragment Pages_huParts on Pages_hu {
   ... on Pages_huProjects {
-    body
-    layout
     title
-    permalink
-    hide_search
+    body
     projects {
       __typename
       title
@@ -23,16 +20,13 @@ export const Pages_HuPartsFragmentDoc = gql`
     }
   }
   ... on Pages_huArticle {
-    layout
     title
     permalink
     body
   }
   ... on Pages_huHome {
-    body
-    layout
     title
-    permalink
+    body
     best_of_collections {
       __typename
       title
@@ -67,20 +61,15 @@ export const Pages_HuPartsFragmentDoc = gql`
     }
   }
   ... on Pages_huDefault {
-    layout
     title
-    permalink
   }
 }
     `;
 export const Pages_EnPartsFragmentDoc = gql`
     fragment Pages_enParts on Pages_en {
   ... on Pages_enProjects {
-    body
-    layout
     title
-    permalink
-    hide_search
+    body
     projects {
       __typename
       title
@@ -91,16 +80,13 @@ export const Pages_EnPartsFragmentDoc = gql`
     }
   }
   ... on Pages_enArticle {
-    layout
     title
     permalink
     body
   }
   ... on Pages_enHome {
-    body
-    layout
     title
-    permalink
+    body
     best_of_collections {
       __typename
       title
@@ -135,10 +121,34 @@ export const Pages_EnPartsFragmentDoc = gql`
     }
   }
   ... on Pages_enDefault {
-    layout
     title
-    permalink
   }
+}
+    `;
+export const HetifortepanPartsFragmentDoc = gql`
+    fragment HetifortepanParts on Hetifortepan {
+  hu {
+    __typename
+    date
+    cover_image
+    title
+    excerpt
+    url
+  }
+  en {
+    __typename
+    date
+    cover_image
+    title
+    excerpt
+    url
+  }
+}
+    `;
+export const SettingsPartsFragmentDoc = gql`
+    fragment SettingsParts on Settings {
+  latestDate
+  tax1percent
 }
     `;
 export const Pages_HuDocument = gql`
@@ -251,6 +261,116 @@ export const Pages_EnConnectionDocument = gql`
   }
 }
     ${Pages_EnPartsFragmentDoc}`;
+export const HetifortepanDocument = gql`
+    query hetifortepan($relativePath: String!) {
+  hetifortepan(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...HetifortepanParts
+  }
+}
+    ${HetifortepanPartsFragmentDoc}`;
+export const HetifortepanConnectionDocument = gql`
+    query hetifortepanConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: HetifortepanFilter) {
+  hetifortepanConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...HetifortepanParts
+      }
+    }
+  }
+}
+    ${HetifortepanPartsFragmentDoc}`;
+export const SettingsDocument = gql`
+    query settings($relativePath: String!) {
+  settings(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...SettingsParts
+  }
+}
+    ${SettingsPartsFragmentDoc}`;
+export const SettingsConnectionDocument = gql`
+    query settingsConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: SettingsFilter) {
+  settingsConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...SettingsParts
+      }
+    }
+  }
+}
+    ${SettingsPartsFragmentDoc}`;
 export function getSdk(requester) {
   return {
     pages_hu(variables, options) {
@@ -264,6 +384,18 @@ export function getSdk(requester) {
     },
     pages_enConnection(variables, options) {
       return requester(Pages_EnConnectionDocument, variables, options);
+    },
+    hetifortepan(variables, options) {
+      return requester(HetifortepanDocument, variables, options);
+    },
+    hetifortepanConnection(variables, options) {
+      return requester(HetifortepanConnectionDocument, variables, options);
+    },
+    settings(variables, options) {
+      return requester(SettingsDocument, variables, options);
+    },
+    settingsConnection(variables, options) {
+      return requester(SettingsConnectionDocument, variables, options);
     }
   };
 }

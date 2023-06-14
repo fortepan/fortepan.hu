@@ -2,12 +2,6 @@ export default {
   fields: [
     {
       type: "string",
-      name: "layout",
-      label: "layout",
-      disabled: true,
-    },
-    {
-      type: "string",
       name: "title",
       label: "title",
     },

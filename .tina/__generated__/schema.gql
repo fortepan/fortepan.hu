@@ -52,11 +52,17 @@ type Query {
   pages_huConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: Pages_huFilter): Pages_huConnection!
   pages_en(relativePath: String): Pages_en!
   pages_enConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: Pages_enFilter): Pages_enConnection!
+  hetifortepan(relativePath: String): Hetifortepan!
+  hetifortepanConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: HetifortepanFilter): HetifortepanConnection!
+  settings(relativePath: String): Settings!
+  settingsConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: SettingsFilter): SettingsConnection!
 }
 
 input DocumentFilter {
   pages_hu: Pages_huFilter
   pages_en: Pages_enFilter
+  hetifortepan: HetifortepanFilter
+  settings: SettingsFilter
 }
 
 type DocumentConnectionEdges {
@@ -82,7 +88,7 @@ type Collection {
   documents(before: String, after: String, first: Float, last: Float, sort: String, filter: DocumentFilter): DocumentConnection!
 }
 
-union DocumentNode = Pages_huProjects | Pages_huArticle | Pages_huHome | Pages_huDefault | Pages_enProjects | Pages_enArticle | Pages_enHome | Pages_enDefault
+union DocumentNode = Pages_huProjects | Pages_huArticle | Pages_huHome | Pages_huDefault | Pages_enProjects | Pages_enArticle | Pages_enHome | Pages_enDefault | Hetifortepan | Settings
 
 type Pages_huProjectsProjects {
   title: String
@@ -93,11 +99,8 @@ type Pages_huProjectsProjects {
 }
 
 type Pages_huProjects implements Node & Document {
-  body: JSON
-  layout: String
   title: String
-  permalink: String
-  hide_search: Boolean
+  body: JSON
   projects: [Pages_huProjectsProjects]
   id: ID!
   _sys: SystemInfo!
@@ -105,7 +108,6 @@ type Pages_huProjects implements Node & Document {
 }
 
 type Pages_huArticle implements Node & Document {
-  layout: String
   title: String
   permalink: String
   body: JSON
@@ -150,10 +152,8 @@ type Pages_huHomeLatest {
 }
 
 type Pages_huHome implements Node & Document {
-  body: JSON
-  layout: String
   title: String
-  permalink: String
+  body: JSON
   best_of_collections: Pages_huHomeBest_of_collections
   blog: Pages_huHomeBlog
   latest: Pages_huHomeLatest
@@ -163,21 +163,13 @@ type Pages_huHome implements Node & Document {
 }
 
 type Pages_huDefault implements Node & Document {
-  layout: String
   title: String
-  permalink: String
   id: ID!
   _sys: SystemInfo!
   _values: JSON!
 }
 
 union Pages_hu = Pages_huProjects | Pages_huArticle | Pages_huHome | Pages_huDefault
-
-input RichTextFilter {
-  startsWith: String
-  eq: String
-  exists: Boolean
-}
 
 input StringFilter {
   startsWith: String
@@ -186,8 +178,9 @@ input StringFilter {
   in: [String]
 }
 
-input BooleanFilter {
-  eq: Boolean
+input RichTextFilter {
+  startsWith: String
+  eq: String
   exists: Boolean
 }
 
@@ -207,16 +200,12 @@ input Pages_huProjectsProjectsFilter {
 }
 
 input Pages_huProjectsFilter {
-  body: RichTextFilter
-  layout: StringFilter
   title: StringFilter
-  permalink: StringFilter
-  hide_search: BooleanFilter
+  body: RichTextFilter
   projects: Pages_huProjectsProjectsFilter
 }
 
 input Pages_huArticleFilter {
-  layout: StringFilter
   title: StringFilter
   permalink: StringFilter
   body: RichTextFilter
@@ -268,19 +257,15 @@ input Pages_huHomeLatestFilter {
 }
 
 input Pages_huHomeFilter {
-  body: RichTextFilter
-  layout: StringFilter
   title: StringFilter
-  permalink: StringFilter
+  body: RichTextFilter
   best_of_collections: Pages_huHomeBest_of_collectionsFilter
   blog: Pages_huHomeBlogFilter
   latest: Pages_huHomeLatestFilter
 }
 
 input Pages_huDefaultFilter {
-  layout: StringFilter
   title: StringFilter
-  permalink: StringFilter
 }
 
 input Pages_huFilter {
@@ -310,11 +295,8 @@ type Pages_enProjectsProjects {
 }
 
 type Pages_enProjects implements Node & Document {
-  body: JSON
-  layout: String
   title: String
-  permalink: String
-  hide_search: Boolean
+  body: JSON
   projects: [Pages_enProjectsProjects]
   id: ID!
   _sys: SystemInfo!
@@ -322,7 +304,6 @@ type Pages_enProjects implements Node & Document {
 }
 
 type Pages_enArticle implements Node & Document {
-  layout: String
   title: String
   permalink: String
   body: JSON
@@ -350,10 +331,8 @@ type Pages_enHomeLatest {
 }
 
 type Pages_enHome implements Node & Document {
-  body: JSON
-  layout: String
   title: String
-  permalink: String
+  body: JSON
   best_of_collections: Pages_enHomeBest_of_collections
   blog: Pages_enHomeBlog
   latest: Pages_enHomeLatest
@@ -363,9 +342,7 @@ type Pages_enHome implements Node & Document {
 }
 
 type Pages_enDefault implements Node & Document {
-  layout: String
   title: String
-  permalink: String
   id: ID!
   _sys: SystemInfo!
   _values: JSON!
@@ -382,16 +359,12 @@ input Pages_enProjectsProjectsFilter {
 }
 
 input Pages_enProjectsFilter {
-  body: RichTextFilter
-  layout: StringFilter
   title: StringFilter
-  permalink: StringFilter
-  hide_search: BooleanFilter
+  body: RichTextFilter
   projects: Pages_enProjectsProjectsFilter
 }
 
 input Pages_enArticleFilter {
-  layout: StringFilter
   title: StringFilter
   permalink: StringFilter
   body: RichTextFilter
@@ -416,19 +389,15 @@ input Pages_enHomeLatestFilter {
 }
 
 input Pages_enHomeFilter {
-  body: RichTextFilter
-  layout: StringFilter
   title: StringFilter
-  permalink: StringFilter
+  body: RichTextFilter
   best_of_collections: Pages_enHomeBest_of_collectionsFilter
   blog: Pages_enHomeBlogFilter
   latest: Pages_enHomeLatestFilter
 }
 
 input Pages_enDefaultFilter {
-  layout: StringFilter
   title: StringFilter
-  permalink: StringFilter
 }
 
 input Pages_enFilter {
@@ -449,6 +418,94 @@ type Pages_enConnection implements Connection {
   edges: [Pages_enConnectionEdges]
 }
 
+type HetifortepanHu {
+  date: String
+  cover_image: String
+  title: String
+  excerpt: String
+  url: String
+}
+
+type HetifortepanEn {
+  date: String
+  cover_image: String
+  title: String
+  excerpt: String
+  url: String
+}
+
+type Hetifortepan implements Node & Document {
+  hu: [HetifortepanHu]
+  en: [HetifortepanEn]
+  id: ID!
+  _sys: SystemInfo!
+  _values: JSON!
+}
+
+input HetifortepanHuFilter {
+  date: StringFilter
+  cover_image: StringFilter
+  title: StringFilter
+  excerpt: StringFilter
+  url: StringFilter
+}
+
+input HetifortepanEnFilter {
+  date: StringFilter
+  cover_image: StringFilter
+  title: StringFilter
+  excerpt: StringFilter
+  url: StringFilter
+}
+
+input HetifortepanFilter {
+  hu: HetifortepanHuFilter
+  en: HetifortepanEnFilter
+}
+
+type HetifortepanConnectionEdges {
+  cursor: String!
+  node: Hetifortepan
+}
+
+type HetifortepanConnection implements Connection {
+  pageInfo: PageInfo!
+  totalCount: Float!
+  edges: [HetifortepanConnectionEdges]
+}
+
+type Settings implements Node & Document {
+  latestDate: String
+  tax1percent: String
+  id: ID!
+  _sys: SystemInfo!
+  _values: JSON!
+}
+
+input DatetimeFilter {
+  after: String
+  before: String
+  eq: String
+  exists: Boolean
+  in: [String]
+}
+
+input SettingsFilter {
+  latestDate: DatetimeFilter
+  tax1percent: StringFilter
+}
+
+type SettingsConnectionEdges {
+  cursor: String!
+  node: Settings
+}
+
+type SettingsConnection implements Connection {
+  pageInfo: PageInfo!
+  totalCount: Float!
+  edges: [SettingsConnectionEdges]
+}
+
 type Mutation {
   addPendingDocument(collection: String!, relativePath: String!, template: String): DocumentNode!
   updateDocument(collection: String, relativePath: String!, params: DocumentUpdateMutation!): DocumentNode!
@@ -458,17 +515,25 @@ type Mutation {
   createPages_hu(relativePath: String!, params: Pages_huMutation!): Pages_hu!
   updatePages_en(relativePath: String!, params: Pages_enMutation!): Pages_en!
   createPages_en(relativePath: String!, params: Pages_enMutation!): Pages_en!
+  updateHetifortepan(relativePath: String!, params: HetifortepanMutation!): Hetifortepan!
+  createHetifortepan(relativePath: String!, params: HetifortepanMutation!): Hetifortepan!
+  updateSettings(relativePath: String!, params: SettingsMutation!): Settings!
+  createSettings(relativePath: String!, params: SettingsMutation!): Settings!
 }
 
 input DocumentUpdateMutation {
   pages_hu: Pages_huMutation
   pages_en: Pages_enMutation
+  hetifortepan: HetifortepanMutation
+  settings: SettingsMutation
   relativePath: String
 }
 
 input DocumentMutation {
   pages_hu: Pages_huMutation
   pages_en: Pages_enMutation
+  hetifortepan: HetifortepanMutation
+  settings: SettingsMutation
 }
 
 input Pages_huProjectsProjectsMutation {
@@ -480,16 +545,12 @@ input Pages_huProjectsProjectsMutation {
 }
 
 input Pages_huProjectsMutation {
-  body: JSON
-  layout: String
   title: String
-  permalink: String
-  hide_search: Boolean
+  body: JSON
   projects: [Pages_huProjectsProjectsMutation]
 }
 
 input Pages_huArticleMutation {
-  layout: String
   title: String
   permalink: String
   body: JSON
@@ -531,19 +592,15 @@ input Pages_huHomeLatestMutation {
 }
 
 input Pages_huHomeMutation {
-  body: JSON
-  layout: String
   title: String
-  permalink: String
+  body: JSON
   best_of_collections: Pages_huHomeBest_of_collectionsMutation
   blog: Pages_huHomeBlogMutation
   latest: Pages_huHomeLatestMutation
 }
 
 input Pages_huDefaultMutation {
-  layout: String
   title: String
-  permalink: String
 }
 
 input Pages_huMutation {
@@ -562,16 +619,12 @@ input Pages_enProjectsProjectsMutation {
 }
 
 input Pages_enProjectsMutation {
-  body: JSON
-  layout: String
   title: String
-  permalink: String
-  hide_search: Boolean
+  body: JSON
   projects: [Pages_enProjectsProjectsMutation]
 }
 
 input Pages_enArticleMutation {
-  layout: String
   title: String
   permalink: String
   body: JSON
@@ -596,19 +649,15 @@ input Pages_enHomeLatestMutation {
 }
 
 input Pages_enHomeMutation {
-  body: JSON
-  layout: String
   title: String
-  permalink: String
+  body: JSON
   best_of_collections: Pages_enHomeBest_of_collectionsMutation
   blog: Pages_enHomeBlogMutation
   latest: Pages_enHomeLatestMutation
 }
 
 input Pages_enDefaultMutation {
-  layout: String
   title: String
-  permalink: String
 }
 
 input Pages_enMutation {
@@ -616,6 +665,32 @@ input Pages_enMutation {
   article: Pages_enArticleMutation
   home: Pages_enHomeMutation
   default: Pages_enDefaultMutation
+}
+
+input HetifortepanHuMutation {
+  date: String
+  cover_image: String
+  title: String
+  excerpt: String
+  url: String
+}
+
+input HetifortepanEnMutation {
+  date: String
+  cover_image: String
+  title: String
+  excerpt: String
+  url: String
+}
+
+input HetifortepanMutation {
+  hu: [HetifortepanHuMutation]
+  en: [HetifortepanEnMutation]
+}
+
+input SettingsMutation {
+  latestDate: String
+  tax1percent: String
 }
 
 schema {

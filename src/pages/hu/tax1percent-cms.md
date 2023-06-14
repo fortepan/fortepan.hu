@@ -6,9 +6,7 @@ hide_search: true
 _template: article
 ---
 
-### Az 1% fel
-
-### ajánlásához szükséges adatok
+### Az 1% felajánlásához szükséges adatok
 
 Summa Artium Alapítvány \<br> Adószám: 18128510-1-42
 
