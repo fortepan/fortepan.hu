@@ -73,6 +73,8 @@ export type Query = {
   collections: Array<Collection>;
   node: Node;
   document: DocumentNode;
+  photo_uploads: Photo_Uploads;
+  photo_uploadsConnection: Photo_UploadsConnection;
   hetifortepan: Hetifortepan;
   hetifortepanConnection: HetifortepanConnection;
   pages_hu: Pages_Hu;
@@ -102,6 +104,21 @@ export type QueryNodeArgs = {
 export type QueryDocumentArgs = {
   collection?: InputMaybe<Scalars['String']>;
   relativePath?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryPhoto_UploadsArgs = {
+  relativePath?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryPhoto_UploadsConnectionArgs = {
+  before?: InputMaybe<Scalars['String']>;
+  after?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Float']>;
+  last?: InputMaybe<Scalars['Float']>;
+  sort?: InputMaybe<Scalars['String']>;
+  filter?: InputMaybe<Photo_UploadsFilter>;
 };
 
 
@@ -165,6 +182,7 @@ export type QuerySettingsConnectionArgs = {
 };
 
 export type DocumentFilter = {
+  photo_uploads?: InputMaybe<Photo_UploadsFilter>;
   hetifortepan?: InputMaybe<HetifortepanFilter>;
   pages_hu?: InputMaybe<Pages_HuFilter>;
   pages_en?: InputMaybe<Pages_EnFilter>;
@@ -207,7 +225,104 @@ export type CollectionDocumentsArgs = {
   filter?: InputMaybe<DocumentFilter>;
 };
 
-export type DocumentNode = Hetifortepan | Pages_HuProjects | Pages_HuArticle | Pages_HuHome | Pages_HuDefault | Pages_EnProjects | Pages_EnArticle | Pages_EnHome | Pages_EnDefault | Settings;
+export type DocumentNode = Photo_Uploads | Hetifortepan | Pages_HuProjects | Pages_HuArticle | Pages_HuHome | Pages_HuDefault | Pages_EnProjects | Pages_EnArticle | Pages_EnHome | Pages_EnDefault | Settings;
+
+export type Photo_UploadsUploadsHuActions = {
+  __typename?: 'Photo_uploadsUploadsHuActions';
+  best_of?: Maybe<Scalars['String']>;
+  all?: Maybe<Scalars['String']>;
+};
+
+export type Photo_UploadsUploadsHu = {
+  __typename?: 'Photo_uploadsUploadsHu';
+  title?: Maybe<Scalars['String']>;
+  blurb?: Maybe<Scalars['String']>;
+  actions?: Maybe<Photo_UploadsUploadsHuActions>;
+};
+
+export type Photo_UploadsUploadsEnActions = {
+  __typename?: 'Photo_uploadsUploadsEnActions';
+  best_of?: Maybe<Scalars['String']>;
+  all?: Maybe<Scalars['String']>;
+};
+
+export type Photo_UploadsUploadsEn = {
+  __typename?: 'Photo_uploadsUploadsEn';
+  title?: Maybe<Scalars['String']>;
+  blurb?: Maybe<Scalars['String']>;
+  actions?: Maybe<Photo_UploadsUploadsEnActions>;
+};
+
+export type Photo_UploadsUploads = {
+  __typename?: 'Photo_uploadsUploads';
+  name?: Maybe<Scalars['String']>;
+  date?: Maybe<Scalars['String']>;
+  cover_image?: Maybe<Scalars['String']>;
+  hu?: Maybe<Photo_UploadsUploadsHu>;
+  en?: Maybe<Photo_UploadsUploadsEn>;
+};
+
+export type Photo_Uploads = Node & Document & {
+  __typename?: 'Photo_uploads';
+  uploads?: Maybe<Array<Maybe<Photo_UploadsUploads>>>;
+  id: Scalars['ID'];
+  _sys: SystemInfo;
+  _values: Scalars['JSON'];
+};
+
+export type StringFilter = {
+  startsWith?: InputMaybe<Scalars['String']>;
+  eq?: InputMaybe<Scalars['String']>;
+  exists?: InputMaybe<Scalars['Boolean']>;
+  in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
+export type Photo_UploadsUploadsHuActionsFilter = {
+  best_of?: InputMaybe<StringFilter>;
+  all?: InputMaybe<StringFilter>;
+};
+
+export type Photo_UploadsUploadsHuFilter = {
+  title?: InputMaybe<StringFilter>;
+  blurb?: InputMaybe<StringFilter>;
+  actions?: InputMaybe<Photo_UploadsUploadsHuActionsFilter>;
+};
+
+export type Photo_UploadsUploadsEnActionsFilter = {
+  best_of?: InputMaybe<StringFilter>;
+  all?: InputMaybe<StringFilter>;
+};
+
+export type Photo_UploadsUploadsEnFilter = {
+  title?: InputMaybe<StringFilter>;
+  blurb?: InputMaybe<StringFilter>;
+  actions?: InputMaybe<Photo_UploadsUploadsEnActionsFilter>;
+};
+
+export type Photo_UploadsUploadsFilter = {
+  name?: InputMaybe<StringFilter>;
+  date?: InputMaybe<StringFilter>;
+  cover_image?: InputMaybe<StringFilter>;
+  hu?: InputMaybe<Photo_UploadsUploadsHuFilter>;
+  en?: InputMaybe<Photo_UploadsUploadsEnFilter>;
+};
+
+export type Photo_UploadsFilter = {
+  uploads?: InputMaybe<Photo_UploadsUploadsFilter>;
+};
+
+export type Photo_UploadsConnectionEdges = {
+  __typename?: 'Photo_uploadsConnectionEdges';
+  cursor: Scalars['String'];
+  node?: Maybe<Photo_Uploads>;
+};
+
+export type Photo_UploadsConnection = Connection & {
+  __typename?: 'Photo_uploadsConnection';
+  pageInfo: PageInfo;
+  totalCount: Scalars['Float'];
+  edges?: Maybe<Array<Maybe<Photo_UploadsConnectionEdges>>>;
+};
 
 export type HetifortepanHu = {
   __typename?: 'HetifortepanHu';
@@ -234,13 +349,6 @@ export type Hetifortepan = Node & Document & {
   id: Scalars['ID'];
   _sys: SystemInfo;
   _values: Scalars['JSON'];
-};
-
-export type StringFilter = {
-  startsWith?: InputMaybe<Scalars['String']>;
-  eq?: InputMaybe<Scalars['String']>;
-  exists?: InputMaybe<Scalars['Boolean']>;
-  in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
 export type HetifortepanHuFilter = {
@@ -667,6 +775,8 @@ export type Mutation = {
   updateDocument: DocumentNode;
   deleteDocument: DocumentNode;
   createDocument: DocumentNode;
+  updatePhoto_uploads: Photo_Uploads;
+  createPhoto_uploads: Photo_Uploads;
   updateHetifortepan: Hetifortepan;
   createHetifortepan: Hetifortepan;
   updatePages_hu: Pages_Hu;
@@ -702,6 +812,18 @@ export type MutationCreateDocumentArgs = {
   collection?: InputMaybe<Scalars['String']>;
   relativePath: Scalars['String'];
   params: DocumentMutation;
+};
+
+
+export type MutationUpdatePhoto_UploadsArgs = {
+  relativePath: Scalars['String'];
+  params: Photo_UploadsMutation;
+};
+
+
+export type MutationCreatePhoto_UploadsArgs = {
+  relativePath: Scalars['String'];
+  params: Photo_UploadsMutation;
 };
 
 
@@ -753,6 +875,7 @@ export type MutationCreateSettingsArgs = {
 };
 
 export type DocumentUpdateMutation = {
+  photo_uploads?: InputMaybe<Photo_UploadsMutation>;
   hetifortepan?: InputMaybe<HetifortepanMutation>;
   pages_hu?: InputMaybe<Pages_HuMutation>;
   pages_en?: InputMaybe<Pages_EnMutation>;
@@ -761,10 +884,45 @@ export type DocumentUpdateMutation = {
 };
 
 export type DocumentMutation = {
+  photo_uploads?: InputMaybe<Photo_UploadsMutation>;
   hetifortepan?: InputMaybe<HetifortepanMutation>;
   pages_hu?: InputMaybe<Pages_HuMutation>;
   pages_en?: InputMaybe<Pages_EnMutation>;
   settings?: InputMaybe<SettingsMutation>;
+};
+
+export type Photo_UploadsUploadsHuActionsMutation = {
+  best_of?: InputMaybe<Scalars['String']>;
+  all?: InputMaybe<Scalars['String']>;
+};
+
+export type Photo_UploadsUploadsHuMutation = {
+  title?: InputMaybe<Scalars['String']>;
+  blurb?: InputMaybe<Scalars['String']>;
+  actions?: InputMaybe<Photo_UploadsUploadsHuActionsMutation>;
+};
+
+export type Photo_UploadsUploadsEnActionsMutation = {
+  best_of?: InputMaybe<Scalars['String']>;
+  all?: InputMaybe<Scalars['String']>;
+};
+
+export type Photo_UploadsUploadsEnMutation = {
+  title?: InputMaybe<Scalars['String']>;
+  blurb?: InputMaybe<Scalars['String']>;
+  actions?: InputMaybe<Photo_UploadsUploadsEnActionsMutation>;
+};
+
+export type Photo_UploadsUploadsMutation = {
+  name?: InputMaybe<Scalars['String']>;
+  date?: InputMaybe<Scalars['String']>;
+  cover_image?: InputMaybe<Scalars['String']>;
+  hu?: InputMaybe<Photo_UploadsUploadsHuMutation>;
+  en?: InputMaybe<Photo_UploadsUploadsEnMutation>;
+};
+
+export type Photo_UploadsMutation = {
+  uploads?: InputMaybe<Array<InputMaybe<Photo_UploadsUploadsMutation>>>;
 };
 
 export type HetifortepanHuMutation = {
@@ -924,6 +1082,8 @@ export type SettingsMutation = {
   tax1percent?: InputMaybe<Scalars['Boolean']>;
 };
 
+export type Photo_UploadsPartsFragment = { __typename?: 'Photo_uploads', uploads?: Array<{ __typename: 'Photo_uploadsUploads', name?: string | null, date?: string | null, cover_image?: string | null, hu?: { __typename: 'Photo_uploadsUploadsHu', title?: string | null, blurb?: string | null, actions?: { __typename: 'Photo_uploadsUploadsHuActions', best_of?: string | null, all?: string | null } | null } | null, en?: { __typename: 'Photo_uploadsUploadsEn', title?: string | null, blurb?: string | null, actions?: { __typename: 'Photo_uploadsUploadsEnActions', best_of?: string | null, all?: string | null } | null } | null } | null> | null };
+
 export type HetifortepanPartsFragment = { __typename?: 'Hetifortepan', hu?: Array<{ __typename: 'HetifortepanHu', date?: string | null, cover_image?: string | null, title?: string | null, excerpt?: string | null, url?: string | null } | null> | null, en?: Array<{ __typename: 'HetifortepanEn', date?: string | null, cover_image?: string | null, title?: string | null, excerpt?: string | null, url?: string | null } | null> | null };
 
 type Pages_HuParts_Pages_HuProjects_Fragment = { __typename?: 'Pages_huProjects', title?: string | null, body?: any | null, projects?: Array<{ __typename: 'Pages_huProjectsProjects', title?: string | null, project_date?: string | null, description?: string | null, funding_info?: string | null, funding_logo?: string | null } | null> | null };
@@ -947,6 +1107,25 @@ type Pages_EnParts_Pages_EnDefault_Fragment = { __typename?: 'Pages_enDefault', 
 export type Pages_EnPartsFragment = Pages_EnParts_Pages_EnProjects_Fragment | Pages_EnParts_Pages_EnArticle_Fragment | Pages_EnParts_Pages_EnHome_Fragment | Pages_EnParts_Pages_EnDefault_Fragment;
 
 export type SettingsPartsFragment = { __typename?: 'Settings', latestDate?: string | null, tax1percent?: boolean | null };
+
+export type Photo_UploadsQueryVariables = Exact<{
+  relativePath: Scalars['String'];
+}>;
+
+
+export type Photo_UploadsQuery = { __typename?: 'Query', photo_uploads: { __typename?: 'Photo_uploads', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, uploads?: Array<{ __typename: 'Photo_uploadsUploads', name?: string | null, date?: string | null, cover_image?: string | null, hu?: { __typename: 'Photo_uploadsUploadsHu', title?: string | null, blurb?: string | null, actions?: { __typename: 'Photo_uploadsUploadsHuActions', best_of?: string | null, all?: string | null } | null } | null, en?: { __typename: 'Photo_uploadsUploadsEn', title?: string | null, blurb?: string | null, actions?: { __typename: 'Photo_uploadsUploadsEnActions', best_of?: string | null, all?: string | null } | null } | null } | null> | null } };
+
+export type Photo_UploadsConnectionQueryVariables = Exact<{
+  before?: InputMaybe<Scalars['String']>;
+  after?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Float']>;
+  last?: InputMaybe<Scalars['Float']>;
+  sort?: InputMaybe<Scalars['String']>;
+  filter?: InputMaybe<Photo_UploadsFilter>;
+}>;
+
+
+export type Photo_UploadsConnectionQuery = { __typename?: 'Query', photo_uploadsConnection: { __typename?: 'Photo_uploadsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'Photo_uploadsConnectionEdges', cursor: string, node?: { __typename?: 'Photo_uploads', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, uploads?: Array<{ __typename: 'Photo_uploadsUploads', name?: string | null, date?: string | null, cover_image?: string | null, hu?: { __typename: 'Photo_uploadsUploadsHu', title?: string | null, blurb?: string | null, actions?: { __typename: 'Photo_uploadsUploadsHuActions', best_of?: string | null, all?: string | null } | null } | null, en?: { __typename: 'Photo_uploadsUploadsEn', title?: string | null, blurb?: string | null, actions?: { __typename: 'Photo_uploadsUploadsEnActions', best_of?: string | null, all?: string | null } | null } | null } | null> | null } | null } | null> | null } };
 
 export type HetifortepanQueryVariables = Exact<{
   relativePath: Scalars['String'];
@@ -1024,6 +1203,36 @@ export type SettingsConnectionQueryVariables = Exact<{
 
 export type SettingsConnectionQuery = { __typename?: 'Query', settingsConnection: { __typename?: 'SettingsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'SettingsConnectionEdges', cursor: string, node?: { __typename?: 'Settings', id: string, latestDate?: string | null, tax1percent?: boolean | null, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string } } | null } | null> | null } };
 
+export const Photo_UploadsPartsFragmentDoc = gql`
+    fragment Photo_uploadsParts on Photo_uploads {
+  uploads {
+    __typename
+    name
+    date
+    cover_image
+    hu {
+      __typename
+      title
+      blurb
+      actions {
+        __typename
+        best_of
+        all
+      }
+    }
+    en {
+      __typename
+      title
+      blurb
+      actions {
+        __typename
+        best_of
+        all
+      }
+    }
+  }
+}
+    `;
 export const HetifortepanPartsFragmentDoc = gql`
     fragment HetifortepanParts on Hetifortepan {
   hu {
@@ -1170,6 +1379,61 @@ export const SettingsPartsFragmentDoc = gql`
   tax1percent
 }
     `;
+export const Photo_UploadsDocument = gql`
+    query photo_uploads($relativePath: String!) {
+  photo_uploads(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...Photo_uploadsParts
+  }
+}
+    ${Photo_UploadsPartsFragmentDoc}`;
+export const Photo_UploadsConnectionDocument = gql`
+    query photo_uploadsConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: Photo_uploadsFilter) {
+  photo_uploadsConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...Photo_uploadsParts
+      }
+    }
+  }
+}
+    ${Photo_UploadsPartsFragmentDoc}`;
 export const HetifortepanDocument = gql`
     query hetifortepan($relativePath: String!) {
   hetifortepan(relativePath: $relativePath) {
@@ -1393,7 +1657,13 @@ export const SettingsConnectionDocument = gql`
 export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R>
   export function getSdk<C>(requester: Requester<C>) {
     return {
-      hetifortepan(variables: HetifortepanQueryVariables, options?: C): Promise<{data: HetifortepanQuery, variables: HetifortepanQueryVariables, query: string}> {
+      photo_uploads(variables: Photo_UploadsQueryVariables, options?: C): Promise<{data: Photo_UploadsQuery, variables: Photo_UploadsQueryVariables, query: string}> {
+        return requester<{data: Photo_UploadsQuery, variables: Photo_UploadsQueryVariables, query: string}, Photo_UploadsQueryVariables>(Photo_UploadsDocument, variables, options);
+      },
+    photo_uploadsConnection(variables?: Photo_UploadsConnectionQueryVariables, options?: C): Promise<{data: Photo_UploadsConnectionQuery, variables: Photo_UploadsConnectionQueryVariables, query: string}> {
+        return requester<{data: Photo_UploadsConnectionQuery, variables: Photo_UploadsConnectionQueryVariables, query: string}, Photo_UploadsConnectionQueryVariables>(Photo_UploadsConnectionDocument, variables, options);
+      },
+    hetifortepan(variables: HetifortepanQueryVariables, options?: C): Promise<{data: HetifortepanQuery, variables: HetifortepanQueryVariables, query: string}> {
         return requester<{data: HetifortepanQuery, variables: HetifortepanQueryVariables, query: string}, HetifortepanQueryVariables>(HetifortepanDocument, variables, options);
       },
     hetifortepanConnection(variables?: HetifortepanConnectionQueryVariables, options?: C): Promise<{data: HetifortepanConnectionQuery, variables: HetifortepanConnectionQueryVariables, query: string}> {

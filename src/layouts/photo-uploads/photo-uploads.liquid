@@ -3,7 +3,7 @@ layout: article/article.liquid
 ---
 
 <ul class="photo-uploads" data-controller="photo-uploads">
-  {% for collection in photo_uploads.collections %}
+  {% for collection in photo_uploads.uploads %}
   {% capture query_url %}cfrom={% date_iso collection.date %}{% if until_date %}&cto={% date_iso until_date %}{% endif %}&upload={{ collection.date }}{% endcapture %}
     <li class="collection-item">
       <div class="collection-item__cover" data-action="click->photo-uploads#onCoverClick">

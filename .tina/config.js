@@ -25,6 +25,128 @@ export default defineConfig({
   schema: {
     collections: [
       {
+        label: "Feltöltések",
+        name: "photo_uploads",
+        path: "src/data",
+        match: {
+          include: "photo_uploads",
+        },
+        format: "json",
+        fields: [
+          {
+            name: "uploads",
+            label: "Feltöltések",
+            type: "object",
+            list: true,
+            ui: {
+              component: "group-list",
+              itemProps: item => ({
+                label: item.name,
+              }),
+            },
+            fields: [
+              {
+                name: "name",
+                label: "Cím (azonosításhoz)",
+                description: "Ez a mező nem jelenik meg az oldalon, csak az adminban használjuk azonosításhoz",
+                defaultTemplate: "Új feltöltés",
+                type: "string",
+              },
+              {
+                name: "date",
+                label: "Dátum",
+                type: "string",
+              },
+              {
+                name: "cover_image",
+                label: "Borítókép (mid)",
+                type: "string",
+              },
+              {
+                name: "hu",
+                label: "Magyar szöveg",
+                type: "object",
+                fields: [
+                  {
+                    name: "title",
+                    label: "Cím",
+                    type: "string",
+                  },
+                  {
+                    name: "blurb",
+                    label: "Leírás",
+                    type: "string",
+                    ui: {
+                      component: "textarea",
+                    },
+                  },
+                  {
+                    name: "actions",
+                    label: "Gombok",
+                    type: "object",
+                    fields: [
+                      {
+                        name: "best_of",
+                        label: "Best of gomb szövege",
+                        type: "string",
+                      },
+                      {
+                        name: "all",
+                        label: "Teljes kollekció gomb szövege",
+                        type: "string",
+                      },
+                    ],
+                  },
+                ],
+              },
+              {
+                name: "en",
+                label: "Angol szöveg",
+                type: "object",
+                fields: [
+                  {
+                    name: "title",
+                    label: "Cím",
+                    type: "string",
+                  },
+                  {
+                    name: "blurb",
+                    label: "Leírás",
+                    type: "string",
+                    ui: {
+                      component: "textarea",
+                    },
+                  },
+                  {
+                    name: "actions",
+                    label: "Gombok",
+                    type: "object",
+                    fields: [
+                      {
+                        name: "best_of",
+                        label: "Best of gomb szövege",
+                        type: "string",
+                      },
+                      {
+                        name: "all",
+                        label: "Teljes kollekció gomb szövege",
+                        type: "string",
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+        ui: {
+          allowedActions: {
+            create: false,
+            delete: false,
+          },
+        },
+      },
+      {
         label: "Heti Fortepan",
         name: "hetifortepan",
         path: "src/data",
@@ -35,7 +157,7 @@ export default defineConfig({
         fields: [
           {
             name: "hu",
-            label: "HU",
+            label: "Magyar bejegyzések",
             type: "object",
             ui: {
               component: "group-list",
@@ -77,7 +199,7 @@ export default defineConfig({
           },
           {
             name: "en",
-            label: "EN",
+            label: "Angol bejegyzések",
             type: "object",
             list: true,
             ui: {
@@ -126,7 +248,7 @@ export default defineConfig({
         },
       },
       {
-        label: "HU oldalak",
+        label: "Magyar oldalak",
         name: "pages_hu",
         path: "src/pages/hu",
         match: {
@@ -141,7 +263,7 @@ export default defineConfig({
         },
       },
       {
-        label: "EN oldalak",
+        label: "Angol oldalak",
         name: "pages_en",
         path: "src/pages/en",
         match: {

@@ -1,3 +1,32 @@
+fragment Photo_uploadsParts on Photo_uploads {
+  uploads {
+    __typename
+    name
+    date
+    cover_image
+    hu {
+      __typename
+      title
+      blurb
+      actions {
+        __typename
+        best_of
+        all
+      }
+    }
+    en {
+      __typename
+      title
+      blurb
+      actions {
+        __typename
+        best_of
+        all
+      }
+    }
+  }
+}
+
 fragment HetifortepanParts on Hetifortepan {
   hu {
     __typename

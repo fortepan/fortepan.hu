@@ -15,7 +15,7 @@ layout: base/base.liquid
 >
   <section class="home__hero">
     <div class="home__announcement">
-        {% assign latest_set = photo_uploads.collections[0] %}
+        {% assign latest_set = photo_uploads.uploads[0] %}
         <div class="home__announcement__caption caption">{{ announcement.caption }}</div>
         <h1 class="home__announcement__title"><strong>{{ latest_set[locale].title }}</strong></h1>
         <div class="home__announcement__blurb p">{{ latest_set[locale].blurb }}</div>
@@ -140,7 +140,7 @@ layout: base/base.liquid
 
       <ul class="home__usp__list">
         {% assign count = 0 %}
-        {% for photo_set in photo_uploads.collections %}
+        {% for photo_set in photo_uploads.uploads %}
         {% if count > 0 and count < 5 %}
         {% capture query_url %}cfrom={% date_iso photo_set.date %}{% if until_date %}&cto={% date_iso until_date %}{% endif %}&upload={{ photo_set.date }}{% endcapture %}
         <li class="list-item">

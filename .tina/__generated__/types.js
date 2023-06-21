@@ -5,6 +5,36 @@ export function gql(strings, ...args) {
   });
   return str;
 }
+export const Photo_UploadsPartsFragmentDoc = gql`
+    fragment Photo_uploadsParts on Photo_uploads {
+  uploads {
+    __typename
+    name
+    date
+    cover_image
+    hu {
+      __typename
+      title
+      blurb
+      actions {
+        __typename
+        best_of
+        all
+      }
+    }
+    en {
+      __typename
+      title
+      blurb
+      actions {
+        __typename
+        best_of
+        all
+      }
+    }
+  }
+}
+    `;
 export const HetifortepanPartsFragmentDoc = gql`
     fragment HetifortepanParts on Hetifortepan {
   hu {
@@ -151,6 +181,61 @@ export const SettingsPartsFragmentDoc = gql`
   tax1percent
 }
     `;
+export const Photo_UploadsDocument = gql`
+    query photo_uploads($relativePath: String!) {
+  photo_uploads(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...Photo_uploadsParts
+  }
+}
+    ${Photo_UploadsPartsFragmentDoc}`;
+export const Photo_UploadsConnectionDocument = gql`
+    query photo_uploadsConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: Photo_uploadsFilter) {
+  photo_uploadsConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...Photo_uploadsParts
+      }
+    }
+  }
+}
+    ${Photo_UploadsPartsFragmentDoc}`;
 export const HetifortepanDocument = gql`
     query hetifortepan($relativePath: String!) {
   hetifortepan(relativePath: $relativePath) {
@@ -373,6 +458,12 @@ export const SettingsConnectionDocument = gql`
     ${SettingsPartsFragmentDoc}`;
 export function getSdk(requester) {
   return {
+    photo_uploads(variables, options) {
+      return requester(Photo_UploadsDocument, variables, options);
+    },
+    photo_uploadsConnection(variables, options) {
+      return requester(Photo_UploadsConnectionDocument, variables, options);
+    },
     hetifortepan(variables, options) {
       return requester(HetifortepanDocument, variables, options);
     },

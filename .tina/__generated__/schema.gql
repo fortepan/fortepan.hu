@@ -48,6 +48,8 @@ type Query {
   collections: [Collection!]!
   node(id: String): Node!
   document(collection: String, relativePath: String): DocumentNode!
+  photo_uploads(relativePath: String): Photo_uploads!
+  photo_uploadsConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: Photo_uploadsFilter): Photo_uploadsConnection!
   hetifortepan(relativePath: String): Hetifortepan!
   hetifortepanConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: HetifortepanFilter): HetifortepanConnection!
   pages_hu(relativePath: String): Pages_hu!
@@ -59,6 +61,7 @@ type Query {
 }
 
 input DocumentFilter {
+  photo_uploads: Photo_uploadsFilter
   hetifortepan: HetifortepanFilter
   pages_hu: Pages_huFilter
   pages_en: Pages_enFilter
@@ -88,7 +91,96 @@ type Collection {
   documents(before: String, after: String, first: Float, last: Float, sort: String, filter: DocumentFilter): DocumentConnection!
 }
 
-union DocumentNode = Hetifortepan | Pages_huProjects | Pages_huArticle | Pages_huHome | Pages_huDefault | Pages_enProjects | Pages_enArticle | Pages_enHome | Pages_enDefault | Settings
+union DocumentNode = Photo_uploads | Hetifortepan | Pages_huProjects | Pages_huArticle | Pages_huHome | Pages_huDefault | Pages_enProjects | Pages_enArticle | Pages_enHome | Pages_enDefault | Settings
+
+type Photo_uploadsUploadsHuActions {
+  best_of: String
+  all: String
+}
+
+type Photo_uploadsUploadsHu {
+  title: String
+  blurb: String
+  actions: Photo_uploadsUploadsHuActions
+}
+
+type Photo_uploadsUploadsEnActions {
+  best_of: String
+  all: String
+}
+
+type Photo_uploadsUploadsEn {
+  title: String
+  blurb: String
+  actions: Photo_uploadsUploadsEnActions
+}
+
+type Photo_uploadsUploads {
+  name: String
+  date: String
+  cover_image: String
+  hu: Photo_uploadsUploadsHu
+  en: Photo_uploadsUploadsEn
+}
+
+type Photo_uploads implements Node & Document {
+  uploads: [Photo_uploadsUploads]
+  id: ID!
+  _sys: SystemInfo!
+  _values: JSON!
+}
+
+input StringFilter {
+  startsWith: String
+  eq: String
+  exists: Boolean
+  in: [String]
+}
+
+input Photo_uploadsUploadsHuActionsFilter {
+  best_of: StringFilter
+  all: StringFilter
+}
+
+input Photo_uploadsUploadsHuFilter {
+  title: StringFilter
+  blurb: StringFilter
+  actions: Photo_uploadsUploadsHuActionsFilter
+}
+
+input Photo_uploadsUploadsEnActionsFilter {
+  best_of: StringFilter
+  all: StringFilter
+}
+
+input Photo_uploadsUploadsEnFilter {
+  title: StringFilter
+  blurb: StringFilter
+  actions: Photo_uploadsUploadsEnActionsFilter
+}
+
+input Photo_uploadsUploadsFilter {
+  name: StringFilter
+  date: StringFilter
+  cover_image: StringFilter
+  hu: Photo_uploadsUploadsHuFilter
+  en: Photo_uploadsUploadsEnFilter
+}
+
+input Photo_uploadsFilter {
+  uploads: Photo_uploadsUploadsFilter
+}
+
+type Photo_uploadsConnectionEdges {
+  cursor: String!
+  node: Photo_uploads
+}
+
+type Photo_uploadsConnection implements Connection {
+  pageInfo: PageInfo!
+  totalCount: Float!
+  edges: [Photo_uploadsConnectionEdges]
+}
 
 type HetifortepanHu {
   date: String
@@ -112,13 +204,6 @@ type Hetifortepan implements Node & Document {
   id: ID!
   _sys: SystemInfo!
   _values: JSON!
-}
-
-input StringFilter {
-  startsWith: String
-  eq: String
-  exists: Boolean
-  in: [String]
 }
 
 input HetifortepanHuFilter {
@@ -516,6 +601,8 @@ type Mutation {
   updateDocument(collection: String, relativePath: String!, params: DocumentUpdateMutation!): DocumentNode!
   deleteDocument(collection: String, relativePath: String!): DocumentNode!
   createDocument(collection: String, relativePath: String!, params: DocumentMutation!): DocumentNode!
+  updatePhoto_uploads(relativePath: String!, params: Photo_uploadsMutation!): Photo_uploads!
+  createPhoto_uploads(relativePath: String!, params: Photo_uploadsMutation!): Photo_uploads!
   updateHetifortepan(relativePath: String!, params: HetifortepanMutation!): Hetifortepan!
   createHetifortepan(relativePath: String!, params: HetifortepanMutation!): Hetifortepan!
   updatePages_hu(relativePath: String!, params: Pages_huMutation!): Pages_hu!
@@ -527,6 +614,7 @@ type Mutation {
 }
 
 input DocumentUpdateMutation {
+  photo_uploads: Photo_uploadsMutation
   hetifortepan: HetifortepanMutation
   pages_hu: Pages_huMutation
   pages_en: Pages_enMutation
@@ -535,10 +623,45 @@ input DocumentUpdateMutation {
 }
 
 input DocumentMutation {
+  photo_uploads: Photo_uploadsMutation
   hetifortepan: HetifortepanMutation
   pages_hu: Pages_huMutation
   pages_en: Pages_enMutation
   settings: SettingsMutation
+}
+
+input Photo_uploadsUploadsHuActionsMutation {
+  best_of: String
+  all: String
+}
+
+input Photo_uploadsUploadsHuMutation {
+  title: String
+  blurb: String
+  actions: Photo_uploadsUploadsHuActionsMutation
+}
+
+input Photo_uploadsUploadsEnActionsMutation {
+  best_of: String
+  all: String
+}
+
+input Photo_uploadsUploadsEnMutation {
+  title: String
+  blurb: String
+  actions: Photo_uploadsUploadsEnActionsMutation
+}
+
+input Photo_uploadsUploadsMutation {
+  name: String
+  date: String
+  cover_image: String
+  hu: Photo_uploadsUploadsHuMutation
+  en: Photo_uploadsUploadsEnMutation
+}
+
+input Photo_uploadsMutation {
+  uploads: [Photo_uploadsUploadsMutation]
 }
 
 input HetifortepanHuMutation {
