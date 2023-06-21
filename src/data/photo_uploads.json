@@ -15,6 +15,27 @@
   },
   "collections": [
     {
+      "name": "Száz év talány",
+      "date": "1686715200000",
+      "cover_image": "272641",
+      "hu": {
+        "title": "Száz év talány",
+        "blurb": "Több mint ötven adományozó, 4000 friss fotója a Fortepanon. Családi albumok és negatívok kockái a nagy nyári képes kirakósban: ismerős helyek, jelenetek, helyzetek. A ki-hol-mit-mikor és egyéb kérdésekre várjuk a választ a Fórumon. De nézelődni, böngészni, emlékezni helyek és évszámok nélkül is lehet. Jó vakációt minden időutazónak!",
+        "actions": {
+          "best_of": "200 fontos kép",
+          "all": "A teljes sorozat"
+        }
+      },
+      "en": {
+        "title": "A hundred years of intriguing photos",
+        "blurb": "A compilation from over fifty donors, 4000 fresh images has been added to Fortepan. Nothing less than a grandiose summer puzzle: family albums and frames from negative rolls: familiar venues, scenes and situations. Concerning the “who-where-what-when” and other questions, we are eager to hear the answers in the Forum group. But there is no need to provide dates and venues in order to peep, to browse or to remember. We wish a great vacation to all out time travellers!",
+        "actions": {
+          "best_of": "200 best of",
+          "all": "All collection"
+        }
+      }
+    },
+    {
       "name": "Lipovits Károly fotói",
       "date": "1682058600000",
       "cover_image": "271811",
