@@ -25,44 +25,13 @@ export default defineConfig({
   schema: {
     collections: [
       {
-        label: "Pages (HU)",
-        name: "pages_hu",
-        path: "src/pages/hu",
-        match: {
-          include: "*-cms",
-        },
-        templates: [projects, article, home, defaultTemplate],
-        ui: {
-          allowedActions: {
-            create: false,
-            delete: false,
-          },
-        },
-      },
-      {
-        label: "Pages (EN)",
-        name: "pages_en",
-        path: "src/pages/en",
-        match: {
-          include: "*-cms",
-        },
-        templates: [projects, article, home, defaultTemplate],
-        ui: {
-          allowedActions: {
-            create: false,
-            delete: false,
-          },
-        },
-      },
-      {
-        label: "Heti Fortepan bejegyzések",
+        label: "Heti Fortepan",
         name: "hetifortepan",
         path: "src/data",
         match: {
           include: "blog_content",
         },
         format: "json",
-
         fields: [
           {
             name: "hu",
@@ -156,7 +125,36 @@ export default defineConfig({
           },
         },
       },
-
+      {
+        label: "HU oldalak",
+        name: "pages_hu",
+        path: "src/pages/hu",
+        match: {
+          include: "*-cms",
+        },
+        templates: [projects, article, home, defaultTemplate],
+        ui: {
+          allowedActions: {
+            create: false,
+            delete: false,
+          },
+        },
+      },
+      {
+        label: "EN oldalak",
+        name: "pages_en",
+        path: "src/pages/en",
+        match: {
+          include: "*-cms",
+        },
+        templates: [projects, article, home, defaultTemplate],
+        ui: {
+          allowedActions: {
+            create: false,
+            delete: false,
+          },
+        },
+      },
       {
         label: "Általános beállítások",
         name: "settings",
@@ -176,8 +174,8 @@ export default defineConfig({
           },
           {
             name: "tax1percent",
-            label: "Adó 1% banner",
-            type: "string",
+            label: "Adó 1% banner megjelenítése",
+            type: "boolean",
           },
         ],
         ui: {

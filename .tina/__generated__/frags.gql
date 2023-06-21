@@ -1,3 +1,22 @@
+fragment HetifortepanParts on Hetifortepan {
+  hu {
+    __typename
+    date
+    cover_image
+    title
+    excerpt
+    url
+  }
+  en {
+    __typename
+    date
+    cover_image
+    title
+    excerpt
+    url
+  }
+}
+
 fragment Pages_huParts on Pages_hu {
   ... on Pages_huProjects {
     title
@@ -113,25 +132,6 @@ fragment Pages_enParts on Pages_en {
   }
   ... on Pages_enDefault {
     title
-  }
-}
-
-fragment HetifortepanParts on Hetifortepan {
-  hu {
-    __typename
-    date
-    cover_image
-    title
-    excerpt
-    url
-  }
-  en {
-    __typename
-    date
-    cover_image
-    title
-    excerpt
-    url
   }
 }
 

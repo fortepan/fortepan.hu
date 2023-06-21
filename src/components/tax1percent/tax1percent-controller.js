@@ -23,7 +23,7 @@ export default class CookieConsent extends Controller {
   }
 
   show() {
-    if (window.tax1percent.toString() === "1") {
+    if (window.tax1percent) {
       const ls = localStorage.getItem("tax1percent")
 
       // if stored date is older than 7 days, show the notification again

@@ -1,3 +1,56 @@
+query hetifortepan($relativePath: String!) {
+  hetifortepan(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...HetifortepanParts
+  }
+}
+
+query hetifortepanConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: HetifortepanFilter) {
+  hetifortepanConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...HetifortepanParts
+      }
+    }
+  }
+}
+
 query pages_hu($relativePath: String!) {
   pages_hu(relativePath: $relativePath) {
     ... on Document {
@@ -99,59 +152,6 @@ query pages_enConnection($before: String, $after: String, $first: Float, $last: 
           id
         }
         ...Pages_enParts
-      }
-    }
-  }
-}
-
-query hetifortepan($relativePath: String!) {
-  hetifortepan(relativePath: $relativePath) {
-    ... on Document {
-      _sys {
-        filename
-        basename
-        breadcrumbs
-        path
-        relativePath
-        extension
-      }
-      id
-    }
-    ...HetifortepanParts
-  }
-}
-
-query hetifortepanConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: HetifortepanFilter) {
-  hetifortepanConnection(
-    before: $before
-    after: $after
-    first: $first
-    last: $last
-    sort: $sort
-    filter: $filter
-  ) {
-    pageInfo {
-      hasPreviousPage
-      hasNextPage
-      startCursor
-      endCursor
-    }
-    totalCount
-    edges {
-      cursor
-      node {
-        ... on Document {
-          _sys {
-            filename
-            basename
-            breadcrumbs
-            path
-            relativePath
-            extension
-          }
-          id
-        }
-        ...HetifortepanParts
       }
     }
   }

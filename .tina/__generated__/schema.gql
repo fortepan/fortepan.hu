@@ -48,20 +48,20 @@ type Query {
   collections: [Collection!]!
   node(id: String): Node!
   document(collection: String, relativePath: String): DocumentNode!
+  hetifortepan(relativePath: String): Hetifortepan!
+  hetifortepanConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: HetifortepanFilter): HetifortepanConnection!
   pages_hu(relativePath: String): Pages_hu!
   pages_huConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: Pages_huFilter): Pages_huConnection!
   pages_en(relativePath: String): Pages_en!
   pages_enConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: Pages_enFilter): Pages_enConnection!
-  hetifortepan(relativePath: String): Hetifortepan!
-  hetifortepanConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: HetifortepanFilter): HetifortepanConnection!
   settings(relativePath: String): Settings!
   settingsConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: SettingsFilter): SettingsConnection!
 }
 
 input DocumentFilter {
+  hetifortepan: HetifortepanFilter
   pages_hu: Pages_huFilter
   pages_en: Pages_enFilter
-  hetifortepan: HetifortepanFilter
   settings: SettingsFilter
 }
 
@@ -88,7 +88,70 @@ type Collection {
   documents(before: String, after: String, first: Float, last: Float, sort: String, filter: DocumentFilter): DocumentConnection!
 }
 
-union DocumentNode = Pages_huProjects | Pages_huArticle | Pages_huHome | Pages_huDefault | Pages_enProjects | Pages_enArticle | Pages_enHome | Pages_enDefault | Hetifortepan | Settings
+union DocumentNode = Hetifortepan | Pages_huProjects | Pages_huArticle | Pages_huHome | Pages_huDefault | Pages_enProjects | Pages_enArticle | Pages_enHome | Pages_enDefault | Settings
+
+type HetifortepanHu {
+  date: String
+  cover_image: String
+  title: String
+  excerpt: String
+  url: String
+}
+
+type HetifortepanEn {
+  date: String
+  cover_image: String
+  title: String
+  excerpt: String
+  url: String
+}
+
+type Hetifortepan implements Node & Document {
+  hu: [HetifortepanHu]
+  en: [HetifortepanEn]
+  id: ID!
+  _sys: SystemInfo!
+  _values: JSON!
+}
+
+input StringFilter {
+  startsWith: String
+  eq: String
+  exists: Boolean
+  in: [String]
+}
+
+input HetifortepanHuFilter {
+  date: StringFilter
+  cover_image: StringFilter
+  title: StringFilter
+  excerpt: StringFilter
+  url: StringFilter
+}
+
+input HetifortepanEnFilter {
+  date: StringFilter
+  cover_image: StringFilter
+  title: StringFilter
+  excerpt: StringFilter
+  url: StringFilter
+}
+
+input HetifortepanFilter {
+  hu: HetifortepanHuFilter
+  en: HetifortepanEnFilter
+}
+
+type HetifortepanConnectionEdges {
+  cursor: String!
+  node: Hetifortepan
+}
+
+type HetifortepanConnection implements Connection {
+  pageInfo: PageInfo!
+  totalCount: Float!
+  edges: [HetifortepanConnectionEdges]
+}
 
 type Pages_huProjectsProjects {
   title: String
@@ -170,13 +233,6 @@ type Pages_huDefault implements Node & Document {
 }
 
 union Pages_hu = Pages_huProjects | Pages_huArticle | Pages_huHome | Pages_huDefault
-
-input StringFilter {
-  startsWith: String
-  eq: String
-  exists: Boolean
-  in: [String]
-}
 
 input RichTextFilter {
   startsWith: String
@@ -418,65 +474,9 @@ type Pages_enConnection implements Connection {
   edges: [Pages_enConnectionEdges]
 }
 
-type HetifortepanHu {
-  date: String
-  cover_image: String
-  title: String
-  excerpt: String
-  url: String
-}
-
-type HetifortepanEn {
-  date: String
-  cover_image: String
-  title: String
-  excerpt: String
-  url: String
-}
-
-type Hetifortepan implements Node & Document {
-  hu: [HetifortepanHu]
-  en: [HetifortepanEn]
-  id: ID!
-  _sys: SystemInfo!
-  _values: JSON!
-}
-
-input HetifortepanHuFilter {
-  date: StringFilter
-  cover_image: StringFilter
-  title: StringFilter
-  excerpt: StringFilter
-  url: StringFilter
-}
-
-input HetifortepanEnFilter {
-  date: StringFilter
-  cover_image: StringFilter
-  title: StringFilter
-  excerpt: StringFilter
-  url: StringFilter
-}
-
-input HetifortepanFilter {
-  hu: HetifortepanHuFilter
-  en: HetifortepanEnFilter
-}
-
-type HetifortepanConnectionEdges {
-  cursor: String!
-  node: Hetifortepan
-}
-
-type HetifortepanConnection implements Connection {
-  pageInfo: PageInfo!
-  totalCount: Float!
-  edges: [HetifortepanConnectionEdges]
-}
-
 type Settings implements Node & Document {
   latestDate: String
-  tax1percent: String
+  tax1percent: Boolean
   id: ID!
   _sys: SystemInfo!
   _values: JSON!
@@ -490,9 +490,14 @@ input DatetimeFilter {
   in: [String]
 }
 
+input BooleanFilter {
+  eq: Boolean
+  exists: Boolean
+}
+
 input SettingsFilter {
   latestDate: DatetimeFilter
-  tax1percent: StringFilter
+  tax1percent: BooleanFilter
 }
 
 type SettingsConnectionEdges {
@@ -511,29 +516,50 @@ type Mutation {
   updateDocument(collection: String, relativePath: String!, params: DocumentUpdateMutation!): DocumentNode!
   deleteDocument(collection: String, relativePath: String!): DocumentNode!
   createDocument(collection: String, relativePath: String!, params: DocumentMutation!): DocumentNode!
+  updateHetifortepan(relativePath: String!, params: HetifortepanMutation!): Hetifortepan!
+  createHetifortepan(relativePath: String!, params: HetifortepanMutation!): Hetifortepan!
   updatePages_hu(relativePath: String!, params: Pages_huMutation!): Pages_hu!
   createPages_hu(relativePath: String!, params: Pages_huMutation!): Pages_hu!
   updatePages_en(relativePath: String!, params: Pages_enMutation!): Pages_en!
   createPages_en(relativePath: String!, params: Pages_enMutation!): Pages_en!
-  updateHetifortepan(relativePath: String!, params: HetifortepanMutation!): Hetifortepan!
-  createHetifortepan(relativePath: String!, params: HetifortepanMutation!): Hetifortepan!
   updateSettings(relativePath: String!, params: SettingsMutation!): Settings!
   createSettings(relativePath: String!, params: SettingsMutation!): Settings!
 }
 
 input DocumentUpdateMutation {
+  hetifortepan: HetifortepanMutation
   pages_hu: Pages_huMutation
   pages_en: Pages_enMutation
-  hetifortepan: HetifortepanMutation
   settings: SettingsMutation
   relativePath: String
 }
 
 input DocumentMutation {
+  hetifortepan: HetifortepanMutation
   pages_hu: Pages_huMutation
   pages_en: Pages_enMutation
-  hetifortepan: HetifortepanMutation
   settings: SettingsMutation
+}
+
+input HetifortepanHuMutation {
+  date: String
+  cover_image: String
+  title: String
+  excerpt: String
+  url: String
+}
+
+input HetifortepanEnMutation {
+  date: String
+  cover_image: String
+  title: String
+  excerpt: String
+  url: String
+}
+
+input HetifortepanMutation {
+  hu: [HetifortepanHuMutation]
+  en: [HetifortepanEnMutation]
 }
 
 input Pages_huProjectsProjectsMutation {
@@ -667,30 +693,9 @@ input Pages_enMutation {
   default: Pages_enDefaultMutation
 }
 
-input HetifortepanHuMutation {
-  date: String
-  cover_image: String
-  title: String
-  excerpt: String
-  url: String
-}
-
-input HetifortepanEnMutation {
-  date: String
-  cover_image: String
-  title: String
-  excerpt: String
-  url: String
-}
-
-input HetifortepanMutation {
-  hu: [HetifortepanHuMutation]
-  en: [HetifortepanEnMutation]
-}
-
 input SettingsMutation {
   latestDate: String
-  tax1percent: String
+  tax1percent: Boolean
 }
 
 schema {

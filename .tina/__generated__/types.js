@@ -5,6 +5,26 @@ export function gql(strings, ...args) {
   });
   return str;
 }
+export const HetifortepanPartsFragmentDoc = gql`
+    fragment HetifortepanParts on Hetifortepan {
+  hu {
+    __typename
+    date
+    cover_image
+    title
+    excerpt
+    url
+  }
+  en {
+    __typename
+    date
+    cover_image
+    title
+    excerpt
+    url
+  }
+}
+    `;
 export const Pages_HuPartsFragmentDoc = gql`
     fragment Pages_huParts on Pages_hu {
   ... on Pages_huProjects {
@@ -125,32 +145,67 @@ export const Pages_EnPartsFragmentDoc = gql`
   }
 }
     `;
-export const HetifortepanPartsFragmentDoc = gql`
-    fragment HetifortepanParts on Hetifortepan {
-  hu {
-    __typename
-    date
-    cover_image
-    title
-    excerpt
-    url
-  }
-  en {
-    __typename
-    date
-    cover_image
-    title
-    excerpt
-    url
-  }
-}
-    `;
 export const SettingsPartsFragmentDoc = gql`
     fragment SettingsParts on Settings {
   latestDate
   tax1percent
 }
     `;
+export const HetifortepanDocument = gql`
+    query hetifortepan($relativePath: String!) {
+  hetifortepan(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...HetifortepanParts
+  }
+}
+    ${HetifortepanPartsFragmentDoc}`;
+export const HetifortepanConnectionDocument = gql`
+    query hetifortepanConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: HetifortepanFilter) {
+  hetifortepanConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...HetifortepanParts
+      }
+    }
+  }
+}
+    ${HetifortepanPartsFragmentDoc}`;
 export const Pages_HuDocument = gql`
     query pages_hu($relativePath: String!) {
   pages_hu(relativePath: $relativePath) {
@@ -261,61 +316,6 @@ export const Pages_EnConnectionDocument = gql`
   }
 }
     ${Pages_EnPartsFragmentDoc}`;
-export const HetifortepanDocument = gql`
-    query hetifortepan($relativePath: String!) {
-  hetifortepan(relativePath: $relativePath) {
-    ... on Document {
-      _sys {
-        filename
-        basename
-        breadcrumbs
-        path
-        relativePath
-        extension
-      }
-      id
-    }
-    ...HetifortepanParts
-  }
-}
-    ${HetifortepanPartsFragmentDoc}`;
-export const HetifortepanConnectionDocument = gql`
-    query hetifortepanConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: HetifortepanFilter) {
-  hetifortepanConnection(
-    before: $before
-    after: $after
-    first: $first
-    last: $last
-    sort: $sort
-    filter: $filter
-  ) {
-    pageInfo {
-      hasPreviousPage
-      hasNextPage
-      startCursor
-      endCursor
-    }
-    totalCount
-    edges {
-      cursor
-      node {
-        ... on Document {
-          _sys {
-            filename
-            basename
-            breadcrumbs
-            path
-            relativePath
-            extension
-          }
-          id
-        }
-        ...HetifortepanParts
-      }
-    }
-  }
-}
-    ${HetifortepanPartsFragmentDoc}`;
 export const SettingsDocument = gql`
     query settings($relativePath: String!) {
   settings(relativePath: $relativePath) {
@@ -373,6 +373,12 @@ export const SettingsConnectionDocument = gql`
     ${SettingsPartsFragmentDoc}`;
 export function getSdk(requester) {
   return {
+    hetifortepan(variables, options) {
+      return requester(HetifortepanDocument, variables, options);
+    },
+    hetifortepanConnection(variables, options) {
+      return requester(HetifortepanConnectionDocument, variables, options);
+    },
     pages_hu(variables, options) {
       return requester(Pages_HuDocument, variables, options);
     },
@@ -384,12 +390,6 @@ export function getSdk(requester) {
     },
     pages_enConnection(variables, options) {
       return requester(Pages_EnConnectionDocument, variables, options);
-    },
-    hetifortepan(variables, options) {
-      return requester(HetifortepanDocument, variables, options);
-    },
-    hetifortepanConnection(variables, options) {
-      return requester(HetifortepanConnectionDocument, variables, options);
     },
     settings(variables, options) {
       return requester(SettingsDocument, variables, options);

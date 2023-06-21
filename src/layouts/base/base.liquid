@@ -67,7 +67,7 @@
     {% include dialog/search/search.liquid %}
 
     {% include cookie-consent/cookie-consent.liquid %}
-    {% if locale == "hu" and cmsConfig.tax1percent == "1" and permalink != "/hu/ado-1-szazalek/" %}
+    {% if locale == "hu" and cmsConfig.tax1percent and permalink != "/hu/ado-1-szazalek/" %}
       {% include tax1percent/tax1percent.liquid %}{% endif %}
 
     {% include loader/loader.liquid id: "loaderBase" %}
@@ -79,7 +79,7 @@
           ENV: "{{ siteConfig.ENV }}"
         }
       }
-        {% for param in cmsConfig %} window.{{param[0]}} = "{{param[1]}}";{% endfor %}
+      {% for param in cmsConfig %} window.{{param[0]}} = {% if param[1] == true or param[1] == false %}{{param[1]}}{% else %}"{{param[1]}}"{% endif %};{% endfor %}
     </script>
     <script src="/{{ manifest-js['main.js'] }}"></script>
   </body>
