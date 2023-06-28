@@ -55,6 +55,17 @@ export const HetifortepanPartsFragmentDoc = gql`
   }
 }
     `;
+export const NotificationsPartsFragmentDoc = gql`
+    fragment NotificationsParts on Notifications {
+  notifications {
+    __typename
+    lang
+    date
+    title
+    message
+  }
+}
+    `;
 export const Pages_HuPartsFragmentDoc = gql`
     fragment Pages_huParts on Pages_hu {
   ... on Pages_huProjects {
@@ -291,6 +302,61 @@ export const HetifortepanConnectionDocument = gql`
   }
 }
     ${HetifortepanPartsFragmentDoc}`;
+export const NotificationsDocument = gql`
+    query notifications($relativePath: String!) {
+  notifications(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...NotificationsParts
+  }
+}
+    ${NotificationsPartsFragmentDoc}`;
+export const NotificationsConnectionDocument = gql`
+    query notificationsConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: NotificationsFilter) {
+  notificationsConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...NotificationsParts
+      }
+    }
+  }
+}
+    ${NotificationsPartsFragmentDoc}`;
 export const Pages_HuDocument = gql`
     query pages_hu($relativePath: String!) {
   pages_hu(relativePath: $relativePath) {
@@ -469,6 +535,12 @@ export function getSdk(requester) {
     },
     hetifortepanConnection(variables, options) {
       return requester(HetifortepanConnectionDocument, variables, options);
+    },
+    notifications(variables, options) {
+      return requester(NotificationsDocument, variables, options);
+    },
+    notificationsConnection(variables, options) {
+      return requester(NotificationsConnectionDocument, variables, options);
     },
     pages_hu(variables, options) {
       return requester(Pages_HuDocument, variables, options);

@@ -54,8 +54,12 @@ export default defineConfig({
               },
               {
                 name: "date",
-                label: "Dátum",
-                type: "string",
+                label: "Feltöltés dátuma",
+                type: "datetime",
+                ui: {
+                  dateFormat: "YYYY-MM-DD",
+                  utc: true,
+                },
               },
               {
                 name: "cover_image",
@@ -144,6 +148,7 @@ export default defineConfig({
             create: false,
             delete: false,
           },
+          global: true,
         },
       },
       {
@@ -169,7 +174,11 @@ export default defineConfig({
               {
                 name: "date",
                 label: "Dátum",
-                type: "string",
+                type: "datetime",
+                ui: {
+                  dateFormat: "YYYY-MM-DD",
+                  utc: true,
+                },
               },
               {
                 name: "cover_image",
@@ -212,7 +221,11 @@ export default defineConfig({
               {
                 name: "date",
                 label: "Dátum",
-                type: "string",
+                type: "datetime",
+                ui: {
+                  dateFormat: "YYYY-MM-DD",
+                  utc: true,
+                },
               },
               {
                 name: "cover_image",
@@ -241,11 +254,78 @@ export default defineConfig({
           },
         ],
         ui: {
+          global: true,
           allowedActions: {
             create: false,
             delete: false,
           },
         },
+      },
+      {
+        label: "Értesítések",
+        name: "notifications",
+        path: "src/data",
+        match: {
+          include: "notifications",
+        },
+        format: "json",
+        ui: {
+          global: true,
+          allowedActions: {
+            create: false,
+            delete: false,
+          },
+        },
+        fields: [
+          {
+            name: "notifications",
+            label: "Értesítések",
+            type: "object",
+            list: true,
+            ui: {
+              component: "group-list",
+              itemProps: item => ({
+                label: item.title,
+              }),
+            },
+            fields: [
+              {
+                name: "lang",
+                label: "Nyelv",
+                type: "string",
+                options: [
+                  {
+                    value: "hu",
+                    label: "Magyar",
+                  },
+                  {
+                    value: "en",
+                    label: "Angol",
+                  },
+                ],
+              },
+              {
+                name: "date",
+                label: "Dátum",
+                type: "datetime",
+                ui: {
+                  dateFormat: "YYYY-MM-DD",
+                  utc: true,
+                },
+              },
+              {
+                name: "title",
+                label: "Cím",
+                type: "string",
+              },
+              {
+                name: "message",
+                label: "Értesítés szövege",
+                type: "rich-text",
+              },
+            ],
+          },
+        ],
       },
       {
         label: "Magyar oldalak",
@@ -291,7 +371,8 @@ export default defineConfig({
             label: "Friss feltöltések dátuma",
             type: "datetime",
             ui: {
-              timeFormat: "(YYYY-MM-DD)",
+              dateFormat: "YYYY-MM-DD",
+              utc: true,
             },
           },
           {
@@ -301,6 +382,7 @@ export default defineConfig({
           },
         ],
         ui: {
+          global: true,
           allowedActions: {
             create: false,
             delete: false,

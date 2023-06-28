@@ -3,31 +3,31 @@ layout: article/article.liquid
 ---
 
 <ul class="photo-uploads" data-controller="photo-uploads">
-  {% for collection in photo_uploads.uploads %}
-  {% capture query_url %}cfrom={% date_iso collection.date %}{% if until_date %}&cto={% date_iso until_date %}{% endif %}&upload={{ collection.date }}{% endcapture %}
+  {% for upload in photo_uploads.uploads %}
+  {% capture query_url %}cfrom={% date_iso upload.date %}{% if until_date %}&cto={% date_iso until_date %}{% endif %}&upload={% date_to_ms upload.date %}{% endcapture %}
     <li class="collection-item">
       <div class="collection-item__cover" data-action="click->photo-uploads#onCoverClick">
-        {% capture img_src %}{{ siteConfig.PHOTO_SOURCE }}480/fortepan_{{ collection.cover_image }}.jpg{% endcapture %}
-        {% include image-lazyloader/image-lazyloader.liquid src:img_src alt:collection[locale].title custom_class:"collection-item__photo" %}
+        {% capture img_src %}{{ siteConfig.PHOTO_SOURCE }}480/fortepan_{{ upload.cover_image }}.jpg{% endcapture %}
+        {% include image-lazyloader/image-lazyloader.liquid src:img_src alt:upload[locale].title custom_class:"collection-item__photo" %}
       </div>
 
-      <h6 class="collection-item__date">{% date collection.date, locale %}</h6>
-      <h3 class="collection-item__title"><a href="/{{ locale }}/photos/?{{ query_url }}">{{ collection[locale].title }}</a></h3>
-      <p>{{ collection[locale].blurb }}</p>
+      <h6 class="collection-item__date">{% date upload.date, locale %}</h6>
+      <h3 class="collection-item__title"><a href="/{{ locale }}/photos/?{{ query_url }}">{{ upload[locale].title }}</a></h3>
+      <p>{{ upload[locale].blurb }}</p>
 
-      {% if collection[locale].actions.best_of or collection[locale].actions.all %}
+      {% if upload[locale].actions.best_of or upload[locale].actions.all %}
       <div class="collection-item__actions">
-        {% if collection[locale].actions.best_of %}
+        {% if upload[locale].actions.best_of %}
         <a href="/{{ locale }}/photos/?tag=best%20of&{{ query_url }}" class="button button--medium button--secondary button--inline">
-          <span>{{ collection[locale].actions.best_of }}</span>
+          <span>{{ upload[locale].actions.best_of }}</span>
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="10" viewBox="0 0 14 10">
             <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2,6 L6,10 L10,6 M6,-2 L6,9" transform="rotate(-90 7 4)"/>
           </svg>
         </a>
         {% endif %}
-        {% if collection[locale].actions.all %}
+        {% if upload[locale].actions.all %}
         <a href="/{{ locale }}/photos/?{{ query_url }}" class="button button--medium button--secondary button--inline">
-          <span>{{ collection[locale].actions.all }}</span>
+          <span>{{ upload[locale].actions.all }}</span>
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="10" viewBox="0 0 14 10">
             <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2,6 L6,10 L10,6 M6,-2 L6,9" transform="rotate(-90 7 4)"/>
           </svg>
@@ -37,6 +37,6 @@ layout: article/article.liquid
       {% endif %}
 
     </li>
-    {% assign until_date = collection.date %}
+    {% assign until_date = upload.date %}
   {% endfor %}
 </ul>

@@ -29,7 +29,12 @@ const getCollection = async date => {
       await loadCollectionData()
     }
 
-    return collectionData.data.uploads.find(collection => collection.date === date)
+    let dateInstance = new Date(date)
+    if (!dateInstance.getTime()) dateInstance = new Date(parseInt(date, 10))
+
+    return collectionData.data.uploads.find(
+      collection => new Date(collection.date).getTime() === dateInstance.getTime()
+    )
   }
 
   return undefined

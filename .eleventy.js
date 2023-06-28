@@ -22,18 +22,37 @@ module.exports = eleventyConfig => {
   eleventyConfig.addLiquidShortcode("now", () => {
     return Date.now()
   })
-  eleventyConfig.addLiquidShortcode("date", (timestamp, locale) => {
-    const dateFormat = new Intl.DateTimeFormat(locale == "hu" ? "hu-HU" : "en-US", {
-      month: "short",
-      day: "2-digit",
-      year: "numeric",
-    })
-    return dateFormat.format(new Date(parseInt(timestamp)))
+  eleventyConfig.addLiquidShortcode("date", (date, locale) => {
+    if (date) {
+      const dateFormat = new Intl.DateTimeFormat(locale == "hu" ? "hu-HU" : "en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      })
+
+      let dateInstance = new Date(date)
+      if (isNaN(dateInstance)) dateInstance = new Date(parseInt(date))
+      if (isNaN(dateInstance)) return ""
+
+      return dateFormat.format(dateInstance)
+    }
+
+    return ""
   })
-  eleventyConfig.addLiquidShortcode("date_iso", (timestamp, full = false) => {
-    if (timestamp) {
-      const iso = new Date(parseInt(timestamp)).toISOString()
+  eleventyConfig.addLiquidShortcode("date_iso", (date, full = false) => {
+    if (date) {
+      let dateInstance = new Date(date)
+      if (isNaN(dateInstance)) dateInstance = new Date(parseInt(date))
+      if (isNaN(dateInstance)) return ""
+
+      const iso = dateInstance.toISOString()
       return full ? iso : iso.split("T")[0].toString()
+    }
+    return ""
+  })
+  eleventyConfig.addLiquidShortcode("date_to_ms", date => {
+    if (date) {
+      return new Date(date).getTime()
     }
     return ""
   })

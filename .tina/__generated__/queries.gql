@@ -104,6 +104,59 @@ query hetifortepanConnection($before: String, $after: String, $first: Float, $la
   }
 }
 
+query notifications($relativePath: String!) {
+  notifications(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...NotificationsParts
+  }
+}
+
+query notificationsConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: NotificationsFilter) {
+  notificationsConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...NotificationsParts
+      }
+    }
+  }
+}
+
 query pages_hu($relativePath: String!) {
   pages_hu(relativePath: $relativePath) {
     ... on Document {

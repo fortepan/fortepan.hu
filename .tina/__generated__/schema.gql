@@ -52,6 +52,8 @@ type Query {
   photo_uploadsConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: Photo_uploadsFilter): Photo_uploadsConnection!
   hetifortepan(relativePath: String): Hetifortepan!
   hetifortepanConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: HetifortepanFilter): HetifortepanConnection!
+  notifications(relativePath: String): Notifications!
+  notificationsConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: NotificationsFilter): NotificationsConnection!
   pages_hu(relativePath: String): Pages_hu!
   pages_huConnection(before: String, after: String, first: Float, last: Float, sort: String, filter: Pages_huFilter): Pages_huConnection!
   pages_en(relativePath: String): Pages_en!
@@ -63,6 +65,7 @@ type Query {
 input DocumentFilter {
   photo_uploads: Photo_uploadsFilter
   hetifortepan: HetifortepanFilter
+  notifications: NotificationsFilter
   pages_hu: Pages_huFilter
   pages_en: Pages_enFilter
   settings: SettingsFilter
@@ -91,7 +94,7 @@ type Collection {
   documents(before: String, after: String, first: Float, last: Float, sort: String, filter: DocumentFilter): DocumentConnection!
 }
 
-union DocumentNode = Photo_uploads | Hetifortepan | Pages_huProjects | Pages_huArticle | Pages_huHome | Pages_huDefault | Pages_enProjects | Pages_enArticle | Pages_enHome | Pages_enDefault | Settings
+union DocumentNode = Photo_uploads | Hetifortepan | Notifications | Pages_huProjects | Pages_huArticle | Pages_huHome | Pages_huDefault | Pages_enProjects | Pages_enArticle | Pages_enHome | Pages_enDefault | Settings
 
 type Photo_uploadsUploadsHuActions {
   best_of: String
@@ -137,6 +140,14 @@ input StringFilter {
   in: [String]
 }
 
+input DatetimeFilter {
+  after: String
+  before: String
+  eq: String
+  exists: Boolean
+  in: [String]
+}
+
 input Photo_uploadsUploadsHuActionsFilter {
   best_of: StringFilter
   all: StringFilter
@@ -161,7 +172,7 @@ input Photo_uploadsUploadsEnFilter {
 
 input Photo_uploadsUploadsFilter {
   name: StringFilter
-  date: StringFilter
+  date: DatetimeFilter
   cover_image: StringFilter
   hu: Photo_uploadsUploadsHuFilter
   en: Photo_uploadsUploadsEnFilter
@@ -207,7 +218,7 @@ type Hetifortepan implements Node & Document {
 }
 
 input HetifortepanHuFilter {
-  date: StringFilter
+  date: DatetimeFilter
   cover_image: StringFilter
   title: StringFilter
   excerpt: StringFilter
@@ -215,7 +226,7 @@ input HetifortepanHuFilter {
 }
 
 input HetifortepanEnFilter {
-  date: StringFilter
+  date: DatetimeFilter
   cover_image: StringFilter
   title: StringFilter
   excerpt: StringFilter
@@ -236,6 +247,48 @@ type HetifortepanConnection implements Connection {
   pageInfo: PageInfo!
   totalCount: Float!
   edges: [HetifortepanConnectionEdges]
+}
+
+type NotificationsNotifications {
+  lang: String
+  date: String
+  title: String
+  message: JSON
+}
+
+type Notifications implements Node & Document {
+  notifications: [NotificationsNotifications]
+  id: ID!
+  _sys: SystemInfo!
+  _values: JSON!
+}
+
+input RichTextFilter {
+  startsWith: String
+  eq: String
+  exists: Boolean
+}
+
+input NotificationsNotificationsFilter {
+  lang: StringFilter
+  date: DatetimeFilter
+  title: StringFilter
+  message: RichTextFilter
+}
+
+input NotificationsFilter {
+  notifications: NotificationsNotificationsFilter
+}
+
+type NotificationsConnectionEdges {
+  cursor: String!
+  node: Notifications
+}
+
+type NotificationsConnection implements Connection {
+  pageInfo: PageInfo!
+  totalCount: Float!
+  edges: [NotificationsConnectionEdges]
 }
 
 type Pages_huProjectsProjects {
@@ -318,12 +371,6 @@ type Pages_huDefault implements Node & Document {
 }
 
 union Pages_hu = Pages_huProjects | Pages_huArticle | Pages_huHome | Pages_huDefault
-
-input RichTextFilter {
-  startsWith: String
-  eq: String
-  exists: Boolean
-}
 
 input ImageFilter {
   startsWith: String
@@ -567,14 +614,6 @@ type Settings implements Node & Document {
   _values: JSON!
 }
 
-input DatetimeFilter {
-  after: String
-  before: String
-  eq: String
-  exists: Boolean
-  in: [String]
-}
-
 input BooleanFilter {
   eq: Boolean
   exists: Boolean
@@ -605,6 +644,8 @@ type Mutation {
   createPhoto_uploads(relativePath: String!, params: Photo_uploadsMutation!): Photo_uploads!
   updateHetifortepan(relativePath: String!, params: HetifortepanMutation!): Hetifortepan!
   createHetifortepan(relativePath: String!, params: HetifortepanMutation!): Hetifortepan!
+  updateNotifications(relativePath: String!, params: NotificationsMutation!): Notifications!
+  createNotifications(relativePath: String!, params: NotificationsMutation!): Notifications!
   updatePages_hu(relativePath: String!, params: Pages_huMutation!): Pages_hu!
   createPages_hu(relativePath: String!, params: Pages_huMutation!): Pages_hu!
   updatePages_en(relativePath: String!, params: Pages_enMutation!): Pages_en!
@@ -616,6 +657,7 @@ type Mutation {
 input DocumentUpdateMutation {
   photo_uploads: Photo_uploadsMutation
   hetifortepan: HetifortepanMutation
+  notifications: NotificationsMutation
   pages_hu: Pages_huMutation
   pages_en: Pages_enMutation
   settings: SettingsMutation
@@ -625,6 +667,7 @@ input DocumentUpdateMutation {
 input DocumentMutation {
   photo_uploads: Photo_uploadsMutation
   hetifortepan: HetifortepanMutation
+  notifications: NotificationsMutation
   pages_hu: Pages_huMutation
   pages_en: Pages_enMutation
   settings: SettingsMutation
@@ -683,6 +726,17 @@ input HetifortepanEnMutation {
 input HetifortepanMutation {
   hu: [HetifortepanHuMutation]
   en: [HetifortepanEnMutation]
+}
+
+input NotificationsNotificationsMutation {
+  lang: String
+  date: String
+  title: String
+  message: JSON
+}
+
+input NotificationsMutation {
+  notifications: [NotificationsNotificationsMutation]
 }
 
 input Pages_huProjectsProjectsMutation {

@@ -46,6 +46,16 @@ fragment HetifortepanParts on Hetifortepan {
   }
 }
 
+fragment NotificationsParts on Notifications {
+  notifications {
+    __typename
+    lang
+    date
+    title
+    message
+  }
+}
+
 fragment Pages_huParts on Pages_hu {
   ... on Pages_huProjects {
     title

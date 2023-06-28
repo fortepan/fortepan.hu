@@ -77,6 +77,8 @@ export type Query = {
   photo_uploadsConnection: Photo_UploadsConnection;
   hetifortepan: Hetifortepan;
   hetifortepanConnection: HetifortepanConnection;
+  notifications: Notifications;
+  notificationsConnection: NotificationsConnection;
   pages_hu: Pages_Hu;
   pages_huConnection: Pages_HuConnection;
   pages_en: Pages_En;
@@ -137,6 +139,21 @@ export type QueryHetifortepanConnectionArgs = {
 };
 
 
+export type QueryNotificationsArgs = {
+  relativePath?: InputMaybe<Scalars['String']>;
+};
+
+
+export type QueryNotificationsConnectionArgs = {
+  before?: InputMaybe<Scalars['String']>;
+  after?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Float']>;
+  last?: InputMaybe<Scalars['Float']>;
+  sort?: InputMaybe<Scalars['String']>;
+  filter?: InputMaybe<NotificationsFilter>;
+};
+
+
 export type QueryPages_HuArgs = {
   relativePath?: InputMaybe<Scalars['String']>;
 };
@@ -184,6 +201,7 @@ export type QuerySettingsConnectionArgs = {
 export type DocumentFilter = {
   photo_uploads?: InputMaybe<Photo_UploadsFilter>;
   hetifortepan?: InputMaybe<HetifortepanFilter>;
+  notifications?: InputMaybe<NotificationsFilter>;
   pages_hu?: InputMaybe<Pages_HuFilter>;
   pages_en?: InputMaybe<Pages_EnFilter>;
   settings?: InputMaybe<SettingsFilter>;
@@ -225,7 +243,7 @@ export type CollectionDocumentsArgs = {
   filter?: InputMaybe<DocumentFilter>;
 };
 
-export type DocumentNode = Photo_Uploads | Hetifortepan | Pages_HuProjects | Pages_HuArticle | Pages_HuHome | Pages_HuDefault | Pages_EnProjects | Pages_EnArticle | Pages_EnHome | Pages_EnDefault | Settings;
+export type DocumentNode = Photo_Uploads | Hetifortepan | Notifications | Pages_HuProjects | Pages_HuArticle | Pages_HuHome | Pages_HuDefault | Pages_EnProjects | Pages_EnArticle | Pages_EnHome | Pages_EnDefault | Settings;
 
 export type Photo_UploadsUploadsHuActions = {
   __typename?: 'Photo_uploadsUploadsHuActions';
@@ -277,6 +295,14 @@ export type StringFilter = {
   in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
 };
 
+export type DatetimeFilter = {
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  eq?: InputMaybe<Scalars['String']>;
+  exists?: InputMaybe<Scalars['Boolean']>;
+  in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
+};
+
 export type Photo_UploadsUploadsHuActionsFilter = {
   best_of?: InputMaybe<StringFilter>;
   all?: InputMaybe<StringFilter>;
@@ -301,7 +327,7 @@ export type Photo_UploadsUploadsEnFilter = {
 
 export type Photo_UploadsUploadsFilter = {
   name?: InputMaybe<StringFilter>;
-  date?: InputMaybe<StringFilter>;
+  date?: InputMaybe<DatetimeFilter>;
   cover_image?: InputMaybe<StringFilter>;
   hu?: InputMaybe<Photo_UploadsUploadsHuFilter>;
   en?: InputMaybe<Photo_UploadsUploadsEnFilter>;
@@ -352,7 +378,7 @@ export type Hetifortepan = Node & Document & {
 };
 
 export type HetifortepanHuFilter = {
-  date?: InputMaybe<StringFilter>;
+  date?: InputMaybe<DatetimeFilter>;
   cover_image?: InputMaybe<StringFilter>;
   title?: InputMaybe<StringFilter>;
   excerpt?: InputMaybe<StringFilter>;
@@ -360,7 +386,7 @@ export type HetifortepanHuFilter = {
 };
 
 export type HetifortepanEnFilter = {
-  date?: InputMaybe<StringFilter>;
+  date?: InputMaybe<DatetimeFilter>;
   cover_image?: InputMaybe<StringFilter>;
   title?: InputMaybe<StringFilter>;
   excerpt?: InputMaybe<StringFilter>;
@@ -383,6 +409,52 @@ export type HetifortepanConnection = Connection & {
   pageInfo: PageInfo;
   totalCount: Scalars['Float'];
   edges?: Maybe<Array<Maybe<HetifortepanConnectionEdges>>>;
+};
+
+export type NotificationsNotifications = {
+  __typename?: 'NotificationsNotifications';
+  lang?: Maybe<Scalars['String']>;
+  date?: Maybe<Scalars['String']>;
+  title?: Maybe<Scalars['String']>;
+  message?: Maybe<Scalars['JSON']>;
+};
+
+export type Notifications = Node & Document & {
+  __typename?: 'Notifications';
+  notifications?: Maybe<Array<Maybe<NotificationsNotifications>>>;
+  id: Scalars['ID'];
+  _sys: SystemInfo;
+  _values: Scalars['JSON'];
+};
+
+export type RichTextFilter = {
+  startsWith?: InputMaybe<Scalars['String']>;
+  eq?: InputMaybe<Scalars['String']>;
+  exists?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type NotificationsNotificationsFilter = {
+  lang?: InputMaybe<StringFilter>;
+  date?: InputMaybe<DatetimeFilter>;
+  title?: InputMaybe<StringFilter>;
+  message?: InputMaybe<RichTextFilter>;
+};
+
+export type NotificationsFilter = {
+  notifications?: InputMaybe<NotificationsNotificationsFilter>;
+};
+
+export type NotificationsConnectionEdges = {
+  __typename?: 'NotificationsConnectionEdges';
+  cursor: Scalars['String'];
+  node?: Maybe<Notifications>;
+};
+
+export type NotificationsConnection = Connection & {
+  __typename?: 'NotificationsConnection';
+  pageInfo: PageInfo;
+  totalCount: Scalars['Float'];
+  edges?: Maybe<Array<Maybe<NotificationsConnectionEdges>>>;
 };
 
 export type Pages_HuProjectsProjects = {
@@ -476,12 +548,6 @@ export type Pages_HuDefault = Node & Document & {
 };
 
 export type Pages_Hu = Pages_HuProjects | Pages_HuArticle | Pages_HuHome | Pages_HuDefault;
-
-export type RichTextFilter = {
-  startsWith?: InputMaybe<Scalars['String']>;
-  eq?: InputMaybe<Scalars['String']>;
-  exists?: InputMaybe<Scalars['Boolean']>;
-};
 
 export type ImageFilter = {
   startsWith?: InputMaybe<Scalars['String']>;
@@ -738,14 +804,6 @@ export type Settings = Node & Document & {
   _values: Scalars['JSON'];
 };
 
-export type DatetimeFilter = {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  eq?: InputMaybe<Scalars['String']>;
-  exists?: InputMaybe<Scalars['Boolean']>;
-  in?: InputMaybe<Array<InputMaybe<Scalars['String']>>>;
-};
-
 export type BooleanFilter = {
   eq?: InputMaybe<Scalars['Boolean']>;
   exists?: InputMaybe<Scalars['Boolean']>;
@@ -779,6 +837,8 @@ export type Mutation = {
   createPhoto_uploads: Photo_Uploads;
   updateHetifortepan: Hetifortepan;
   createHetifortepan: Hetifortepan;
+  updateNotifications: Notifications;
+  createNotifications: Notifications;
   updatePages_hu: Pages_Hu;
   createPages_hu: Pages_Hu;
   updatePages_en: Pages_En;
@@ -839,6 +899,18 @@ export type MutationCreateHetifortepanArgs = {
 };
 
 
+export type MutationUpdateNotificationsArgs = {
+  relativePath: Scalars['String'];
+  params: NotificationsMutation;
+};
+
+
+export type MutationCreateNotificationsArgs = {
+  relativePath: Scalars['String'];
+  params: NotificationsMutation;
+};
+
+
 export type MutationUpdatePages_HuArgs = {
   relativePath: Scalars['String'];
   params: Pages_HuMutation;
@@ -877,6 +949,7 @@ export type MutationCreateSettingsArgs = {
 export type DocumentUpdateMutation = {
   photo_uploads?: InputMaybe<Photo_UploadsMutation>;
   hetifortepan?: InputMaybe<HetifortepanMutation>;
+  notifications?: InputMaybe<NotificationsMutation>;
   pages_hu?: InputMaybe<Pages_HuMutation>;
   pages_en?: InputMaybe<Pages_EnMutation>;
   settings?: InputMaybe<SettingsMutation>;
@@ -886,6 +959,7 @@ export type DocumentUpdateMutation = {
 export type DocumentMutation = {
   photo_uploads?: InputMaybe<Photo_UploadsMutation>;
   hetifortepan?: InputMaybe<HetifortepanMutation>;
+  notifications?: InputMaybe<NotificationsMutation>;
   pages_hu?: InputMaybe<Pages_HuMutation>;
   pages_en?: InputMaybe<Pages_EnMutation>;
   settings?: InputMaybe<SettingsMutation>;
@@ -944,6 +1018,17 @@ export type HetifortepanEnMutation = {
 export type HetifortepanMutation = {
   hu?: InputMaybe<Array<InputMaybe<HetifortepanHuMutation>>>;
   en?: InputMaybe<Array<InputMaybe<HetifortepanEnMutation>>>;
+};
+
+export type NotificationsNotificationsMutation = {
+  lang?: InputMaybe<Scalars['String']>;
+  date?: InputMaybe<Scalars['String']>;
+  title?: InputMaybe<Scalars['String']>;
+  message?: InputMaybe<Scalars['JSON']>;
+};
+
+export type NotificationsMutation = {
+  notifications?: InputMaybe<Array<InputMaybe<NotificationsNotificationsMutation>>>;
 };
 
 export type Pages_HuProjectsProjectsMutation = {
@@ -1086,6 +1171,8 @@ export type Photo_UploadsPartsFragment = { __typename?: 'Photo_uploads', uploads
 
 export type HetifortepanPartsFragment = { __typename?: 'Hetifortepan', hu?: Array<{ __typename: 'HetifortepanHu', date?: string | null, cover_image?: string | null, title?: string | null, excerpt?: string | null, url?: string | null } | null> | null, en?: Array<{ __typename: 'HetifortepanEn', date?: string | null, cover_image?: string | null, title?: string | null, excerpt?: string | null, url?: string | null } | null> | null };
 
+export type NotificationsPartsFragment = { __typename?: 'Notifications', notifications?: Array<{ __typename: 'NotificationsNotifications', lang?: string | null, date?: string | null, title?: string | null, message?: any | null } | null> | null };
+
 type Pages_HuParts_Pages_HuProjects_Fragment = { __typename?: 'Pages_huProjects', title?: string | null, body?: any | null, projects?: Array<{ __typename: 'Pages_huProjectsProjects', title?: string | null, project_date?: string | null, description?: string | null, funding_info?: string | null, funding_logo?: string | null } | null> | null };
 
 type Pages_HuParts_Pages_HuArticle_Fragment = { __typename?: 'Pages_huArticle', title?: string | null, permalink?: string | null, body?: any | null };
@@ -1145,6 +1232,25 @@ export type HetifortepanConnectionQueryVariables = Exact<{
 
 
 export type HetifortepanConnectionQuery = { __typename?: 'Query', hetifortepanConnection: { __typename?: 'HetifortepanConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'HetifortepanConnectionEdges', cursor: string, node?: { __typename?: 'Hetifortepan', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, hu?: Array<{ __typename: 'HetifortepanHu', date?: string | null, cover_image?: string | null, title?: string | null, excerpt?: string | null, url?: string | null } | null> | null, en?: Array<{ __typename: 'HetifortepanEn', date?: string | null, cover_image?: string | null, title?: string | null, excerpt?: string | null, url?: string | null } | null> | null } | null } | null> | null } };
+
+export type NotificationsQueryVariables = Exact<{
+  relativePath: Scalars['String'];
+}>;
+
+
+export type NotificationsQuery = { __typename?: 'Query', notifications: { __typename?: 'Notifications', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, notifications?: Array<{ __typename: 'NotificationsNotifications', lang?: string | null, date?: string | null, title?: string | null, message?: any | null } | null> | null } };
+
+export type NotificationsConnectionQueryVariables = Exact<{
+  before?: InputMaybe<Scalars['String']>;
+  after?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Float']>;
+  last?: InputMaybe<Scalars['Float']>;
+  sort?: InputMaybe<Scalars['String']>;
+  filter?: InputMaybe<NotificationsFilter>;
+}>;
+
+
+export type NotificationsConnectionQuery = { __typename?: 'Query', notificationsConnection: { __typename?: 'NotificationsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasPreviousPage: boolean, hasNextPage: boolean, startCursor: string, endCursor: string }, edges?: Array<{ __typename?: 'NotificationsConnectionEdges', cursor: string, node?: { __typename?: 'Notifications', id: string, _sys: { __typename?: 'SystemInfo', filename: string, basename: string, breadcrumbs: Array<string>, path: string, relativePath: string, extension: string }, notifications?: Array<{ __typename: 'NotificationsNotifications', lang?: string | null, date?: string | null, title?: string | null, message?: any | null } | null> | null } | null } | null> | null } };
 
 export type Pages_HuQueryVariables = Exact<{
   relativePath: Scalars['String'];
@@ -1250,6 +1356,17 @@ export const HetifortepanPartsFragmentDoc = gql`
     title
     excerpt
     url
+  }
+}
+    `;
+export const NotificationsPartsFragmentDoc = gql`
+    fragment NotificationsParts on Notifications {
+  notifications {
+    __typename
+    lang
+    date
+    title
+    message
   }
 }
     `;
@@ -1489,6 +1606,61 @@ export const HetifortepanConnectionDocument = gql`
   }
 }
     ${HetifortepanPartsFragmentDoc}`;
+export const NotificationsDocument = gql`
+    query notifications($relativePath: String!) {
+  notifications(relativePath: $relativePath) {
+    ... on Document {
+      _sys {
+        filename
+        basename
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+    ...NotificationsParts
+  }
+}
+    ${NotificationsPartsFragmentDoc}`;
+export const NotificationsConnectionDocument = gql`
+    query notificationsConnection($before: String, $after: String, $first: Float, $last: Float, $sort: String, $filter: NotificationsFilter) {
+  notificationsConnection(
+    before: $before
+    after: $after
+    first: $first
+    last: $last
+    sort: $sort
+    filter: $filter
+  ) {
+    pageInfo {
+      hasPreviousPage
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    totalCount
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...NotificationsParts
+      }
+    }
+  }
+}
+    ${NotificationsPartsFragmentDoc}`;
 export const Pages_HuDocument = gql`
     query pages_hu($relativePath: String!) {
   pages_hu(relativePath: $relativePath) {
@@ -1668,6 +1840,12 @@ export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) 
       },
     hetifortepanConnection(variables?: HetifortepanConnectionQueryVariables, options?: C): Promise<{data: HetifortepanConnectionQuery, variables: HetifortepanConnectionQueryVariables, query: string}> {
         return requester<{data: HetifortepanConnectionQuery, variables: HetifortepanConnectionQueryVariables, query: string}, HetifortepanConnectionQueryVariables>(HetifortepanConnectionDocument, variables, options);
+      },
+    notifications(variables: NotificationsQueryVariables, options?: C): Promise<{data: NotificationsQuery, variables: NotificationsQueryVariables, query: string}> {
+        return requester<{data: NotificationsQuery, variables: NotificationsQueryVariables, query: string}, NotificationsQueryVariables>(NotificationsDocument, variables, options);
+      },
+    notificationsConnection(variables?: NotificationsConnectionQueryVariables, options?: C): Promise<{data: NotificationsConnectionQuery, variables: NotificationsConnectionQueryVariables, query: string}> {
+        return requester<{data: NotificationsConnectionQuery, variables: NotificationsConnectionQueryVariables, query: string}, NotificationsConnectionQueryVariables>(NotificationsConnectionDocument, variables, options);
       },
     pages_hu(variables: Pages_HuQueryVariables, options?: C): Promise<{data: Pages_HuQuery, variables: Pages_HuQueryVariables, query: string}> {
         return requester<{data: Pages_HuQuery, variables: Pages_HuQueryVariables, query: string}, Pages_HuQueryVariables>(Pages_HuDocument, variables, options);
