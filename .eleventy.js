@@ -1,3 +1,4 @@
+const MarkdownIt = require("markdown-it")
 const inlineSVG = require("./plugins/inlineSVG")
 const htmlmin = require("html-minifier")
 
@@ -63,6 +64,11 @@ module.exports = eleventyConfig => {
           return `&#${i.charCodeAt(0)};`
         })
       : ""
+  })
+
+  eleventyConfig.addLiquidFilter("markdownify", (str, options) => {
+    const md = new MarkdownIt(options ? JSON.parse(options) : null)
+    return md.render(str)
   })
 
   // Minify html in production

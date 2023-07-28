@@ -68,6 +68,7 @@
     "@hotwired/stimulus-webpack-helpers": "^1.0.1",
     "@tinacms/cli": "^1.4.0",
     "lodash": "^4.17.15",
+    "markdown-it": "^13.0.1",
     "tinacms": "^1.4.0"
   }
 }
