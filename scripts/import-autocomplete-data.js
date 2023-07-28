@@ -42,6 +42,46 @@ const getKeywords = (key, callback, error) => {
   )
 }
 
+const getSynonyms = (lang, callback, error) => {
+  client.search(
+    {
+      index: "elasticsearch_index_fortepandrupalmain_hd64t_cimke",
+      body: {
+        size: 9999,
+        query: {
+          bool: {
+            must: [
+              {
+                exists: {
+                  field: "synonym",
+                },
+              },
+              {
+                term: {
+                  _language: `${lang.toLowerCase()}`,
+                },
+              },
+            ],
+          },
+        },
+      },
+    },
+    (err, result) => {
+      if (err) {
+        error({
+          statusCode: err.statusCode,
+          body: JSON.stringify(err.body),
+        })
+      } else {
+        callback({
+          statusCode: err ? err.statusCode : result.statusCode,
+          body: JSON.stringify(err ? err.body : result.body),
+        })
+      }
+    }
+  )
+}
+
 const saveAutocompleteLangFile = lang => {
   const keywords = {}
   const promises = []
@@ -65,6 +105,30 @@ const saveAutocompleteLangFile = lang => {
       })
     )
   })
+
+  promises.push(
+    new Promise((resolve, reject) => {
+      getSynonyms(
+        lang,
+        res => {
+          const data = JSON.parse(res.body)
+
+          if (data.hits.hits.length > 0) {
+            keywords.synonyms = []
+            data.hits.hits.forEach(hit => {
+              // eslint-disable-next-line no-underscore-dangle
+              const h = hit._source
+              keywords.synonyms.push([h.name.toString(), ...h.synonym])
+            })
+          }
+          resolve()
+        },
+        error => {
+          reject(error)
+        }
+      )
+    })
+  )
 
   Promise.all(promises)
     .then(() => {
