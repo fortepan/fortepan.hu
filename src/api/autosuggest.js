@@ -24,12 +24,19 @@ export default async (prefix, filter = false) => {
   // filter items
   Object.keys(autocompleteData[getLocale()]).forEach(key => {
     if (!filter || filter.length === 0 || (filterArray && filterArray.indexOf(key) > -1)) {
-      const items = autocompleteData[getLocale()][key].filter(keyword => {
-        if (slugify(keyword).indexOf(slugify(prefix)) === 0) return true
+      const items = autocompleteData[getLocale()][key].filter(value => {
+        // in case if the value is a string check matches one level depper as well
+        if (Array.isArray(value)) {
+          if (value.find(subvalue => slugify(subvalue).indexOf(slugify(prefix)) === 0)) return true
+          return false
+        }
+
+        if (slugify(value).indexOf(slugify(prefix)) === 0) return true
         return false
       })
 
-      res = res.concat(items)
+      // flattening down the results (filtered items can be a list of strings or arrays with list of strings)
+      res = res.concat(items.toString().split(","))
     }
   })
 
