@@ -6,10 +6,10 @@ import article from "./templates/article"
 import defaultTemplate from "./templates/default"
 
 // Your hosting provider likely exposes this as an environment variable
-const branch = process.env.HEAD || process.env.VERCEL_GIT_COMMIT_REF || "master"
+// const branch = process.env.HEAD || process.env.VERCEL_GIT_COMMIT_REF || "master"
 
 export default defineConfig({
-  branch: branch,
+  branch: "feat/switch-to-tinacms",
   clientId: "5201a87a-dc24-4552-8b2e-3272e08089dd", // Get this from tina.io
   token: "ebb20c574667a9ccbad5fc85104e4cf4a3171ac0", // Get this from tina.io
   build: {
