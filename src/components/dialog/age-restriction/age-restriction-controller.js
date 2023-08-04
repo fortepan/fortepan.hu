@@ -1,4 +1,4 @@
-import { Controller } from "stimulus"
+import { Controller } from "@hotwired/stimulus"
 import { trigger } from "../../../js/utils"
 import photoManager from "../../../js/photo-manager"
 import listManager from "../../../js/list-manager"

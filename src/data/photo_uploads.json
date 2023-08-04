@@ -13,10 +13,10 @@
       }
     }
   },
-  "collections": [
+  "uploads": [
     {
       "name": "Száz év talány",
-      "date": "1686715200000",
+      "date": "2023-06-15T00:00:00.000Z",
       "cover_image": "272641",
       "hu": {
         "title": "Száz év talány",
@@ -37,7 +37,7 @@
     },
     {
       "name": "Lipovits Károly fotói",
-      "date": "1682058600000",
+      "date": "2023-04-21T00:00:00.000Z",
       "cover_image": "271811",
       "hu": {
         "title": "Lipovits Károly fotói",
@@ -58,7 +58,7 @@
     },
     {
       "name": "4000 kép",
-      "date": "1679007600000",
+      "date": "2023-03-17T00:00:00.000Z",
       "cover_image": "268236",
       "hu": {
         "title": "4 évtized 4000 kép",
@@ -79,7 +79,7 @@
     },
     {
       "name": "50 adományozó 5000 fényképe a Fortepan új kiadásában",
-      "date": "1670371200000",
+      "date": "2022-12-07T00:00:00.000Z",
       "cover_image": "264407",
       "hu": {
         "title": "50 adományozó 5000 fényképe a Fortepan új kiadásában",
@@ -100,7 +100,7 @@
     },
     {
       "name": "Horváth József operatőr, haditudósító képei",
-      "date": "1665878400000",
+      "date": "2022-10-16T00:00:00.000Z",
       "cover_image": "265600",
       "hu": {
         "title": "Horváth József operatőr, haditudósító képei",
@@ -121,7 +121,7 @@
     },
     {
       "name": "Két szerző - kétezer kép",
-      "date": "1660867200000",
+      "date": "2022-08-19T00:00:00.000Z",
       "cover_image": "262320",
       "hu": {
         "title": "Két szerző - kétezer kép",
@@ -142,7 +142,7 @@
     },
     {
       "name": "Reményi József fotóhagyatéka",
-      "date": "1655596800000",
+      "date": "2022-06-19T00:00:00.000Z",
       "cover_image": "257904",
       "hu": {
         "title": "Reményi József fotóhagyatéka",
@@ -163,7 +163,7 @@
     },
     {
       "name": "Utazások Európában",
-      "date": "1653091200000",
+      "date": "2022-05-21T00:00:00.000Z",
       "cover_image": "258875",
       "hu": {
         "title": "Utazások Európában",
@@ -184,7 +184,7 @@
     },
     {
       "name": "3000 éles fénykép",
-      "date": "1648944000000",
+      "date": "2022-04-03T00:00:00.000Z",
       "cover_image": "222664",
       "hu": {
         "title": "3000 éles fénykép",
@@ -205,7 +205,7 @@
     },
     {
       "name": "3000 fotó a FŐMTERV archívumából",
-      "date": "1644537600000",
+      "date": "2022-02-11T00:00:00.000Z",
       "cover_image": "252768",
       "hu": {
         "title": "3000 fotó a FŐMTERV archívumából",
@@ -226,7 +226,7 @@
     },
     {
       "name": "2700 friss fotó",
-      "date": "1640044800000",
+      "date": "2021-12-21T00:00:00.000Z",
       "cover_image": "250141",
       "hu": {
         "title": "2700 friss fotó",
@@ -247,7 +247,7 @@
     },
     {
       "name": "2200 papírkép",
-      "date": "1636243200000",
+      "date": "2021-11-07T00:00:00.000Z",
       "cover_image": "222484",
       "hu": {
         "title": "2200 papírkép",
@@ -268,7 +268,7 @@
     },
     {
       "name": "FŐFOTÓ - II. rész",
-      "date": "1631923200000",
+      "date": "2021-09-18T00:00:00.000Z",
       "cover_image": "215627",
       "hu": {
         "title": "FŐFOTÓ - II. rész",
@@ -289,7 +289,7 @@
     },
     {
       "name": "Legújabb régi képeink '21. nyár",
-      "date": "1625961600000",
+      "date": "2021-07-11T00:00:00.000Z",
       "cover_image": "212359",
       "hu": {
         "title": "Legújabb régi képeink '21. nyár",
@@ -310,7 +310,7 @@
     },
     {
       "name": "Legújabb régi képeink",
-      "date": "1620777600000",
+      "date": "2021-05-12T00:00:00.000Z",
       "cover_image": "209871",
       "hu": {
         "title": "Legújabb régi képeink",
@@ -331,7 +331,7 @@
     },
     {
       "name": "FŐFOTÓ I",
-      "date": "1617235200000",
+      "date": "2021-04-01T00:00:00.000Z",
       "cover_image": "207613",
       "hu": {
         "title": "FŐFOTÓ I",
@@ -352,7 +352,7 @@
     },
     {
       "name": "Kereki Sándor",
-      "date": "1614211200000",
+      "date": "2021-02-25T00:00:00.000Z",
       "cover_image": "205844",
       "hu": {
         "title": "Kereki Sándor",

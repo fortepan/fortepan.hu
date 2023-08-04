@@ -1,5 +1,5 @@
-import { Controller } from "stimulus"
-import { throttle } from "lodash"
+import { Controller } from "@hotwired/stimulus"
+import throttle from "lodash/throttle"
 import {
   lang,
   escapeHTML,
@@ -232,7 +232,7 @@ export default class extends Controller {
             })
 
             imageTarget.img = img
-            imageTarget.src = `${config.PHOTO_SOURCE}480/fortepan_${photoId}.jpg`
+            imageTarget.src = `${config().PHOTO_SOURCE}480/fortepan_${photoId}.jpg`
           }
         })
 

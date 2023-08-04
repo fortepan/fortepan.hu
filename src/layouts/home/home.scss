@@ -245,11 +245,11 @@
   }
 
   .photos-thumbnail {
-    min-width: rem(192px * 2 / 3);
+    min-width: rem(calc(192px * 2 / 3));
   }
 
   .photos-thumbnail__image {
-    height: rem(160px * 2 / 3);
+    height: rem(calc(160px * 2 / 3));
   }
 }
 

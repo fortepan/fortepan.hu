@@ -1,4 +1,4 @@
-import { Controller } from "stimulus"
+import { Controller } from "@hotwired/stimulus"
 
 import { getLocale } from "../../js/utils"
 import searchAPI from "../../api/search"

@@ -26,18 +26,18 @@
         <h6>{{ lang[locale].list_add_to }}</h6>
 
         <form class="dialog__form" data-dialog--lists-target="addToListForm" data-action="submit->dialog--lists#submitAddingToList">
-          {% include select/select.liquid
+          {% include select/select.liquid 
                     stimulus_target:'data-dialog--lists-target="select"'
                     stimulus_action:'change->dialog--lists#toggleInput'
           %}
-          {% include input/input.liquid
+          {% include input/input.liquid 
                     type:"text"
                     name:"name"
                     label:lang[locale].list_new_name
                     stimulus_wrapper_target:'data-dialog--lists-target="addToListFormName"'
                     class:"dialog-lists__input is-hidden"
           %}
-          {% include input/input.liquid
+          {% include input/input.liquid 
                     type:"text"
                     name:"description"
                     label:lang[locale].list_description_label
@@ -52,13 +52,13 @@
       <section role="edit" data-dialog--lists-target="section sectionEdit">
         <h3 class="dialog__title">{{ lang[locale].list_edit_header }}</h3>
         <form class="dialog__form" data-dialog--lists-target="editListForm" data-action="submit->dialog--lists#submitEditList">
-          {% include input/input.liquid
+          {% include input/input.liquid 
                     type:"text"
                     name:"name"
                     label:lang[locale].list_name
                     class:"dialog-lists__input"
           %}
-          {% include input/input.liquid
+          {% include input/input.liquid 
                     type:"text"
                     name:"description"
                     label:lang[locale].list_description_label

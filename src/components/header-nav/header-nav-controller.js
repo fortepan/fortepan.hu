@@ -1,4 +1,4 @@
-import { Controller } from "stimulus"
+import { Controller } from "@hotwired/stimulus"
 import throttle from "lodash/throttle"
 import auth from "../../api/auth"
 import siteConfig from "../../data/siteConfig"
@@ -141,7 +141,7 @@ export default class extends Controller {
     const l = e.currentTarget.dataset.lang
     let href = document.location.href
       .split("/")
-      .map(s => (Object.keys(siteConfig.LOCALES).indexOf(s) > -1 ? l : s))
+      .map(s => (Object.keys(siteConfig().LOCALES).indexOf(s) > -1 ? l : s))
       .join("/")
 
     // if location is the siteroot

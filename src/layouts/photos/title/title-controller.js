@@ -1,4 +1,4 @@
-import { Controller } from "stimulus"
+import { Controller } from "@hotwired/stimulus"
 import { lang, getURLParams, numberWithCommas, getLocale } from "../../../js/utils"
 import uploadsManager from "../../../js/photo-uploads-manager"
 

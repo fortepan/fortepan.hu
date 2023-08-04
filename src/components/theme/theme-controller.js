@@ -1,14 +1,14 @@
-import { Controller } from "stimulus"
+import { Controller } from "@hotwired/stimulus"
 
 import config from "../../data/siteConfig"
 import { setAppState, removeAppState } from "../../js/app"
 
 export default class extends Controller {
   connect() {
-    this.theme = config.DEFAULT_THEME
-
+    this.theme = config().DEFAULT_THEME
     this.loadStateFromLocalStorage()
     this.saveStateToLocalStorage()
+
     this.setTheme(this.theme)
   }
 

@@ -3,27 +3,24 @@ const path = require("path")
 
 module.exports = liquidEngine => {
   return {
-    parse(tagToken) {
+    parse: function(tagToken) {
       this.args = tagToken.args
     },
-    render(scope) {
+    render: async function(ctx) {
       // Resolve variables
+
       const args = {}
-      this.args.split(" ").forEach(arg => {
-        args[arg.split(":")[0]] = liquidEngine.evalValue(arg.split(":")[1], scope)
-      })
+      const argsArray = this.args.split(" ")
+      for (const arg of argsArray) {
+        args[arg.split(":")[0]] = await this.liquid.evalValue(arg.split(":")[1], ctx)
+      }
 
       if (path.extname(args.src) !== ".svg") {
-        return Promise.reject(new Error("inlineSVG requires a filetype of svg"))
+        throw new Error("inlineSVG requires a filetype of svg")
       }
 
       // read svg file content
-      const data = fs.readFileSync(args.src, (err, contents) => {
-        if (err) {
-          return Promise.reject(err)
-        }
-        return contents
-      })
+      const data = await fs.readFileSync(args.src)
 
       // inject exta attributes
       let attributes = ""
@@ -31,7 +28,7 @@ module.exports = liquidEngine => {
         if (arg !== "src") attributes += `${arg}="${args[arg]}" `
       })
 
-      return Promise.resolve(data.toString("utf8").replace("<svg ", `<svg ${attributes}`))
+      return data.toString("utf8").replace("<svg", `<svg ${attributes}`)
     },
   }
 }

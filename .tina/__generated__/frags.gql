@@ -1,0 +1,180 @@
+fragment Photo_uploadsParts on Photo_uploads {
+  uploads {
+    __typename
+    name
+    date
+    cover_image
+    hu {
+      __typename
+      title
+      blurb
+      actions {
+        __typename
+        best_of
+        all
+      }
+    }
+    en {
+      __typename
+      title
+      blurb
+      actions {
+        __typename
+        best_of
+        all
+      }
+    }
+  }
+}
+
+fragment HetifortepanParts on Hetifortepan {
+  hu {
+    __typename
+    date
+    cover_image
+    title
+    excerpt
+    url
+  }
+  en {
+    __typename
+    date
+    cover_image
+    title
+    excerpt
+    url
+  }
+}
+
+fragment NotificationsParts on Notifications {
+  notifications {
+    __typename
+    lang
+    date
+    title
+    message
+  }
+}
+
+fragment Pages_huParts on Pages_hu {
+  ... on Pages_huProjects {
+    title
+    body
+    projects {
+      __typename
+      title
+      project_date
+      description
+      funding_info
+      funding_logo
+    }
+  }
+  ... on Pages_huArticle {
+    title
+    permalink
+    body
+  }
+  ... on Pages_huHome {
+    title
+    body
+    best_of_collections {
+      __typename
+      title
+      caption
+      content {
+        __typename
+        title
+        counter
+        cover_image
+        url
+      }
+    }
+    blog {
+      __typename
+      title
+      caption
+      action {
+        __typename
+        label
+        url
+      }
+    }
+    latest {
+      __typename
+      title
+      caption
+      action {
+        __typename
+        label
+        url
+      }
+    }
+  }
+  ... on Pages_huDefault {
+    title
+  }
+}
+
+fragment Pages_enParts on Pages_en {
+  ... on Pages_enProjects {
+    title
+    body
+    projects {
+      __typename
+      title
+      project_date
+      description
+      funding_info
+      funding_logo
+    }
+  }
+  ... on Pages_enArticle {
+    title
+    permalink
+    body
+  }
+  ... on Pages_enHome {
+    title
+    body
+    best_of_collections {
+      __typename
+      title
+      caption
+      content {
+        __typename
+        title
+        counter
+        cover_image
+        url
+      }
+    }
+    blog {
+      __typename
+      title
+      caption
+      action {
+        __typename
+        label
+        url
+      }
+    }
+    latest {
+      __typename
+      title
+      caption
+      action {
+        __typename
+        label
+        url
+      }
+    }
+  }
+  ... on Pages_enDefault {
+    title
+  }
+}
+
+fragment SettingsParts on Settings {
+  latestDate
+  tax1percent
+}

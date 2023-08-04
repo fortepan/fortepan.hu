@@ -1,4 +1,4 @@
-import { Controller } from "stimulus"
+import { Controller } from "@hotwired/stimulus"
 import { trigger, globalSettings } from "../../js/utils"
 
 export default class CookieConsent extends Controller {

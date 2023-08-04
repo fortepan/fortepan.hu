@@ -127,7 +127,8 @@
       {% capture now %}{% now %}{% endcapture %}
       {% assign count = 0 %}
       {% for notification in notifications.notifications %}
-      {% if notification.date < now and notification.lang == locale and count < 4 %}
+      {% capture date_ms %}{% date_to_ms notification.date %}{% endcapture %}
+      {% if date_ms < now and notification.lang == locale and count < 4 %}
       {% assign count = count | plus: 1 %}
       <li class="header-nav__notifications__message"
           data-header-nav-target="notification"
@@ -137,7 +138,7 @@
           <h5 class="header-nav__notifications__message__title">{{ notification.title }}</h5>
           <span class="header-nav__notifications__message__date">{% date notification.date, locale %}</span>
         </header>
-        <p class="header-nav__notifications__message__content">{{ notification.message }}</p>
+        <div class="header-nav__notifications__message__content">{{ notification.message | markdownify: '{"html":true}' }}</div>
       </li>
       {% endif %}
       {% endfor %}

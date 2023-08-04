@@ -21,3 +21,5 @@ src/static/autocomplete-hu.json
 
 # OS related
 .DS_Store
+
+node_modules

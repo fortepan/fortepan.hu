@@ -138,7 +138,7 @@ const selectPhotoById = id => {
     `${result.data.description ? `${result.data.description} — ` : ""}${lang("donor")}: ${result.data.donor} (${
       result.data.year
     })`,
-    `${config.PHOTO_SOURCE}${result.data.mid}.jpg`
+    `${config().PHOTO_SOURCE}${result.data.mid}.jpg`
   )
 
   trigger("photoManager:photoSelected", result)
@@ -480,7 +480,7 @@ const getFirstPhotoOfYear = async (y, selectAfterLoad = true) => {
   // delete the search after param if it was copied over from the default context
   if (params.search_after) delete params.search_after
 
-  params.size = config.THUMBNAILS_QUERY_LIMIT
+  params.size = config().THUMBNAILS_QUERY_LIMIT
 
   // lock the previous context, so this search won't overwrite it
   // (we just need the first picture of a given year in the same search context)
@@ -494,10 +494,10 @@ const getFirstPhotoOfYear = async (y, selectAfterLoad = true) => {
   /*
     2. then, based on the first image data load the rest of the set according to the default query limit
   */
-  if (latestItems.length !== -1 && latestItems.length < config.THUMBNAILS_QUERY_LIMIT) {
+  if (latestItems.length !== -1 && latestItems.length < config().THUMBNAILS_QUERY_LIMIT) {
     delete params.from
     delete params.year
-    params.size = config.THUMBNAILS_QUERY_LIMIT - latestItems.length
+    params.size = config().THUMBNAILS_QUERY_LIMIT - latestItems.length
     params.search_after = latestItems[latestItems.length - 1].search_after
 
     // load the remaining photos in silent mode (no event dispatched)

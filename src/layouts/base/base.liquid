@@ -18,8 +18,14 @@
 
     <link rel="shortcut icon" href="{{ site_url }}/favicon.ico" />
     <link rel="apple-touch-icon" href="{{ site_url }}/images/icons/apple-touch-icon.png" />
-    <link rel="mask-icon" href="{{ site_url }}/images/icons/fortepan-logo.svg" color="#F73F13">
-    <link rel="icon" type="image/x-icon" href="{{ site_url }}/favicon.ico">
+    <link
+      rel="mask-icon"
+      href="{{ site_url }}/images/icons/fortepan-logo.svg"
+      color="#F73F13">
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="{{ site_url }}/favicon.ico">
     <meta name="theme-color" content="#F73F13">
 
     <meta property="twitter:image:src" content="{{ site_url }}/images/social/fortepan-twitter-1.jpg" />
@@ -41,14 +47,18 @@
     <link rel="stylesheet" href="https://use.typekit.net/shi7abw.css" />
     <link
       rel="stylesheet"
-      href="/main.css?{{ cacheBust.mainCss }}"
-    />
+      href="/css/{{ manifest-css["styles.css"] }}"
+      type="text/css">
 
     <script src="https://polyfill.io/v3/polyfill.min.js?features=URLSearchParams%2CObject.fromEntries"></script>
   </head>
-  <body itemscope itemtype="http://schema.org/WebPage" data-lang="{{ locale }}" data-controller="base">
+  <body
+    itemscope
+    itemtype="http://schema.org/WebPage"
+    data-lang="{{ locale }}"
+    data-controller="base">
     <main>
-    {{ content }}
+      {{ content }}
     </main>
     {% include dialog/signin/signin.liquid %}
     {% include dialog/signup/signup.liquid %}
@@ -57,16 +67,20 @@
     {% include dialog/search/search.liquid %}
 
     {% include cookie-consent/cookie-consent.liquid %}
-    {% if locale == "hu" and cmsConfig.tax1percent == "1" and permalink != "/hu/ado-1-szazalek/" %}{% include tax1percent/tax1percent.liquid %}{% endif %}
+    {% if locale == "hu" and cmsConfig.tax1percent and permalink != "/hu/ado-1-szazalek/" %}
+      {% include tax1percent/tax1percent.liquid %}{% endif %}
 
-    {% include loader/loader.liquid id:"loaderBase" %}
+    {% include loader/loader.liquid id: "loaderBase" %}
     {% include snackbar/snackbar.liquid %}
 
     <script>
-      {% for param in cmsConfig %}
-      window.{{param[0]}} = "{{param[1]}}";
-      {% endfor %}
+      window.process = {
+        env: {
+          ENV: "{{ siteConfig.ENV }}"
+        }
+      }
+      {% for param in cmsConfig %} window.{{param[0]}} = {% if param[1] == true or param[1] == false %}{{param[1]}}{% else %}"{{param[1]}}"{% endif %};{% endfor %}
     </script>
-    <script src="/main.js?{{ cacheBust.mainJs }}"></script>
+    <script src="/{{ manifest-js['main.js'] }}"></script>
   </body>
 </html>

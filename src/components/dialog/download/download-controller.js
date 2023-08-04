@@ -1,4 +1,4 @@
-import { Controller } from "stimulus"
+import { Controller } from "@hotwired/stimulus"
 import config from "../../../data/siteConfig"
 import { lang } from "../../../js/utils"
 import { appState } from "../../../js/app"
@@ -26,7 +26,7 @@ export default class extends Controller {
     this.contentTarget.innerHTML = lang("dialog_download").replace("$donor", `<br/><b>Fortepan / ${data.donor}</b>`)
 
     const a = document.createElement("a")
-    a.href = `${config.PHOTO_SOURCE_LARGE}${data.mid}.jpg`
+    a.href = `${config().PHOTO_SOURCE_LARGE}${data.mid}.jpg`
     a.click()
   }
 }

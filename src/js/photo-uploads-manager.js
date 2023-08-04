@@ -16,20 +16,25 @@ const loadCollectionData = async () => {
 }
 
 const getCollections = async () => {
-  if (!collectionData.data || (collectionData.data && !collectionData.data.collections)) {
+  if (!collectionData.data || (collectionData.data && !collectionData.data.uploads)) {
     await loadCollectionData()
   }
 
-  return collectionData.data.collections
+  return collectionData.data.uploads
 }
 
 const getCollection = async date => {
   if (date) {
-    if (!collectionData.data || (collectionData.data && !collectionData.data.collections)) {
+    if (!collectionData.data || (collectionData.data && !collectionData.data.uploads)) {
       await loadCollectionData()
     }
 
-    return collectionData.data.collections.find(collection => collection.date === date)
+    let dateInstance = new Date(date)
+    if (!dateInstance.getTime()) dateInstance = new Date(parseInt(date, 10))
+
+    return collectionData.data.uploads.find(
+      collection => new Date(collection.date).getTime() === dateInstance.getTime()
+    )
   }
 
   return undefined

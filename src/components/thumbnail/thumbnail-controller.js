@@ -1,4 +1,4 @@
-import { Controller } from "stimulus"
+import { Controller } from "@hotwired/stimulus"
 
 import config from "../../data/siteConfig"
 import { trigger, lang, isElementInViewport, getLocale, getImgAltText } from "../../js/utils"
@@ -165,8 +165,10 @@ export default class extends Controller {
     ) {
       const mediaId = this.element.photoId
 
-      this.imageTarget.srcset = `${config.PHOTO_SOURCE}240/fortepan_${mediaId}.jpg 1x, ${config.PHOTO_SOURCE}480/fortepan_${mediaId}.jpg 2x`
-      this.imageTarget.src = `${config.PHOTO_SOURCE}240/fortepan_${mediaId}.jpg`
+      this.imageTarget.srcset = `${config().PHOTO_SOURCE}240/fortepan_${mediaId}.jpg 1x, ${
+        config().PHOTO_SOURCE
+      }480/fortepan_${mediaId}.jpg 2x`
+      this.imageTarget.src = `${config().PHOTO_SOURCE}240/fortepan_${mediaId}.jpg`
 
       this.element.classList.add("is-loading")
       this.loadInitiated = true

@@ -1,3 +1,4 @@
+const MarkdownIt = require("markdown-it")
 const inlineSVG = require("./plugins/inlineSVG")
 const htmlmin = require("html-minifier")
 
@@ -5,11 +6,7 @@ module.exports = eleventyConfig => {
   // Disable .gitignore and use eleventy's own ignore file instead
   eleventyConfig.setUseGitIgnore(false)
 
-  // Watch the compiled assets for changes
-  eleventyConfig.addWatchTarget("./_compiled-assets/")
-
   // Copy assets
-  eleventyConfig.addPassthroughCopy({ "_compiled-assets": "/" })
   eleventyConfig.addPassthroughCopy({ "src/static/images": "/images/" })
   eleventyConfig.addPassthroughCopy({ "src/static/uploads": "/uploads/" })
   eleventyConfig.addPassthroughCopy({ "src/static/": "/" })
@@ -17,24 +14,61 @@ module.exports = eleventyConfig => {
   eleventyConfig.addPassthroughCopy({ "node_modules/@webcomponents/webcomponentsjs": "/webcomponents-polyfill" })
 
   // Define custom liquid tags and shortcodes
+
+  eleventyConfig.setLiquidOptions({
+    dynamicPartials: false,
+  })
+
   eleventyConfig.addLiquidTag("inlineSVG", inlineSVG)
   eleventyConfig.addLiquidShortcode("now", () => {
     return Date.now()
   })
-  eleventyConfig.addLiquidShortcode("date", (timestamp, locale) => {
-    const dateFormat = new Intl.DateTimeFormat(locale == "hu" ? "hu-HU" : "en-US", {
-      month: "short",
-      day: "2-digit",
-      year: "numeric",
-    })
-    return dateFormat.format(new Date(parseInt(timestamp)))
+  eleventyConfig.addLiquidShortcode("date", (date, locale) => {
+    if (date) {
+      const dateFormat = new Intl.DateTimeFormat(locale == "hu" ? "hu-HU" : "en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      })
+
+      let dateInstance = new Date(date)
+      if (isNaN(dateInstance)) dateInstance = new Date(parseInt(date))
+      if (isNaN(dateInstance)) return ""
+
+      return dateFormat.format(dateInstance)
+    }
+
+    return ""
   })
-  eleventyConfig.addLiquidShortcode("date_iso", (timestamp, full = false) => {
-    if (timestamp) {
-      const iso = new Date(parseInt(timestamp)).toISOString()
+  eleventyConfig.addLiquidShortcode("date_iso", (date, full = false) => {
+    if (date) {
+      let dateInstance = new Date(date)
+      if (isNaN(dateInstance)) dateInstance = new Date(parseInt(date))
+      if (isNaN(dateInstance)) return ""
+
+      const iso = dateInstance.toISOString()
       return full ? iso : iso.split("T")[0].toString()
     }
     return ""
+  })
+  eleventyConfig.addLiquidShortcode("date_to_ms", date => {
+    if (date) {
+      return new Date(date).getTime()
+    }
+    return ""
+  })
+
+  eleventyConfig.addLiquidFilter("escapeHTML", unsafe => {
+    return unsafe
+      ? unsafe.replace(/[\u00A0-\u9999<>&]/g, i => {
+          return `&#${i.charCodeAt(0)};`
+        })
+      : ""
+  })
+
+  eleventyConfig.addLiquidFilter("markdownify", (str, options) => {
+    const md = new MarkdownIt(options ? JSON.parse(options) : null)
+    return md.render(str)
   })
 
   // Minify html in production

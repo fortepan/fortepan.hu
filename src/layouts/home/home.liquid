@@ -15,12 +15,12 @@ layout: base/base.liquid
 >
   <section class="home__hero">
     <div class="home__announcement">
-        {% assign latest_set = photo_uploads.collections[0] %}
+        {% assign latest_set = photo_uploads.uploads[0] %}
         <div class="home__announcement__caption caption">{{ announcement.caption }}</div>
         <h1 class="home__announcement__title"><strong>{{ latest_set[locale].title }}</strong></h1>
         <div class="home__announcement__blurb p">{{ latest_set[locale].blurb }}</div>
         <div class="home__announcement__actions">
-        {% capture query_url %}cfrom={% date_iso latest_set.date %}&upload={{ latest_set.date }}{% endcapture %}
+        {% capture query_url %}cfrom={% date_iso latest_set.date %}&upload={% date_to_ms latest_set.date %}{% endcapture %}
         {% if latest_set[locale].actions.best_of %}
           <a href="/{{ locale }}/photos/?tag=best%20of&{{ query_url }}" class="button button--medium button--primary">
             <span>{{ latest_set[locale].actions.best_of }}</span>
@@ -140,9 +140,9 @@ layout: base/base.liquid
 
       <ul class="home__usp__list">
         {% assign count = 0 %}
-        {% for photo_set in photo_uploads.collections %}
+        {% for photo_set in photo_uploads.uploads %}
         {% if count > 0 and count < 5 %}
-        {% capture query_url %}cfrom={% date_iso photo_set.date %}{% if until_date %}&cto={% date_iso until_date %}{% endif %}&upload={{ photo_set.date }}{% endcapture %}
+        {% capture query_url %}cfrom={% date_iso photo_set.date %}{% if until_date %}&cto={% date_iso until_date %}{% endif %}&upload={% date_to_ms photo_set.date %}{% endcapture %}
         <li class="list-item">
           <div class="list-item__cover" data-action="click->home#onUspCoverClick">
             {% capture img_src %}{{ siteConfig.PHOTO_SOURCE }}480/fortepan_{{ photo_set.cover_image }}.jpg{% endcapture %}

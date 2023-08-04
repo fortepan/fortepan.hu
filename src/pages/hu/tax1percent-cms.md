@@ -1,13 +1,14 @@
 ---
 layout: article/article.liquid
 title: 1% ADÓ - 100% FOTÓ
-permalink: "/hu/ado-1-szazalek/"
+permalink: /hu/ado-1-szazalek/
 hide_search: true
-
+_template: article
 ---
+
 ### Az 1% felajánlásához szükséges adatok
 
-Summa Artium Alapítvány <br> Adószám: 18128510-1-42
+Summa Artium Alapítvány \<br> Adószám: 18128510-1-42
 
 A határidő május 20-a, de már most nyilatkozhat.
 

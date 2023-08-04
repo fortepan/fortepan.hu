@@ -1,5 +1,5 @@
-import { throttle } from "lodash"
-import { Controller } from "stimulus"
+import { Controller } from "@hotwired/stimulus"
+import throttle from "lodash/throttle"
 import { isElementInViewport } from "../../js/utils"
 
 export default class extends Controller {
