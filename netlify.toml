@@ -42,6 +42,18 @@
   force = true
 
 [[redirects]]
+  from = "/embed/*"
+  to = "/hu/embed/"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/:lang/embed/*"
+  to = "/:lang/embed/"
+  status = 200
+  force = true
+
+[[redirects]]
   from = "/hu/"
   to = "/"
   status = 200

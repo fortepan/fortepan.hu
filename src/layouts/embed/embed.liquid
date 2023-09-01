@@ -1,0 +1,45 @@
+---
+layout: base/base.liquid
+---
+
+<div class="embed scrollview"
+     data-controller="embed"
+     data-action="scroll->embed#onScroll
+                  resize@window->embed#onScroll
+                  photos:selectThumbnail@document->embed#selectThumbnail
+                  photosCarousel:photoSelected@document->embed#onPhotoSelected
+                  photosCarousel:hide@document->embed#onCarouselClosed
+                  thumbnail:loaded@document->embed#loadThumbnails"
+>
+  <div class="list-title photos-title is-visible">
+    <span class="photos-title__username visible-when-public"><span data-embed-target="username"></span></span>
+    <h1 class="photos-title__title" data-embed-target="title"></h1>
+    <h5 class="photos-title__subtitle" data-embed-target="subtitle">
+      <i class="lists-private-icon hidden-when-public" title="{{ lang[locale].list_edit_private }}">
+        {% inlineSVG src:"src/static/images/icons/24/icon-lock.svg" %}&bull;
+      </i>
+      <span data-embed-target="count" class="photos-title__subtitle__count"></span>
+      {{ lang[locale].photo_results }}
+      <span class="hidden-when-public">&bull;&nbsp;</span>
+    </h5>
+    <p class="list-description" data-embed-target="description"></p>
+  </div>
+  <div class="photos__grid is-hidden" data-embed-target="grid"></div>
+  <div class="lists__placeholder is-hidden hidden-when-public" data-embed-target="placeholder">
+    <h3>{{ lang[locale].list_photos_empty_header }}</h3>
+    <p>{{ lang[locale].list_photos_empty_text }}</p>
+    <a href="/{{ locale }}/photos/" class="button button--medium button--primary">
+      {{ lang[locale].photos }}
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="10" viewBox="0 0 14 10">
+        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2,6 L6,10 L10,6 M6,-2 L6,9" transform="rotate(-90 7 4)"/>
+      </svg>
+      </a>
+  </div>
+</div>
+
+{% include thumbnail/thumbnail-template role:"lists" %}
+{% include age-restriction/age-restriction-template.liquid %}
+{% include carousel/carousel %}
+{% include dialog/download/download %}
+{% include dialog/share/share %}
+{% include dialog/age-restriction/age-restriction.liquid %}
