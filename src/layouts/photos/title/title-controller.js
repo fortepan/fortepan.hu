@@ -1,5 +1,5 @@
 import { Controller } from "stimulus"
-import { lang, getURLParams, numberWithCommas } from "../../../js/utils"
+import { lang, getURLParams, numberWithCommas, yrStr } from "../../../js/utils"
 
 export default class extends Controller {
   static get targets() {
@@ -33,7 +33,7 @@ export default class extends Controller {
       this.searchExpressionTarget.innerHTML = `${lang("photographer")}: <em>${q.photographer}</em>`
     } else if (Object.keys(q).indexOf("year") > -1) {
       this.searchExpressionTarget.classList.add("is-visible")
-      this.searchExpressionTarget.innerHTML = `${lang("year")}: <em>${q.year}</em>`
+      this.searchExpressionTarget.innerHTML = `${lang("year")}: <em>${yrStr(q.year)}</em>`
     } else if (Object.keys(q).indexOf("country") > -1) {
       this.searchExpressionTarget.classList.add("is-visible")
       this.searchExpressionTarget.innerHTML = `${lang("country")}: <em>${q.country}</em>`

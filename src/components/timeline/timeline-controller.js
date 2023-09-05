@@ -1,5 +1,5 @@
 import { Controller } from "stimulus"
-import { getURLParams, trigger } from "../../js/utils"
+import { getURLParams, trigger, yrStr } from "../../js/utils"
 import { setAppState, removeAppState } from "../../js/app"
 import photoManager from "../../js/photo-manager"
 
@@ -77,9 +77,9 @@ export default class extends Controller {
   getRange() {
     return { from: this.yearStart, to: this.yearEnd }
   }
-
+  
   setTimelineLabels() {
-    this.sliderYearLabelTarget.textContent = this.year
+    this.sliderYearLabelTarget.textContent = yrStr(this.year)
     console.log('Year is ' + this.year)
     // check if selected year (this.year) has photos at all (not already loaded)
     // and if not, grey out the slider
@@ -92,14 +92,14 @@ export default class extends Controller {
       this.sliderYearTarget.classList.add("is-empty")
       this.sliderYearCountTarget.textContent = 0
     }
-
-    this.yearStartTarget.textContent = this.yearStart
-    this.yearEndTarget.textContent = this.yearEnd
+    this.yearStartTarget.textContent = yrStr(this.yearStart)
+    this.yearEndTarget.textContent = yrStr(this.yearEnd)
   }
 
   fixSlider() {
     if (this.year > 0) {
       const left = Math.floor(this.sliderYearTarget.offsetWidth / 2)
+      console.log('Yearinfo:', this.yearEnd, this.yearStart, this.range)
       const start = Math.max(
         left,
         left +

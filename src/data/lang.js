@@ -139,7 +139,7 @@ module.exports = {
     username: "Felhasználónév",
     username_or_email: "Felhasználónév vagy Email",
     weekly_fortepan: "Heti Fortepan",
-    year: "Év",
+    year: "Dátum",
     age_restriction: {
       title: "Korhatáros tartalom",
       content: "A kép megtekintése a nyugalom megzavarására alkalmas, kiskorúak számára nem ajánlott!",
@@ -289,7 +289,7 @@ module.exports = {
     username: "Username",
     username_or_email: "Username or Email",
     weekly_fortepan: "Weekly Fortepan",
-    year: "Year",
+    year: "Date",
     age_restriction: {
       title: "Age-restricted content",
       content: "This content may be offensive or disturbing, not appropriate for visitors under 18 years.",

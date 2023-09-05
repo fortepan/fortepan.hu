@@ -1,14 +1,14 @@
 import { Controller } from "stimulus"
 
 import throttle from "lodash/throttle"
-import { getLocale, trigger } from "../../js/utils"
+import { getLocale, trigger, yrStr } from "../../js/utils"
 import { setAppState, removeAppState, toggleAppState, appState } from "../../js/app"
 import photoManager from "../../js/photo-manager"
 import listManager from "../../js/list-manager"
 
 export default class extends Controller {
   static get targets() {
-    return ["location", "description", "approximate", "year", "donor", "author", "mid", "tags"]
+    return ["location", "description", "year", "donor", "author", "mid", "tags"]
   }
 
   connect() {
@@ -42,7 +42,7 @@ export default class extends Controller {
       return null
     }
 
-    const locationArray = ["country", "city", "place"].map(val => convertToHref(val)).filter(Boolean)
+    const locationArray = ["city", "place"].map(val => convertToHref(val)).filter(Boolean)
 
     this.locationTarget.innerHTML = ""
     if (locationArray.length > 0) {
@@ -67,8 +67,7 @@ export default class extends Controller {
     }
 
     this.midTarget.innerHTML = `<a href="${baseUrl}?id=${data.mid}">${data.mid}</a>`
-    this.approximateTarget.innerHTML = `${data.approximate ? '~' : ''}`
-    this.yearTarget.innerHTML = `<a href="${baseUrl}?year=${data.year}">${data.year}</a>`
+    this.yearTarget.innerHTML = `<a href="${baseUrl}?year=${data.year}">${yrStr(data.year)}</a>`
     this.donorTarget.innerHTML = `<a href="${baseUrl}?donor=${encodeURIComponent(data.donor)}">${data.donor}</a>`
 
     if (data.author) {

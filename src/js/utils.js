@@ -58,6 +58,12 @@ export const getURLParams = () => {
   return Object.fromEntries(new URLSearchParams(window.location.search.substring(1)))
 }
 
+export const yrStr = (yearstr) => {
+  let datearr = yearstr.toString().split('')
+  if (yearstr.toString().length != 8) {return yearstr}
+  return datearr[0]+datearr[1]+datearr[2]+datearr[3]+'.'+datearr[4]+datearr[5]+'.'+datearr[6]+datearr[7]+'.'
+} 
+
 export const getOrg = () => {
   const locationArr = window.location.hostname.split(".")
   if (locationArr.length <= 2) {
@@ -126,7 +132,7 @@ export const slugify = (str, removeSpaces) => {
 
 export const setPageMeta = (title, description, imgSrc) => {
   if (title) {
-    const titleText = `Fortepan — ${title}`
+    const titleText = `Freedoc — ${title}`
     document.title = titleText
     document.querySelector('meta[property="twitter:title"]').setAttribute("content", titleText)
     document.querySelector('meta[property="og:title"]').setAttribute("content", titleText)

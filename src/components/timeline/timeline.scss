@@ -48,8 +48,8 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  left: rem(16px + 28px + 16px);
-  right: rem(16px + 28px + 16px);
+  left: rem(16px + 66px + 16px);
+  right: rem(16px + 64px + 16px);
   cursor: pointer;
 }
 
@@ -210,7 +210,7 @@
 
 .photos-timeline__year-label {
   position: absolute;
-  width: rem(44px);
+  width: rem(88px);
   top: rem(13px);
   bottom: rem(13px);
   left: rem(10px);

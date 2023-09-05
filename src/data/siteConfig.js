@@ -17,9 +17,7 @@ module.exports = {
   DEFAULT_THEME: "light",
   LOCALES: [
     { code: "en", text: "English" },
-    { code: "hu", text: "Magyar" },
-    { code: "it", text: "Italian" },
-    { code: "pl", text: "Polska" },
+    { code: "hu", text: "Magyar" }
   ],
   // LOCALES: {
   //   en: "English",

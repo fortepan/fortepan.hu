@@ -1,7 +1,7 @@
 import { Controller } from "stimulus"
 
 import config from "../../data/siteConfig"
-import { trigger, lang, isElementInViewport, getLocale, getImgAltText, photoRes } from "../../js/utils"
+import { trigger, lang, isElementInViewport, getLocale, getImgAltText, photoRes, yrStr } from "../../js/utils"
 import photoManager from "../../js/photo-manager"
 import listManager from "../../js/list-manager"
 import { appState } from "../../js/app"
@@ -99,7 +99,7 @@ export default class extends Controller {
         ? `/${getLocale()}/lists/${listManager.getSelectedListId()}/photos/${this.element.photoId}`
         : `/${getLocale()}/photos/?id=${this.element.photoId}`
 
-    const locationArray = [data.year, data.city, data.place]
+    const locationArray = [yrStr(data.year), data.city, data.place]
     if (!data.city && !data.place && data.country) locationArray.push(data.country)
     this.locationTarget.textContent = locationArray.filter(Boolean).join(" · ")
     this.descriptionTarget.textContent = data.description || ""

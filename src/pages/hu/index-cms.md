@@ -1,6 +1,6 @@
 ---
 layout: home/home.liquid
-title: Fortepan — Főoldal
+title: Freedok — Főoldal
 permalink: "/hu/home/"
 announcement:
   title: "<strong>HORVÁTH JÓZSEF OPERATŐR, HADITUDÓSÍTÓ KÉPEI</strong>"
