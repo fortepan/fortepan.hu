@@ -8,7 +8,17 @@ import listManager from "../../js/list-manager"
 
 export default class extends Controller {
   static get targets() {
-    return ["background", "pagerPrev", "pagerNext", "photo", "photos", "photosContainer"]
+    return [
+      "background",
+      "pagerPrev",
+      "pagerNext",
+      "counter",
+      "counterCurrent",
+      "counterAll",
+      "photo",
+      "photos",
+      "photosContainer",
+    ]
   }
 
   connect() {
@@ -161,6 +171,12 @@ export default class extends Controller {
 
     this.pagerPrevTarget.classList.toggle("is-disabled", total === 1 || !this.prevPhotoId)
     this.pagerNextTarget.classList.toggle("is-disabled", total === 1 || !this.nextPhotoId)
+
+    if (this.role === "lists") {
+      this.counterCurrentTarget.textContent = `${listManager.getSelectedPhotoIndex() + 1}`
+      this.counterAllTarget.textContent = `${listManager.getSelectedList().photos.length}`
+      this.counterTarget.classList.add("is-visible")
+    }
   }
 
   async showPhoto(e, photoId) {

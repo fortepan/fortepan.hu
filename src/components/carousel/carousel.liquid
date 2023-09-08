@@ -36,6 +36,12 @@
 
         <div class="carousel__photos__all" data-carousel-target="photos"></div>
 
+        <div class="carousel__photos__counter" data-carousel-target="counter">
+            <span data-carousel-target="counterCurrent"></span>
+            <span class="separator">/</span>
+            <span class="all" data-carousel-target="counterAll">/</span>
+        </div>
+
         <div class="carousel__photos__actions" data-carousel-target="actions">
             {% if role == "embed" %}
             <div class="embed-logo" data-embed-target="logo" data-action="embed#onLogoClick">
