@@ -1,0 +1,48 @@
+.embed {
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  min-width: rem(320px);
+
+  .carousel__photos__actions {
+    padding-left: 1rem;
+  }
+
+  .embed-logo {
+    position: relative;
+    height: rem(48px);
+    display: flex;
+    align-items: center;
+
+    &__link {
+      display: block;
+
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      align-items: center;
+      transition: transform 0.6s $ease-out-expo;
+
+      span {
+        @include font-heading-bold();
+        margin-left: rem(16px);
+        font-size: rem(16px);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        overflow: hidden;
+
+        @media screen and (max-width: ($breakpoint-phone-sm - 1px)) {
+          display: none;
+        }
+      }
+    }
+
+    &__logo {
+      width: rem(48px);
+    }
+  }
+}

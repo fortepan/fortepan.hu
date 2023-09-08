@@ -2,16 +2,11 @@
 layout: base/base.liquid
 ---
 
-<div class="embed scrollview"
-     data-controller="embed"
-     data-action="scroll->embed#onScroll
-                  resize@window->embed#onScroll
-                  photos:selectThumbnail@document->embed#selectThumbnail
-                  photosCarousel:photoSelected@document->embed#onPhotoSelected
-                  photosCarousel:hide@document->embed#onCarouselClosed
-                  thumbnail:loaded@document->embed#loadThumbnails"
->
-  <div class="list-title photos-title is-visible">
+<section class="embed" data-controller="embed">
+
+  {% include carousel/carousel role:"embed" %}
+
+  <div class="list-title is-visible">
     <span class="photos-title__username visible-when-public"><span data-embed-target="username"></span></span>
     <h1 class="photos-title__title" data-embed-target="title"></h1>
     <h5 class="photos-title__subtitle" data-embed-target="subtitle">
@@ -24,7 +19,7 @@ layout: base/base.liquid
     </h5>
     <p class="list-description" data-embed-target="description"></p>
   </div>
-  <div class="photos__grid is-hidden" data-embed-target="grid"></div>
+
   <div class="lists__placeholder is-hidden hidden-when-public" data-embed-target="placeholder">
     <h3>{{ lang[locale].list_photos_empty_header }}</h3>
     <p>{{ lang[locale].list_photos_empty_text }}</p>
@@ -35,11 +30,20 @@ layout: base/base.liquid
       </svg>
       </a>
   </div>
-</div>
 
-{% include thumbnail/thumbnail-template role:"lists" %}
-{% include age-restriction/age-restriction-template.liquid %}
-{% include carousel/carousel %}
-{% include dialog/download/download %}
-{% include dialog/share/share %}
-{% include dialog/age-restriction/age-restriction.liquid %}
+  <div class="thumbnails"
+      data-action="photos:selectThumbnail@document->embed#selectThumbnail
+                    photosCarousel:photoSelected@document->embed#onPhotoSelected
+                    photosCarousel:hide@document->embed#onCarouselClosed
+                    thumbnail:loaded@document->embed#loadThumbnails"
+  >
+    <div class="photos__grid is-hidden" data-embed-target="grid"></div>
+  </div>
+
+  {% include thumbnail/thumbnail-template role:"lists" %}
+  {% include age-restriction/age-restriction-template.liquid %}
+  {% include dialog/download/download %}
+  {% include dialog/share/share %}
+  {% include dialog/age-restriction/age-restriction.liquid %}
+
+</section>

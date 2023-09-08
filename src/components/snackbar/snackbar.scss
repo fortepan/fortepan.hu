@@ -15,6 +15,10 @@
   pointer-events: none;
   color: #fff;
   font-weight: 600;
+
+  .is-embed & {
+    top: rem(16px);
+  }
 }
 
 .snackbar--success {

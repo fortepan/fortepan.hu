@@ -37,10 +37,19 @@
         <div class="carousel__photos__all" data-carousel-target="photos"></div>
 
         <div class="carousel__photos__actions" data-carousel-target="actions">
+            {% if role == "embed" %}
+            <div class="embed-logo" data-embed-target="logo" data-action="embed#onLogoClick">
+                <a href="https://fortepan.hu/{{ locale }}/" class="embed-logo__link">
+                {% inlineSVG src:"src/static/images/header-logo.svg" class:"embed-logo__logo" %}
+                <span data-embed-target="logoLabel">Fortepan</span>
+                </a>
+            </div>
+            {% else %}
             <div class="button-circular" data-action="click->carousel#onCloseClicked">
                 {% inlineSVG src:"src/static/images/icons/24/icon-close.svg" class:"button-circular__icon" %}
                 <div class="button-circular__label">{{ lang[locale].close }}</div>
             </div>
+            {% endif %}
             <div class="carousel__photos__actions__group">
                 <div id="SlideshowPlay" class="button-circular" data-action="click->carousel#playSlideshow">
                     {% inlineSVG src:"src/static/images/icons/24/icon-play.svg" class:"button-circular__icon" %}
@@ -54,10 +63,12 @@
                     {% inlineSVG src:"src/static/images/icons/24/icon-download.svg" class:"button-circular__icon" %}
                     <div class="button-circular__label">{{ lang[locale].download }}</div>
                 </div>
+                {% if role != "embed" %}
                 <div class="button-circular add-to-list-button" data-action="click->carousel#addToList">
                     {% inlineSVG src:"src/static/images/icons/24/icon-add-to-list.svg" class:"button-circular__icon" %}
                     <div class="button-circular__label">{{ lang[locale].list_add_to }}</div>
                 </div>
+                {% endif %}
                 <div class="button-circular" data-action="click->carousel#shareImage">
                     {% inlineSVG src:"src/static/images/icons/24/icon-share.svg" class:"button-circular__icon" %}
                     <div class="button-circular__label">{{ lang[locale].share }}</div>
@@ -66,11 +77,13 @@
                     {% inlineSVG src:"src/static/images/icons/24/icon-sidebar.svg" class:"button-circular__icon" %}
                     <div class="button-circular__label">{{ lang[locale].details }}</div>
                 </div>
+                {% if role != "embed" %}
                 <div class="button-circular" data-action="click->carousel#toggleFullscreen">
                     {% inlineSVG src:"src/static/images/icons/24/icon-fullscreen.svg" class:"button-circular__icon" id:"FullscreenOpen" %}
                     {% inlineSVG src:"src/static/images/icons/24/icon-fullscreen-close.svg" class:"button-circular__icon" id:"FullscreenClose" %}
                     <div class="button-circular__label">{{ lang[locale].fullscreen }}</div>
                 </div>
+                {% endif %}
             </div>
         </div>
 

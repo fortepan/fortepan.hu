@@ -23,8 +23,10 @@ export default class extends Controller {
   connect() {
     this.listData = null
     setAppState("is-lists")
-    setAppState("embed")
+    setAppState("is-embed")
     setAppState("theme--dark")
+    setAppState("hide-carousel-sidebar")
+    setAppState("carousel-fullscreen")
 
     this.onScroll = throttle(this.onScroll, 200)
 
@@ -65,7 +67,9 @@ export default class extends Controller {
         // so checking if they're in the viewport fails (and that's needed to start loading the first set in the viewport)
         this.onScroll()
 
-        const urlValues = getPrettyURLValues(window.location.pathname.split(listData.url).join("/"))
+        const urlValues = getPrettyURLValues(
+          window.location.pathname.split(listData.url.split("lists").join("embed")).join("/")
+        )
 
         // urlValues[0] is simply photos for better readibility
         const photoId = urlValues[1]
@@ -153,7 +157,10 @@ export default class extends Controller {
 
   onPhotoSelected(e) {
     const id = e && e.detail && e.detail.photoId ? e.detail.photoId : listManager.getSelectedPhotoId()
-    const url = `${listManager.getSelectedList().url}/photos/${id}`
+    const url = `${listManager
+      .getSelectedList()
+      .url.split("lists")
+      .join("embed")}/photos/${id}`
 
     setPageMeta(
       `${this.listData.name} — #${id}`,
