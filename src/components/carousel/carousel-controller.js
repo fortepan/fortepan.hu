@@ -13,8 +13,8 @@ export default class extends Controller {
       "pagerPrev",
       "pagerNext",
       "counter",
-      "counterCurrent",
-      "counterAll",
+      "counterDots",
+      "counterTooltip",
       "photo",
       "photos",
       "photosContainer",
@@ -204,10 +204,10 @@ export default class extends Controller {
         for (let i = 0; i < total; i += 1) {
           dotsHTML += `<span class="dot"></span>`
         }
-        this.counterTarget.innerHTML = dotsHTML
+        this.counterDotsTarget.innerHTML = dotsHTML
       }
 
-      this.counterTarget.querySelectorAll(".dot").forEach((dot, i) => {
+      this.counterDotsTarget.querySelectorAll(".dot").forEach((dot, i) => {
         // first reset
         dot.className = "dot"
 
@@ -223,6 +223,11 @@ export default class extends Controller {
         // set the current one
         if (i === currentIndex) dot.classList.add("current")
       })
+
+      this.counterTooltipTarget.textContent = `${currentIndex + 1}/${total}`
+      this.counterTooltipTarget.classList.remove("left", "right")
+      if (currentIndex === currentRange[0]) this.counterTooltipTarget.classList.add("left")
+      if (currentIndex === currentRange[1]) this.counterTooltipTarget.classList.add("right")
 
       this.counterTarget.classList.add("is-visible")
       this.counterTarget.index = currentIndex
