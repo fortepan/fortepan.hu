@@ -268,8 +268,12 @@
   }
 
   pointer-events: none;
-
   transition: transform 0.4s $ease-out-expo, opacity 0.4s $ease-out-expo;
+
+  .carousel__photos.hide-controls & {
+    transform: translateX(-50%) translateY(-6px);
+    opacity: 0;
+  }
 
   .embed & {
     pointer-events: all;
