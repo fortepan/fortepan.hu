@@ -258,46 +258,88 @@
 .carousel__photos__counter {
   position: absolute;
   z-index: 2;
-  bottom: rem(12px);
+  bottom: rem(24px);
 
   display: none;
-  align-items: center;
-  gap: rem(4px);
-  border-radius: rem(16px);
-  font-size: rem(12px);
-  font-weight: 700;
-  line-height: 1.25;
-  padding: 0.5rem 1rem;
   left: 50%;
-  transform: translateX(-50%);
-
-  color: $light-primary;
-
-  background-color: rgba($light-base, 0.06);
-  backdrop-filter: blur(20px);
-  will-change: opacity, transform;
 
   &.is-visible {
-    display: flex;
-  }
-
-  transition: transform 0.4s $ease-out-expo, opacity 0.4s $ease-out-expo;
-
-  .carousel__photos.hide-controls & {
-    transform: translateX(-50%) translateY(-12px);
-    opacity: 0;
-  }
-
-  .separator {
-    font-weight: 400;
-    opacity: 0.48;
-  }
-
-  .all {
-    opacity: 0.48;
+    display: block;
   }
 
   pointer-events: none;
+
+  transition: transform 0.4s $ease-out-expo, opacity 0.4s $ease-out-expo;
+
+  .embed & {
+    pointer-events: all;
+    cursor: pointer;
+
+    &:before {
+      position: absolute;
+      content: "";
+      display: block;
+      top: rem(-15px);
+      height: rem(25px);
+      left: rem(-44px);
+      width: rem(88px);
+    }
+  }
+
+  .dot {
+    position: absolute;
+    bottom: 0;
+    left: rem(-2.5px);
+    width: rem(5px);
+    height: rem(5px);
+    display: block;
+    background: $light-base;
+    opacity: 0.5;
+    border-radius: 50%;
+    pointer-events: none;
+
+    transition: transform 0.4s $ease-out-expo, opacity 0.4s $ease-out-expo;
+
+    &.range--more {
+      transform: translateX(-44px) scale(0);
+      opacity: 0;
+    }
+
+    &.range--2 {
+      transform: translateX(-33px) scale(0.33);
+    }
+
+    &.range--1 {
+      transform: translateX(-22px) scale(0.66);
+    }
+
+    &.in-range-1 {
+      transform: translateX(-11px);
+    }
+
+    // &.in-range-2 {}
+
+    &.in-range-3 {
+      transform: translateX(11px);
+    }
+
+    &.range-1 {
+      transform: translateX(22px) scale(0.66);
+    }
+
+    &.range-2 {
+      transform: translateX(33px) scale(0.33);
+    }
+
+    &.range-more {
+      transform: translateX(44px) scale(0);
+      opacity: 0;
+    }
+
+    &.current {
+      opacity: 1;
+    }
+  }
 }
 
 #SlideshowPause {

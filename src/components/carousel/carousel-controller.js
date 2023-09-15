@@ -55,6 +55,12 @@ export default class extends Controller {
     // hide carousel
     this.element.classList.remove("is-visible")
 
+    // reset counter (on lists)
+    this.counterTarget.classList.remove("is-visible")
+    delete this.counterTarget.index
+    delete this.counterTarget.range
+    delete this.counterTarget.total
+
     if (!e || (e && e.detail && !e.detail.silent)) {
       trigger("photosCarousel:hide")
     }
@@ -172,10 +178,56 @@ export default class extends Controller {
     this.pagerPrevTarget.classList.toggle("is-disabled", total === 1 || !this.prevPhotoId)
     this.pagerNextTarget.classList.toggle("is-disabled", total === 1 || !this.nextPhotoId)
 
+    // counter for lists
     if (this.role === "lists") {
-      this.counterCurrentTarget.textContent = `${listManager.getSelectedPhotoIndex() + 1}`
-      this.counterAllTarget.textContent = `${listManager.getSelectedList().photos.length}`
+      // setup
+      const currentIndex = listManager.getSelectedPhotoIndex()
+      const prevIndex = this.counterTarget.index || currentIndex
+      const currentRange = this.counterTarget.range || [
+        Math.min(currentIndex, total - 3),
+        Math.min(currentIndex + 2, total - 1),
+      ]
+
+      // adjusting the range
+      if (currentIndex > prevIndex && currentIndex > currentRange[1]) {
+        currentRange[0] += 1
+        currentRange[1] += 1
+      }
+      if (currentIndex < prevIndex && currentIndex < currentRange[0]) {
+        currentRange[0] -= 1
+        currentRange[1] -= 1
+      }
+
+      if (!this.counterTarget.total || this.counterTarget.total !== total) {
+        // when no total is given (first run) or the # of total is different, generate/reganarate all the dots
+        let dotsHTML = ""
+        for (let i = 0; i < total; i += 1) {
+          dotsHTML += `<span class="dot"></span>`
+        }
+        this.counterTarget.innerHTML = dotsHTML
+      }
+
+      this.counterTarget.querySelectorAll(".dot").forEach((dot, i) => {
+        // first reset
+        dot.className = "dot"
+
+        // then set up the right classes given the positions
+        if (i < currentRange[0]) {
+          dot.classList.add(`range--${currentRange[0] - i > 2 ? `more` : currentRange[0] - i}`)
+        } else if (i <= currentRange[1]) {
+          dot.classList.add(`in-range-${i + 1 - currentRange[0]}`)
+        } else {
+          dot.classList.add(`range-${i - currentRange[1] > 2 ? `more` : i - currentRange[1]}`)
+        }
+
+        // set the current one
+        if (i === currentIndex) dot.classList.add("current")
+      })
+
       this.counterTarget.classList.add("is-visible")
+      this.counterTarget.index = currentIndex
+      this.counterTarget.range = currentRange
+      this.counterTarget.total = total
     }
   }
 
