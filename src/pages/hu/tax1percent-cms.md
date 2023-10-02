@@ -8,7 +8,8 @@ _template: article
 
 ### Az 1% felajánlásához szükséges adatok
 
-Summa Artium Alapítvány \<br> Adószám: 18128510-1-42
+Summa Artium Alapítvány\
+Adószám: 18128510-1-42
 
 A határidő május 20-a, de már most nyilatkozhat.
 

@@ -643,7 +643,7 @@ export default class extends Controller {
 
     if (
       (this.role === "lists" && !photoData.isDataLoaded) ||
-      (!photoData.ageRestrictionRemoved && photoData.tags && photoData.tags.indexOf(config.AGE_RESTRICTION_TAG) > -1)
+      (!photoData.ageRestrictionRemoved && photoData.tags && photoData.tags.indexOf(config().AGE_RESTRICTION_TAG) > -1)
     ) {
       return false
     }
