@@ -25,6 +25,14 @@
           "best_of": "120 fontos kép",
           "all": "a teljes sorozat"
         }
+      },
+      "en": {
+        "title": "Long weekends",
+        "blurb": "Weekends and public holidays, or what did people do when they did not work? Photos on processions, priestly ordinations, concerts of alternative rock bands (called „Committee” or „Galloping Coroners”), vacations and family walks in Budapest.",
+        "actions": {
+          "best_of": "120 best of",
+          "all": "All images"
+        }
       }
     },
     {
