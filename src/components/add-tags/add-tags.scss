@@ -30,10 +30,28 @@
 
 .carousel-add-tags__form {
   display: block;
-  margin-top: 0.5rem;
+  margin-top: 1.5rem;
 
   &.is-hidden {
     display: none;
+  }
+
+  &__helper {
+    color: rgba($dark-base, 0.64);
+    margin: 0;
+
+    a {
+      color: $red !important;
+      font-weight: inherit;
+    }
+  }
+
+  .theme--dark &__helper {
+    color: rgba($light-base, 0.64);
+  }
+
+  .carousel-sidebar__tags__form__selectize {
+    margin-top: 0.5rem;
   }
 }
 
