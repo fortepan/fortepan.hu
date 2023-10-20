@@ -2,23 +2,15 @@
 layout: base/base.liquid
 ---
 
-<section class="embed" data-controller="embed">
+<section class="embed" data-controller="embed"
+  data-action="photosCarousel:onThumbnails@document->embed#toggleInfobar
+              resize@window->embed#onScroll
+              photos:selectThumbnail@document->embed#selectThumbnail
+              photosCarousel:photoSelected@document->embed#onPhotoSelected
+              thumbnail:loaded@document->embed#loadThumbnails"
+>
 
   {% include carousel/carousel role:"embed" %}
-
-  <div class="list-title is-visible">
-    <span class="photos-title__username visible-when-public"><span data-embed-target="username"></span></span>
-    <h1 class="photos-title__title" data-embed-target="title"></h1>
-    <h5 class="photos-title__subtitle" data-embed-target="subtitle">
-      <i class="lists-private-icon hidden-when-public" title="{{ lang[locale].list_edit_private }}">
-        {% inlineSVG src:"src/static/images/icons/24/icon-lock.svg" %}&bull;
-      </i>
-      <span data-embed-target="count" class="photos-title__subtitle__count"></span>
-      {{ lang[locale].photo_results }}
-      <span class="hidden-when-public">&bull;&nbsp;</span>
-    </h5>
-    <p class="list-description" data-embed-target="description"></p>
-  </div>
 
   <div class="lists__placeholder is-hidden hidden-when-public" data-embed-target="placeholder">
     <h3>{{ lang[locale].list_photos_empty_header }}</h3>
@@ -31,19 +23,36 @@ layout: base/base.liquid
       </a>
   </div>
 
-  <div class="thumbnails"
-      data-action="photos:selectThumbnail@document->embed#selectThumbnail
-                    photosCarousel:photoSelected@document->embed#onPhotoSelected
-                    photosCarousel:hide@document->embed#onCarouselClosed
-                    thumbnail:loaded@document->embed#loadThumbnails"
-  >
-    <div class="photos__grid is-hidden" data-embed-target="grid"></div>
+  <div class="embed-infobar scrollview" data-embed-target="infobar" data-action="scroll->embed#onScroll">
+
+    <div class="embed-infobar__content">
+
+      <div class="list-info">
+        <h2 class="list-info__title" data-embed-target="title"></h2>
+        <h5 class="list-info__subtitle" data-embed-target="subtitle">
+          <i class="lists-private-icon hidden-when-public" title="{{ lang[locale].list_edit_private }}">
+            {% inlineSVG src:"src/static/images/icons/24/icon-lock.svg" %}&bull;
+          </i> <span class="list-info__username" data-embed-target="username"></span>&bull;<span data-embed-target="count" class="list-info__subtitle__count"></span>
+          {{ lang[locale].photo_results }}
+        </h5>
+        <p class="list-info__description" data-embed-target="description"></p>
+      </div>
+
+      <div class="thumbnails"
+          data-action="photos:selectThumbnail@document->embed#selectThumbnail
+                        photosCarousel:photoSelected@document->embed#onPhotoSelected
+                        photosCarousel:hide@document->embed#onCarouselClosed
+                        thumbnail:loaded@document->embed#loadThumbnails"
+      >
+        <div class="photos__grid is-hidden" data-embed-target="grid"></div>
+      </div>
+
+    </div>
+
   </div>
 
-  {% include thumbnail/thumbnail-template role:"lists" %}
+  {% include thumbnail/thumbnail-template %}
   {% include age-restriction/age-restriction-template.liquid %}
-  {% include dialog/download/download %}
-  {% include dialog/share/share %}
   {% include dialog/age-restriction/age-restriction.liquid %}
 
 </section>

@@ -155,6 +155,7 @@ module.exports = {
       close_button: "Bezárás",
       more_button: "Részletek",
     },
+    thumbnails: "Nézőképek",
   },
   en: {
     about_us: "About us",
@@ -304,5 +305,6 @@ module.exports = {
     },
     projects: "Projects",
     photo_uploads: "Previous uploads",
+    thumbnails: "Show thumbnails",
   },
 }

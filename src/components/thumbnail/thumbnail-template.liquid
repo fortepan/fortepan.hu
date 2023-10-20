@@ -1,7 +1,8 @@
 <template id="photos-thumbnail">
   <div class="photos-thumbnail" data-controller="thumbnail"
        data-action="click->thumbnail#clicked
-                    dialogAgeRestriction:remove@document->thumbnail#removeAgeRestriction"
+                    dialogAgeRestriction:remove@document->thumbnail#removeAgeRestriction
+                    resize@window->thumbnail#resize"
   >
     <a href="#" class="photos-thumbnail__link" data-thumbnail-target="link">
       <div class="photos-thumbnail__image" data-thumbnail-target="container">

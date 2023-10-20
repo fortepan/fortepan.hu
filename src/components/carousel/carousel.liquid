@@ -44,7 +44,7 @@
         <div class="carousel__photos__actions" data-carousel-target="actions">
             {% if role == "embed" %}
             <div class="embed-logo" data-embed-target="logo" data-action="embed#onLogoClick">
-                <a href="https://fortepan.hu/{{ locale }}/" class="embed-logo__link">
+                <a href="https://fortepan.hu/{{ locale }}/" class="embed-logo__link" target="_blank">
                 {% inlineSVG src:"src/static/images/header-logo.svg" class:"embed-logo__logo" %}
                 <span data-embed-target="logoLabel">Fortepan</span>
                 </a>
@@ -64,20 +64,25 @@
                     {% inlineSVG src:"src/static/images/icons/24/icon-pause.svg" class:"button-circular__icon" %}
                     <div class="button-circular__label">{{ lang[locale].slideshow }}</div>
                 </div>
+                {% if role != "embed" %}
                 <div class="button-circular" data-action="click->carousel#downloadImage">
                     {% inlineSVG src:"src/static/images/icons/24/icon-download.svg" class:"button-circular__icon" %}
                     <div class="button-circular__label">{{ lang[locale].download }}</div>
                 </div>
-                {% if role != "embed" %}
                 <div class="button-circular add-to-list-button" data-action="click->carousel#addToList">
                     {% inlineSVG src:"src/static/images/icons/24/icon-add-to-list.svg" class:"button-circular__icon" %}
                     <div class="button-circular__label">{{ lang[locale].list_add_to }}</div>
                 </div>
-                {% endif %}
                 <div class="button-circular" data-action="click->carousel#shareImage">
                     {% inlineSVG src:"src/static/images/icons/24/icon-share.svg" class:"button-circular__icon" %}
                     <div class="button-circular__label">{{ lang[locale].share }}</div>
                 </div>
+                {% else %}
+                <div class="button-circular" data-action="click->carousel#onThumbnails">
+                    {% inlineSVG src:"src/static/images/icons/24/icon-thumbnails.svg" class:"button-circular__icon" %}
+                    <div class="button-circular__label">{{ lang[locale].thumbnails }}</div>
+                </div>
+                {% endif %}
                 <div class="button-circular" data-action="click->carousel#toggleSidebar">
                     {% inlineSVG src:"src/static/images/icons/24/icon-sidebar.svg" class:"button-circular__icon" %}
                     <div class="button-circular__label">{{ lang[locale].details }}</div>
@@ -93,5 +98,5 @@
         </div>
 
     </div>
-    {% include sidebar/sidebar.liquid %}
+    {% include sidebar/sidebar.liquid role:role %}
 </div>

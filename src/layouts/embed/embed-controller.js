@@ -4,20 +4,11 @@ import throttle from "lodash/throttle"
 import config from "../../data/siteConfig"
 import { setAppState } from "../../js/app"
 import listManager from "../../js/list-manager"
-import {
-  copyToClipboard,
-  escapeHTML,
-  getLocale,
-  getPrettyURLValues,
-  isElementInViewport,
-  lang,
-  setPageMeta,
-  trigger,
-} from "../../js/utils"
+import { escapeHTML, getLocale, getPrettyURLValues, lang, setPageMeta, trigger } from "../../js/utils"
 
 export default class extends Controller {
   static get targets() {
-    return ["title", "subtitle", "username", "count", "description", "grid", "placeholder"]
+    return ["infobar", "title", "subtitle", "username", "count", "description", "grid", "placeholder"]
   }
 
   connect() {
@@ -174,24 +165,6 @@ export default class extends Controller {
     }
   }
 
-  onCarouselClosed() {
-    // scroll to the last selected thumbnail
-    this.scrollToSelectedThumbnail()
-  }
-
-  scrollToSelectedThumbnail() {
-    const thumbnail = this.element.querySelector(".photos-thumbnail.is-selected")
-
-    // scroll to thumbnail if it's not in the viewport
-    if (thumbnail) {
-      if (!isElementInViewport(thumbnail.querySelector(".photos-thumbnail__image"))) {
-        const viewportOffsetTop = document.querySelector(".header-nav").offsetHeight + 16
-
-        this.element.scrollTop = thumbnail.offsetTop - viewportOffsetTop
-      }
-    }
-  }
-
   // Set a thumbnail's selected state
   selectThumbnail(e = null, index = -1) {
     if ((e && e.detail && e.detail.index > -1) || index !== -1) {
@@ -216,9 +189,10 @@ export default class extends Controller {
     })
   }
 
-  shareLink(e) {
-    e.preventDefault()
-
-    copyToClipboard(`${window.location.origin}/${getLocale()}/lists/${this.listData.id}`, "link")
+  toggleInfobar() {
+    this.infobarTarget.classList.toggle("is-visible")
+    setTimeout(() => {
+      this.onScroll()
+    }, 400)
   }
 }

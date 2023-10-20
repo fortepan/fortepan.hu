@@ -669,6 +669,10 @@ export default class extends Controller {
     }
   }
 
+  onThumbnails() {
+    trigger("photosCarousel:onThumbnails")
+  }
+
   showAgeRestrictionDialog(e) {
     if (e) e.preventDefault()
 

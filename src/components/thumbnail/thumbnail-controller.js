@@ -36,6 +36,7 @@ export default class extends Controller {
       e &&
       e.target &&
       this.role === "lists" &&
+      !appState("is-embed") &&
       (e.target === this.element.querySelector(".context-menu") ||
         this.element.querySelector(".context-menu").contains(e.target))
     ) {
@@ -74,7 +75,10 @@ export default class extends Controller {
 
   // resize thumbnail when the browser window gets resized
   resize() {
-    const h = window.innerWidth < 640 || this.element.forceSmallSize ? (THUMBNAIL_HEIGHT * 2) / 3 : THUMBNAIL_HEIGHT
+    const h =
+      window.innerWidth < 640 || window.innerHeight < 480 || this.element.forceSmallSize
+        ? (THUMBNAIL_HEIGHT * 2) / 3
+        : THUMBNAIL_HEIGHT
 
     if (!this.naturalWidth) return
     const w = Math.min(240, (this.naturalWidth / this.naturalHeight) * h)

@@ -88,6 +88,13 @@ export default class extends Controller {
         })
       })
     }
+
+    if (appState("is-embed")) {
+      // bind history api calls to sidabar anchors
+      this.element.querySelectorAll(".carousel-sidebar a").forEach(anchorNode => {
+        anchorNode.setAttribute("target", "_blank")
+      })
+    }
   }
 
   show() {
