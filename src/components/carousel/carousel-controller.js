@@ -182,7 +182,7 @@ export default class extends Controller {
     if (this.role === "lists") {
       // setup
       const currentIndex = listManager.getSelectedPhotoIndex()
-      const prevIndex = this.counterTarget.index || currentIndex
+      const prevIndex = this.counterTarget.index || -1
       const currentRange = this.counterTarget.range || [
         Math.min(currentIndex, total - 3),
         Math.min(currentIndex + 2, total - 1),
