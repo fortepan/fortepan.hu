@@ -70,8 +70,14 @@
     transform: none;
   }
 
+  &__close-button {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+
   .list-info {
-    margin: 1rem 1rem 0;
+    margin: 1rem 4rem 0 1rem;
     box-sizing: border-box;
 
     &__title,
@@ -111,5 +117,9 @@
     padding: 0 0.5rem;
     flex-wrap: nowrap;
     overflow: auto;
+  }
+
+  .photos-thumbnail__image {
+    margin-bottom: 0;
   }
 }

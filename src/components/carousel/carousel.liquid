@@ -87,13 +87,11 @@
                     {% inlineSVG src:"src/static/images/icons/24/icon-sidebar.svg" class:"button-circular__icon" %}
                     <div class="button-circular__label">{{ lang[locale].details }}</div>
                 </div>
-                {% if role != "embed" %}
                 <div class="button-circular" data-action="click->carousel#toggleFullscreen">
                     {% inlineSVG src:"src/static/images/icons/24/icon-fullscreen.svg" class:"button-circular__icon" id:"FullscreenOpen" %}
                     {% inlineSVG src:"src/static/images/icons/24/icon-fullscreen-close.svg" class:"button-circular__icon" id:"FullscreenClose" %}
                     <div class="button-circular__label">{{ lang[locale].fullscreen }}</div>
                 </div>
-                {% endif %}
             </div>
         </div>
 

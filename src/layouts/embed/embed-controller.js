@@ -79,6 +79,9 @@ export default class extends Controller {
           // opening the carousel at the first photo if no photos are defined in the url to start with
           trigger("photosThumbnail:select", { data: listManager.selectPhotoById(listData.id, listData.photos[0].id) })
         }
+
+        // selecting the relevant thumbnail
+        trigger("photos:selectThumbnail", { index: listManager.getSelectedPhotoIndex() })
       } else {
         // TO-DO: the list doesn't exist in the public domain, show the login screen instead
       }
@@ -189,10 +192,19 @@ export default class extends Controller {
     })
   }
 
+  scrollToSelectedThumbnail() {
+    const thumbnail = this.element.querySelectorAll(".photos-thumbnail")[listManager.getSelectedPhotoIndex()]
+    if (thumbnail) this.gridTarget.scrollLeft = thumbnail.offsetLeft - 16 - 32
+  }
+
   toggleInfobar() {
     this.infobarTarget.classList.toggle("is-visible")
-    setTimeout(() => {
-      this.onScroll()
-    }, 400)
+
+    if (this.infobarTarget.classList.contains("is-visible")) {
+      this.scrollToSelectedThumbnail()
+      setTimeout(() => {
+        this.onScroll()
+      }, 400)
+    }
   }
 }
