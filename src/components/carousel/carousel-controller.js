@@ -190,12 +190,12 @@ export default class extends Controller {
 
       // adjusting the range
       if (currentIndex > prevIndex && currentIndex > currentRange[1]) {
-        currentRange[0] += 1
-        currentRange[1] += 1
+        currentRange[0] = currentIndex - 2
+        currentRange[1] = currentIndex
       }
       if (currentIndex < prevIndex && currentIndex < currentRange[0]) {
-        currentRange[0] -= 1
-        currentRange[1] -= 1
+        currentRange[0] = currentIndex
+        currentRange[1] = currentIndex + 2
       }
 
       if (!this.counterTarget.total || this.counterTarget.total !== total) {
