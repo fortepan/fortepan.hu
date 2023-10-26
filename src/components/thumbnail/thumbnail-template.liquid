@@ -8,8 +8,10 @@
       <div class="photos-thumbnail__image" data-thumbnail-target="container">
         <img alt="" draggable="false" data-thumbnail-target="image"/>
       </div>
+      {% if role != "embed" %}
       <div class="photos-thumbnail__meta photos-thumbnail__meta--location" data-thumbnail-target="location"></div>
       <div class="photos-thumbnail__meta photos-thumbnail__meta--description" data-thumbnail-target="description"></div>
+      {% endif %}
     </a>
     {% if role == "lists" %}
     {% include ../../layouts/lists/inc/context-menu role:"thumbnail" controller:"lists--photos" %}
