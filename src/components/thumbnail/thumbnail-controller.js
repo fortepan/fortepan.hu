@@ -71,6 +71,8 @@ export default class extends Controller {
 
     // Load photo in Carousel
     trigger("photosThumbnail:select", { data: selectedPhotoData })
+
+    trigger("thumbnail:click", { data: selectedPhotoData })
   }
 
   // resize thumbnail when the browser window gets resized
@@ -108,10 +110,12 @@ export default class extends Controller {
         ? `/${getLocale()}/lists/${listManager.getSelectedListId()}/photos/${this.element.photoId}`
         : `/${getLocale()}/photos/?id=${this.element.photoId}`
 
-    const locationArray = [data.year, data.city, data.place]
-    if (!data.city && !data.place && data.country) locationArray.push(data.country)
-    this.locationTarget.textContent = locationArray.filter(Boolean).join(" · ")
-    this.descriptionTarget.textContent = data.description || ""
+    if (this.hasLocationTarget && this.hasDescriptionTarget) {
+      const locationArray = [data.year, data.city, data.place]
+      if (!data.city && !data.place && data.country) locationArray.push(data.country)
+      this.locationTarget.textContent = locationArray.filter(Boolean).join(" · ")
+      this.descriptionTarget.textContent = data.description || ""
+    }
 
     this.imageTarget.alt = getImgAltText(data)
 
