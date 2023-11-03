@@ -6,7 +6,7 @@ import {
   trigger,
   getLocale,
   isElementInViewport,
-  getPrettyURLValues,
+  urlToArray,
   setPageMeta,
   copyToClipboard,
 } from "../../js/utils"
@@ -39,7 +39,7 @@ export default class extends Controller {
     this.hide()
 
     // check for a list id in the url
-    const listId = getPrettyURLValues(window.location.pathname.split(`/${getLocale()}/lists/`).join("/"))[0] || null
+    const listId = urlToArray(window.location.pathname.split(`/${getLocale()}/lists/`).join("/"))[0] || null
 
     if (appState("auth-signed-in")) {
       // the user is logged in

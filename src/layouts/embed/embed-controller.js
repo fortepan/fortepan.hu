@@ -4,7 +4,7 @@ import throttle from "lodash/throttle"
 import config from "../../data/siteConfig"
 import { setAppState } from "../../js/app"
 import listManager from "../../js/list-manager"
-import { escapeHTML, getLocale, getPrettyURLValues, lang, setPageMeta, trigger } from "../../js/utils"
+import { escapeHTML, getLocale, urlToArray, lang, setPageMeta, trigger } from "../../js/utils"
 
 export default class extends Controller {
   static get targets() {
@@ -25,7 +25,7 @@ export default class extends Controller {
 
   async show() {
     // check for a list id in the url
-    const listId = getPrettyURLValues(window.location.pathname.split(`/${getLocale()}/embed/`).join("/"))[0] || null
+    const listId = urlToArray(window.location.pathname.split(`/${getLocale()}/embed/`).join("/"))[0] || null
 
     if (listId) {
       // we have a list id, check if the list is public
@@ -57,7 +57,7 @@ export default class extends Controller {
         // so checking if they're in the viewport fails (and that's needed to start loading the first set in the viewport)
         this.onScroll()
 
-        const urlValues = getPrettyURLValues(
+        const urlValues = urlToArray(
           window.location.pathname.split(listData.url.split("lists").join("embed")).join("/")
         )
 
@@ -101,7 +101,9 @@ export default class extends Controller {
 
     this.usernameTarget.textContent = this.listData.username // only exists (and visible) when it's public
 
-    this.titleTarget.innerHTML = escapeHTML(this.listData.name)
+    this.titleTarget.innerHTML = `<a href="https://fortepan.hu${this.listData.url}" target="_blank">${escapeHTML(
+      this.listData.name
+    )}</a>`
     this.subtitleTarget.classList.remove("is-visible")
 
     setPageMeta(`${this.listData.name} — ${lang("lists")}`, this.listData.description, null)

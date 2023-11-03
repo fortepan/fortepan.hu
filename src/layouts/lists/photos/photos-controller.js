@@ -8,7 +8,7 @@ import {
   copyToClipboard,
   escapeHTML,
   getLocale,
-  getPrettyURLValues,
+  urlToArray,
   isElementInViewport,
   lang,
   setPageMeta,
@@ -56,7 +56,7 @@ export default class extends Controller {
         // so checking if they're in the viewport fails (and that's needed to start loading the first set in the viewport)
         this.onScroll()
 
-        const urlValues = getPrettyURLValues(window.location.pathname.split(listData.url).join("/"))
+        const urlValues = urlToArray(window.location.pathname.split(listData.url).join("/"))
 
         // urlValues[0] is simply photos for better readibility
         const photoId = urlValues[1]

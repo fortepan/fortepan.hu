@@ -35,11 +35,11 @@ export const getURLParams = () => {
   return Object.fromEntries(new URLSearchParams(s))
 }
 
-export const getPrettyURLValues = path => {
-  const values = (path || window.location.pathname).split("/")
-  while (values[0] === "") values.shift()
-  while (values[values.length - 1] === "") values.pop()
-  return values
+export const urlToArray = path => {
+  const valuesArray = (path || window.location.pathname).split("/")
+  while (valuesArray[0] === "") valuesArray.shift()
+  while (valuesArray[valuesArray.length - 1] === "") valuesArray.pop()
+  return valuesArray
 }
 
 export const removeClassByPrefix = (el, prefix) => {
