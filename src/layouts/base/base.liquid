@@ -60,6 +60,8 @@
     <main>
       {{ content }}
     </main>
+    {% if role != "embed" %}
+
     {% include dialog/signin/signin.liquid %}
     {% include dialog/signup/signup.liquid %}
     {% include dialog/reset-password/reset-password.liquid %}
@@ -69,6 +71,8 @@
     {% include cookie-consent/cookie-consent.liquid %}
     {% if locale == "hu" and cmsConfig.tax1percent and permalink != "/hu/ado-1-szazalek/" %}
       {% include tax1percent/tax1percent.liquid %}{% endif %}
+
+    {% endif %}
 
     {% include loader/loader.liquid id: "loaderBase" %}
     {% include snackbar/snackbar.liquid %}
