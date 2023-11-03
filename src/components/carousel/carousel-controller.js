@@ -369,7 +369,7 @@ export default class extends Controller {
     return appState("carousel-fullscreen")
   }
 
-  openFullscreen() {
+  onFullscreenOpened() {
     setAppState("carousel-fullscreen")
 
     // store sidebar visibility
@@ -382,7 +382,7 @@ export default class extends Controller {
     this.autoHideControls()
   }
 
-  closeFullscreen() {
+  onFullscreenClosed() {
     removeAppState("carousel-fullscreen")
 
     // show controls
@@ -390,6 +390,30 @@ export default class extends Controller {
 
     if (!this.sidebarWasHidden) trigger("carouselSidebar:show")
     if (this.isPhotoZoomedIn) this.hideLargePhotoView()
+  }
+
+  openFullscreen() {
+    if (appState("is-embed") && document.fullscreenEnabled) {
+      document.body.requestFullscreen()
+    } else {
+      this.onFullscreenOpened()
+    }
+  }
+
+  closeFullscreen() {
+    if (appState("is-embed") && document.fullscreenEnabled) {
+      document.exitFullscreen()
+    } else {
+      this.onFullscreenClosed()
+    }
+  }
+
+  onFullscreenChange() {
+    if (document.fullscreenElement) {
+      this.onFullscreenOpened()
+    } else {
+      this.onFullscreenClosed()
+    }
   }
 
   toggleFullscreen() {
@@ -585,14 +609,15 @@ export default class extends Controller {
         // if controls are hidden, on mobile the first touch should open the controls
         // (event listener is on photosContainer)
         if (!this.photosContainerTarget.classList.contains("hide-controls")) {
-          if (!this.isFullscreen) {
+          if (!appState("is-embed") && !this.isFullscreen) {
             this.openFullscreen()
           } else if (!this.isPhotoZoomedIn) {
             this.showLargePhotoView()
           }
         }
       }
-    } else if (!this.isFullscreen) {
+    } else if (!appState("is-embed") && !this.isFullscreen) {
+      // only put the carousel to fullscreen when not in embed mode
       this.openFullscreen()
     } else {
       this.toggleLargePhotoView()
@@ -606,7 +631,7 @@ export default class extends Controller {
       // pause slideshow if the slideshow is playing & close the fullscreen state if we are in fullscreen
       if (this.slideshowIsPlaying) this.pauseSlideshow()
       if (this.isFullscreen) this.closeFullscreen()
-    } else {
+    } else if (!appState("is-embed")) {
       this.hide()
     }
   }

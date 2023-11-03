@@ -17,7 +17,6 @@ export default class extends Controller {
     setAppState("is-embed")
     setAppState("theme--dark")
     setAppState("hide-carousel-sidebar")
-    setAppState("carousel-fullscreen")
 
     this.onScroll = throttle(this.onScroll, 200)
 

@@ -111,6 +111,7 @@ export default class extends Controller {
 
   toggleOnResize() {
     if (window.innerWidth < 768) this.hide()
-    else if (!appState("play-carousel-slideshow") && !appState("carousel-fullscreen")) this.show()
+    else if (!appState("play-carousel-slideshow") && !appState("carousel-fullscreen") && !appState("is-embed"))
+      this.show()
   }
 }

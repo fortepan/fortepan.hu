@@ -8,6 +8,13 @@
 
   min-width: rem(320px);
 
+  .carousel__photos,
+  .carousel-sidebar {
+    top: 0;
+    bottom: 0;
+    height: auto;
+  }
+
   .carousel__photos__actions {
     padding-left: 1rem;
   }
