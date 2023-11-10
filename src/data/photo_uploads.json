@@ -11,6 +11,12 @@
           "best_of": "a 40 legérdekesebb kép",
           "all": "a teljes gyűjtemény"
         }
+      },
+      "en": {
+        "actions": {
+          "best_of": "best of photos",
+          "all": "all images"
+        }
       }
     },
     {
