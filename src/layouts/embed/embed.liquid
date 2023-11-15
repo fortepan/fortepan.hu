@@ -13,18 +13,14 @@ layout: base/base.liquid
 
   {% include carousel/carousel role:"embed" %}
 
-  <div class="lists__placeholder is-hidden hidden-when-public" data-embed-target="placeholder">
-    <h3>{{ lang[locale].list_photos_empty_header }}</h3>
-    <p>{{ lang[locale].list_photos_empty_text }}</p>
-    <a href="/{{ locale }}/photos/" class="button button--medium button--primary">
-      {{ lang[locale].photos }}
-      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="10" viewBox="0 0 14 10">
-        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2,6 L6,10 L10,6 M6,-2 L6,9" transform="rotate(-90 7 4)"/>
-      </svg>
-      </a>
-  </div>
-
   <div class="embed-infobar scrollview" data-embed-target="infobar" data-action="scroll->embed#onScroll">
+
+  <div class="embed-logo">
+          <a href="https://fortepan.hu/{{ locale }}/" class="embed-logo__link" target="_blank">
+          {% inlineSVG src:"src/static/images/header-logo.svg" class:"embed-logo__logo" %}
+          <span data-embed-target="logoLabel">Fortepan</span>
+          </a>
+      </div>
 
     <div class="embed-infobar__close-button button-circular" data-action="click->embed#toggleInfobar">
         {% inlineSVG src:"src/static/images/icons/24/icon-close.svg" class:"button-circular__icon" %}
@@ -32,14 +28,16 @@ layout: base/base.liquid
     </div>
 
     <div class="list-info">
+
       <h2 class="list-info__title" data-embed-target="title"></h2>
       <h5 class="list-info__subtitle" data-embed-target="subtitle">
-        <i class="lists-private-icon hidden-when-public" title="{{ lang[locale].list_edit_private }}">
-          {% inlineSVG src:"src/static/images/icons/24/icon-lock.svg" %}&bull;
-        </i> <span class="list-info__username" data-embed-target="username"></span>&bull;<span data-embed-target="count" class="list-info__subtitle__count"></span>
+        <span class="list-info__username" data-embed-target="username"></span>&bull;<span data-embed-target="count" class="list-info__subtitle__count"></span>
         {{ lang[locale].photo_results }}
       </h5>
       <p class="list-info__description" data-embed-target="description"></p>
+
+      <div class="list-info__message is-hidden" data-embed-target="message"></div>
+
     </div>
 
     <div class="thumbnails"

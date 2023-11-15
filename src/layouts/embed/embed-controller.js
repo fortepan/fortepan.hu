@@ -8,7 +8,7 @@ import { escapeHTML, getLocale, urlToArray, lang, setPageMeta, trigger } from ".
 
 export default class extends Controller {
   static get targets() {
-    return ["infobar", "title", "subtitle", "username", "count", "description", "grid", "placeholder"]
+    return ["infobar", "title", "subtitle", "username", "count", "description", "grid", "message"]
   }
 
   connect() {
@@ -31,6 +31,7 @@ export default class extends Controller {
   async show() {
     // check for a list id in the url
     const listId = urlToArray(window.location.pathname.split(`/${getLocale()}/embed/`).join("/"))[0] || null
+    let is404 = false
 
     if (listId) {
       // we have a list id, check if the list is public
@@ -40,10 +41,6 @@ export default class extends Controller {
       trigger("loader:hide", { id: "loaderBase" })
 
       if (listData) {
-        // the list exist in the public domain
-        this.isPublic = true
-        this.element.classList.toggle("is-public", this.isPublic)
-
         this.listData = listData
         this.element.classList.add("is-visible")
 
@@ -57,24 +54,8 @@ export default class extends Controller {
           // so checking if they're in the viewport fails (and that's needed to start loading the first set in the viewport)
           this.onScroll()
 
-          const urlValues = urlToArray(
-            window.location.pathname.split(listData.url.split("lists").join("embed")).join("/")
-          )
-
-          // urlValues[0] is simply photos for better readibility
-          const photoId = urlValues[1]
-
-          if (urlValues[0] === "photos" && photoId) {
-            // open carousel
-            const selectedPhotoData = listManager.selectPhotoById(listData.id, photoId)
-            if (selectedPhotoData) {
-              // Load photo in Carousel
-              trigger("photosThumbnail:select", { data: selectedPhotoData })
-            }
-          } else {
-            // opening the carousel at the first photo if no photos are defined in the url to start with
-            trigger("photosThumbnail:select", { data: listManager.selectPhotoById(listData.id, listData.photos[0].id) })
-          }
+          // opening the carousel at the first photo if no photos are defined in the url to start with
+          trigger("photosThumbnail:select", { data: listManager.selectPhotoById(listData.id, listData.photos[0].id) })
 
           // selecting the relevant thumbnail
           trigger("photos:selectThumbnail", { index: listManager.getSelectedPhotoIndex() })
@@ -82,16 +63,26 @@ export default class extends Controller {
           // the list doesn't have photos
           this.toggleInfobar()
           this.element.classList.add("is-empty")
+
+          this.messageTarget.classList.add("is-visible")
+          this.messageTarget.textContent = lang("embed").empty_list
         }
       } else {
-        // TO-DO: the list is private, show the login screen instead
-        this.placeholderTarget.classList.remove("is-hidden")
-        setTimeout(() => {
-          this.placeholderTarget.classList.add("is-visible")
-        }, 100)
+        // the list is private or doesn't exist
+        is404 = true
       }
     } else {
-      // TO-DO: no list id present
+      // no list id present
+      is404 = true
+    }
+
+    if (is404) {
+      this.toggleInfobar()
+      this.element.classList.add("is-empty", "is-404")
+
+      this.titleTarget.textContent = lang("embed").title_404
+      this.messageTarget.classList.add("is-visible")
+      this.messageTarget.textContent = lang("embed").message_404
     }
   }
 
@@ -102,8 +93,6 @@ export default class extends Controller {
     if (this.renderingPhotos) return
 
     this.renderingPhotos = true
-
-    this.element.querySelector(".lists-private-icon").classList.toggle("is-visible", this.listData.private)
 
     this.usernameTarget.textContent = this.listData.username // only exists (and visible) when it's public
 
@@ -158,21 +147,12 @@ export default class extends Controller {
 
   onPhotoSelected(e) {
     const id = e && e.detail && e.detail.photoId ? e.detail.photoId : listManager.getSelectedPhotoId()
-    const url = `${listManager
-      .getSelectedList()
-      .url.split("lists")
-      .join("embed")}/photos/${id}`
 
     setPageMeta(
       `${this.listData.name} — #${id}`,
       this.listData.description,
       `${config().PHOTO_SOURCE}480/fortepan_${id}.jpg`
     )
-
-    if (window.location.pathname !== url) {
-      // set the proper url
-      window.history.pushState(null, `Fortepan — ${this.listData.name} — #${id}`, url)
-    }
   }
 
   // Set a thumbnail's selected state
