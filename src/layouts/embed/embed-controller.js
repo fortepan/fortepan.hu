@@ -20,6 +20,11 @@ export default class extends Controller {
 
     this.onScroll = throttle(this.onScroll, 200)
 
+    // allow cookies by default
+    setTimeout(() => {
+      trigger("cookieConsent:cookiesAllowed")
+    }, 100)
+
     this.show()
   }
 
@@ -45,44 +50,45 @@ export default class extends Controller {
         await this.renderPhotos()
 
         if (this.listData.photos.length > 0) {
+          // the list has photos
           this.gridTarget.classList.remove("is-hidden")
-        } else {
-          this.placeholderTarget.classList.remove("is-hidden")
-          setTimeout(() => {
-            this.placeholderTarget.classList.add("is-visible")
-          }, 100)
-        }
 
-        // lets force thumbnail image loading: upon creating the thumbnails the parent element is still hidden,
-        // so checking if they're in the viewport fails (and that's needed to start loading the first set in the viewport)
-        this.onScroll()
+          // lets force thumbnail image loading: upon creating the thumbnails the parent element is still hidden,
+          // so checking if they're in the viewport fails (and that's needed to start loading the first set in the viewport)
+          this.onScroll()
 
-        const urlValues = urlToArray(
-          window.location.pathname.split(listData.url.split("lists").join("embed")).join("/")
-        )
+          const urlValues = urlToArray(
+            window.location.pathname.split(listData.url.split("lists").join("embed")).join("/")
+          )
 
-        // urlValues[0] is simply photos for better readibility
-        const photoId = urlValues[1]
+          // urlValues[0] is simply photos for better readibility
+          const photoId = urlValues[1]
 
-        if (urlValues[0] === "photos" && photoId) {
-          // open carousel
-          const selectedPhotoData = listManager.selectPhotoById(listData.id, photoId)
-          if (selectedPhotoData) {
-            // scroll to top
-            this.element.scrollTop = 0
-
-            // Load photo in Carousel
-            trigger("photosThumbnail:select", { data: selectedPhotoData })
+          if (urlValues[0] === "photos" && photoId) {
+            // open carousel
+            const selectedPhotoData = listManager.selectPhotoById(listData.id, photoId)
+            if (selectedPhotoData) {
+              // Load photo in Carousel
+              trigger("photosThumbnail:select", { data: selectedPhotoData })
+            }
+          } else {
+            // opening the carousel at the first photo if no photos are defined in the url to start with
+            trigger("photosThumbnail:select", { data: listManager.selectPhotoById(listData.id, listData.photos[0].id) })
           }
-        } else {
-          // opening the carousel at the first photo if no photos are defined in the url to start with
-          trigger("photosThumbnail:select", { data: listManager.selectPhotoById(listData.id, listData.photos[0].id) })
-        }
 
-        // selecting the relevant thumbnail
-        trigger("photos:selectThumbnail", { index: listManager.getSelectedPhotoIndex() })
+          // selecting the relevant thumbnail
+          trigger("photos:selectThumbnail", { index: listManager.getSelectedPhotoIndex() })
+        } else {
+          // the list doesn't have photos
+          this.toggleInfobar()
+          this.element.classList.add("is-empty")
+        }
       } else {
-        // TO-DO: the list doesn't exist in the public domain, show the login screen instead
+        // TO-DO: the list is private, show the login screen instead
+        this.placeholderTarget.classList.remove("is-hidden")
+        setTimeout(() => {
+          this.placeholderTarget.classList.add("is-visible")
+        }, 100)
       }
     } else {
       // TO-DO: no list id present
