@@ -189,6 +189,10 @@
       width: 100%;
       max-width: rem(480px);
       margin: 0 auto;
+
+      @media screen and (min-width: $breakpoint-tablet) {
+        max-width: 50vw;
+      }
     }
 
     .thumbnails,
