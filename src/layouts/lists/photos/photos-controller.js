@@ -107,6 +107,7 @@ export default class extends Controller {
 
     this.titleTarget.innerHTML = escapeHTML(this.listData.name)
     this.subtitleTarget.classList.remove("is-visible")
+    this.descriptionTarget.classList.remove("is-visible")
 
     setPageMeta(`${this.listData.name} — ${lang("lists")}`, this.listData.description, null)
 
