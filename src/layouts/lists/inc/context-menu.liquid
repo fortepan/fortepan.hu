@@ -16,16 +16,18 @@
     <a href="#" class="header-nav__link"
     data-action="click->{{ controller }}#removePhoto">{{ lang[locale].list_remove_from }}</a>
   {% else %}
+    <a href="#" class="header-nav__link header-nav__link--top header-nav__link--separator-after"
+    data-action="click->{{ controller }}#editList">{{ lang[locale].list_edit }}</a>
     {% unless role == "list-photos-edit" %}
     <a href="#" class="header-nav__link header-nav__link--top"
     data-action="click->{{ controller }}#openList">{{ lang[locale].list_view }}</a>
     {% endunless %}
+    <a href="#" class="header-nav__link header-nav__link--top header-nav__link--embed"
+    data-action="click->{{ controller }}#embedList">{{ lang[locale].list_embed }}</a>
     <a href="#" class="header-nav__link header-nav__link--top header-nav__link--copy-url"
     data-action="click->{{ controller }}#shareLink">{{ lang[locale].list_copy_link }}</a>
     <a href="#" class="header-nav__link header-nav__link--top header-nav__link--separator-after"
     data-action="click->{{ controller }}#jumpToPhotos">{{ lang[locale].list_add_photos }}</a>
-    <a href="#" class="header-nav__link header-nav__link--top"
-    data-action="click->{{ controller }}#editList">{{ lang[locale].list_edit }}</a>
     <a href="#" class="header-nav__link header-nav__link--top"
     data-action="click->{{ controller }}#deleteList">{{ lang[locale].list_delete }}</a>
   {% endif %}

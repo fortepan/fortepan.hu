@@ -345,4 +345,10 @@ export default class extends Controller {
 
     copyToClipboard(`${window.location.origin}/${getLocale()}/lists/${this.listData.id}`, "link")
   }
+
+  embedList(e) {
+    e.preventDefault()
+
+    trigger("dialogEmbed:show", { listId: this.listData.id })
+  }
 }

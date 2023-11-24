@@ -77,6 +77,7 @@ module.exports = {
     list_edit_private_label: "A lista csak az ön számára elérhető",
     list_404: "A keresett lista nem publikus vagy nem létezik.",
     list_copy_link: "Lista linkjének másolása",
+    list_embed: "Lista beágyazása",
     load_more: "Még több kép",
     location: "Helyszín",
     login: "Belépés",
@@ -160,6 +161,12 @@ module.exports = {
       empty_list: "Ez a lista nem tartalmaz még képeket.",
       title_404: "Hmm... :/",
       message_404: "A keresett lista nem érhető el.",
+      dialog: {
+        title: "Lista beágyazása",
+        ratio: "Méretarány",
+        width: "Szélesség",
+        height: "Magasság",
+      },
     },
   },
   en: {
@@ -239,6 +246,7 @@ module.exports = {
     list_edit_private_label: "Only you can view this list",
     list_404: "The list you're looking for is not public or doesn't exist.",
     list_copy_link: "Copy link to list",
+    list_embed: "Embed list",
     load_more: "Load more",
     location: "Location",
     login: "Login",
@@ -315,6 +323,12 @@ module.exports = {
       empty_list: "This list doesn't have photos yet.",
       title_404: "Oops... :/",
       message_404: "The requested list can't be displayed.",
+      dialog: {
+        title: "Embed list",
+        ratio: "Size ratio",
+        width: "Width",
+        height: "Height",
+      },
     },
   },
 }

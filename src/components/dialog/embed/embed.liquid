@@ -1,0 +1,36 @@
+<div class="dialog dialog-embed"
+     data-controller="dialog--embed"
+     data-action="dialogs:hide@document->dialog--embed#hide
+                  dialogEmbed:show@document->dialog--embed#show
+                  dialogEmbed:hide@document->dialog--embed#hide"
+>
+  <div class="dialog__wrapper">
+      <div class="button-circular dialog__close"
+           data-action="click->dialog--embed#hide"
+      >
+        {% inlineSVG src:"src/static/images/icons/24/icon-close.svg" class:"button-circular__icon" %}
+        <div class="button-circular__label">{{ lang[locale].close }}</div>
+      </div>
+
+
+      <div class="dialog__content dialog-embed__content">
+        <h3 class="dialog__title">{{ lang[locale].embed.dialog.title }}</h3>
+        <p>{{ lang[locale].embed.dialog.content }}</p>
+      </div>
+
+      {% include select/select.liquid name:'ratio'
+                label:lang[locale].embed.dialog.ratio
+                class:'dialog-embed__select'
+                stimulus_target:'data-dialog--embed-target="ratio"'
+                stimulus_action:'change->dialog--embed#generateEmbedCode'
+                options:'<option value="unique">Egyedi</option><option value="3:2">3:2</option><option value="4:3">4:3</option><option value="16:9">16:9</option><option value="1:1">1:1</option>'
+      %}
+
+      {% include input/input.liquid type:'number'
+                name:'width'
+                label:lang[locale].embed.dialog.width
+                class:'dialog-embed__input'
+                input_options:'value="640"'
+      %}
+  </div>
+</div>
