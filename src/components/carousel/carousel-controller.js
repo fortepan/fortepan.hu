@@ -236,6 +236,10 @@ export default class extends Controller {
     }
   }
 
+  onPagerClicked() {
+    trigger("photosCarousel:pagerClicked")
+  }
+
   async showPhoto(e, photoId) {
     const id = e && e.detail && e.detail.data ? e.detail.data.mid : photoId
 
@@ -694,8 +698,8 @@ export default class extends Controller {
     }
   }
 
-  onThumbnails() {
-    trigger("photosCarousel:onThumbnails")
+  onThumbnailClicked() {
+    trigger("photosCarousel:thumbnailClicked")
   }
 
   showAgeRestrictionDialog(e) {

@@ -3,7 +3,8 @@ layout: base/base.liquid
 ---
 
 <section class="embed" data-controller="embed"
-  data-action="photosCarousel:onThumbnails@document->embed#toggleInfobar
+  data-action="photosCarousel:thumbnailClicked@document->embed#toggleInfobar
+              photosCarousel:pagerClicked@document->embed#toggleInfobar
               resize@window->embed#onScroll
               photos:selectThumbnail@document->embed#selectThumbnail
               thumbnail:click@document->embed#toggleInfobar

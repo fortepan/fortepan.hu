@@ -37,7 +37,7 @@
 
         <div class="carousel__photos__all" data-carousel-target="photos"></div>
 
-        <div class="carousel__photos__counter" data-carousel-target="counter">
+        <div class="carousel__photos__counter" data-carousel-target="counter" data-action="click->carousel#onPagerClicked">
             <div class="dots" data-carousel-target="counterDots"></div>
             <div class="button-circular__label" data-carousel-target="counterTooltip"></div>
         </div>
@@ -79,7 +79,7 @@
                     <div class="button-circular__label">{{ lang[locale].share }}</div>
                 </div>
                 {% else %}
-                <div class="button-circular" data-action="click->carousel#onThumbnails">
+                <div class="button-circular" data-action="click->carousel#onThumbnailClicked">
                     {% inlineSVG src:"src/static/images/icons/24/icon-thumbnails.svg" class:"button-circular__icon" %}
                     <div class="button-circular__label">{{ lang[locale].thumbnails }}</div>
                 </div>

@@ -59,6 +59,18 @@ export default class extends Controller {
 
           // selecting the relevant thumbnail
           trigger("photos:selectThumbnail", { index: listManager.getSelectedPhotoIndex() })
+
+          // opening the infobar initially
+          this.toggleInfobar()
+
+          // hiding the infobar if no click activity
+          const clickTimeout = setTimeout(() => {
+            this.infobarTarget.classList.remove("is-visible")
+          }, 8000)
+
+          document.addEventListener("click", () => {
+            clearTimeout(clickTimeout)
+          })
         } else {
           // the list doesn't have photos
           this.toggleInfobar()
