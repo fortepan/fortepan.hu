@@ -1,14 +1,15 @@
 <div class="input-wrapper {{ class }}" data-controller="input{% unless autosuggest == null %} autosuggest{% endunless %}" {{ stimulus_wrapper_target }}>
-  <label for="{{ name }}" data-input-target="label" class="input-wrapper__label">{{ label }}</label>
+  <label for="{{ name }}" data-input-target="label" class="input-wrapper__label{% if value %} is-visible{% endif %} ">{{ label }}</label>
   <input class="input-wrapper__input"
     name="{{ name }}"
     type="{{ type }}"
     autocomplete="off"
     placeholder="{{ label }}"
-    {{ input_options }}
+    {% if value %}value="{{ value }}"{% endif %}
     data-input-target="input"
     {{ stimulus_target }}
-    data-action="change->input#onChange keyup->input#onChange keypress->input#keypress{% unless autosuggest == null %} keyup->autosuggest#keyup{% endunless %}"
+    {{ options }}
+    data-action="change->input#onChange keyup->input#onChange keypress->input#keypress{% if stimulus_action %} {{ stimulus_action }}{% endif %}{% unless autosuggest == null %} keyup->autosuggest#keyup{% endunless %}"
     {% unless autosuggest == null %}
     data-autosuggest="{{ autosuggest }}"
     data-autosuggest-target="input"
