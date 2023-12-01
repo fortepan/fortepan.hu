@@ -16,21 +16,43 @@
       <div class="dialog__content dialog-embed__content">
         <h3 class="dialog__title">{{ lang[locale].embed.dialog.title }}</h3>
         <p>{{ lang[locale].embed.dialog.content }}</p>
+
+
+        <div class="settings">
+
+
+
+          {% include input/input.liquid type:'text'
+                    name:'width'
+                    label:lang[locale].embed.dialog.width
+                    class:'dialog-embed__input'
+                    value:'640'
+                    stimulus_target:'data-dialog--embed-target="width"'
+                    stimulus_action:'input->dialog--embed#restrictInput'
+                    options:'pattern="[0-9%]+"'
+          %}
+
+          {% include input/input.liquid type:'text'
+                    name:'height'
+                    label:lang[locale].embed.dialog.height
+                    class:'dialog-embed__input'
+                    value:'360'
+                    stimulus_target:'data-dialog--embed-target="height"'
+                    stimulus_action:'input->dialog--embed#restrictInput'
+                    options:'pattern="[0-9%]+"'
+          %}
+
+          {% capture options %}<option value="unique" selected="selected">{{ lang[locale].embed.dialog.ratio_custom }}</option><option value="16:9">16:9</option><option value="3:2">3:2</option><option value="4:3">4:3</option><option value="1:1">1:1</option>{% endcapture %}
+
+          {% include select/select.liquid name:'ratio'
+                    label:lang[locale].embed.dialog.ratio
+                    class:'dialog-embed__select'
+                    stimulus_target:'data-dialog--embed-target="ratio"'
+                    stimulus_action:'change->dialog--embed#generateEmbedCode'
+                    options:options
+          %}
+
+        </div>
       </div>
-
-      {% include select/select.liquid name:'ratio'
-                label:lang[locale].embed.dialog.ratio
-                class:'dialog-embed__select'
-                stimulus_target:'data-dialog--embed-target="ratio"'
-                stimulus_action:'change->dialog--embed#generateEmbedCode'
-                options:'<option value="unique">Egyedi</option><option value="3:2">3:2</option><option value="4:3">4:3</option><option value="16:9">16:9</option><option value="1:1">1:1</option>'
-      %}
-
-      {% include input/input.liquid type:'number'
-                name:'width'
-                label:lang[locale].embed.dialog.width
-                class:'dialog-embed__input'
-                input_options:'value="640"'
-      %}
   </div>
 </div>

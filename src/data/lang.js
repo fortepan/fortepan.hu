@@ -164,6 +164,7 @@ module.exports = {
       dialog: {
         title: "Lista beágyazása",
         ratio: "Méretarány",
+        ratio_custom: "Egyedi",
         width: "Szélesség",
         height: "Magasság",
       },
@@ -326,6 +327,7 @@ module.exports = {
       dialog: {
         title: "Embed list",
         ratio: "Size ratio",
+        ratio_custom: "Custom",
         width: "Width",
         height: "Height",
       },

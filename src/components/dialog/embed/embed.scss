@@ -1,28 +1,10 @@
-.dialog__content.dialog-age-restriction__content {
-  margin-top: 1rem;
-  text-align: center;
+.dialog-embed {
+  .settings {
+    display: flex;
+    gap: 1.5rem;
 
-  p {
-    line-height: 1.5;
-    margin: 0.25em 0 0 0;
-  }
-}
-
-.dialog-age-restriction__icon {
-  display: block;
-  margin: 0 auto 1rem;
-  width: 4rem;
-  height: 4rem;
-  line-height: calc(4rem - 12px);
-  box-sizing: border-box;
-  border-radius: 50%;
-  border: 6px solid $red;
-}
-
-.dialog-age-restriction__action {
-  margin-top: 2rem;
-
-  .dialog__button {
-    margin-top: 0.5rem;
+    & > * {
+      flex: 1 1 33.3%;
+    }
   }
 }
