@@ -1,19 +1,26 @@
 {
-  "defaults": {
-    "hu": {
-      "actions": {
-        "best_of": "Fontos képek",
-        "all": "A teljes sorozat"
+  "uploads": [
+    {
+      "name": "A Brück und Sohn kiadó budapesti képei",
+      "date": "2023-11-09T00:00:00.000Z",
+      "cover_image": "277719",
+      "hu": {
+        "title": "A Brück und Sohn képeslapkiadó budapesti fotói",
+        "blurb": "Válogatás a meisseni Brück und Sohn képeslapkiadó Budapesten, 1903 és 1912 között készült fotóiból. A német cég a magyar fővárosról több mint 500 képeslapot adott ki, amiknek a fotó változata is fennmaradt a vállalati archívumban. Ebből a - ma már a drezdai Deutsche Fotothekben őrzött - anyagból készült a válogatásunk. ",
+        "actions": {
+          "best_of": "a 40 legérdekesebb kép",
+          "all": "a teljes gyűjtemény"
+        }
+      },
+      "en": {
+        "title": "The photos taken in Budapest on behalf of Brück and Sohn, postcard publishers",
+        "blurb": "A selection from the photos taken in Budapest, between 1903 and 1912, on behalf of Brück and Sohn, postcard publishers. The German company published more than 500 postcards on the Hungarian capital, the photo versions of which have survived in the company archive. The present compilation is part of that corpus - by now guarded in Deutsche Fotothek, Dresden.",
+        "actions": {
+          "best_of": "best of photos",
+          "all": "all images"
+        }
       }
     },
-    "en": {
-      "actions": {
-        "best_of": "Our favorites",
-        "all": "Full collection"
-      }
-    }
-  },
-  "uploads": [
     {
       "name": "Hosszú hétvége",
       "date": "2023-10-01T00:00:00.000Z",
