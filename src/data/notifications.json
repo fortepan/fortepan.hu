@@ -1,6 +1,10 @@
 {
   "notifications": [
     {
+      "title": "Tibi és a csokigyárak",
+      "message": "### [Gokka kockacukor, Csilla szelet és csokoládételefon](https://hetifortepan.capacenter.hu/csokolade/)\n\n\n\n"
+    },
+    {
       "lang": "hu",
       "date": "2023-12-01T00:00:00.000Z",
       "title": "A 70-es évek egy srác szemével",
