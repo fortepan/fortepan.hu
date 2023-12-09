@@ -8,7 +8,17 @@ import listManager from "../../js/list-manager"
 
 export default class extends Controller {
   static get targets() {
-    return ["background", "pagerPrev", "pagerNext", "photo", "photos", "photosContainer"]
+    return [
+      "background",
+      "pagerPrev",
+      "pagerNext",
+      "counter",
+      "counterDots",
+      "counterTooltip",
+      "photo",
+      "photos",
+      "photosContainer",
+    ]
   }
 
   connect() {
@@ -44,6 +54,12 @@ export default class extends Controller {
 
     // hide carousel
     this.element.classList.remove("is-visible")
+
+    // reset counter (on lists)
+    this.counterTarget.classList.remove("is-visible")
+    delete this.counterTarget.index
+    delete this.counterTarget.range
+    delete this.counterTarget.total
 
     if (!e || (e && e.detail && !e.detail.silent)) {
       trigger("photosCarousel:hide")
@@ -161,6 +177,67 @@ export default class extends Controller {
 
     this.pagerPrevTarget.classList.toggle("is-disabled", total === 1 || !this.prevPhotoId)
     this.pagerNextTarget.classList.toggle("is-disabled", total === 1 || !this.nextPhotoId)
+
+    // counter for lists
+    if (this.role === "lists") {
+      // setup
+      const currentIndex = listManager.getSelectedPhotoIndex()
+      const prevIndex = this.counterTarget.index || -1
+      const currentRange = this.counterTarget.range || [
+        Math.min(currentIndex, total - 3),
+        Math.min(currentIndex + 2, total - 1),
+      ]
+
+      // adjusting the range
+      if (currentIndex > prevIndex && currentIndex > currentRange[1]) {
+        currentRange[0] = currentIndex - 2
+        currentRange[1] = currentIndex
+      }
+      if (currentIndex < prevIndex && currentIndex < currentRange[0]) {
+        currentRange[0] = currentIndex
+        currentRange[1] = currentIndex + 2
+      }
+
+      if (!this.counterTarget.total || this.counterTarget.total !== total) {
+        // when no total is given (first run) or the # of total is different, generate/reganarate all the dots
+        let dotsHTML = ""
+        for (let i = 0; i < total; i += 1) {
+          dotsHTML += `<span class="dot"></span>`
+        }
+        this.counterDotsTarget.innerHTML = dotsHTML
+      }
+
+      this.counterDotsTarget.querySelectorAll(".dot").forEach((dot, i) => {
+        // first reset
+        dot.className = "dot"
+
+        // then set up the right classes given the positions
+        if (i < currentRange[0]) {
+          dot.classList.add(`range--${currentRange[0] - i > 2 ? `more` : currentRange[0] - i}`)
+        } else if (i <= currentRange[1]) {
+          dot.classList.add(`in-range-${i + 1 - currentRange[0]}`)
+        } else {
+          dot.classList.add(`range-${i - currentRange[1] > 2 ? `more` : i - currentRange[1]}`)
+        }
+
+        // set the current one
+        if (i === currentIndex) dot.classList.add("current")
+      })
+
+      this.counterTooltipTarget.textContent = `${currentIndex + 1}/${total}`
+      this.counterTooltipTarget.classList.remove("left", "right")
+      if (currentIndex === currentRange[0]) this.counterTooltipTarget.classList.add("left")
+      if (currentIndex === currentRange[1]) this.counterTooltipTarget.classList.add("right")
+
+      this.counterTarget.classList.add("is-visible")
+      this.counterTarget.index = currentIndex
+      this.counterTarget.range = currentRange
+      this.counterTarget.total = total
+    }
+  }
+
+  onPagerClicked() {
+    trigger("photosCarousel:pagerClicked")
   }
 
   async showPhoto(e, photoId) {
@@ -296,7 +373,7 @@ export default class extends Controller {
     return appState("carousel-fullscreen")
   }
 
-  openFullscreen() {
+  onFullscreenOpened() {
     setAppState("carousel-fullscreen")
 
     // store sidebar visibility
@@ -309,7 +386,7 @@ export default class extends Controller {
     this.autoHideControls()
   }
 
-  closeFullscreen() {
+  onFullscreenClosed() {
     removeAppState("carousel-fullscreen")
 
     // show controls
@@ -317,6 +394,30 @@ export default class extends Controller {
 
     if (!this.sidebarWasHidden) trigger("carouselSidebar:show")
     if (this.isPhotoZoomedIn) this.hideLargePhotoView()
+  }
+
+  openFullscreen() {
+    if (appState("is-embed") && document.fullscreenEnabled) {
+      document.body.requestFullscreen()
+    } else {
+      this.onFullscreenOpened()
+    }
+  }
+
+  closeFullscreen() {
+    if (appState("is-embed") && document.fullscreenEnabled) {
+      document.exitFullscreen()
+    } else {
+      this.onFullscreenClosed()
+    }
+  }
+
+  onFullscreenChange() {
+    if (document.fullscreenElement) {
+      this.onFullscreenOpened()
+    } else {
+      this.onFullscreenClosed()
+    }
   }
 
   toggleFullscreen() {
@@ -512,14 +613,15 @@ export default class extends Controller {
         // if controls are hidden, on mobile the first touch should open the controls
         // (event listener is on photosContainer)
         if (!this.photosContainerTarget.classList.contains("hide-controls")) {
-          if (!this.isFullscreen) {
+          if (!appState("is-embed") && !this.isFullscreen) {
             this.openFullscreen()
           } else if (!this.isPhotoZoomedIn) {
             this.showLargePhotoView()
           }
         }
       }
-    } else if (!this.isFullscreen) {
+    } else if (!appState("is-embed") && !this.isFullscreen) {
+      // only put the carousel to fullscreen when not in embed mode
       this.openFullscreen()
     } else {
       this.toggleLargePhotoView()
@@ -533,7 +635,7 @@ export default class extends Controller {
       // pause slideshow if the slideshow is playing & close the fullscreen state if we are in fullscreen
       if (this.slideshowIsPlaying) this.pauseSlideshow()
       if (this.isFullscreen) this.closeFullscreen()
-    } else {
+    } else if (!appState("is-embed")) {
       this.hide()
     }
   }
@@ -594,6 +696,10 @@ export default class extends Controller {
     if (this.isPhotoAvailable()) {
       trigger("dialogShare:show")
     }
+  }
+
+  onThumbnailClicked() {
+    trigger("photosCarousel:thumbnailClicked")
   }
 
   showAgeRestrictionDialog(e) {

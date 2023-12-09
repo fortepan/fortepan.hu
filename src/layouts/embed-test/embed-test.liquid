@@ -40,8 +40,6 @@
     <meta property="og:title" content="{{ title }}" />
     <meta property="og:description" content="{{ description }}" />
 
-    <meta name="google-site-verification" content="ubqqJEgDZPXZWLuQ5tEMIMvszj2_-7A1mlGKaliCw7I" />
-
     <title>{{ title }}</title>
 
     <link rel="stylesheet" href="https://use.typekit.net/shi7abw.css" />
@@ -52,39 +50,8 @@
 
     <script src="https://polyfill.io/v3/polyfill.min.js?features=URLSearchParams%2CObject.fromEntries"></script>
   </head>
-  <body
-    itemscope
-    itemtype="http://schema.org/WebPage"
-    data-lang="{{ locale }}"
-    data-controller="base">
-    <main>
-      {{ content }}
-    </main>
-    {% if role != "embed" %}
-
-    {% include dialog/signin/signin.liquid %}
-    {% include dialog/signup/signup.liquid %}
-    {% include dialog/reset-password/reset-password.liquid %}
-    {% include dialog/reset-password-request/reset-password-request.liquid %}
-    {% include dialog/search/search.liquid %}
-
-    {% include cookie-consent/cookie-consent.liquid %}
-    {% if locale == "hu" and cmsConfig.tax1percent and permalink != "/hu/ado-1-szazalek/" %}
-      {% include tax1percent/tax1percent.liquid %}{% endif %}
-
-    {% endif %}
-
-    {% include loader/loader.liquid id: "loaderBase" %}
-    {% include snackbar/snackbar.liquid %}
-
-    <script>
-      window.process = {
-        env: {
-          ENV: "{{ siteConfig.ENV }}"
-        }
-      }
-      {% for param in cmsConfig %} window.{{param[0]}} = {% if param[1] == true or param[1] == false %}{{param[1]}}{% else %}"{{param[1]}}"{% endif %};{% endfor %}
-    </script>
-    <script src="/{{ manifest-js['main.js'] }}"></script>
+  <body>
+    <iframe width="640" style="aspect-ratio:3/2;" src="/hu/embed/685787/" title="" frameborder="0" allow="fullscreen" allowfullscreen="true" loading="lazy"></iframe>
   </body>
 </html>
+

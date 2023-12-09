@@ -30,13 +30,16 @@
         </div>
 
         <div class="carousel-add-tags"
+             {% if role != "embed" %}
              data-controller="add-tags"
              data-action="photosCarousel:hide@document->add-tags#hideForm
              photosThumbnail:select@document->add-tags#getPendingTags
              photos:selectThumbnail@document->add-tags#hideForm
-             auth:signedOut@document->add-tags#hideForm">
+             auth:signedOut@document->add-tags#hideForm"
+             {% endif %}>
             <h6 class="carousel-sidebar__tags-title">{{ lang[locale].tags }}</h6>
             <p class="carousel-sidebar__tags" data-sidebar-target="tags" data-add-tags-target="tags"></p>
+            {% if role != "embed" %}
             <div class="carousel-add-tags__add"
                data-add-tags-target="addButton"
                data-action="click->add-tags#showForm"
@@ -52,6 +55,7 @@
                         data-action="click->add-tags#submit"
                 >{{ lang[locale].add_tag_action }}</button>
             </form>
+            {% endif %}
         </div>
     </div>
 </div>

@@ -6,7 +6,7 @@ import {
   trigger,
   getLocale,
   isElementInViewport,
-  getPrettyURLValues,
+  urlToArray,
   setPageMeta,
   copyToClipboard,
 } from "../../js/utils"
@@ -39,7 +39,7 @@ export default class extends Controller {
     this.hide()
 
     // check for a list id in the url
-    const listId = getPrettyURLValues(window.location.pathname.split(`/${getLocale()}/lists/`).join("/"))[0] || null
+    const listId = urlToArray(window.location.pathname.split(`/${getLocale()}/lists/`).join("/"))[0] || null
 
     if (appState("auth-signed-in")) {
       // the user is logged in
@@ -413,5 +413,14 @@ export default class extends Controller {
     const id = listItem ? listItem.listId : 0
 
     copyToClipboard(`${window.location.origin}/${getLocale()}/lists/${id}`, "link")
+  }
+
+  embedList(e) {
+    e.preventDefault()
+
+    const listItem = this.listItemTargets.find(item => item.contains(e.currentTarget))
+    const id = listItem ? listItem.listId : 0
+
+    trigger("dialogEmbed:show", { listId: id })
   }
 }

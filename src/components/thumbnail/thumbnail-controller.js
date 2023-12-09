@@ -36,6 +36,7 @@ export default class extends Controller {
       e &&
       e.target &&
       this.role === "lists" &&
+      !appState("is-embed") &&
       (e.target === this.element.querySelector(".context-menu") ||
         this.element.querySelector(".context-menu").contains(e.target))
     ) {
@@ -70,11 +71,16 @@ export default class extends Controller {
 
     // Load photo in Carousel
     trigger("photosThumbnail:select", { data: selectedPhotoData })
+
+    trigger("thumbnail:click", { data: selectedPhotoData })
   }
 
   // resize thumbnail when the browser window gets resized
   resize() {
-    const h = window.innerWidth < 640 || this.element.forceSmallSize ? (THUMBNAIL_HEIGHT * 2) / 3 : THUMBNAIL_HEIGHT
+    const h =
+      window.innerWidth < 640 || window.innerHeight < 480 || this.element.forceSmallSize
+        ? (THUMBNAIL_HEIGHT * 2) / 3
+        : THUMBNAIL_HEIGHT
 
     if (!this.naturalWidth) return
     const w = Math.min(240, (this.naturalWidth / this.naturalHeight) * h)
@@ -104,10 +110,12 @@ export default class extends Controller {
         ? `/${getLocale()}/lists/${listManager.getSelectedListId()}/photos/${this.element.photoId}`
         : `/${getLocale()}/photos/?id=${this.element.photoId}`
 
-    const locationArray = [data.year, data.city, data.place]
-    if (!data.city && !data.place && data.country) locationArray.push(data.country)
-    this.locationTarget.textContent = locationArray.filter(Boolean).join(" · ")
-    this.descriptionTarget.textContent = data.description || ""
+    if (this.hasLocationTarget && this.hasDescriptionTarget) {
+      const locationArray = [data.year, data.city, data.place]
+      if (!data.city && !data.place && data.country) locationArray.push(data.country)
+      this.locationTarget.textContent = locationArray.filter(Boolean).join(" · ")
+      this.descriptionTarget.textContent = data.description || ""
+    }
 
     this.imageTarget.alt = getImgAltText(data)
 

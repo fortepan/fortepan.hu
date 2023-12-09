@@ -1,0 +1,59 @@
+---
+layout: base/base.liquid
+---
+
+<section class="embed" data-controller="embed"
+  data-action="photosCarousel:thumbnailClicked@document->embed#toggleInfobar
+              photosCarousel:pagerClicked@document->embed#toggleInfobar
+              resize@window->embed#onScroll
+              photos:selectThumbnail@document->embed#selectThumbnail
+              thumbnail:click@document->embed#toggleInfobar
+              photosCarousel:photoSelected@document->embed#onPhotoSelected
+              thumbnail:loaded@document->embed#loadThumbnails"
+>
+
+  {% include carousel/carousel role:"embed" %}
+
+  <div class="embed-infobar scrollview" data-embed-target="infobar" data-action="scroll->embed#onScroll">
+
+  <div class="embed-logo">
+          <a href="https://fortepan.hu/{{ locale }}/" class="embed-logo__link" target="_blank">
+          {% inlineSVG src:"src/static/images/header-logo.svg" class:"embed-logo__logo" %}
+          <span data-embed-target="logoLabel">Fortepan</span>
+          </a>
+      </div>
+
+    <div class="embed-infobar__close-button button-circular" data-action="click->embed#toggleInfobar">
+        {% inlineSVG src:"src/static/images/icons/24/icon-close.svg" class:"button-circular__icon" %}
+        <div class="button-circular__label">{{ lang[locale].close }}</div>
+    </div>
+
+    <div class="list-info">
+
+      <h2 class="list-info__title" data-embed-target="title"></h2>
+      <h5 class="list-info__subtitle" data-embed-target="subtitle">
+        <span class="list-info__username" data-embed-target="username"></span>&bull;<span data-embed-target="count" class="list-info__subtitle__count"></span>
+        {{ lang[locale].photo_results }}
+      </h5>
+      <p class="list-info__description" data-embed-target="description"></p>
+
+      <div class="list-info__message is-hidden" data-embed-target="message"></div>
+
+    </div>
+
+    <div class="thumbnails"
+        data-action="photos:selectThumbnail@document->embed#selectThumbnail
+                      photosCarousel:photoSelected@document->embed#onPhotoSelected
+                      photosCarousel:hide@document->embed#onCarouselClosed
+                      thumbnail:loaded@document->embed#loadThumbnails"
+    >
+      <div class="photos__grid is-hidden" data-embed-target="grid"></div>
+    </div>
+
+  </div>
+
+  {% include thumbnail/thumbnail-template role:'embed' %}
+  {% include age-restriction/age-restriction-template.liquid %}
+  {% include dialog/age-restriction/age-restriction.liquid %}
+
+</section>

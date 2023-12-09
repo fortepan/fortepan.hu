@@ -88,6 +88,13 @@ export default class extends Controller {
         })
       })
     }
+
+    if (appState("is-embed")) {
+      // bind history api calls to sidabar anchors
+      this.element.querySelectorAll(".carousel-sidebar a").forEach(anchorNode => {
+        anchorNode.setAttribute("target", "_blank")
+      })
+    }
   }
 
   show() {
@@ -104,6 +111,7 @@ export default class extends Controller {
 
   toggleOnResize() {
     if (window.innerWidth < 768) this.hide()
-    else if (!appState("play-carousel-slideshow") && !appState("carousel-fullscreen")) this.show()
+    else if (!appState("play-carousel-slideshow") && !appState("carousel-fullscreen") && !appState("is-embed"))
+      this.show()
   }
 }

@@ -1,0 +1,10 @@
+.dialog-embed {
+  .settings {
+    display: flex;
+    gap: 1.5rem;
+
+    & > * {
+      flex: 1 1 33.3%;
+    }
+  }
+}
