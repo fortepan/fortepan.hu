@@ -3,7 +3,11 @@
     {
       "name": "Fábián József fotói és archívuma",
       "date": "2023-12-13T00:00:00.000Z",
-      "cover_image": "279180"
+      "cover_image": "279180",
+      "hu": {
+        "title": "Fábián József fotói és archívuma",
+        "blurb": "Fábián József hivatásos fotóriporterként dolgozott, de vállalta amatőr fotósok negatívjainak kidolgozását is. Életművének java a fodrász-oktatáshoz és versenyekhez, illetve fővárosi építőipari vállalatok beruházásaihoz kapcsolódik. Képein párhuzamosan jelennek meg az építkezési helyszínek és a divat- vagy fodrászmodellek. Mivel az amatőr fotósok filmjeinek egy része is az archívumában maradt, ezekből is válogattunk a Fortepanra. Utóbbaik a Fortepan/Album086 sorozatban láthatóak. "
+      }
     },
     {
       "name": "A Brück und Sohn kiadó budapesti képei",
