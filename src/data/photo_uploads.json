@@ -1,6 +1,27 @@
 {
   "uploads": [
     {
+      "name": "Fábián József fotói és archívuma",
+      "date": "2023-12-11T00:00:00.000Z",
+      "cover_image": "280028",
+      "hu": {
+        "title": "Fábián József fotói és archívuma",
+        "blurb": "Fábián József hivatásos fotóriporterként dolgozott, de vállalta amatőr fotósok negatívjainak kidolgozását is. Életművének java a fodrász-oktatáshoz és versenyekhez, illetve fővárosi építőipari vállalatok beruházásaihoz kapcsolódik. Képein párhuzamosan jelennek meg az építkezési helyszínek és a divat- vagy fodrászmodellek. Mivel az amatőr fotósok filmjeinek egy része is az archívumában maradt, ezekből is válogattunk a Fortepanra. Utóbbaik a Fortepan/Album086 sorozatban láthatóak. ",
+        "actions": {
+          "best_of": "100 jó kép",
+          "all": "a teljes gyűjtemény"
+        }
+      },
+      "en": {
+        "title": "József Fábián’s photos and his archive",
+        "blurb": "József Fábián worked as a professional photographer, but he occasionally developed amateur negatives.\nMost of his own oeuvre was related to hairdressing education and competitions in this field, and to building projects of Budapest-based construction companies.\nHis photos include both construction sites and fashion/hairdressing models.\nAs some amateur negative rolls also survived in the drawers of Fábián, we added some of those to the present compilation. You can find the latter in the series entitled Fortepan/Album086 ",
+        "actions": {
+          "best_of": "100 best of",
+          "all": "All collection"
+        }
+      }
+    },
+    {
       "name": "A Brück und Sohn kiadó budapesti képei",
       "date": "2023-11-09T00:00:00.000Z",
       "cover_image": "277719",
