@@ -136,7 +136,7 @@ export const onClassChange = (node, callback) => {
   })
 }
 
-export const copyToClipboard = (textToCopy, type) => {
+export const copyToClipboard = (textToCopy, type, successMessage, errorMessage) => {
   const input = document.createElement("textarea")
   input.className = "visuallyhidden"
   input.value = textToCopy
@@ -148,13 +148,14 @@ export const copyToClipboard = (textToCopy, type) => {
   const res = document.execCommand("copy")
   if (res) {
     trigger("snackbar:show", {
-      message: type === "link" ? lang("copy_link_clipboard") : lang("copy_text_clipboard"),
+      message: successMessage || (type === "link" ? lang("copy_link_clipboard") : lang("copy_text_clipboard")),
       autoHide: true,
       status: "success",
     })
   } else {
     trigger("snackbar:show", {
-      message: type === "link" ? lang("copy_link_clipboard_failed") : lang("copy_text_clipboard_failed"),
+      message:
+        errorMessage || (type === "link" ? lang("copy_link_clipboard_failed") : lang("copy_text_clipboard_failed")),
       autoHide: true,
       status: "error",
     })
