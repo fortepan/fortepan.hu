@@ -8,7 +8,7 @@ import { escapeHTML, getLocale, urlToArray, lang, setPageMeta, trigger } from ".
 
 export default class extends Controller {
   static get targets() {
-    return ["infobar", "title", "subtitle", "username", "count", "description", "grid", "message"]
+    return ["infobar", "title", "subtitle", "username", "count", "description", "grid", "message", "logo"]
   }
 
   connect() {
@@ -41,6 +41,9 @@ export default class extends Controller {
       trigger("loader:hide", { id: "loaderBase" })
 
       if (listData) {
+        // changing the logo url
+        this.logoTarget.href = `/${getLocale()}/lists/${listId}`
+
         this.listData = listData
         this.element.classList.add("is-visible")
 

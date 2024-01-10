@@ -16,12 +16,12 @@ layout: base/base.liquid
 
   <div class="embed-infobar scrollview" data-embed-target="infobar" data-action="scroll->embed#onScroll">
 
-  <div class="embed-logo">
-          <a href="https://fortepan.hu/{{ locale }}/" class="embed-logo__link" target="_blank">
-          {% inlineSVG src:"src/static/images/header-logo.svg" class:"embed-logo__logo" %}
-          <span data-embed-target="logoLabel">Fortepan</span>
-          </a>
-      </div>
+    <div class="embed-logo">
+      <a href="https://fortepan.hu/{{ locale }}/" class="embed-logo__link" target="_blank">
+        {% inlineSVG src:"src/static/images/header-logo.svg" class:"embed-logo__logo" %}
+        <span data-embed-target="logoLabel">Fortepan</span>
+      </a>
+    </div>
 
     <div class="embed-infobar__close-button button-circular" data-action="click->embed#toggleInfobar">
         {% inlineSVG src:"src/static/images/icons/24/icon-close.svg" class:"button-circular__icon" %}
