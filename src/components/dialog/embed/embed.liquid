@@ -16,6 +16,16 @@
       <div class="dialog__content dialog-embed__content">
         <h3 class="dialog__title">{{ lang[locale].embed.dialog.title }}</h3>
 
+        <div class="dialog-embed__private" data-dialog--embed-target="private">
+          <h5>
+            <i class="lists-private-icon is-visible">
+              {% inlineSVG src:"src/static/images/icons/24/icon-lock.svg" %}
+            </i>
+            {{ lang[locale].list_edit_private }}
+          </h5>
+          <p class="input-wrapper__label is-visible">{{ lang[locale].list_edit_private_label }} - <a href="#" data-action="dialog--embed#editList">{{ lang[locale].embed.dialog.change_privacy }}</a></p>
+        </div>
+
         <div class="dialog-embed__settings">
 
           {% include input/input.liquid type:'text'

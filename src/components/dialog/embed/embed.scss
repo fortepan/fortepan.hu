@@ -29,4 +29,31 @@
   .dialog__button {
     margin-top: 1rem;
   }
+
+  &__private {
+    display: none;
+    margin-top: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid;
+
+    .theme--light & {
+      border-color: rgba($dark-base, 0.08);
+    }
+
+    .theme--dark & {
+      border-color: rgba($light-base, 0.08);
+    }
+
+    &.is-visible {
+      display: block;
+    }
+
+    h5 {
+      margin: 0;
+    }
+
+    .input-wrapper__label {
+      margin: rem(4px) 0 0 0;
+    }
+  }
 }

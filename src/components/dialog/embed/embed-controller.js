@@ -1,15 +1,19 @@
 import { Controller } from "@hotwired/stimulus"
-import { getLocale, copyToClipboard, lang } from "../../../js/utils"
+import { getLocale, copyToClipboard, lang, trigger } from "../../../js/utils"
+import listManager from "../../../js/list-manager"
 
 export default class extends Controller {
   static get targets() {
-    return ["ratio", "height", "width", "widthSwitch", "embedCode"]
+    return ["ratio", "height", "width", "widthSwitch", "embedCode", "private"]
   }
 
   connect() {}
 
   show(e) {
     this.listId = e?.detail?.listId
+    this.listData = listManager.getListById(this.listId)
+
+    this.privateTarget.classList.toggle("is-visible", this.listData.private)
     this.element.classList.add("is-visible")
 
     this.generateEmbedCode()
@@ -17,6 +21,9 @@ export default class extends Controller {
 
   hide() {
     delete this.listId
+    delete this.listData
+
+    this.privateTarget.classList.remove("is-visible")
     this.element.classList.remove("is-visible")
   }
 
@@ -128,5 +135,12 @@ export default class extends Controller {
       lang("embed").dialog.embed_code_copied,
       lang("embed").dialog.embed_code_copy_failed
     )
+  }
+
+  editList(e) {
+    e?.preventDefault()
+
+    trigger("dialogLists:show", { action: "edit", listId: this.listId })
+    this.hide()
   }
 }
