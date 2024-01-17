@@ -57,6 +57,7 @@
             </div>
             {% endif %}
             <div class="carousel__photos__actions__group">
+                {% if role != "embed" %}
                 <div id="SlideshowPlay" class="button-circular" data-action="click->carousel#playSlideshow">
                     {% inlineSVG src:"src/static/images/icons/24/icon-play.svg" class:"button-circular__icon" %}
                     <div class="button-circular__label">{{ lang[locale].slideshow }}</div>
@@ -65,7 +66,6 @@
                     {% inlineSVG src:"src/static/images/icons/24/icon-pause.svg" class:"button-circular__icon" %}
                     <div class="button-circular__label">{{ lang[locale].slideshow }}</div>
                 </div>
-                {% if role != "embed" %}
                 <div class="button-circular" data-action="click->carousel#downloadImage">
                     {% inlineSVG src:"src/static/images/icons/24/icon-download.svg" class:"button-circular__icon" %}
                     <div class="button-circular__label">{{ lang[locale].download }}</div>
