@@ -99,6 +99,7 @@ export default class extends Controller {
 
   show() {
     removeAppState("hide-carousel-sidebar")
+    this.element.scrollTop = 0
   }
 
   hide() {
@@ -107,6 +108,10 @@ export default class extends Controller {
 
   toggle() {
     toggleAppState("hide-carousel-sidebar")
+
+    if (!appState("hide-carousel-sidebar")) {
+      this.element.scrollTop = 0
+    }
   }
 
   toggleOnResize() {

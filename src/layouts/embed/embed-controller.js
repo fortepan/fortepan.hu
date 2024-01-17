@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 import throttle from "lodash/throttle"
 
 import config from "../../data/siteConfig"
-import { setAppState } from "../../js/app"
+import { appState, removeAppState, setAppState, toggleAppState } from "../../js/app"
 import listManager from "../../js/list-manager"
 import { escapeHTML, getLocale, urlToArray, lang, setPageMeta, trigger } from "../../js/utils"
 
@@ -34,7 +34,6 @@ export default class extends Controller {
     let is404 = false
 
     if (listId) {
-      // we have a list id, check if the list is public
       trigger("loader:show", { id: "loaderBase" })
       const listData = await listManager.loadPublicListDataById(listId)
       listManager.selectListById(listId)
@@ -42,7 +41,9 @@ export default class extends Controller {
 
       if (listData) {
         // changing the logo url
-        this.logoTarget.href = `/${getLocale()}/lists/${listId}`
+        this.logoTargets.forEach(el => {
+          el.href = `/${getLocale()}/lists/${listId}`
+        })
 
         this.listData = listData
         this.element.classList.add("is-visible")
@@ -68,7 +69,7 @@ export default class extends Controller {
 
           // hiding the infobar if no click activity
           const clickTimeout = setTimeout(() => {
-            this.infobarTarget.classList.remove("is-visible")
+            this.hideInfobar()
           }, 8000)
 
           document.addEventListener("click", () => {
@@ -200,13 +201,20 @@ export default class extends Controller {
   }
 
   toggleInfobar() {
-    this.infobarTarget.classList.toggle("is-visible")
+    toggleAppState("show-embed-infobar")
 
-    if (this.infobarTarget.classList.contains("is-visible")) {
+    if (appState("show-embed-infobar")) {
       this.scrollToSelectedThumbnail()
       setTimeout(() => {
         this.onScroll()
       }, 400)
+
+      // hide the carousel sidebar
+      trigger("carouselSidebar:hide")
     }
+  }
+
+  hideInfobar() {
+    removeAppState("show-embed-infobar")
   }
 }

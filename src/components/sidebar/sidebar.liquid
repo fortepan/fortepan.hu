@@ -1,3 +1,6 @@
+{% if role == "embed" %}
+<div class="carousel-sidebar-bg" data-controller="sidebar" data-action="click->sidebar#toggle"></div>
+{% endif %}
 <div class="carousel-sidebar scrollview"
      data-controller="sidebar"
      data-action="resize@window->sidebar#toggleOnResize
@@ -6,6 +9,12 @@
                   carouselSidebar:hide@document->sidebar#hide
                   carouselSidebar:toggle@document->sidebar#toggle"
 >
+    {% if role == "embed" %}
+    <div class="carousel-sidebar__close-button button-circular" data-action="click->sidebar#toggle">
+        {% inlineSVG src:"src/static/images/icons/24/icon-close.svg" class:"button-circular__icon" %}
+        <div class="button-circular__label">{{ lang[locale].close }}</div>
+    </div>
+    {% endif %}
     <div class="carousel-sidebar__content">
         <div class="carousel-sidebar__description">
             <h6>{{ lang[locale].description }}</h6>

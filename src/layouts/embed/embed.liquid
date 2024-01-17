@@ -9,15 +9,18 @@ layout: base/base.liquid
               photos:selectThumbnail@document->embed#selectThumbnail
               thumbnail:click@document->embed#toggleInfobar
               photosCarousel:photoSelected@document->embed#onPhotoSelected
-              thumbnail:loaded@document->embed#loadThumbnails"
+              thumbnail:loaded@document->embed#loadThumbnails
+              carouselSidebar:toggle@document->embed#hideInfobar"
 >
 
   {% include carousel/carousel role:"embed" %}
 
+  <div class="embed-infobar-bg" data-action="click->embed#hideInfobar"></div>
+
   <div class="embed-infobar scrollview" data-embed-target="infobar" data-action="scroll->embed#onScroll">
 
     <div class="embed-logo">
-      <a href="https://fortepan.hu/{{ locale }}/" class="embed-logo__link" target="_blank">
+      <a href="https://fortepan.hu/{{ locale }}/" class="embed-logo__link" target="_blank" data-embed-target="logo">
         {% inlineSVG src:"src/static/images/header-logo.svg" class:"embed-logo__logo" %}
         <span data-embed-target="logoLabel">Fortepan</span>
       </a>
