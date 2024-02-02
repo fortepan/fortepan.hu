@@ -5,7 +5,11 @@
       "date": "2024-02-02T00:00:00.000Z",
       "cover_image": "281693",
       "hu": {
-        "title": "Bűnös Budapest `70"
+        "title": "Bűnös Budapest `70",
+        "actions": {
+          "best_of": "80 fontos k;p",
+          "all": "a teljes gyűjtemény"
+        }
       }
     },
     {
