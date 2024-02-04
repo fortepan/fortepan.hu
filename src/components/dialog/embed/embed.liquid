@@ -15,12 +15,18 @@
 
       <div class="dialog__content dialog-embed__content">
         <h3 class="dialog__title">{{ lang[locale].embed.dialog.title }}</h3>
-        <p>{{ lang[locale].embed.dialog.content }}</p>
 
+        <div class="dialog-embed__private" data-dialog--embed-target="private">
+          <h5>
+            <i class="lists-private-icon is-visible">
+              {% inlineSVG src:"src/static/images/icons/24/icon-lock.svg" %}
+            </i>
+            {{ lang[locale].list_edit_private }}
+          </h5>
+          <p class="input-wrapper__label is-visible">{{ lang[locale].list_edit_private_label }} - <a href="#" data-action="dialog--embed#editList">{{ lang[locale].embed.dialog.change_privacy }}</a></p>
+        </div>
 
-        <div class="settings">
-
-
+        <div class="dialog-embed__settings">
 
           {% include input/input.liquid type:'text'
                     name:'width'
@@ -28,8 +34,8 @@
                     class:'dialog-embed__input'
                     value:'640'
                     stimulus_target:'data-dialog--embed-target="width"'
-                    stimulus_action:'input->dialog--embed#restrictInput'
-                    options:'pattern="[0-9%]+"'
+                    stimulus_action:'input->dialog--embed#restrictInput input->dialog--embed#generateEmbedCode'
+                    options:'pattern="[0-9]+"'
           %}
 
           {% include input/input.liquid type:'text'
@@ -38,11 +44,15 @@
                     class:'dialog-embed__input'
                     value:'360'
                     stimulus_target:'data-dialog--embed-target="height"'
-                    stimulus_action:'input->dialog--embed#restrictInput'
-                    options:'pattern="[0-9%]+"'
+                    stimulus_action:'input->dialog--embed#restrictInput input->dialog--embed#generateEmbedCode'
+                    options:'pattern="[0-9]+"'
           %}
 
-          {% capture options %}<option value="unique" selected="selected">{{ lang[locale].embed.dialog.ratio_custom }}</option><option value="16:9">16:9</option><option value="3:2">3:2</option><option value="4:3">4:3</option><option value="1:1">1:1</option>{% endcapture %}
+          {% capture options %}<option value="custom" selected="selected">{{ lang[locale].embed.dialog.ratio_custom }}</option>
+            <option value="4/3">4:3</option>
+            <option value="3/2">3:2</option>
+            <option value="16/9">16:9</option>
+            <option value="1/1">1:1</option>{% endcapture %}
 
           {% include select/select.liquid name:'ratio'
                     label:lang[locale].embed.dialog.ratio
@@ -53,6 +63,23 @@
           %}
 
         </div>
+
+        <div class="dialog-embed__switch-container">
+          <span class="toggle-switch" data-dialog--embed-target="widthSwitch" data-action="click->dialog--embed#toggleWidthSwitch"></span>
+          {{ lang[locale].embed.dialog.full_width }}
+        </div>
+
+        <h6 class="dialog-embed__embed-code-header">{{ lang[locale].embed.dialog.embed_code }}</h6>
+
+        {% include input/input.liquid type:'text'
+                  name:'embedCode'
+                  class:'dialog-embed__embed-code'
+                  stimulus_target:'data-dialog--embed-target="embedCode"'
+                  options:''
+        %}
+
+        <button class="button button--primary dialog__button" data-action="dialog--embed#copyEmbedCode">{{ lang[locale].embed.dialog.copy_embed_code }}</button>
+
       </div>
   </div>
 </div>

@@ -44,10 +44,10 @@
 
         <div class="carousel__photos__actions" data-carousel-target="actions">
             {% if role == "embed" %}
-            <div class="embed-logo" data-embed-target="logo" data-action="embed#onLogoClick">
-                <a href="https://fortepan.hu/{{ locale }}/" class="embed-logo__link" target="_blank">
-                {% inlineSVG src:"src/static/images/header-logo.svg" class:"embed-logo__logo" %}
-                <span data-embed-target="logoLabel">Fortepan</span>
+            <div class="embed-logo">
+                <a href="https://fortepan.hu/{{ locale }}/" class="embed-logo__link" target="_blank" data-embed-target="logo">
+                    {% inlineSVG src:"src/static/images/header-logo.svg" class:"embed-logo__logo" %}
+                    <span data-embed-target="logoLabel">Fortepan</span>
                 </a>
             </div>
             {% else %}
@@ -57,6 +57,7 @@
             </div>
             {% endif %}
             <div class="carousel__photos__actions__group">
+                {% if role != "embed" %}
                 <div id="SlideshowPlay" class="button-circular" data-action="click->carousel#playSlideshow">
                     {% inlineSVG src:"src/static/images/icons/24/icon-play.svg" class:"button-circular__icon" %}
                     <div class="button-circular__label">{{ lang[locale].slideshow }}</div>
@@ -65,7 +66,6 @@
                     {% inlineSVG src:"src/static/images/icons/24/icon-pause.svg" class:"button-circular__icon" %}
                     <div class="button-circular__label">{{ lang[locale].slideshow }}</div>
                 </div>
-                {% if role != "embed" %}
                 <div class="button-circular" data-action="click->carousel#downloadImage">
                     {% inlineSVG src:"src/static/images/icons/24/icon-download.svg" class:"button-circular__icon" %}
                     <div class="button-circular__label">{{ lang[locale].download }}</div>
