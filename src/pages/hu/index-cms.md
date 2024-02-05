@@ -1,33 +1,34 @@
 ---
 layout: home/home.liquid
-title: Fortepan — Főoldal
 permalink: /
 announcement:
   caption: Új sorozat
+title: Fortepan — Főoldal
 best_of_collections:
   title: Legérdekesebb tartalmaink
   caption: >-
     Ha nem tudja merre induljon egyre növekvő archívumunkban, akkor ez a három
     gyűjtés jó kiindulópont lehet.
   content:
-    - cover_image: '216071'
+    - title: Kétszáz legjobb képünk
       counter: 200
+      cover_image: '216071'
       url: '#'
-      title: Kétszáz legjobb képünk
-    - cover_image: '216071'
+    - title: Tizenöt kiemelkedő szerzőnk
       counter: 15
+      cover_image: '216071'
       url: '#'
-      title: Tizenöt kiemelkedő szerzőnk
-    - cover_image: '216071'
+    - title: Tizenkét legjelentősebb fotó-adományozónk
       counter: 12
+      cover_image: '216071'
       url: '#'
-      title: Tizenkét legjelentősebb fotó-adományozónk
 blog:
   title: Heti Fortepan blog
   caption: >-
     Magyarul hetente, angolul ritkábban frissülő blogunkon a Fortepanra
     felkerülő fényképek és adományozóik háttértörténetét dolgozzuk fel gazdagon
-    illusztrált írásokban. Minden cikkünk CC licensz alatt újraközölhető.
+    illusztrált írásokban. A Heti Fortepan Blog a Capa Központ támogatásával és
+    együttműködésével készül. Minden cikkünk CC licensz alatt újraközölhető.
   action:
     label: Még több Heti Fortepan
     url: 'https://hetifortepan.capacenter.hu/'
@@ -45,4 +46,4 @@ _template: home
 
 A honlap 2010-ben indult ötezer, jórészt lomtalanításokon talált fotóval. Azóta többszáz család, amatőr és hivatásos fotós, illetve közgyűjtemény bővítette a Fortepant. A honlapon megjelenő képeket a szerkesztőség válogatja ki.
 
-A fotók leírását önkéntes szerkesztők végzik. Örömmel vállalkozunk az Ön fényképeinek, negatívjainak feldolgozására is! Email: [fortepan@gmail.com](mailto:fortepan@gmail.com)
+A fotók leírását önkéntes szerkesztők végzik. Örömmel vállalkozunk az Ön fényképeinek, negatívjainak feldolgozására is! Email: [fortepan@gmail.com](mailto:fortepan@gmail.com "")
