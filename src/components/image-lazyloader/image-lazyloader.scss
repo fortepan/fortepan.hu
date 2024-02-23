@@ -54,6 +54,21 @@
     img {
       opacity: 1;
     }
+
+    &.autosize {
+      height: auto;
+      padding: 0;
+
+      img {
+        position: relative;
+        display: block;
+        object-fit: initial;
+        top: auto;
+        left: auto;
+        width: 100%;
+        height: auto;
+      }
+    }
   }
 }
 
