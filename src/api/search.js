@@ -197,7 +197,7 @@ const search = params => {
       availableFields.forEach(s => fieldsToSearch.push(getLocale() === "hu" ? `${s}_search` : `${s}_en_search`))
 
       words.forEach(word => {
-        query.multi.push(`${slugify(word)}`)
+        query.multi.push(word)
         // query.bool.must.push({
         //   multi_match: {
         //     query: ,
@@ -213,7 +213,7 @@ const search = params => {
 
     // if there's a tag search attribute defined (advanced search)
     if (params.tag) {
-      const tag = slugify(params.tag)
+      const tag = params.tag
       query.matching.push({ model: "Tags", field: "name", value: `${tag}` })
     }
 
@@ -224,37 +224,37 @@ const search = params => {
 
     // if there's a city search attribute defined (advanced search)
     if (params.place) {
-      const place = slugify(params.place)
+      const place = params.place
       query.matching.push({ model: "Places", field: "name", value: `${place}` })
     }
 
     // if there's a city search attribute defined (advanced search)
     if (params.city) {
-      const city = slugify(params.city)
+      const city = params.city
       query.matching.push({ model: "Localities", field: "name", value: `${city}` })
     }
 
     // if there's a country search attribute defined (advanced search)
     if (params.country) {
-      const country = slugify(params.country)
+      const country = params.country
       query.matching.push({ model: "Countries", field: "name", value: `${country}` })
     }
 
     // if there's a donor search attribute defined (advanced search)
     if (params.donor) {
-      const donor = slugify(params.donor)
+      const donor = params.donor
       query.matching.push({ model: "Donors", field: "name", value: `${donor}` })
     }
 
     // if there's a photographer search attribute defined (advanced search)
     if (params.photographer) {
-      const photographer = slugify(params.photographer)
+      const photographer = params.photographer
       query.where.push({ "author": photographer })
     }
 
     // if there's an id search attribute defined (advanced search)
     if (params.id) {
-      const id = slugify(params.id)
+      const id = params.id
       query.where.push({ "Media.id": `${id}` })
     }
 
