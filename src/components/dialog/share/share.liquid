@@ -1,4 +1,4 @@
-<div class="dialog dialog-share" 
+<div class="dialog dialog-share"
      data-controller="dialog--share"
      data-action="dialogs:hide@document->dialog--share#hide
                    dialogShare:show@document->dialog--share#show
@@ -28,5 +28,7 @@
             <a href="#" data-action="click->dialog--share#shareLink">{% inlineSVG src:"src/static/images/icons/24/icon-link.svg" %}{{ lang[locale].copy_link }}</a>
           </h5>
       </p>
+
+      {% include dialog/embed/upsell/upsell role:role %}
   </div>
 </div>

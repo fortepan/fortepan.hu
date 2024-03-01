@@ -1,4 +1,4 @@
-<div class="dialog dialog-download" 
+<div class="dialog dialog-download"
      data-controller="dialog--download"
      data-action="dialogs:hide@document->dialog--download#hide
                    dialogDownload:show@document->dialog--download#show
@@ -12,6 +12,10 @@
         <div class="button-circular__label">{{ lang[locale].close }}</div>
       </div>
       <h3 class="dialog__title">{{ lang[locale].download }}</h3>
+
       <p class="dialog__content" data-dialog--download-target="content"></p>
+      <button class="button button--primary dialog__button" data-action="dialog--download#downloadImage">{{ lang[locale].dialog_download_action }}</button>
+
+     {% include dialog/embed/upsell/upsell role:role %}
   </div>
 </div>

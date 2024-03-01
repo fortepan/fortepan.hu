@@ -10,7 +10,7 @@ export default class extends Controller {
   connect() {}
 
   show(e) {
-    this.listId = e?.detail?.listId
+    this.listId = e?.detail?.listId || listManager.getSelectedListId()
     this.listData = listManager.getListById(this.listId)
 
     this.privateTarget.classList.toggle("is-visible", this.listData.private)

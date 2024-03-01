@@ -1,0 +1,7 @@
+ <div class="dialog__embed-upsell" data-controller="dialog--embed--upsell">
+  {% if role == "lists" %}
+  <p class="dialog__helper-text">{{ lang[locale].embed.dialog.upsell.helper_text_lists | replace: "$p1", '<a href="#" data-action="dialog--embed--upsell#showEmbedDialog">' | replace: "$p2", "</a>" }} <a href="/{{ locale }}/docs/embed/#embed-list" target="_blank">{{ lang[locale].embed.dialog.upsell.docs_link }}</a></p>
+  {% else %}
+  <p class="dialog__helper-text">{{ lang[locale].embed.dialog.upsell.helper_text | replace: "$p1", '<a href="#" data-action="dialog--embed--upsell#showListsDialog">' | replace: "$p2", "</a>" }} <a href="/{{ locale }}/docs/embed/" target="_blank">{{ lang[locale].embed.dialog.upsell.docs_link }}</a></p>
+  {% endif %}
+</div>

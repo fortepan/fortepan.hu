@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+
 import config from "../../../data/siteConfig"
 import { lang } from "../../../js/utils"
 import { appState } from "../../../js/app"
@@ -12,21 +13,23 @@ export default class extends Controller {
 
   show() {
     this.element.classList.add("is-visible")
-    this.downloadImage()
+
+    this.photoData = appState("is-lists") ? listManager.getSelectedPhoto() : photoManager.getSelectedPhotoData()
+    this.contentTarget.innerHTML = lang("dialog_download").replace(
+      "$donor",
+      `<br><b>Fortepan / ${this.photoData.donor}</b>`
+    )
   }
 
   hide() {
     this.element.classList.remove("is-visible")
   }
 
-  downloadImage() {
-    const data = appState("is-lists") ? listManager.getSelectedPhoto() : photoManager.getSelectedPhotoData()
-
-    this.element.classList.add("is-visible")
-    this.contentTarget.innerHTML = lang("dialog_download").replace("$donor", `<br/><b>Fortepan / ${data.donor}</b>`)
+  downloadImage(e) {
+    if (e) e.preventDefault()
 
     const a = document.createElement("a")
-    a.href = `${config().PHOTO_SOURCE_LARGE}${data.mid}.jpg`
+    a.href = `${config().PHOTO_SOURCE_LARGE}${this.photoData.mid}.jpg`
     a.click()
   }
 }
