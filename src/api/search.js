@@ -152,6 +152,12 @@ const search = params => {
       )
     }
 
+    // get results without tags (advanced search)
+    if (params.notags === "1") {
+      query.bool.must_not =
+        getLocale() === "hu" ? [{ exists: { field: "cimke_search" } }] : [{ exists: { field: "cimke_en_search" } }]
+    }
+
     // if there's a year search attribute defined (advanced search)
     if (params.year) {
       query.bool.must.push({ term: { year: `${params.year}` } })
