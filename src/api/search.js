@@ -75,6 +75,7 @@ const search = params => {
       bool: {
         must: [],
         should: [],
+        must_not: [],
       },
     }
 
@@ -154,8 +155,12 @@ const search = params => {
 
     // get results without tags (advanced search)
     if (params.notags === "1") {
-      query.bool.must_not =
-        getLocale() === "hu" ? [{ exists: { field: "cimke_search" } }] : [{ exists: { field: "cimke_en_search" } }]
+      query.bool.must_not.push({ exists: { field: getLocale() === "hu" ? "cimke_search" : "cimke_en_search" } })
+    }
+
+    // get results without description (advanced search)
+    if (params.nodesc === "1") {
+      query.bool.must_not.push({ exists: { field: "description_search" } })
     }
 
     // if there's a year search attribute defined (advanced search)
@@ -233,7 +238,7 @@ const search = params => {
 
     // if there's exclusions
     if (params.exclude) {
-      query.bool.must_not = params.exclude
+      query.bool.must_not.push(...params.exclude)
     }
 
     const body = {
