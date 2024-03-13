@@ -11,6 +11,14 @@
           "best_of": "75 fontos kép",
           "all": "a teljes gyűjtemény"
         }
+      },
+      "en": {
+        "title": "Pictures of a  Budapest citizen",
+        "blurb": "The author of the nearly a thousand photos shown here is Dezső Bor, a Budapest city official and founding conductor of the Municipal Symphony Orchestra. As an amateur photographer, the author followed with his camera the classic life situations and locations of the urban middle class. His photographs show typical moments of everyday life in the 1920s and 1930s: big snowfalls, social sports, the demolition of the Taban quarter, the pavilions of the International Fair, boy scouts at the Gödöllő jamboree, rowing races on the Danube, woodcutters and stonecutters, street painters and fairground vendors. His well-composed photographs reveal a skilled author, with an eye trained by the photographic magazines of the period. Dezső Bor's photographs, taken on trips to the Upper Hungary (now Slovakia)  and Austria, on excursions in Hungary and walks in Budapest, or in the family circle, are harmonious, humane and vivid impressions of the bourgeois world and the world view between the two wars.",
+        "actions": {
+          "best_of": "75 best of",
+          "all": "All collection"
+        }
       }
     },
     {
