@@ -6,7 +6,11 @@
       "cover_image": "231966",
       "hu": {
         "title": "Egy pesti polgár képei",
-        "blurb": "Az itt látható közel ezer fotó szerzője Bor Dezső fővárosi tisztviselő, a Székesfővárosi Zenekar alapító karnagya. "
+        "blurb": "Az itt látható közel ezer fotó szerzője Bor Dezső fővárosi tisztviselő, a Székesfővárosi Zenekar alapító karnagya. ",
+        "actions": {
+          "best_of": "75 fontos kép",
+          "all": "a teljes gyűjtemény"
+        }
       }
     },
     {
