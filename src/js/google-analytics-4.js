@@ -11,6 +11,13 @@
 
 const GA4 = {
   init: () => {
+    // inject GA script to document header
+    const a = document.createElement("script")
+    a.async = true
+    a.src = "https://www.googletagmanager.com/gtag/js?id=G-BQPYXSY6WP"
+    const s = document.getElementsByTagName("script")[0]
+    s.parentNode.insertBefore(a, s)
+
     // pollute window
     window.dataLayer = window.dataLayer || []
     function gtag(...args) {
@@ -19,12 +26,10 @@ const GA4 = {
     gtag("js", new Date())
     gtag("config", "G-BQPYXSY6WP")
 
-    // inject GA script to document header
-    const a = document.createElement("script")
-    a.async = true
-    a.src = "https://www.googletagmanager.com/gtag/js?id=G-BQPYXSY6WP"
-    const s = document.getElementsByTagName("script")[0]
-    s.parentNode.insertBefore(a, s)
+    // trigger the page view event as the script will be added by a delay and won't fire automatically
+    window.dataLayer.push({
+      event: "page_view",
+    })
   },
   trackPageView: () => {
     // GA4 tracks page view on browser history change automatically
