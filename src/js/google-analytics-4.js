@@ -25,11 +25,6 @@ const GA4 = {
     }
     gtag("js", new Date())
     gtag("config", "G-BQPYXSY6WP")
-
-    // trigger the page view event as the script will be added by a delay and won't fire automatically
-    window.dataLayer.push({
-      event: "page_view",
-    })
   },
   trackPageView: () => {
     // GA4 tracks page view on browser history change automatically
