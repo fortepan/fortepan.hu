@@ -12,16 +12,17 @@
 const GA4 = {
   init: () => {
     // inject GA script to document header
+    const s = document.getElementsByTagName("script")[0]
     const a = document.createElement("script")
+    s.parentNode.insertBefore(a, s)
     a.async = true
     a.src = "https://www.googletagmanager.com/gtag/js?id=G-BQPYXSY6WP"
-    const s = document.getElementsByTagName("script")[0]
-    s.parentNode.insertBefore(a, s)
 
     // pollute window
     window.dataLayer = window.dataLayer || []
-    function gtag(...args) {
-      window.dataLayer.push(args)
+    function gtag() {
+      // eslint-disable-next-line prefer-rest-params
+      window.dataLayer.push(arguments)
     }
     gtag("js", new Date())
     gtag("config", "G-BQPYXSY6WP")
