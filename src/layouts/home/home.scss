@@ -66,6 +66,10 @@
       width: 100%;
       text-align: center;
     }
+
+    &:first-letter {
+      text-transform: uppercase;
+    }
   }
 
   a:not(:last-child) {
@@ -416,6 +420,10 @@
 
       .button {
         margin: 0.5rem 0.25rem 0 0;
+
+        &:first-letter {
+          text-transform: uppercase;
+        }
       }
     }
   }

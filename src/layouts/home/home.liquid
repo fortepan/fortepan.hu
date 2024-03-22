@@ -151,7 +151,7 @@ layout: base/base.liquid
           <div class="list-item__meta">
             <p class="text-small text-secondary">{% date photo_set.date, locale %}</p>
             <h5><a href="/{{ locale }}/photos/?{{ query_url }}" class="list-item__title">{{ photo_set[locale].title }}</a></h5>
-            <p class="text-medium text-secondary">{{ photo_set[locale].blurb }}</p>
+            <p class="text-medium text-secondary">{{ photo_set[locale].blurb | truncatewords: 24, '…' }}</p>
 
             {% if photo_set[locale].actions.best_of or photo_set[locale].actions.all %}
             <div class="list-item__actions">
