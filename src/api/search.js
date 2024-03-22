@@ -160,7 +160,12 @@ const search = params => {
 
     // get results without description (advanced search)
     if (params.nodesc === "1") {
-      query.bool.must_not.push({ exists: { field: "description_search" } })
+      const fields = ["description_search"]
+
+      const localizedFields = ["cimke", "orszag", "varos", "helyszin"]
+      localizedFields.forEach(s => fields.push(getLocale() === "hu" ? `${s}_search` : `${s}_en_search`))
+
+      fields.forEach(field => query.bool.must_not.push({ exists: { field } }))
     }
 
     // if there's a year search attribute defined (advanced search)
