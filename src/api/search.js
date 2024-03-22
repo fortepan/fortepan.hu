@@ -162,7 +162,7 @@ const search = params => {
     if (params.nodesc === "1") {
       const fields = ["description_search"]
 
-      const localizedFields = ["cimke", "orszag", "varos", "helyszin"]
+      const localizedFields = ["orszag", "varos", "helyszin"]
       localizedFields.forEach(s => fields.push(getLocale() === "hu" ? `${s}_search` : `${s}_en_search`))
 
       fields.forEach(field => query.bool.must_not.push({ exists: { field } }))
