@@ -296,10 +296,6 @@ export default class extends Controller {
         }
       })
     }
-
-    // track pageview when page url changes
-    // but skip tracking when page loads for the first time as GA triggers a pageview when it gets initialized
-    if (e) trigger("analytics:trackPageView")
   }
 
   // Set a thumbnail's selected state

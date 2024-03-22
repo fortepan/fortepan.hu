@@ -2,7 +2,7 @@
 import "./js/stimulus"
 
 // Init GA event handling
-import "./js/google-analytics-4"
+import "./js/google-analytics"
 
 // Redirects to old site urls (if needed)
 import "./js/redirects"
