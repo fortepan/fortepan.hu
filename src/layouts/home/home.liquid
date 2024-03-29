@@ -122,6 +122,32 @@ layout: base/base.liquid
         {% endfor %}
       </ul>
 
+      {% comment %}
+      <ul class="home__usp__list">
+        {% assign count = 0 %}
+        {% for article in rss[locale] %}
+        {% assign content = article.contentSnippet | split: 'The post' %}
+        {% if count < 4 %}
+        {% assign count = count | plus: 1 %}
+        <li class="list-item">
+          {% if article.cover_image %}
+          <div class="list-item__cover" data-action="click->home#onUspCoverClick">
+            {% capture img_src %}{{ siteConfig.PHOTO_SOURCE }}480/fortepan_{{ article.cover_image }}.jpg{% endcapture %}
+            {% include image-lazyloader/image-lazyloader.liquid src:img_src alt:article.title custom_class:"list-item__photo" %}
+          </div>
+          {% endif %}
+          <div class="list-item__meta">
+            <p class="text-small text-secondary">{% date article.isoDate, locale %}</p>
+            <h5><a href="{{ article.link }}" class="list-item__title" target="_blank">{{ article.title }}</a></h5>
+            <p class="text-medium text-secondary">{{ content[0] | truncatewords: 24, '…' }}</p>
+            <p class="text-medium"><a href="{{ article.link }}" target="_blank">{{ lang[locale].read_more }} →</a></p>
+          </div>
+        </li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+      {% endcomment %}
+
       <div class="home__usp__action">
         <a href="{{ blog.action.url }}" class="button button--medium button--primary" target="_blank">
             <span>{{ blog.action.label }}</span>
