@@ -6,6 +6,7 @@
   "scripts": {
     "clean": "rm -rf _dist src/data/manifest-js.json src/data/manifest-css.json",
     "import-autocomplete-data": "node scripts/import-autocomplete-data",
+    "import-rss-data": "node scripts/import-rss-data",
     "eleventy": "npx eleventy",
     "eleventy:serve": "npx eleventy --serve",
     "webpack": "webpack",
@@ -14,8 +15,8 @@
     "postcss:serve": "npm run postcss -- --watch",
     "tinacms": "npx tinacms build",
     "tinacms:serve": "npx tinacms dev",
-    "build": "ENV=production npm-run-all clean import-autocomplete-data tinacms webpack postcss eleventy",
-    "dev": "ENV=development npm-run-all -l --silent clean import-autocomplete-data webpack postcss --parallel *:serve"
+    "build": "ENV=production npm-run-all clean import-autocomplete-data import-rss-data tinacms webpack postcss eleventy",
+    "dev": "ENV=development npm-run-all -l --silent clean import-autocomplete-data import-rss-data webpack postcss --parallel *:serve"
   },
   "repository": {
     "type": "git",
@@ -69,6 +70,7 @@
     "@tinacms/cli": "^1.4.0",
     "lodash": "^4.17.15",
     "markdown-it": "^13.0.1",
+    "rss-parser": "^3.13.0",
     "tinacms": "^1.4.0"
   }
 }
