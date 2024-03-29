@@ -181,6 +181,7 @@ module.exports = {
         },
       },
     },
+    read_more: "Bővebben",
   },
   en: {
     about_us: "About us",
@@ -356,5 +357,6 @@ module.exports = {
         },
       },
     },
+    read_more: "Read more",
   },
 }

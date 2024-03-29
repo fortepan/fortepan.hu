@@ -126,19 +126,25 @@
     <ul class="header-nav__notifications__messages">
       {% capture now %}{% now %}{% endcapture %}
       {% assign count = 0 %}
-      {% for notification in notifications.notifications %}
-      {% capture date_ms %}{% date_to_ms notification.date %}{% endcapture %}
-      {% if date_ms < now and notification.lang == locale and count < 4 %}
+      {% for article in rss[locale] %}
+      {% assign title = article.title | split: ' – ' %}
+      {% assign content = article.contentSnippet | split: 'The post' %}
+      {% capture date_ms %}{% date_to_ms article.isoDate %}{% endcapture %}
+      {% if date_ms < now and count < 4 %}
       {% assign count = count | plus: 1 %}
       <li class="header-nav__notifications__message"
           data-header-nav-target="notification"
-          data-date="{{ notification.date }}"
+          data-date="{{ article.isoDate }}"
       >
         <header class="header-nav__notifications__message__header">
-          <h5 class="header-nav__notifications__message__title">{{ notification.title }}</h5>
-          <span class="header-nav__notifications__message__date">{% date notification.date, locale %}</span>
+          <h5 class="header-nav__notifications__message__title"><a href="{{ article.link }}" target="_blank">{{ title[0] }}</a></h5>
+          <span class="header-nav__notifications__message__date">{% date article.isoDate, locale %}</span>
         </header>
-        <div class="header-nav__notifications__message__content">{{ notification.message | markdownify: '{"html":true}' }}</div>
+        <div class="header-nav__notifications__message__content">
+          {% if title[1] %}<p><a href="{{ article.link }}" target="_blank">{{ title[1] }}</a></p>{% endif %}
+          <p>{{ content[0] }}</p>
+          <p><a href="{{ article.link }}" target="_blank">{{ lang[locale].read_more }} →</a></p>
+        </div>
       </li>
       {% endif %}
       {% endfor %}
