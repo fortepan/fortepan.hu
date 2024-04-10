@@ -2,7 +2,7 @@ module.exports = {
   ENV: process.env.ENV,
   SITE: "https://fortepan.eu",
   SITE_DEV: "https://fortepan.eu",
-  BACKEND: "https://back.fortepan.eu",
+  BACKEND: "https://backend.fortepan.eu",
   BACKEND_DEV: "https://back.fortepan.eu",
   PHOTO_SOURCE: "https://djhqbtjenf12x.cloudfront.net",
   PHOTO_BUCKET: "fortepanproject",

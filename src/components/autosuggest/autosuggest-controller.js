@@ -52,7 +52,7 @@ export default class extends Controller {
   createAutoSuggestItem(label) {
     const itemNode = document.createElement("div")
     itemNode.className = "autosuggest__item"
-    itemNode.textContent = label
+    itemNode.textContent = label.word
     itemNode.addEventListener("click", e => {
       const selectedNode = this.autosuggestTarget.querySelector(".autosuggest__item.is-selected")
       if (selectedNode) {

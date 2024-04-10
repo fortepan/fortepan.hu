@@ -14,6 +14,8 @@ export default class extends Controller {
 
   submit(e) {
     if (e) e.preventDefault()
+
+    this.inputTarget.selectizeControl.addTagNode(this.inputTarget.selectizeControl.inputTarget.value)
     const q = `?q=${this.inputTarget.selectizeControl.value.join(", ")}`
 
     if (window.location.pathname.indexOf("/photos") === -1) {
