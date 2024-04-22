@@ -1,4 +1,4 @@
-<div class="dialog dialog-search" 
+<div class="dialog dialog-search"
      data-controller="dialog--search"
      data-action="dialogs:hide@document->dialog--search#hide
                    dialogSearch:show@document->dialog--search#show
@@ -11,12 +11,9 @@
         {% inlineSVG src:"src/static/images/icons/24/icon-close.svg" class:"button-circular__icon" %}
         <div class="button-circular__label">{{ lang[locale].close }}</div>
       </div>
-      <h3 class="dialog__title">{{ lang[locale].advanced_search }}</h3>
+      <h3 class="dialog__title">{{ lang[locale].search }}</h3>
       <form class="dialog__form dialog-search__form" data-dialog--search-target="form">
-        {% include selectize-control/selectize-control.liquid 
-                   class:'selectize-control--wide dialog-search__selectize'
-                   stimulus_target:'data-dialog--search-target="input"' 
-        %}
+        {% include selectize-control/selectize-control.liquid class:'selectize-control--wide dialog-search__selectize' stimulus_target:'data-dialog--search-target="input"' %}
         <div class="dialog-search__actions">
           <button class="button button--primary dialog__button dialog-search__button"
                   data-action="click->dialog--search#submit"

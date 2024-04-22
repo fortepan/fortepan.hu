@@ -1,0 +1,45 @@
+.dialog-advanced-search {
+  & .dialog__wrapper {
+    max-width: rem(640px);
+  }
+
+  &__form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 2rem;
+
+    .dialog__form-row {
+      width: 100%;
+      display: flex;
+      gap: 1rem;
+
+      &.col-2 > *,
+      .col-2 {
+        flex-basis: calc((100% - 1rem) / 2);
+      }
+
+      &.col-3 > *,
+      .col-3 {
+        flex-basis: calc((100% - 2rem) / 3);
+      }
+
+      &.col-4 > *,
+      .col-4 {
+        flex-basis: calc((100% - 3rem) / 4);
+      }
+    }
+  }
+
+  &__button {
+    width: auto;
+    cursor: pointer;
+    min-width: 25%;
+    margin-top: 1rem;
+  }
+
+  &__input {
+    display: block;
+    width: 100%;
+  }
+}

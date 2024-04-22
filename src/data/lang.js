@@ -4,7 +4,7 @@ module.exports = {
     add_tag: "Kulcsszó hozzáadása",
     add_tag_helper: `Kulcsszavak hozzáadása előtt kérjük olvassa el <a class="custom" href="/hu/cimkezes-utmutato/" target="_blank">címkézési útmutatónkat!</a>`,
     add_tag_action: "Küldés",
-    advanced_search: "Részletes keresés",
+    advanced_search: "Összetett keresés",
     allow_cookies: "Engedélyezem",
     back: "Vissza",
     cancel: "Mégsem",
@@ -141,6 +141,8 @@ module.exports = {
     username_or_email: "Felhasználónév vagy Email",
     weekly_fortepan: "Heti Fortepan blog",
     year: "Év",
+    year_from: "Évtől",
+    year_to: "Évig",
     age_restriction: {
       title: "Korhatáros tartalom",
       content: "A kép megtekintése a nyugalom megzavarására alkalmas, kiskorúak számára nem ajánlott!",
@@ -182,6 +184,7 @@ module.exports = {
       },
     },
     read_more: "Bővebben",
+    select_option: "Válasszon...",
   },
   en: {
     about_us: "About us",
@@ -324,6 +327,8 @@ module.exports = {
     username_or_email: "Username or Email",
     weekly_fortepan: "Weekly Fortepan blog",
     year: "Year",
+    year_from: "Year from",
+    year_to: "Year to",
     age_restriction: {
       title: "Age-restricted content",
       content: "This content may be offensive or disturbing, not appropriate for visitors under 18 years.",
@@ -358,5 +363,6 @@ module.exports = {
       },
     },
     read_more: "Read more",
+    select_option: "Select...",
   },
 }

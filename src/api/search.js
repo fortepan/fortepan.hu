@@ -148,9 +148,15 @@ const search = params => {
     // if there's a tag search attribute defined (advanced search)
     if (params.tag) {
       const tag = slugify(params.tag)
-      query.bool.must.push(
-        getLocale() === "hu" ? { term: { cimke_search: `${tag}` } } : { term: { cimke_en_search: `${tag}` } }
-      )
+      const obj = {}
+
+      if (params.advancedSearch) {
+        obj.wildcard = getLocale() === "hu" ? { cimke_search: `*${tag}*` } : { cimke_en_search: `*${tag}*` }
+      } else {
+        obj.term = getLocale() === "hu" ? { cimke_search: `${tag}` } : { cimke_en_search: `${tag}` }
+      }
+
+      query.bool.must.push(obj)
     }
 
     // get results without tags (advanced search)

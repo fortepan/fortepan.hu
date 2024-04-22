@@ -51,4 +51,9 @@
     box-shadow: 0px 0px 0px 1px rgba($light-base, 0) inset;
     background-image: svg-load("src/static/images/icons/16/icon-arrow-down.svg", fill=none, stroke=$light-base);
   }
+
+  &:required:invalid,
+  option[disabled] {
+    color: $grey;
+  }
 }

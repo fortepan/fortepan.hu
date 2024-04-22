@@ -1,0 +1,150 @@
+<div class="dialog dialog-advanced-search"
+     data-controller="dialog--advanced-search"
+     data-action="dialogs:hide@document->dialog--advanced-search#hide
+                   dialogAdvancedSearch:show@document->dialog--advanced-search#show
+                   dialogAdvancedSearch:hide@document->dialog--advanced-search#hide"
+>
+  <div class="dialog__wrapper">
+      <div class="button-circular dialog__close"
+           data-action="click->dialog--advanced-search#hide"
+      >
+        {% inlineSVG src:"src/static/images/icons/24/icon-close.svg" class:"button-circular__icon" %}
+        <div class="button-circular__label">{{ lang[locale].close }}</div>
+      </div>
+      <h3 class="dialog__title">{{ lang[locale].advanced_search }}</h3>
+      <form class="dialog-advanced-search__form" data-dialog--advanced-search-target="form">
+
+        <div class="dialog__form-row col-2">
+          {% include input/input.liquid type:'text'
+                    name:'country'
+                    label:lang[locale].country
+                    class:'dialog-advanced-search__input'
+                    stimulus_target:'data-dialog--advanced-search-target="country"'
+                    stimulus_action:''
+          %}
+
+          {% include input/input.liquid type:'text'
+                    name:'city'
+                    label:lang[locale].city
+                    class:'dialog-advanced-search__input'
+                    stimulus_target:'data-dialog--advanced-search-target="city"'
+                    stimulus_action:''
+          %}
+        </div>
+
+        <div class="dialog__form-row">
+          {% include input/input.liquid type:'text'
+                    name:'location'
+                    label:lang[locale].location
+                    class:'dialog-advanced-search__input col-2'
+                    stimulus_target:'data-dialog--advanced-search-target="location"'
+                    stimulus_action:''
+          %}
+
+          {% include input/input.liquid type:'text'
+                    name:'description'
+                    label:lang[locale].description
+                    class:'dialog-advanced-search__input col-2'
+                    stimulus_target:'data-dialog--advanced-search-target="description"'
+                    stimulus_action:''
+          %}
+        </div>
+
+        <div class="dialog__form-row">
+          {% include input/input.liquid type:'text'
+                    name:'donor'
+                    label:lang[locale].donor
+                    class:'dialog-advanced-search__input col-2'
+                    stimulus_target:'data-dialog--advanced-search-target="donor"'
+                    stimulus_action:''
+          %}
+
+          {% include input/input.liquid type:'text'
+                    name:'photographer'
+                    label:lang[locale].photographer
+                    class:'dialog-advanced-search__input col-2'
+                    stimulus_target:'data-dialog--advanced-search-target="photographer"'
+                    stimulus_action:''
+          %}
+        </div>
+
+        <div class="dialog__form-row">
+          {% include input/input.liquid type:'text'
+                    name:'tag'
+                    label:lang[locale].tag
+                    class:'dialog-advanced-search__input col-2'
+                    stimulus_target:'data-dialog--advanced-search-target="tag"'
+                    stimulus_action:''
+          %}
+        </div>
+
+        {% comment %}
+        {% capture options %}
+            <option value="">{{ lang[locale].select_option }}</option>
+            {% for i in (1900..1990) %}
+              <option value="{{ i }}">{{ i }}</option>
+            {% endfor %}
+        {% endcapture %}
+
+        <div class="dialog__form-row col-4">
+          {% include select/select.liquid name:'year'
+                    label:lang[locale].year
+                    class:'dialog-advanced-search__input'
+                    stimulus_target:'data-dialog--lists-target="select"'
+                    stimulus_action:'change->dialog--lists#toggleInput',
+                    options:options
+          %}
+
+          {% include select/select.liquid name:'year_from'
+                    label:lang[locale].year_from
+                    class:'dialog-advanced-search__input'
+                    stimulus_target:'data-dialog--lists-target="select"'
+                    stimulus_action:'change->dialog--lists#toggleInput',
+                    options:options
+          %}
+
+          {% include select/select.liquid name:'year_to'
+                    label:lang[locale].year_to
+                    class:'dialog-advanced-search__input'
+                    stimulus_target:'data-dialog--lists-target="select"'
+                    stimulus_action:'change->dialog--lists#toggleInput',
+                    options:options
+          %}
+        </div>
+        {% endcomment %}
+
+        <div class="dialog__form-row">
+          {% include input/input.liquid type:'text' name:'year'
+                    label:lang[locale].year
+                    class:'dialog-advanced-search__input col-4'
+                    options:'pattern="[0-9]+{4}"'
+                    stimulus_target:'data-dialog--embed-target="year"'
+                    stimulus_action:'input->dialog--advanced-search#restrictInput'
+                    options:'maxlength="4"'
+          %}
+
+          {% include input/input.liquid type:'text' name:'year_from'
+                    label:lang[locale].year_from
+                    class:'dialog-advanced-search__input col-4'
+                    stimulus_target:'data-dialog--embed-target="year_from"'
+                    stimulus_action:'input->dialog--advanced-search#restrictInput'
+                    options:'maxlength="4"'
+          %}
+
+          {% include input/input.liquid type:'text' name:'year_to'
+                    label:lang[locale].year_to
+                    class:'dialog-advanced-search__input col-4'
+                    stimulus_target:'data-dialog--embed-target="year_to"'
+                    stimulus_action:'input->dialog--advanced-search#restrictInput'
+                    options:'maxlength="4"'
+          %}
+        </div>
+
+        <div class="dialog-search__actions">
+          <button class="button button--primary dialog__button dialog-search__button"
+                  data-action="click->dialog--advanced-search#submit"
+          >{{ lang[locale].search }}</button>
+        </div>
+      </form>
+  </div>
+</div>
