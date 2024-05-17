@@ -1,6 +1,14 @@
 {
   "uploads": [
     {
+      "name": "a mi XX. századunk",
+      "date": "2024-05-15T00:00:00.000Z",
+      "cover_image": "286333",
+      "hu": {
+        "title": "A MI XX. SZÁZADUNK"
+      }
+    },
+    {
       "name": "Egy pesti polgár képei",
       "date": "2024-03-12T00:00:00.000Z",
       "cover_image": "232156",
