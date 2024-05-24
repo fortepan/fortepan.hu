@@ -118,7 +118,7 @@ export default class extends Controller {
 
   showSearchDialog(e) {
     e.preventDefault()
-    trigger("dialogAdvancedSearch:show")
+    trigger("dialogSearch:show")
   }
 
   toggleTheme(e) {

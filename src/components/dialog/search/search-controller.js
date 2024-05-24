@@ -41,4 +41,9 @@ export default class extends Controller {
   hide() {
     this.element.classList.remove("is-visible")
   }
+
+  showAdvancedSearchDialog(e) {
+    e.preventDefault()
+    trigger("dialogAdvancedSearch:show")
+  }
 }

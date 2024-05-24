@@ -9,9 +9,17 @@
   margin-top: 2rem;
 }
 
+.dialog-search__actions {
+  display: flex;
+  width: 100%;
+  gap: rem(8px);
+  align-items: center;
+  margin-top: 2.5rem;
+}
+
 .dialog-search__button {
   width: auto;
   cursor: pointer;
-  min-width: 25%;
-  margin-top: 1rem;
+  min-width: calc((100% - 3 * 1rem) / 4);
+  margin-top: 0;
 }

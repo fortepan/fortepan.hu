@@ -178,7 +178,7 @@ module.exports = {
         change_privacy: "Módosítás",
         upsell: {
           helper_text_lists: "A képet tartalmazó $p1listát be tudja ágyazni$p2 más weboldalakon is.",
-          helper_text: "A képet $p1hozzá tudja adni egy listához$p2 is, amit be tud ágyazni más weboldalakon.",
+          helper_text: "A képet $p1egy listához adva$p2 be tudja ágyazni más weboldalakon is.",
           docs_link: "Részletes útmutató&nbsp;→",
         },
       },

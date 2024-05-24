@@ -148,8 +148,8 @@ const search = params => {
     // if there's a tag search attribute defined (advanced search)
     if (params.tag) {
       const tag = slugify(params.tag)
-      const obj = {}
 
+      const obj = {}
       if (params.advancedSearch) {
         obj.wildcard = getLocale() === "hu" ? { cimke_search: `*${tag}*` } : { cimke_en_search: `*${tag}*` }
       } else {
@@ -162,6 +162,17 @@ const search = params => {
     // get results without tags (advanced search)
     if (params.notags === "1") {
       query.bool.must_not.push({ exists: { field: getLocale() === "hu" ? "cimke_search" : "cimke_en_search" } })
+    }
+
+    // if there's a tag search attribute defined (advanced search)
+    if (params.description) {
+      const description = slugify(params.description)
+
+      query.bool.must.push(
+        params.advancedSearch
+          ? { wildcard: { description_search: `*${description}*` } }
+          : { term: { description_search: `${description}` } }
+      )
     }
 
     // get results without description (advanced search)
@@ -182,37 +193,65 @@ const search = params => {
     // if there's a city search attribute defined (advanced search)
     if (params.place) {
       const place = slugify(params.place)
-      query.bool.must.push(
-        getLocale() === "hu" ? { term: { helyszin_search: `${place}` } } : { term: { helyszin_en_search: `${place}` } }
-      )
+
+      const obj = {}
+      if (params.advancedSearch) {
+        obj.wildcard = getLocale() === "hu" ? { helyszin_search: `*${place}*` } : { helyszin_en_search: `*${place}*` }
+      } else {
+        obj.term = getLocale() === "hu" ? { helyszin_search: `${place}` } : { helyszin_en_search: `${place}` }
+      }
+
+      query.bool.must.push(obj)
     }
 
     // if there's a city search attribute defined (advanced search)
     if (params.city) {
       const city = slugify(params.city)
-      query.bool.must.push(
-        getLocale() === "hu" ? { term: { varos_search: `${city}` } } : { term: { varos_en_search: `${city}` } }
-      )
+
+      const obj = {}
+      if (params.advancedSearch) {
+        obj.wildcard = getLocale() === "hu" ? { varos_search: `*${city}*` } : { varos_en_search: `*${city}*` }
+      } else {
+        obj.term = getLocale() === "hu" ? { varos_search: `${city}` } : { varos_en_search: `${city}` }
+      }
+
+      query.bool.must.push(obj)
     }
 
     // if there's a country search attribute defined (advanced search)
     if (params.country) {
       const country = slugify(params.country)
-      query.bool.must.push(
-        getLocale() === "hu" ? { term: { orszag_search: `${country}` } } : { term: { orszag_en_search: `${country}` } }
-      )
+
+      const obj = {}
+      if (params.advancedSearch) {
+        obj.wildcard = getLocale() === "hu" ? { orszag_search: `*${country}*` } : { orszag_en_search: `*${country}*` }
+      } else {
+        obj.term = getLocale() === "hu" ? { orszag_search: `${country}` } : { orszag_en_search: `${country}` }
+      }
+
+      query.bool.must.push(obj)
     }
 
     // if there's a donor search attribute defined (advanced search)
     if (params.donor) {
       const donor = slugify(params.donor)
-      query.bool.must.push({ term: { adomanyozo_search: `${donor}` } })
+
+      query.bool.must.push(
+        params.advancedSearch
+          ? { wildcard: { adomanyozo_search: `*${donor}*` } }
+          : { term: { adomanyozo_search: `${donor}` } }
+      )
     }
 
     // if there's a photographer search attribute defined (advanced search)
     if (params.photographer) {
       const photographer = slugify(params.photographer)
-      query.bool.must.push({ term: { szerzo_search: `${photographer}` } })
+
+      query.bool.must.push(
+        params.advancedSearch
+          ? { wildcard: { szerzo_search: `*${photographer}*` } }
+          : { wildcard: { szerzo_search: `${photographer}` } }
+      )
     }
 
     // if there's an id search attribute defined (advanced search)

@@ -14,7 +14,9 @@ export default class extends Controller {
   submit(e) {
     if (e) e.preventDefault()
 
-    const inputs = this.formTarget.querySelectorAll(".dialog-advanced-search__input input")
+    const inputs = this.formTarget.querySelectorAll(
+      ".dialog-advanced-search__input input, .dialog-advanced-search__input select"
+    )
     let queryURL = ""
 
     inputs.forEach(input => {
@@ -24,22 +26,29 @@ export default class extends Controller {
       }
     })
 
-    if (queryURL.length > 0) window.location = `/${getLocale()}/photos/${queryURL}`
+    if (queryURL.length > 0) {
+      window.location = `/${getLocale()}/photos/${queryURL}`
+    } else {
+      window.location = `/${getLocale()}/photos/?q`
+    }
   }
 
   show() {
     this.element.classList.add("is-visible")
 
-    this.formTarget.querySelectorAll(".dialog-advanced-search__input input").forEach(input => {
-      input.value = ""
-      trigger("change", null, input)
-    })
+    this.formTarget
+      .querySelectorAll(".dialog-advanced-search__input input, .dialog-advanced-search__input select")
+      .forEach(input => {
+        input.value = ""
+        trigger("change", null, input)
+      })
 
     const params = getURLParams()
 
     Object.keys(params).forEach(key => {
-      console.log(key)
-      const input = this.formTarget.querySelector(`.dialog-advanced-search__input input[name=${key}]`)
+      const input =
+        this.formTarget.querySelector(`.dialog-advanced-search__input input[name=${key}]`) ||
+        this.formTarget.querySelector(`.dialog-advanced-search__input select[name=${key}]`)
       if (input) {
         input.value = params[key]
         trigger("change", null, input)

@@ -132,8 +132,16 @@
     max-width: 50rem;
     margin: 0 auto 1.5rem;
 
-    & .selectize-input {
+    .search__form__actions {
+      right: rem(12px);
+    }
+
+    .selectize-input {
       box-shadow: 0px 8px 24px rgba($dark-base, 0.12);
+    }
+
+    .selectize-control--search .selectize-input {
+      padding-right: rem(96px);
     }
   }
 

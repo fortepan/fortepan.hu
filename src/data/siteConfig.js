@@ -23,5 +23,7 @@ module.exports = () => {
       en: "English",
     },
     AGE_RESTRICTION_TAG: "18+",
+    YEAR_MIN: "1900",
+    YEAR_MAX: "1990",
   }
 }

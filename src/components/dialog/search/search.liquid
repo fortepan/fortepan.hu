@@ -18,7 +18,13 @@
           <button class="button button--primary dialog__button dialog-search__button"
                   data-action="click->dialog--search#submit"
           >{{ lang[locale].search }}</button>
+
+          <div class="button-circular" data-action="click->dialog--search#hide click->dialog--search#showAdvancedSearchDialog">
+            {% inlineSVG src:"src/static/images/icons/24/icon-settings.svg" class:"button-circular__icon" %}
+            <div class="button-circular__label">{{ lang[locale].advanced_search }}</div>
+          </div>
         </div>
+
       </form>
   </div>
 </div>

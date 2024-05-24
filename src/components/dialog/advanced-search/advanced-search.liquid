@@ -34,10 +34,10 @@
 
         <div class="dialog__form-row">
           {% include input/input.liquid type:'text'
-                    name:'location'
+                    name:'place'
                     label:lang[locale].location
                     class:'dialog-advanced-search__input col-2'
-                    stimulus_target:'data-dialog--advanced-search-target="location"'
+                    stimulus_target:'data-dialog--advanced-search-target="place"'
                     stimulus_action:''
           %}
 
@@ -76,12 +76,19 @@
                     stimulus_target:'data-dialog--advanced-search-target="tag"'
                     stimulus_action:''
           %}
+
+          {% include input/input.liquid type:'text'
+                    name:'id'
+                    label:lang[locale].picture_id
+                    class:'dialog-advanced-search__input col-2'
+                    stimulus_target:'data-dialog--advanced-search-target="id"'
+                    stimulus_action:'input->dialog--advanced-search#restrictInput'
+          %}
         </div>
 
-        {% comment %}
         {% capture options %}
-            <option value="">{{ lang[locale].select_option }}</option>
-            {% for i in (1900..1990) %}
+            <option value="">--</option>
+            {% for i in (siteConfig.YEAR_MIN..siteConfig.YEAR_MAX) %}
               <option value="{{ i }}">{{ i }}</option>
             {% endfor %}
         {% endcapture %}
@@ -90,29 +97,26 @@
           {% include select/select.liquid name:'year'
                     label:lang[locale].year
                     class:'dialog-advanced-search__input'
-                    stimulus_target:'data-dialog--lists-target="select"'
-                    stimulus_action:'change->dialog--lists#toggleInput',
+                    stimulus_target:'data-dialog--embed-target="year"'
                     options:options
           %}
 
           {% include select/select.liquid name:'year_from'
                     label:lang[locale].year_from
                     class:'dialog-advanced-search__input'
-                    stimulus_target:'data-dialog--lists-target="select"'
-                    stimulus_action:'change->dialog--lists#toggleInput',
+                    stimulus_target:'data-dialog--embed-target="year_from"'
                     options:options
           %}
 
           {% include select/select.liquid name:'year_to'
                     label:lang[locale].year_to
                     class:'dialog-advanced-search__input'
-                    stimulus_target:'data-dialog--lists-target="select"'
-                    stimulus_action:'change->dialog--lists#toggleInput',
+                    stimulus_target:'data-dialog--embed-target="year_to"'
                     options:options
           %}
         </div>
-        {% endcomment %}
 
+        {% comment %}
         <div class="dialog__form-row">
           {% include input/input.liquid type:'text' name:'year'
                     label:lang[locale].year
@@ -139,6 +143,7 @@
                     options:'maxlength="4"'
           %}
         </div>
+        {% endcomment %}
 
         <div class="dialog-search__actions">
           <button class="button button--primary dialog__button dialog-search__button"

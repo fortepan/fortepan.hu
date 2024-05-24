@@ -3,9 +3,20 @@
   position: relative;
 }
 
-.search__icon {
+.search__form {
+  position: relative;
+}
+
+.search__form__actions {
   position: absolute;
-  right: rem(12px);
+  right: rem(6px);
   top: 50%;
   transform: translateY(-50%);
+
+  display: flex;
+
+  .button-circular {
+    width: rem(36px);
+    margin: 0;
+  }
 }
