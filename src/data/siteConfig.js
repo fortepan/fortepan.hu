@@ -25,5 +25,18 @@ module.exports = () => {
     AGE_RESTRICTION_TAG: "18+",
     YEAR_MIN: "1900",
     YEAR_MAX: "1990",
+    ADVANCED_SEARCH_KEYS: [
+      "country",
+      "city",
+      "place",
+      "description",
+      "donor",
+      "photographer",
+      "tag",
+      "id",
+      "year",
+      "year_from",
+      "year_to",
+    ],
   }
 }

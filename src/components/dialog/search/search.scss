@@ -15,6 +15,11 @@
   gap: rem(8px);
   align-items: center;
   margin-top: 2.5rem;
+  justify-content: space-between;
+
+  .dialog__link {
+    margin: 0;
+  }
 }
 
 .dialog-search__button {

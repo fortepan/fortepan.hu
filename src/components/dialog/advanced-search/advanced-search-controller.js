@@ -1,6 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 // import { appState } from "../../../js/app"
 import { trigger, getURLParams, getLocale } from "../../../js/utils"
+import { appState } from "../../../js/app"
 
 export default class extends Controller {
   static get targets() {
@@ -20,16 +21,22 @@ export default class extends Controller {
     let queryURL = ""
 
     inputs.forEach(input => {
-      // console.log(input.name, !!input.value)
       if (input.value && input.value !== "") {
         queryURL += `${queryURL.length < 1 ? "?advancedSearch=1" : ""}&${input.name}=${input.value}`
       }
     })
 
-    if (queryURL.length > 0) {
+    if (queryURL.length === 0) queryURL = `?q`
+
+    if (window.location.pathname.indexOf("/photos") === -1 || appState("is-lists")) {
       window.location = `/${getLocale()}/photos/${queryURL}`
     } else {
-      window.location = `/${getLocale()}/photos/?q`
+      trigger("photos:historyPushState", {
+        url: queryURL,
+        resetPhotosGrid: true,
+      })
+
+      this.hide()
     }
   }
 
