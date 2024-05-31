@@ -104,38 +104,19 @@ layout: base/base.liquid
 
       <ul class="home__usp__list">
         {% assign count = 0 %}
-        {% for blog in blog_content[locale] %}
-        {% if count < 4 %}
-        {% assign count = count | plus: 1 %}
-        <li class="list-item">
-          <div class="list-item__cover" data-action="click->home#onUspCoverClick">
-            {% capture img_src %}{{ siteConfig.PHOTO_SOURCE }}480/fortepan_{{ blog.cover_image }}.jpg{% endcapture %}
-            {% include image-lazyloader/image-lazyloader.liquid src:img_src alt:blog.title custom_class:"list-item__photo" %}
-          </div>
-          <div class="list-item__meta">
-            <p class="text-small text-secondary">{% date blog.date, locale %}</p>
-            <h5><a href="{{ blog.url }}" class="list-item__title" target="_blank">{{ blog.title }}</a></h5>
-            <p class="text-medium text-secondary">{{ blog.excerpt | truncatewords: 24, '…' }}</p>
-          </div>
-        </li>
-        {% endif %}
-        {% endfor %}
-      </ul>
-
-      {% comment %}
-      <ul class="home__usp__list">
-        {% assign count = 0 %}
         {% for article in rss[locale] %}
         {% assign content = article.contentSnippet | split: 'The post' %}
         {% if count < 4 %}
         {% assign count = count | plus: 1 %}
         <li class="list-item">
-          {% if article.cover_image %}
           <div class="list-item__cover" data-action="click->home#onUspCoverClick">
-            {% capture img_src %}{{ siteConfig.PHOTO_SOURCE }}480/fortepan_{{ article.cover_image }}.jpg{% endcapture %}
+            {% if article.featured_image_mid %}
+              {% capture img_src %}{{ siteConfig.PHOTO_SOURCE }}480/fortepan_{{ article.featured_image_mid }}.jpg{% endcapture %}
+            {% else %}
+              {% assign img_src=article.featured_image %}
+            {% endif %}
             {% include image-lazyloader/image-lazyloader.liquid src:img_src alt:article.title custom_class:"list-item__photo" %}
           </div>
-          {% endif %}
           <div class="list-item__meta">
             <p class="text-small text-secondary">{% date article.isoDate, locale %}</p>
             <h5><a href="{{ article.link }}" class="list-item__title" target="_blank">{{ article.title }}</a></h5>
@@ -146,7 +127,6 @@ layout: base/base.liquid
         {% endif %}
         {% endfor %}
       </ul>
-      {% endcomment %}
 
       <div class="home__usp__action">
         <a href="{{ blog.action.url }}" class="button button--medium button--primary" target="_blank">
