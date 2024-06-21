@@ -1,10 +1,10 @@
 <div class="input-wrapper {{ class }}" data-controller="input{% unless autosuggest == null %} autosuggest{% endunless %}" {{ stimulus_wrapper_target }}>
-  <label for="{{ name }}" data-input-target="label" class="input-wrapper__label{% if value %} is-visible{% endif %} ">{{ label }}</label>
+  <label for="{{ name }}" data-input-target="label" class="input-wrapper__label{% if value %} is-visible{% endif %}{% if label_fixed %} input-wrapper__label--fixed{% endif %}">{{ label }}</label>
   <input class="input-wrapper__input"
     name="{{ name }}"
     type="{{ type }}"
     autocomplete="off"
-    placeholder="{{ label }}"
+    {% if not label_fixed %}placeholder="{{ label }}"{% endif %}
     {% if value %}value="{{ value }}"{% endif %}
     data-input-target="input"
     {{ stimulus_target }}
