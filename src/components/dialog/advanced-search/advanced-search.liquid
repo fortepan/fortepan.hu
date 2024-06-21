@@ -14,10 +14,13 @@
       <h3 class="dialog__title">{{ lang[locale].advanced_search }}</h3>
       <form class="dialog-advanced-search__form" data-dialog--advanced-search-target="form">
 
+        {% assign label_fixed = 'true' %}
+
         <div class="dialog__form-row col-2">
           {% include input/input.liquid type:'text'
                     name:'country'
                     label:lang[locale].country
+                    label_fixed:label_fixed
                     class:'dialog-advanced-search__input'
                     stimulus_target:'data-dialog--advanced-search-target="country"'
                     stimulus_action:''
@@ -26,6 +29,7 @@
           {% include input/input.liquid type:'text'
                     name:'city'
                     label:lang[locale].city
+                    label_fixed:label_fixed
                     class:'dialog-advanced-search__input'
                     stimulus_target:'data-dialog--advanced-search-target="city"'
                     stimulus_action:''
@@ -36,6 +40,7 @@
           {% include input/input.liquid type:'text'
                     name:'place'
                     label:lang[locale].location
+                    label_fixed:label_fixed
                     class:'dialog-advanced-search__input col-2'
                     stimulus_target:'data-dialog--advanced-search-target="place"'
                     stimulus_action:''
@@ -44,6 +49,7 @@
           {% include input/input.liquid type:'text'
                     name:'description'
                     label:lang[locale].description
+                    label_fixed:label_fixed
                     class:'dialog-advanced-search__input col-2'
                     stimulus_target:'data-dialog--advanced-search-target="description"'
                     stimulus_action:''
@@ -54,6 +60,7 @@
           {% include input/input.liquid type:'text'
                     name:'donor'
                     label:lang[locale].donor
+                    label_fixed:label_fixed
                     class:'dialog-advanced-search__input col-2'
                     stimulus_target:'data-dialog--advanced-search-target="donor"'
                     stimulus_action:''
@@ -62,6 +69,7 @@
           {% include input/input.liquid type:'text'
                     name:'photographer'
                     label:lang[locale].photographer
+                    label_fixed:label_fixed
                     class:'dialog-advanced-search__input col-2'
                     stimulus_target:'data-dialog--advanced-search-target="photographer"'
                     stimulus_action:''
@@ -72,6 +80,7 @@
           {% include input/input.liquid type:'text'
                     name:'tag'
                     label:lang[locale].tag
+                    label_fixed:label_fixed
                     class:'dialog-advanced-search__input col-2'
                     stimulus_target:'data-dialog--advanced-search-target="tag"'
                     stimulus_action:''
@@ -80,6 +89,7 @@
           {% include input/input.liquid type:'text'
                     name:'id'
                     label:lang[locale].picture_id
+                    label_fixed:label_fixed
                     class:'dialog-advanced-search__input col-2'
                     stimulus_target:'data-dialog--advanced-search-target="id"'
                     stimulus_action:'input->dialog--advanced-search#restrictInput'
