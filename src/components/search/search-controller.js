@@ -50,20 +50,6 @@ export default class extends Controller {
       this.inputTarget.selectizeControl.blur()
       trigger("dialogSearch:hide")
     }
-
-    /* const q = `?q=${this.inputTarget.selectizeControl.value.join(", ")}`
-
-    if (window.location.pathname.indexOf("/photos") === -1) {
-      window.location = `/${getLocale()}/photos/${q}`
-    } else {
-      trigger("photos:historyPushState", {
-        url: q,
-        resetPhotosGrid: true,
-      })
-
-      this.inputTarget.selectizeControl.blur()
-      trigger("dialogSearch:hide")
-    } */
   }
 
   clear() {

@@ -217,10 +217,20 @@ export default class extends Controller {
         case "q":
           values.push(`${urlParams[key]}`)
           break
-        case "advancedSearch":
+        case "country":
+        case "city":
+        case "place":
+        case "description":
+        case "donor":
+        case "photographer":
+        case "tag":
+        case "id":
+        case "year":
+        case "year_to":
+        case "year_from":
+          if (urlParams.advancedSearch) values.push(`${key}:${urlParams[key]}`)
           break
         default:
-          values.push(`${key}:${urlParams[key]}`)
           break
       }
     })

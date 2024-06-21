@@ -52,15 +52,17 @@ export default class extends Controller {
 
     const params = getURLParams()
 
-    Object.keys(params).forEach(key => {
-      const input =
-        this.formTarget.querySelector(`.dialog-advanced-search__input input[name=${key}]`) ||
-        this.formTarget.querySelector(`.dialog-advanced-search__input select[name=${key}]`)
-      if (input) {
-        input.value = params[key]
-        trigger("change", null, input)
-      }
-    })
+    if (params.advancedSearch) {
+      Object.keys(params).forEach(key => {
+        const input =
+          this.formTarget.querySelector(`.dialog-advanced-search__input input[name=${key}]`) ||
+          this.formTarget.querySelector(`.dialog-advanced-search__input select[name=${key}]`)
+        if (input) {
+          input.value = params[key]
+          trigger("change", null, input)
+        }
+      })
+    }
   }
 
   hide() {
