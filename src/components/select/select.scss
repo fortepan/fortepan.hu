@@ -28,9 +28,11 @@
   font-size: 1rem;
   line-height: 2rem;
   border-radius: 0.25rem;
+
   background-size: rem(16px) rem(16px);
   background-position: calc(100% - 1rem) center;
   background-repeat: no-repeat;
+
   transition: transform 0.6s $ease-out-expo, opacity 0.3s $ease-out-expo, background-color 0.3s $ease-out-expo,
     box-shadow 0.3s $ease-out-expo;
 
@@ -39,17 +41,27 @@
   }
 
   .theme--light & {
-    background-color: $light-base;
+    background-color: $light-primary;
     color: $dark-base;
     box-shadow: 0px 0px 0px 1px rgba($dark-base, 0.08) inset;
+
     background-image: svg-load("src/static/images/icons/16/icon-arrow-down.svg", fill=none, stroke=$dark-base);
+
+    &:hover {
+      background-color: $light-base;
+    }
   }
 
   .theme--dark & {
-    background-color: $dark-base;
+    background-color: $dark-primary;
     color: $light-base;
-    box-shadow: 0px 0px 0px 1px rgba($light-base, 0) inset;
+    box-shadow: 0px 0px 0px 1px rgba($light-base, 0.08) inset;
+
     background-image: svg-load("src/static/images/icons/16/icon-arrow-down.svg", fill=none, stroke=$light-base);
+
+    &:hover {
+      background-color: $dark-base;
+    }
   }
 
   &:required:invalid,

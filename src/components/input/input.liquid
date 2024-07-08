@@ -1,5 +1,5 @@
 <div class="input-wrapper {{ class }}" data-controller="input{% unless autosuggest == null %} autosuggest{% endunless %}" {{ stimulus_wrapper_target }}>
-  <label for="{{ name }}" data-input-target="label" class="input-wrapper__label{% if value %} is-visible{% endif %}{% if label_fixed %} input-wrapper__label--fixed{% endif %}">{{ label }}</label>
+  {% unless hide_label %}<label for="{{ name }}" data-input-target="label" class="input-wrapper__label{% if value %} is-visible{% endif %}{% if label_fixed %} input-wrapper__label--fixed{% endif %}">{{ label }}</label>{% endunless %}
   <input class="input-wrapper__input"
     name="{{ name }}"
     type="{{ type }}"
