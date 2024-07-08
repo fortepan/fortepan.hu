@@ -6,7 +6,6 @@ export default class extends Controller {
   }
 
   toggleCheck() {
-    console.log("!!!!!!!!!!!!!!", this.inputTarget)
     this.inputTarget.checked = !this.inputTarget.checked
   }
 }
