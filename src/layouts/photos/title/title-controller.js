@@ -49,7 +49,7 @@ export default class extends Controller {
       }
     } else if (Object.keys(q).indexOf("advancedSearch") > -1) {
       this.searchExpressionTarget.classList.add("is-visible")
-      this.searchExpressionTarget.innerHTML = `${lang("advanced_search")}`
+      this.searchExpressionTarget.innerHTML = `${lang("advanced_search").label}`
     } else if (Object.keys(q).indexOf("donor") > -1) {
       this.searchExpressionTarget.classList.add("is-visible")
       this.searchExpressionTarget.innerHTML = `${lang("donor")}: <em>${q.donor}</em>`

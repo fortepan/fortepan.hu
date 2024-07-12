@@ -4,7 +4,6 @@ module.exports = {
     add_tag: "Kulcsszó hozzáadása",
     add_tag_helper: `Kulcsszavak hozzáadása előtt kérjük olvassa el <a class="custom" href="/hu/cimkezes-utmutato/" target="_blank">címkézési útmutatónkat!</a>`,
     add_tag_action: "Küldés",
-    advanced_search: "Összetett keresés",
     allow_cookies: "Engedélyezem",
     back: "Vissza",
     cancel: "Mégsem",
@@ -185,12 +184,15 @@ module.exports = {
     },
     read_more: "Bővebben",
     select_option: "Válasszon...",
+    advanced_search: {
+      label: "Összetett keresés",
+      empty: "Nincs",
+    },
   },
   en: {
     about_us: "About us",
     add_tag: "Add new tag",
     add_tag_action: "Submit",
-    advanced_search: "Advanced search",
     allow_cookies: "Allow cookies",
     back: "Back",
     cancel: "Cancel",
@@ -364,5 +366,9 @@ module.exports = {
     },
     read_more: "Read more",
     select_option: "Select...",
+    advanced_search: {
+      label: "Advanced search",
+      empty: "Empty",
+    },
   },
 }
