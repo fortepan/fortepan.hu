@@ -136,12 +136,13 @@
       right: rem(12px);
     }
 
-    .selectize-input {
+    .selectize-control--search {
       box-shadow: 0px 8px 24px rgba($dark-base, 0.12);
     }
 
     .selectize-control--search .selectize-input {
-      padding-right: rem(96px);
+      padding-right: 0;
+      margin-right: rem(96px);
     }
   }
 
@@ -192,7 +193,8 @@
     gap: 3rem;
 
     .home__search__input {
-      width: 90%;
+      flex-basis: 90%;
+      max-width: 70%;
       margin: 0;
     }
 
