@@ -68,7 +68,13 @@ export default class extends Controller {
 
     this.midTarget.innerHTML = `<a href="${baseUrl}?id=${data.mid}">${data.mid}</a>`
     this.yearTarget.innerHTML = `<a href="${baseUrl}?year=${data.year}">${data.year}</a>`
-    this.donorTarget.innerHTML = `<a href="${baseUrl}?donor=${encodeURIComponent(data.donor)}">${data.donor}</a>`
+
+    if (data.donor) {
+      this.donorTarget.innerHTML = `<a href="${baseUrl}?donor=${encodeURIComponent(data.donor)}">${data.donor}</a>`
+      this.donorTarget.parentNode.style.display = "block"
+    } else {
+      this.donorTarget.parentNode.style.display = "none"
+    }
 
     if (data.author) {
       this.authorTarget.innerHTML = `<a href="${baseUrl}?photographer=${encodeURIComponent(data.author)}">${
