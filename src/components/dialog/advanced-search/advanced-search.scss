@@ -20,7 +20,7 @@
     }
 
     .form-row-group {
-      flex-basis: 50%;
+      flex-basis: calc(50% - 0.75rem);
       display: flex;
       gap: 0.5rem 1rem;
       align-items: center;
@@ -28,6 +28,10 @@
 
       @media screen and (max-width: ($breakpoint-tablet - 1px)) {
         flex-basis: 100%;
+      }
+
+      label {
+        margin-top: 0;
       }
     }
 

@@ -106,15 +106,15 @@ const search = params => {
       },
     }
 
-    const buildCustomFieldQuery = (value, field) => {
+    const buildCustomFieldQuery = (value, field, clause = "must") => {
       if (params.advancedSearch) {
         if (value === "null") {
           query.bool.must_not.push({ exists: { field: `${field}` } })
         } else {
-          query.bool.must.push({ wildcard: { [field]: `*${value}*` } })
+          query.bool[clause].push({ wildcard: { [field]: `*${value}*` } })
         }
       } else {
-        query.bool.must.push({ term: { [field]: value } })
+        query.bool[clause].push({ term: { [field]: value } })
       }
     }
 
@@ -195,6 +195,25 @@ const search = params => {
     // if there's a city search attribute defined (advanced search)
     if (params.city) {
       buildCustomFieldQuery(slugify(params.city), getLocale() === "hu" ? "varos_search" : "varos_en_search")
+    }
+
+    // location is combining the city and place queries (advanced search)
+    if (params.location) {
+      buildCustomFieldQuery(
+        slugify(params.location),
+        getLocale() === "hu" ? "varos_search" : "varos_en_search",
+        "should"
+      )
+      buildCustomFieldQuery(
+        slugify(params.location),
+        getLocale() === "hu" ? "helyszin_search" : "helyszin_en_search",
+        "should"
+      )
+
+      // add a minimum should match parameter to the query in order to match at least one of the terms in the should clause
+      if (params.advancedSearch && params.location !== "null") {
+        query.bool.minimum_should_match = 1
+      }
     }
 
     // if there's a country search attribute defined (advanced search)

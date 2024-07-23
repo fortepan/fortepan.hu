@@ -58,25 +58,10 @@ export default class extends Controller {
     const values = []
 
     Object.keys(urlParams).forEach(key => {
-      switch (key) {
-        case "q":
-          values.push(`${urlParams[key]}`)
-          break
-        case "country":
-        case "city":
-        case "place":
-        case "description":
-        case "donor":
-        case "photographer":
-        case "tag":
-        case "id":
-        case "year":
-        case "year_to":
-        case "year_from":
-          if (urlParams.advancedSearch) values.push(`${key}:${urlParams[key]}`)
-          break
-        default:
-          break
+      if (key === "q") {
+        values.push(`${urlParams[key]}`)
+      } else if (config().ADVANCED_SEARCH_KEYS.includes(key) && urlParams.advancedSearch) {
+        values.push(`${key}:${urlParams[key]}`)
       }
     })
 

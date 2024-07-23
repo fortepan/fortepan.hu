@@ -34,43 +34,25 @@
           </div>
 
           <div class="form-row-group">
-            <p class="text-medium dialog-advanced-search__label">{{ lang[locale].city }}</p>
+            <p class="text-medium dialog-advanced-search__label">{{ lang[locale].location }}</p>
 
-            {% include input/checkbox.liquid name:'city-empty'
+            {% include input/checkbox.liquid name:'location-empty'
                       label:lang[locale].advanced_search.empty
                       class:'dialog-advanced-search__checkbox'
                       stimulus_action:'change->dialog--advanced-search#onCheckboxChange'
             %}
 
             {% include input/input.liquid type:'text'
-                      name:'city'
+                      name:'location'
                       hide_label:true
                       class:'dialog-advanced-search__input'
-                      stimulus_target:'data-dialog--advanced-search-target="city"'
+                      stimulus_target:'data-dialog--advanced-search-target="location"'
                       stimulus_action:'input->dialog--advanced-search#onInputChange change->dialog--advanced-search#onInputChange'
             %}
           </div>
         </div>
 
         <div class="dialog__form-row">
-          <div class="form-row-group">
-            <p class="text-medium dialog-advanced-search__label">{{ lang[locale].location }}</p>
-
-            {% include input/checkbox.liquid name:'place-empty'
-                      label:lang[locale].advanced_search.empty
-                      class:'dialog-advanced-search__checkbox'
-                      stimulus_action:'change->dialog--advanced-search#onCheckboxChange'
-            %}
-
-            {% include input/input.liquid type:'text'
-                      name:'place'
-                      hide_label:true
-                      class:'dialog-advanced-search__input'
-                      stimulus_target:'data-dialog--advanced-search-target="place"'
-                      stimulus_action:'input->dialog--advanced-search#onInputChange change->dialog--advanced-search#onInputChange'
-            %}
-          </div>
-
           <div class="form-row-group">
             <p class="text-medium dialog-advanced-search__label">{{ lang[locale].description }}</p>
 
@@ -88,9 +70,7 @@
                       stimulus_action:'input->dialog--advanced-search#onInputChange change->dialog--advanced-search#onInputChange'
             %}
           </div>
-        </div>
 
-        <div class="dialog__form-row">
           <div class="form-row-group">
             <p class="text-medium dialog-advanced-search__label">{{ lang[locale].donor }}</p>
 
@@ -108,7 +88,9 @@
                       stimulus_action:'input->dialog--advanced-search#onInputChange change->dialog--advanced-search#onInputChange'
             %}
           </div>
+        </div>
 
+        <div class="dialog__form-row">
           <div class="form-row-group">
             <p class="text-medium dialog-advanced-search__label">{{ lang[locale].photographer }}</p>
 
@@ -126,9 +108,7 @@
                       stimulus_action:'input->dialog--advanced-search#onInputChange change->dialog--advanced-search#onInputChange'
             %}
           </div>
-        </div>
 
-        <div class="dialog__form-row">
           <div class="form-row-group">
             <p class="text-medium dialog-advanced-search__label">{{ lang[locale].tag }}</p>
 
@@ -146,25 +126,10 @@
                       stimulus_action:'input->dialog--advanced-search#onInputChange change->dialog--advanced-search#onInputChange'
             %}
           </div>
-
-          <div class="form-row-group">
-            <p class="text-medium dialog-advanced-search__label">{{ lang[locale].picture_id }}</p>
-
-            {% include input/input.liquid type:'text'
-                      name:'id'
-                      hide_label:true
-                      class:'dialog-advanced-search__input'
-                      stimulus_target:'data-dialog--advanced-search-target="id"'
-                      stimulus_action:'input->dialog--advanced-search#restrictInput'
-            %}
-          </div>
         </div>
 
         {% capture options %}
-            <option value="">--</option>
-            {% for i in (siteConfig.YEAR_MIN..siteConfig.YEAR_MAX) %}
-              <option value="{{ i }}">{{ i }}</option>
-            {% endfor %}
+            <option value="">--</option>{% for i in (siteConfig.YEAR_MIN..siteConfig.YEAR_MAX) %}<option value="{{ i }}">{{ i }}</option>{% endfor %}
         {% endcapture %}
 
         <div class="dialog__form-row">
@@ -190,6 +155,22 @@
                       class:'dialog-advanced-search__input'
                       stimulus_target:'data-dialog--embed-target="year_to"'
                       options:options
+            %}
+          </div>
+        </div>
+
+        {% assign options = false %}
+
+        <div class="dialog__form-row">
+          <div class="form-row-group">
+            <p class="text-medium dialog-advanced-search__label">{{ lang[locale].picture_id }}</p>
+
+            {% include input/input.liquid type:'text'
+                      name:'id'
+                      hide_label:true
+                      class:'dialog-advanced-search__input'
+                      stimulus_target:'data-dialog--advanced-search-target="id"'
+                      stimulus_action:'input->dialog--advanced-search#restrictInput'
             %}
           </div>
         </div>

@@ -29,6 +29,7 @@ module.exports = () => {
       "country",
       "city",
       "place",
+      "location",
       "description",
       "donor",
       "photographer",
