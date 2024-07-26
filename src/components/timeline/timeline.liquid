@@ -11,11 +11,11 @@
     <div class="photos-timeline__year-label photos-timeline__year-label--yearStart"
       data-timeline-target="yearLabel yearStart"
       data-action="click->timeline#jumpToStart"
-    ></div>
+    >{{ siteConfig.YEAR_MIN }}</div>
     <div class="photos-timeline__year-label photos-timeline__year-label--yearEnd"
       data-timeline-target="yearLabel yearEnd"
       data-action="click->timeline#jumpToEnd"
-    ></div>
+    >{{ siteConfig.YEAR_MAX }}</div>
     <div class="photos-timeline__slider__container" data-timeline-target="slider"
       data-action="mouseenter->timeline#onTimelineOver
                    mousemove@document->timeline#onTimelineMove
@@ -41,7 +41,7 @@
                        touchend@document->timeline#sliderStopDrag
                        mouseup@document->timeline#sliderStopDrag"
         >
-          <span data-timeline-target="sliderYearLabel">1900</span>
+          <span data-timeline-target="sliderYearLabel">{{ siteConfig.YEAR_MIN }}</span>
           <div class="button-circular__label" data-timeline-target="sliderYearCount"></div>
         </div>
         </div>

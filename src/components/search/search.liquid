@@ -3,12 +3,19 @@
   data-action="search:setValue@document->search#setValue
                search:clear@document->search#clear"
 >
-    <form data-search-target="form">
-    {% capture subclass %}selectize-control--search{% if type=="large" %} selectize-control--large{% endif %} search__selectize-control{% endcapture %}
-    {% include selectize-control/selectize-control.liquid class:subclass placeholder:lang[locale].search_more stimulus_target:'data-search-target="input"' %}
-    <div class="button-circular button-circular--transparent search__icon" data-search-target="icon" data-action="click->search#submit">
-        {% inlineSVG src:"src/static/images/icons/24/icon-search.svg" class:"button-circular__icon" %}
-        <div class="button-circular__label">{{ lang[locale].go }}</div>
-    </div>
+    <form class="search__form" data-search-target="form">
+        {% capture subclass %}selectize-control--search{% if type=="large" %} selectize-control--large{% endif %} search__selectize-control{% endcapture %}
+        {% include selectize-control/selectize-control.liquid class:subclass placeholder:lang[locale].search_more stimulus_target:'data-search-target="input"' %}
+
+        <div class="search__form__actions">
+            <div class="button-circular button-circular--transparent" data-search-target="icon" data-action="click->search#submit">
+                {% inlineSVG src:"src/static/images/icons/24/icon-search.svg" class:"button-circular__icon" %}
+                <div class="button-circular__label">{{ lang[locale].go }}</div>
+            </div>
+            <div class="button-circular button-circular--transparent" data-action="click->search#showAdvancedSearchDialog">
+                {% inlineSVG src:"src/static/images/icons/24/icon-settings.svg" class:"button-circular__icon" %}
+                <div class="button-circular__label">{{ lang[locale].advanced_search.label }}</div>
+            </div>
+        </div>
     </form>
 </div>

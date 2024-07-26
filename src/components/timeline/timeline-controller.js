@@ -187,7 +187,7 @@ export default class extends Controller {
     if ((this.sliderDragged && this.year !== this.sliderDragStartYear) || !this.sliderDragged) {
       // if we are in a year context, let's clear the context
       if (getURLParams().year > 0 || getURLParams().id > 0) {
-        trigger("photos:historyPushState", { url: "?q=", resetPhotosGrid: true, jumpToYearAfter: this.year })
+        trigger("photos:historyPushState", { url: "?q", resetPhotosGrid: true, jumpToYearAfter: this.year })
       } else {
         trigger("timeline:yearSelected", { year: this.year })
       }

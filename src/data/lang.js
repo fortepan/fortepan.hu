@@ -4,7 +4,6 @@ module.exports = {
     add_tag: "Kulcsszó hozzáadása",
     add_tag_helper: `Kulcsszavak hozzáadása előtt kérjük olvassa el <a class="custom" href="/hu/cimkezes-utmutato/" target="_blank">címkézési útmutatónkat!</a>`,
     add_tag_action: "Küldés",
-    advanced_search: "Részletes keresés",
     allow_cookies: "Engedélyezem",
     back: "Vissza",
     cancel: "Mégsem",
@@ -141,6 +140,8 @@ module.exports = {
     username_or_email: "Felhasználónév vagy Email",
     weekly_fortepan: "Heti Fortepan blog",
     year: "Év",
+    year_from: "Évtől",
+    year_to: "Évig",
     age_restriction: {
       title: "Korhatáros tartalom",
       content: "A kép megtekintése a nyugalom megzavarására alkalmas, kiskorúak számára nem ajánlott!",
@@ -176,18 +177,22 @@ module.exports = {
         change_privacy: "Módosítás",
         upsell: {
           helper_text_lists: "A képet tartalmazó $p1listát be tudja ágyazni$p2 más weboldalakon is.",
-          helper_text: "A képet $p1hozzá tudja adni egy listához$p2 is, amit be tud ágyazni más weboldalakon.",
+          helper_text: "A képet $p1egy listához adva$p2 be tudja ágyazni más weboldalakon is.",
           docs_link: "Részletes útmutató&nbsp;→",
         },
       },
     },
     read_more: "Bővebben",
+    select_option: "Válasszon...",
+    advanced_search: {
+      label: "Összetett keresés",
+      empty: "Nincs",
+    },
   },
   en: {
     about_us: "About us",
     add_tag: "Add new tag",
     add_tag_action: "Submit",
-    advanced_search: "Advanced search",
     allow_cookies: "Allow cookies",
     back: "Back",
     cancel: "Cancel",
@@ -324,6 +329,8 @@ module.exports = {
     username_or_email: "Username or Email",
     weekly_fortepan: "Weekly Fortepan blog",
     year: "Year",
+    year_from: "Year from",
+    year_to: "Year to",
     age_restriction: {
       title: "Age-restricted content",
       content: "This content may be offensive or disturbing, not appropriate for visitors under 18 years.",
@@ -358,5 +365,10 @@ module.exports = {
       },
     },
     read_more: "Read more",
+    select_option: "Select...",
+    advanced_search: {
+      label: "Advanced search",
+      empty: "Empty",
+    },
   },
 }

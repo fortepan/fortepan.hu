@@ -1,0 +1,12 @@
+<div class="checkbox-wrapper {{ class }}" data-controller="input--checkbox" {{ stimulus_wrapper_target }}>
+  <input class="checkbox-wrapper__input"
+    name="{{ name }}"
+    type="{% if type %}{{ type }}{% else %}checkbox{% endif %}"
+    {% if value %}value="{{ value }}"{% endif %}
+    data-input--checkbox-target="input"
+    {{ stimulus_target }}
+    {{ options }}
+    {% if stimulus_action %}data-action="{{ stimulus_action }}"{% endif %}
+  >
+  {% if label %}<label for="{{ name }}" class="checkbox-wrapper__label text-medium" data-input--checkbox-target="label" data-action="click->input--checkbox#toggleCheck">{{ label }}</label>{% endif %}
+</div>

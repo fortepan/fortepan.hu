@@ -1,0 +1,186 @@
+<div class="dialog dialog-advanced-search"
+     data-controller="dialog--advanced-search"
+     data-action="dialogs:hide@document->dialog--advanced-search#hide
+                   dialogAdvancedSearch:show@document->dialog--advanced-search#show
+                   dialogAdvancedSearch:hide@document->dialog--advanced-search#hide"
+>
+  <div class="dialog__wrapper">
+      <div class="button-circular dialog__close"
+           data-action="click->dialog--advanced-search#hide"
+      >
+        {% inlineSVG src:"src/static/images/icons/24/icon-close.svg" class:"button-circular__icon" %}
+        <div class="button-circular__label">{{ lang[locale].close }}</div>
+      </div>
+      <h3 class="dialog__title">{{ lang[locale].advanced_search.label }}</h3>
+      <form class="dialog-advanced-search__form" data-dialog--advanced-search-target="form">
+
+        <div class="dialog__form-row">
+          <div class="form-row-group">
+            <p class="text-medium dialog-advanced-search__label">{{ lang[locale].country }}</p>
+
+            {% include input/checkbox.liquid name:'country-empty'
+                      label:lang[locale].advanced_search.empty
+                      class:'dialog-advanced-search__checkbox'
+                      stimulus_action:'change->dialog--advanced-search#onCheckboxChange'
+            %}
+
+            {% include input/input.liquid type:'text'
+                      name:'country'
+                      hide_label:true
+                      class:'dialog-advanced-search__input'
+                      stimulus_target:'data-dialog--advanced-search-target="country"'
+                      stimulus_action:'input->dialog--advanced-search#onInputChange change->dialog--advanced-search#onInputChange'
+            %}
+          </div>
+
+          <div class="form-row-group">
+            <p class="text-medium dialog-advanced-search__label">{{ lang[locale].location }}</p>
+
+            {% include input/checkbox.liquid name:'location-empty'
+                      label:lang[locale].advanced_search.empty
+                      class:'dialog-advanced-search__checkbox'
+                      stimulus_action:'change->dialog--advanced-search#onCheckboxChange'
+            %}
+
+            {% include input/input.liquid type:'text'
+                      name:'location'
+                      hide_label:true
+                      class:'dialog-advanced-search__input'
+                      stimulus_target:'data-dialog--advanced-search-target="location"'
+                      stimulus_action:'input->dialog--advanced-search#onInputChange change->dialog--advanced-search#onInputChange'
+            %}
+          </div>
+        </div>
+
+        <div class="dialog__form-row">
+          <div class="form-row-group">
+            <p class="text-medium dialog-advanced-search__label">{{ lang[locale].description }}</p>
+
+            {% include input/checkbox.liquid name:'description-empty'
+                      label:lang[locale].advanced_search.empty
+                      class:'dialog-advanced-search__checkbox'
+                      stimulus_action:'change->dialog--advanced-search#onCheckboxChange'
+            %}
+
+            {% include input/input.liquid type:'text'
+                      name:'description'
+                      hide_label:true
+                      class:'dialog-advanced-search__input'
+                      stimulus_target:'data-dialog--advanced-search-target="description"'
+                      stimulus_action:'input->dialog--advanced-search#onInputChange change->dialog--advanced-search#onInputChange'
+            %}
+          </div>
+
+          <div class="form-row-group">
+            <p class="text-medium dialog-advanced-search__label">{{ lang[locale].donor }}</p>
+
+            {% include input/checkbox.liquid name:'donor-empty'
+                      label:lang[locale].advanced_search.empty
+                      class:'dialog-advanced-search__checkbox'
+                      stimulus_action:'change->dialog--advanced-search#onCheckboxChange'
+            %}
+
+            {% include input/input.liquid type:'text'
+                      name:'donor'
+                      hide_label:true
+                      class:'dialog-advanced-search__input'
+                      stimulus_target:'data-dialog--advanced-search-target="donor"'
+                      stimulus_action:'input->dialog--advanced-search#onInputChange change->dialog--advanced-search#onInputChange'
+            %}
+          </div>
+        </div>
+
+        <div class="dialog__form-row">
+          <div class="form-row-group">
+            <p class="text-medium dialog-advanced-search__label">{{ lang[locale].photographer }}</p>
+
+            {% include input/checkbox.liquid name:'photographer-empty'
+                      label:lang[locale].advanced_search.empty
+                      class:'dialog-advanced-search__checkbox'
+                      stimulus_action:'change->dialog--advanced-search#onCheckboxChange'
+            %}
+
+            {% include input/input.liquid type:'text'
+                      name:'photographer'
+                      hide_label:true
+                      class:'dialog-advanced-search__input'
+                      stimulus_target:'data-dialog--advanced-search-target="photographer"'
+                      stimulus_action:'input->dialog--advanced-search#onInputChange change->dialog--advanced-search#onInputChange'
+            %}
+          </div>
+
+          <div class="form-row-group">
+            <p class="text-medium dialog-advanced-search__label">{{ lang[locale].tag }}</p>
+
+            {% include input/checkbox.liquid name:'tag-empty'
+                      label:lang[locale].advanced_search.empty
+                      class:'dialog-advanced-search__checkbox'
+                      stimulus_action:'change->dialog--advanced-search#onCheckboxChange'
+            %}
+
+            {% include input/input.liquid type:'text'
+                      name:'tag'
+                      hide_label:true
+                      class:'dialog-advanced-search__input'
+                      stimulus_target:'data-dialog--advanced-search-target="tag"'
+                      stimulus_action:'input->dialog--advanced-search#onInputChange change->dialog--advanced-search#onInputChange'
+            %}
+          </div>
+        </div>
+
+        {% capture options %}
+            <option value="">--</option>{% for i in (siteConfig.YEAR_MIN..siteConfig.YEAR_MAX) %}<option value="{{ i }}">{{ i }}</option>{% endfor %}
+        {% endcapture %}
+
+        <div class="dialog__form-row">
+          <div class="form-row-group">
+            {% include select/select.liquid name:'year'
+                      label:lang[locale].year
+                      class:'dialog-advanced-search__input'
+                      stimulus_target:'data-dialog--embed-target="year"'
+                      options:options
+            %}
+          </div>
+
+          <div class="form-row-group form-row-group--year">
+            {% include select/select.liquid name:'year_from'
+                      label:lang[locale].year_from
+                      class:'dialog-advanced-search__input'
+                      stimulus_target:'data-dialog--embed-target="year_from"'
+                      options:options
+            %}
+
+            {% include select/select.liquid name:'year_to'
+                      label:lang[locale].year_to
+                      class:'dialog-advanced-search__input'
+                      stimulus_target:'data-dialog--embed-target="year_to"'
+                      options:options
+            %}
+          </div>
+        </div>
+
+        {% assign options = false %}
+
+        <div class="dialog__form-row">
+          <div class="form-row-group">
+            <p class="text-medium dialog-advanced-search__label">{{ lang[locale].picture_id }}</p>
+
+            {% include input/input.liquid type:'text'
+                      name:'id'
+                      hide_label:true
+                      class:'dialog-advanced-search__input'
+                      stimulus_target:'data-dialog--advanced-search-target="id"'
+                      stimulus_action:'input->dialog--advanced-search#restrictInput'
+            %}
+          </div>
+        </div>
+
+        <div class="dialog-search__actions">
+          <button class="button button--primary dialog__button dialog-search__button"
+                  data-action="click->dialog--advanced-search#submit"
+          >{{ lang[locale].search }}</button>
+        </div>
+
+      </form>
+  </div>
+</div>

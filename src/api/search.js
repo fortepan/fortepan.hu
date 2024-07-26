@@ -106,6 +106,18 @@ const search = params => {
       },
     }
 
+    const buildCustomFieldQuery = (value, field, clause = "must") => {
+      if (params.advancedSearch) {
+        if (value === "null") {
+          query.bool.must_not.push({ exists: { field: `${field}` } })
+        } else {
+          query.bool[clause].push({ wildcard: { [field]: `*${value}*` } })
+        }
+      } else {
+        query.bool[clause].push({ term: { [field]: value } })
+      }
+    }
+
     // returns all records when query field is empty
     if (!params || (params && params.q === "")) {
       query.bool.must.push({ match_all: {} })
@@ -147,15 +159,17 @@ const search = params => {
 
     // if there's a tag search attribute defined (advanced search)
     if (params.tag) {
-      const tag = slugify(params.tag)
-      query.bool.must.push(
-        getLocale() === "hu" ? { term: { cimke_search: `${tag}` } } : { term: { cimke_en_search: `${tag}` } }
-      )
+      buildCustomFieldQuery(slugify(params.tag), getLocale() === "hu" ? "cimke_search" : "cimke_en_search")
     }
 
     // get results without tags (advanced search)
     if (params.notags === "1") {
       query.bool.must_not.push({ exists: { field: getLocale() === "hu" ? "cimke_search" : "cimke_en_search" } })
+    }
+
+    // if there's a tag search attribute defined (advanced search)
+    if (params.description) {
+      buildCustomFieldQuery(slugify(params.description), "description_search")
     }
 
     // get results without description (advanced search)
@@ -175,38 +189,46 @@ const search = params => {
 
     // if there's a city search attribute defined (advanced search)
     if (params.place) {
-      const place = slugify(params.place)
-      query.bool.must.push(
-        getLocale() === "hu" ? { term: { helyszin_search: `${place}` } } : { term: { helyszin_en_search: `${place}` } }
-      )
+      buildCustomFieldQuery(slugify(params.place), getLocale() === "hu" ? "helyszin_search" : "helyszin_en_search")
     }
 
     // if there's a city search attribute defined (advanced search)
     if (params.city) {
-      const city = slugify(params.city)
-      query.bool.must.push(
-        getLocale() === "hu" ? { term: { varos_search: `${city}` } } : { term: { varos_en_search: `${city}` } }
+      buildCustomFieldQuery(slugify(params.city), getLocale() === "hu" ? "varos_search" : "varos_en_search")
+    }
+
+    // location is combining the city and place queries (advanced search)
+    if (params.location) {
+      buildCustomFieldQuery(
+        slugify(params.location),
+        getLocale() === "hu" ? "varos_search" : "varos_en_search",
+        "should"
       )
+      buildCustomFieldQuery(
+        slugify(params.location),
+        getLocale() === "hu" ? "helyszin_search" : "helyszin_en_search",
+        "should"
+      )
+
+      // add a minimum should match parameter to the query in order to match at least one of the terms in the should clause
+      if (params.advancedSearch && params.location !== "null") {
+        query.bool.minimum_should_match = 1
+      }
     }
 
     // if there's a country search attribute defined (advanced search)
     if (params.country) {
-      const country = slugify(params.country)
-      query.bool.must.push(
-        getLocale() === "hu" ? { term: { orszag_search: `${country}` } } : { term: { orszag_en_search: `${country}` } }
-      )
+      buildCustomFieldQuery(slugify(params.country), getLocale() === "hu" ? "orszag_search" : "orszag_en_search")
     }
 
     // if there's a donor search attribute defined (advanced search)
     if (params.donor) {
-      const donor = slugify(params.donor)
-      query.bool.must.push({ term: { adomanyozo_search: `${donor}` } })
+      buildCustomFieldQuery(slugify(params.donor), "adomanyozo_search")
     }
 
     // if there's a photographer search attribute defined (advanced search)
     if (params.photographer) {
-      const photographer = slugify(params.photographer)
-      query.bool.must.push({ term: { szerzo_search: `${photographer}` } })
+      buildCustomFieldQuery(slugify(params.photographer), "szerzo_search")
     }
 
     // if there's an id search attribute defined (advanced search)

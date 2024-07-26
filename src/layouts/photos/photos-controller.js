@@ -206,15 +206,23 @@ export default class extends Controller {
       params.from = 0
     }
 
-    if (!params.q) {
-      // clear all search fields if query is not defined in the request
-      trigger("search:clear")
-    } else {
-      // set all search fields' value if query param is set
-      setTimeout(() => {
-        trigger("search:setValue", { value: params.q })
-      }, 20)
-    }
+    // set up the search field
+    trigger("search:clear")
+
+    const urlParams = getURLParams()
+    const values = []
+
+    Object.keys(urlParams).forEach(key => {
+      if (key === "q") {
+        values.push(`${urlParams[key]}`)
+      } else if (config().ADVANCED_SEARCH_KEYS.includes(key) && urlParams.advancedSearch) {
+        values.push(`${key}:${urlParams[key]}`)
+      }
+    })
+
+    setTimeout(() => {
+      trigger("search:setValue", { value: values.join(",") })
+    }, 20)
 
     // show loading indicator
     setTimeout(() => {
