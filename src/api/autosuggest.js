@@ -12,6 +12,9 @@ export default async (prefix, filter = false) => {
   }
 
   // check autosuggest cache
+  if (filter && autosuggestCache[`${prefix}_${filter}`]) {
+    return autosuggestCache[`${prefix}_${filter}`]
+  }
   if (autosuggestCache[prefix]) {
     return autosuggestCache[prefix]
   }
@@ -51,7 +54,11 @@ export default async (prefix, filter = false) => {
   // resFiltered.length = resFiltered.length > 10 ? limit : resFiltered.length
 
   // save the filtered result to cache
-  autosuggestCache[prefix] = resFiltered
+  if (filter) {
+    autosuggestCache[`${prefix}_${filter}`] = resFiltered
+  } else {
+    autosuggestCache[prefix] = resFiltered
+  }
 
   return resFiltered
 }
