@@ -15,7 +15,7 @@
       <form class="dialog-advanced-search__form" data-dialog--advanced-search-target="form">
 
         <div class="dialog__form-row">
-          <div class="form-row-group">
+          <div class="form-row-group" data-controller="autosuggest">
             <p class="text-medium dialog-advanced-search__label">{{ lang[locale].country }}</p>
 
             {% include input/checkbox.liquid name:'country-empty'
@@ -24,16 +24,25 @@
                       stimulus_action:'change->dialog--advanced-search#onCheckboxChange'
             %}
 
+            {% capture targets %}
+              data-dialog--advanced-search-target="country"
+              data-autosuggest="orszag_{% if locale == "hu" %}name{% else %}en{% endif %}"
+              data-autosuggest-target="input"
+            {% endcapture %}
+
             {% include input/input.liquid type:'text'
                       name:'country'
                       hide_label:true
                       class:'dialog-advanced-search__input'
-                      stimulus_target:'data-dialog--advanced-search-target="country"'
-                      stimulus_action:'input->dialog--advanced-search#onInputChange change->dialog--advanced-search#onInputChange'
+                      stimulus_target:targets
+                      stimulus_action:'input->dialog--advanced-search#onInputChange change->dialog--advanced-search#onInputChange keyup->autosuggest#keyup'
             %}
+
+            <div class="autosuggest" data-autosuggest-target="autosuggest"></div>
+            {% assign targets = false %}
           </div>
 
-          <div class="form-row-group">
+          <div class="form-row-group" data-controller="autosuggest">
             <p class="text-medium dialog-advanced-search__label">{{ lang[locale].location }}</p>
 
             {% include input/checkbox.liquid name:'location-empty'
@@ -42,13 +51,22 @@
                       stimulus_action:'change->dialog--advanced-search#onCheckboxChange'
             %}
 
+            {% capture targets %}
+              data-dialog--advanced-search-target="location"
+              data-autosuggest="varos_{% if locale == "hu" %}name{% else %}en{% endif %},helyszin_{% if locale == "hu" %}name{% else %}en{% endif %}"
+              data-autosuggest-target="input"
+            {% endcapture %}
+
             {% include input/input.liquid type:'text'
                       name:'location'
                       hide_label:true
                       class:'dialog-advanced-search__input'
-                      stimulus_target:'data-dialog--advanced-search-target="location"'
-                      stimulus_action:'input->dialog--advanced-search#onInputChange change->dialog--advanced-search#onInputChange'
+                      stimulus_target:targets
+                      stimulus_action:'input->dialog--advanced-search#onInputChange change->dialog--advanced-search#onInputChange keyup->autosuggest#keyup'
             %}
+
+            <div class="autosuggest" data-autosuggest-target="autosuggest"></div>
+            {% assign targets = false %}
           </div>
         </div>
 
@@ -71,7 +89,7 @@
             %}
           </div>
 
-          <div class="form-row-group">
+          <div class="form-row-group" data-controller="autosuggest">
             <p class="text-medium dialog-advanced-search__label">{{ lang[locale].donor }}</p>
 
             {% include input/checkbox.liquid name:'donor-empty'
@@ -80,18 +98,27 @@
                       stimulus_action:'change->dialog--advanced-search#onCheckboxChange'
             %}
 
+            {% capture targets %}
+              data-dialog--advanced-search-target="donor"
+              data-autosuggest="adomanyozo_name"
+              data-autosuggest-target="input"
+            {% endcapture %}
+
             {% include input/input.liquid type:'text'
                       name:'donor'
                       hide_label:true
                       class:'dialog-advanced-search__input'
-                      stimulus_target:'data-dialog--advanced-search-target="donor"'
-                      stimulus_action:'input->dialog--advanced-search#onInputChange change->dialog--advanced-search#onInputChange'
+                      stimulus_target:targets
+                      stimulus_action:'input->dialog--advanced-search#onInputChange change->dialog--advanced-search#onInputChange keyup->autosuggest#keyup'
             %}
+
+            <div class="autosuggest" data-autosuggest-target="autosuggest"></div>
+            {% assign targets = false %}
           </div>
         </div>
 
         <div class="dialog__form-row">
-          <div class="form-row-group">
+          <div class="form-row-group" data-controller="autosuggest">
             <p class="text-medium dialog-advanced-search__label">{{ lang[locale].photographer }}</p>
 
             {% include input/checkbox.liquid name:'photographer-empty'
@@ -100,16 +127,25 @@
                       stimulus_action:'change->dialog--advanced-search#onCheckboxChange'
             %}
 
+            {% capture targets %}
+              data-dialog--advanced-search-target="photographer"
+              data-autosuggest="szerzo_{% if locale == "hu" %}name{% else %}en{% endif %}"
+              data-autosuggest-target="input"
+            {% endcapture %}
+
             {% include input/input.liquid type:'text'
                       name:'photographer'
                       hide_label:true
                       class:'dialog-advanced-search__input'
-                      stimulus_target:'data-dialog--advanced-search-target="photographer"'
-                      stimulus_action:'input->dialog--advanced-search#onInputChange change->dialog--advanced-search#onInputChange'
+                      stimulus_target:targets
+                      stimulus_action:'input->dialog--advanced-search#onInputChange change->dialog--advanced-search#onInputChange keyup->autosuggest#keyup'
             %}
+
+            <div class="autosuggest" data-autosuggest-target="autosuggest"></div>
+            {% assign targets = false %}
           </div>
 
-          <div class="form-row-group">
+          <div class="form-row-group" data-controller="autosuggest">
             <p class="text-medium dialog-advanced-search__label">{{ lang[locale].tag }}</p>
 
             {% include input/checkbox.liquid name:'tag-empty'
@@ -118,13 +154,22 @@
                       stimulus_action:'change->dialog--advanced-search#onCheckboxChange'
             %}
 
+            {% capture targets %}
+              data-dialog--advanced-search-target="tag"
+              data-autosuggest="cimke_{% if locale == "hu" %}name{% else %}en{% endif %}"
+              data-autosuggest-target="input"
+            {% endcapture %}
+
             {% include input/input.liquid type:'text'
                       name:'tag'
                       hide_label:true
                       class:'dialog-advanced-search__input'
-                      stimulus_target:'data-dialog--advanced-search-target="tag"'
-                      stimulus_action:'input->dialog--advanced-search#onInputChange change->dialog--advanced-search#onInputChange'
+                      stimulus_target:targets
+                      stimulus_action:'input->dialog--advanced-search#onInputChange change->dialog--advanced-search#onInputChange keyup->autosuggest#keyup'
             %}
+
+            <div class="autosuggest" data-autosuggest-target="autosuggest"></div>
+            {% assign targets = false %}
           </div>
         </div>
 

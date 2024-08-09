@@ -20,6 +20,7 @@
     }
 
     .form-row-group {
+      position: relative;
       flex-basis: calc(50% - 0.75rem);
       display: flex;
       gap: 0.5rem 1rem;
