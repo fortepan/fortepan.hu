@@ -10,6 +10,18 @@ export default class extends Controller {
 
   connect() {
     this.keyup = throttle(this.keyup.bind(this), 200)
+
+    // hide the autosuggest panel on clicking outside
+    document.addEventListener("click", e => {
+      if (
+        this.autosuggestTarget.classList.contains("is-visible") &&
+        e.target &&
+        e.target !== this.autosuggestTarget &&
+        !this.autosuggestTarget.contains(e.target)
+      ) {
+        this.autosuggestTarget.classList.remove("is-visible")
+      }
+    })
   }
 
   keyup(e) {
@@ -38,7 +50,6 @@ export default class extends Controller {
         previousNode.classList.add("is-selected")
 
         // move cursor to the end of input value
-
         this.inputTarget.value = previousNode.textContent
       }
 
