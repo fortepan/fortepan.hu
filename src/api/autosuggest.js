@@ -12,10 +12,11 @@ export default async (prefix, filter = false) => {
   }
 
   // check autosuggest cache
-  if (filter && autosuggestCache[`${prefix}_${filter}`]) {
-    return autosuggestCache[`${prefix}_${filter}`]
-  }
-  if (autosuggestCache[prefix]) {
+  if (filter) {
+    if (autosuggestCache[`${prefix}_${filter}`]) {
+      return autosuggestCache[`${prefix}_${filter}`]
+    }
+  } else if (autosuggestCache[prefix]) {
     return autosuggestCache[prefix]
   }
 
