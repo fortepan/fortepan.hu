@@ -186,7 +186,7 @@ module.exports = {
     select_option: "Válasszon...",
     advanced_search: {
       label: "Összetett keresés",
-      empty: "Nincs",
+      empty: "Üres",
     },
   },
   en: {
