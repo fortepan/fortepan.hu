@@ -3,7 +3,10 @@
     {
       "name": "Két szerző - két történet",
       "date": "2024-09-02T00:00:00.000Z",
-      "cover_image": "288843"
+      "cover_image": "288843",
+      "hu": {
+        "title": "Két szerző - két történet"
+      }
     },
     {
       "name": "a mi XX. századunk",
