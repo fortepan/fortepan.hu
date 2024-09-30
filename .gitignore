@@ -18,6 +18,7 @@ src/data/rss.json
 
 # Tina CMS output
 /.tina/__generated__
+/.tina/__generated__/
 
 # Local Netlify folder
 .netlify
