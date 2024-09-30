@@ -13,6 +13,12 @@ src/data/manifest*
 src/static/autocomplete-en.json
 src/static/autocomplete-hu.json
 
+# Rss feed
+src/data/rss.json
+
+# Tina CMS output
+.tina/__generated__
+
 # Local Netlify folder
 .netlify
 
