@@ -106,10 +106,12 @@ const search = params => {
       },
     }
 
-    const buildCustomFieldQuery = (value, field, clause = "must") => {
+    const buildCustomFieldQuery = (value, field, clause = "must", forceExactMatch = false) => {
       if (params.advancedSearch) {
         if (value === "null") {
           query.bool.must_not.push({ exists: { field: `${field}` } })
+        } else if (forceExactMatch) {
+          query.bool[clause].push({ term: { [field]: value } })
         } else {
           query.bool[clause].push({ wildcard: { [field]: `*${value}*` } })
         }
@@ -189,12 +191,22 @@ const search = params => {
 
     // if there's a city search attribute defined (advanced search)
     if (params.place) {
-      buildCustomFieldQuery(slugify(params.place), getLocale() === "hu" ? "helyszin_search" : "helyszin_en_search")
+      buildCustomFieldQuery(
+        slugify(params.place),
+        getLocale() === "hu" ? "helyszin_search" : "helyszin_en_search",
+        undefined,
+        true
+      )
     }
 
     // if there's a city search attribute defined (advanced search)
     if (params.city) {
-      buildCustomFieldQuery(slugify(params.city), getLocale() === "hu" ? "varos_search" : "varos_en_search")
+      buildCustomFieldQuery(
+        slugify(params.city),
+        getLocale() === "hu" ? "varos_search" : "varos_en_search",
+        undefined,
+        true
+      )
     }
 
     // location is combining the city and place queries (advanced search)
@@ -202,12 +214,14 @@ const search = params => {
       buildCustomFieldQuery(
         slugify(params.location),
         getLocale() === "hu" ? "varos_search" : "varos_en_search",
-        "should"
+        "should",
+        true
       )
       buildCustomFieldQuery(
         slugify(params.location),
         getLocale() === "hu" ? "helyszin_search" : "helyszin_en_search",
-        "should"
+        "should",
+        true
       )
 
       // add a minimum should match parameter to the query in order to match at least one of the terms in the should clause
