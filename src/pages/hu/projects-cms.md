@@ -6,6 +6,10 @@ title: >-
   Ostrom 80 - képmentési akció Budapest ostromának nyolcvanadik évfordulója
   alkalmából
 projects:
+  - title: >-
+      Ostrom 80 - képmentési akció Budapest ostromának nyolcvanadik évfordulója
+      alkalmából
+    project_date: 2024. november 22. -
   - title: Fortepan Method - Making Europe’s private visual history freely accessible
     project_date: 2022. szeptember 1 - 2025. augusztus 31.
     description: >-
