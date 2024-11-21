@@ -2,9 +2,7 @@
 layout: projects/projects.liquid
 permalink: /hu/projects/
 hide_search: true
-title: >-
-  Ostrom 80 - képmentési akció Budapest ostromának nyolcvanadik évfordulója
-  alkalmából
+title: ''
 projects:
   - title: >-
       Ostrom 80 - képmentési akció Budapest ostromának nyolcvanadik évfordulója
@@ -186,82 +184,3 @@ projects:
 _template: projects
 ---
 
-Budapest ostromának nyolcvanadik évfordulójára a Fortepan és az Eidolon Centre közös
-
-képmentési akciót szervez.
-
-Budapest 1944-45-ös ostroma a második világháború egyik legpusztítóbb, embert próbáló
-
-ütközete volt, egyben a huszadik századi magyar történelem talán legdrámaibb, még mindig
-
-nem kielégítően feldolgozott traumája.
-
-1944 telének két hónapjában és az azt közvetlenül követő időszakban rendkívüli erővel
-
-sűrűsödött össze a magyar társadalmat évtizedeken át megosztó sokirányú feszültség és a
-
-második világháború végjátékának drámája. A Budapesten rekedt civilek néhány hét alatt át
-
-kellett éljék a város jelentős részének pusztulását, a zsidó lakosság gettóba terelését és
-
-tömeges likvidálását, a nyilas terrort, a német és orosz katonai megszállók durva
-
-beavatkozását az élet menetébe, a magyar államiság szétesését és egy új világ véres
-
-születését. Mindezt légópincékbe szorulva, mindennapos életveszélyben, bizonytalanságban
-
-és kiszámíthatatlan erőszak hullámok között, nélkülözve, áram, víz és élelmiszer nélkül. Az
-
-ostrom vége sokaknak az életet, másoknak pedig egy új rabság kezdetét jelentette.
-
-Noha a katonai és politikai események meglehetősen jól feldolgozottak, a civil lakosság
-
-életetek drámai megváltozásáról, a mindennapok mai fejjel nehezen felfogható drámájáról
-
-alig van fényképes emlékünk. Bár naplók sora őrzi a komfortzónájukat feladni kényszerült,
-
-egymás mellé szorult emberek hétköznapjainak részleteit és hangulatát, a nélkülözés, a
-
-túlélés, a szolidaritás, az önzés, a kicsiség és a nagyság csak ilyen helyzetekben megismerhető
-
-megnyilvánulásait, az ezt megörökítő fényképekről alig van tudomásunk. A huszadik század
-
-szinte minden pillanatát megörökítő privát fotók hullámai ezen a ponton megtörnek.
-
-Az Ostrom időszakából alig rendelkezünk olyan ismert fotóval, amely a civil lakosság, a
-
-pincékbe húzódott, romok között túlélő budapestiek és budapestiek mindennapjait mutatná be.
-
-Hasonlóan ehhez, a budapesti gettóból is elenyészően kevés fotográfia maradt fent, mint
-
-ahogy a málenkij robotra hurcoltak sokaságának története sem dokumentált kellően.
-
-A Fortepan és az Eidolon Centre képmentési programjával arra tesz kísérletet, hogy ezt a
-
-hiányt pótolja, és rátaláljon azokra a lappangó, jórészt magánkézben lévő, esetleg archívumok
-
-feldolgozatlan anyagában rejtőző fotográfiákra, amelyek a nyilvánosság számára nem
-
-ismertek és Budapest ostromának eddig ismeretlen arcát mutatják be. Biztosak vagyunk
-
-benne, hogy az átlagosnál kevesebb kép készült ebben a vérzivataros időszakban, mégis
-
-hiszünk benne, hogy valahol, elfelejtve még léteznek ilyen kordokumentumok. Mindnyájunk
-
-érdeke, hogy rájuk találjunk.
-
-A projekt során várjuk mindazok jelentkezését, akiknek a birtokában olyan fotóemlék van,
-
-amely 1944-ben készült az ostromlott Budapesten, vagy úgy gondolják, valamilyen köze van
-
-Budapest ostromához.
-
-A képeket – együtt a már ismert képanyagból készült válogatással – 2025 őszén, Budapest
-
-Ostromának 80. évfordulójára emlékezve a Fortepan és az Eidolon Centre által szervezett
-
-kiállításon tervezzük bemutatni.
-
-További információ a projektről – és arról, hogy a fényképeket hogyan tudják nekünk
-
-eljuttatni – az Eidolon és a Fortepan Facebook oldalán.
