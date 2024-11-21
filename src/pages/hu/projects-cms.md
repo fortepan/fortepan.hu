@@ -125,6 +125,7 @@ projects:
       tudják nekünk
 
       eljuttatni – az Eidolon és a Fortepan Facebook oldalán.
+    funding_logo: /images/eidolon_centre_black.png
   - title: Fortepan Method - Making Europe’s private visual history freely accessible
     project_date: 2022. szeptember 1 - 2025. augusztus 31.
     description: >-
