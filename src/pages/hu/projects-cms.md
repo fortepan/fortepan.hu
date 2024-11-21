@@ -14,6 +14,7 @@ projects:
 
       képmentési akciót szervez.
 
+
       Budapest 1944-45-ös ostroma a második világháború egyik legpusztítóbb,
       embert próbáló
 
@@ -102,6 +103,7 @@ projects:
 
       érdeke, hogy rájuk találjunk.
 
+
       A projekt során várjuk mindazok jelentkezését, akiknek a birtokában olyan
       fotóemlék van,
 
@@ -117,6 +119,7 @@ projects:
       által szervezett
 
       kiállításon tervezzük bemutatni.
+
 
       További információ a projektről – és arról, hogy a fényképeket hogyan
       tudják nekünk
