@@ -2,7 +2,9 @@
 layout: projects/projects.liquid
 permalink: /hu/projects/
 hide_search: true
-title: Ostrom 80
+title: >-
+  Ostrom 80 - képmentési akció Budapest ostromának nyolcvanadik évfordulója
+  alkalmából
 projects:
   - title: Fortepan Method - Making Europe’s private visual history freely accessible
     project_date: 2022. szeptember 1 - 2025. augusztus 31.
@@ -65,10 +67,6 @@ projects:
     funding_logo: /images/project_logos/mma.png
 _template: projects
 ---
-
-#### Ostrom 80 – képmentési akció Budapest ostromának nyolcvanadik évfordulója
-
-#### alkalmából
 
 Budapest ostromának nyolcvanadik évfordulójára a Fortepan és az Eidolon Centre közös
 
