@@ -5,7 +5,7 @@ hide_search: true
 title: ''
 projects:
   - title: >-
-      Ostrom 8 0 - képmentési akció Budapest ostromának nyolcvanadik évfordulója
+      Ostrom 80 - képmentési akció Budapest ostromának nyolcvanadik évfordulója
       alkalmából
     project_date: 2024. november 22. -
     description: >
