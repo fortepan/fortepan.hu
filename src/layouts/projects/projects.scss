@@ -5,7 +5,20 @@
 }
 
 .project-item {
-  margin-bottom: 6rem;
+  margin-bottom: 4.5rem;
+
+  &:not(:first-child) {
+    padding-top: 1.5rem;
+    border-top: 1px solid;
+
+    .theme--light & {
+      border-top-color: rgba($dark-base, 0.12);
+    }
+
+    .theme--dark & {
+      border-top-color: rgba($light-base, 0.12);
+    }
+  }
 }
 
 .project-title + .project-date {
