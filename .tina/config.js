@@ -25,7 +25,7 @@ export default defineConfig({
   schema: {
     collections: [
       {
-        label: "Feltöltések",
+        label: "Feltöltések ",
         name: "photo_uploads",
         path: "src/data",
         match: {
