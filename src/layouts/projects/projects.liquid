@@ -7,12 +7,12 @@ layout: article/article.liquid
     <li class="project-item">
       <h3 class="project-title">{{ project.title }}</h3>
       <h6 class="project-date">{{ project.project_date }}</h6>
-      {{ project.description | markdownify }}
+      {{ project.description }}
       <div class="project-funding">
         {%- if project.funding_logo -%}
         <div class="project-logo"><img src="{{ project.funding_logo }}" alt="{{ project.title | escapeHTML }}"></div>
         {%- endif -%}
-        <div class="project-funding-info text-medium">{{ project.funding_info | markdownify }}</div>
+        <div class="project-funding-info text-medium">{{ project.funding_info }}</div>
       </div>
     </li>
   {% endfor %}
