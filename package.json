@@ -32,6 +32,7 @@
     "@11ty/eleventy": "^2.0.0",
     "@csstools/postcss-sass": "^5.0.1",
     "@elastic/elasticsearch": "^7.10.0",
+    "@types/node": "^22.9.1",
     "autoprefixer": "10.1.0",
     "caniuse-lite": "^1.0.30001171",
     "dotenv": "^8.2.0",
