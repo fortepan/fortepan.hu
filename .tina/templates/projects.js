@@ -1,16 +1,22 @@
 export default {
   fields: [
     {
+      type: "string",
+      name: "title",
+      label: "title",
+    },
+    {
+      type: "rich-text",
+      name: "body",
+      label: "Body of Document",
+      description: "This is the markdown body",
+      isBody: true,
+    },
+    {
       type: "object",
       name: "projects",
       label: "Projects",
       list: true,
-      ui: {
-        component: "group-list",
-        itemProps: item => ({
-          label: item.title,
-        }),
-      },
       fields: [
         {
           type: "string",
@@ -23,17 +29,23 @@ export default {
           label: "project_date",
         },
         {
-          type: "rich-text",
+          type: "string",
           name: "description",
           label: "description",
-        },
-        {
-          type: "rich-text",
-          name: "funding_info",
-          label: "funding_info",
+          ui: {
+            component: "textarea",
+          },
         },
         {
           type: "string",
+          name: "funding_info",
+          label: "funding_info",
+          ui: {
+            component: "textarea",
+          },
+        },
+        {
+          type: "image",
           name: "funding_logo",
           label: "funding_logo",
         },
