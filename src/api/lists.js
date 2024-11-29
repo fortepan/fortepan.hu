@@ -183,7 +183,9 @@ const listsElasticRequest = async data => {
   const resp = await fetch(url, {
     method: "POST",
     headers: {
-      Authorization: `Basic ${btoa("reader:r3adm31024read")}`,
+      Authorization: `Basic ${btoa(
+        appState("is-dev") ? "agZbr6VTXh:PXUnDNzGgeB6f8LjWaQ52A" : "reader:r3adm31024read"
+      )}`,
       "Content-Type": "application/json;charset=UTF-8",
     },
     body: JSON.stringify(data),
@@ -200,7 +202,9 @@ const listsContentElasticRequest = async data => {
   const resp = await fetch(url, {
     method: "POST",
     headers: {
-      Authorization: `Basic ${btoa("reader:r3adm31024read")}`,
+      Authorization: `Basic ${btoa(
+        appState("is-dev") ? "agZbr6VTXh:PXUnDNzGgeB6f8LjWaQ52A" : "reader:r3adm31024read"
+      )}`,
       "Content-Type": "application/json;charset=UTF-8",
     },
     body: JSON.stringify(data),

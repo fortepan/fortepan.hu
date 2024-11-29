@@ -59,7 +59,14 @@ const elasticRequest = async data => {
   const resp = await fetch(url, {
     method: "POST",
     headers: {
-      Authorization: `Basic ${btoa(q.esurl && q.esauth ? q.esauth : "reader:r3adm31024read")}`,
+      Authorization: `Basic ${btoa(
+        // eslint-disable-next-line no-nested-ternary
+        q.esurl && q.esauth
+          ? q.esauth
+          : appState("is-dev")
+          ? "agZbr6VTXh:PXUnDNzGgeB6f8LjWaQ52A"
+          : "reader:r3adm31024read"
+      )}`,
       "Content-Type": "application/json;charset=UTF-8",
     },
     body: JSON.stringify(data),

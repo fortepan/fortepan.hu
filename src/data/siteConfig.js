@@ -6,7 +6,7 @@ module.exports = () => {
     DRUPAL_HOST: "https://backend.fortepan.hu",
     ELASTIC_HOST: "https://elastic.fortepan.hu",
     DRUPAL_HOST_DEV: "https://backend-develop.fortepan.hu",
-    ELASTIC_HOST_DEV: "https://elastic-develop.fortepan.hu",
+    ELASTIC_HOST_DEV: "https://fortepan-2345518798.eu-central-1.bonsaisearch.net:443",
     PHOTO_SOURCE: "https://fortepan.download/file/fortepan-eu/",
     PHOTO_SOURCE_LARGE: "https://fortepan.download/file/fortepan-eu/download/fortepan_",
     THUMBNAILS_QUERY_LIMIT: 40,
