@@ -12,17 +12,15 @@ projects:
       A támogatás segítségével:
 
 
-      \- kiállítást rendezünk Lissák Tivadar fotográfus életművéből a kőszegi
+      * kiállítást rendezünk Lissák Tivadar fotográfus életművéből a kőszegi
       Fortepan Fotógalériában.
 
-
-      \- több jelentős hagyatékot is feldolgozunk. Terveink szerint elkészülünk
+      * több jelentős hagyatékot is feldolgozunk. Terveink szerint elkészülünk
       Prohászka Imre, Csaba László, Fábián József, Szebeni András és Inkey Tibor
       negatívjaival. A digitalizált anyagok jórésze 2024. végéig fölkerül a
       Fortepanra.
 
-
-      \- elindítjuk a Fortemap.hu oldalt, ahol a Fortepan Budapest belvárosi és
+      * elindítjuk a Fortemap.hu oldalt, ahol a Fortepan Budapest belvárosi és
       győri fotóit térképre helyezzük. Az Alapítvány támogatásával és önkéntesek
       segítségével, több mint tízezer fénykép kerül föl a térképre és a
       projektet 2025-ben is folytatjuk.
