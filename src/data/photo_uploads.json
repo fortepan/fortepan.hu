@@ -5,7 +5,11 @@
       "date": "2024-10-10T00:00:00.000Z",
       "cover_image": "292424",
       "hu": {
-        "title": "Régi képek az Új Évre"
+        "title": "Régi képek az Új Évre",
+        "actions": {
+          "best_of": "140 jó kép",
+          "all": "a teljes gyűjtemény"
+        }
       }
     },
     {
