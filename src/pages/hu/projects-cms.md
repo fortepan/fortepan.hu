@@ -25,6 +25,7 @@ projects:
       Alapítvány támogatásával és önkéntesek segítségével, több mint tízezer
       fénykép kerül föl a térképre és a projektet 2025-ben is folytatjuk.
     funding_info: ''
+    funding_logo: /images/project_logos/MOL_MUEA_logo.svg
   - title: >-
       Ostrom 80 - képmentési akció Budapest ostromának nyolcvanadik évfordulója
       alkalmából
