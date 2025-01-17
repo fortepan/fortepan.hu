@@ -299,8 +299,15 @@
   }
 
   p {
-    opacity: 0.64;
     max-width: 50rem;
+
+    .theme--light & {
+      color: rgba($dark-base, 0.64);
+    }
+
+    .theme--dark & {
+      color: rgba($light-base, 0.64);
+    }
   }
 
   h2 + p {
