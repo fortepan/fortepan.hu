@@ -2,6 +2,25 @@ import config from "../data/siteConfig"
 import { lang, trigger, setPageMeta } from "./utils"
 import searchAPI from "../api/search"
 
+// Temp location data - TODO: refactor and remove later ↓
+const locationData = {}
+
+const loadLocationData = async () => {
+  const url = `/temp_locations.json`
+
+  const resp = await fetch(url, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  })
+
+  locationData.data = await resp.json()
+}
+// Temp location data - TODO: refactor and remove later ↑
+
 // creating a context object to store the latest request parameters and results
 const photoData = {}
 
@@ -26,6 +45,8 @@ const loadPhotoData = async (params, silent, lockContext) => {
   // storing the items so it can be accessed later
   if (!photoData.result) {
     photoData.result = {}
+    // Temp location data - TODO: refactor and remove later
+    await loadLocationData()
   }
 
   if (photoData.result.items) {
@@ -74,6 +95,14 @@ const loadPhotoData = async (params, silent, lockContext) => {
       photoData.result.years = resp.years
     }
   }
+
+  // Temp location data - TODO: refactor and remove later ↓
+  photoData.result.items.forEach(imgData => {
+    if (!imgData.locations) {
+      imgData.locations = locationData.data.find(obj => obj.mid.toString() === imgData.mid.toString())?.locations
+    }
+  })
+  // Temp location data - TODO: refactor and remove later ↑
 
   const result = {
     items: photoData.result.latestItems,
