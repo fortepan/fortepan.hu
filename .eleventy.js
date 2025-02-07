@@ -13,6 +13,9 @@ module.exports = eleventyConfig => {
   eleventyConfig.addPassthroughCopy({ "src/data/photo_uploads.json": "/photo_uploads.json" })
   eleventyConfig.addPassthroughCopy({ "node_modules/@webcomponents/webcomponentsjs": "/webcomponents-polyfill" })
 
+  // Temp location data - TODO: refactor and remove later
+  eleventyConfig.addPassthroughCopy({ "src/data/temp_locations.json": "/temp_locations.json" })
+
   // Define custom liquid tags and shortcodes
 
   eleventyConfig.setLiquidOptions({
