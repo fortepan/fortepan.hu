@@ -1,0 +1,70 @@
+.mapview {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+
+  display: none;
+  &.is-visible {
+    display: block;
+  }
+
+  // top
+  top: rem(80px + 48px);
+
+  @media screen and (max-width: ($breakpoint-desktop - 1px)) {
+    top: rem(64px + 48px);
+  }
+
+  .play-carousel-slideshow &,
+  .carousel-fullscreen & {
+    top: 0;
+  }
+  // top
+
+  .theme--dark & {
+    background-color: $dark-base;
+  }
+
+  .theme--light & {
+    background-color: $light-base;
+  }
+
+  .map {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+}
+
+.mapmarker {
+  padding: 0.25rem;
+  border-radius: rem(8px);
+
+  .theme--light & {
+    background-color: $light-base;
+    box-shadow: 0px 0px 0px 1px rgba($dark-base, 0.04), 0px 12px 36px rgba($dark-base, 0.12);
+  }
+
+  .theme--dark & {
+    background-color: $dark-secondary;
+    box-shadow: 0px 0px 0px 1px rgba($light-base, 0.04) inset, 0px 8px 24px rgba($dark-base, 0.12);
+  }
+
+  .photos-thumbnail {
+    min-width: rem(calc(192px * 0.5));
+    margin: 0;
+  }
+
+  .photos-thumbnail__image {
+    height: rem(calc(160px * 0.5));
+    margin: 0;
+  }
+
+  .photos-thumbnail__meta {
+    display: none;
+  }
+}
