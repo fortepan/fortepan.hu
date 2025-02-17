@@ -2,7 +2,9 @@ import { Controller } from "@hotwired/stimulus"
 
 import { Loader } from "@googlemaps/js-api-loader"
 import { MarkerClusterer } from "@googlemaps/markerclusterer"
+import { throttle } from "lodash"
 import { trigger } from "../../js/utils"
+import photoManager from "../../js/photo-manager"
 
 export default class extends Controller {
   static get targets() {
@@ -11,6 +13,8 @@ export default class extends Controller {
 
   connect() {
     this.markers = []
+
+    this.onBoundsChange = throttle(this.onBoundsChange, 1000)
   }
 
   async show() {
@@ -24,7 +28,7 @@ export default class extends Controller {
   }
 
   hide() {
-    delete this.delayedUpdateData
+    delete this.delayedBounds
     this.element.classList.remove("is-visible")
   }
 
@@ -47,13 +51,17 @@ export default class extends Controller {
         mapId: "ForteMap",
       })
 
+      this.map.addListener("bounds_changed", () => {
+        this.onBoundsChange()
+      })
+
       this.google = google
 
       this.clusterer = new MarkerClusterer({ map: this.map })
 
-      if (this.delayedUpdateData) {
-        this.updateMarkers({ detail: { photosData: this.delayedUpdateData } })
-        delete this.delayedUpdateData
+      if (this.delayedBounds) {
+        this.setBounds({ detail: { bounds: this.delayedBounds } })
+        delete this.delayedBounds
       }
     }
   }
@@ -63,7 +71,7 @@ export default class extends Controller {
   }
 
   clearMarkers() {
-    delete this.delayedUpdateData
+    delete this.delayedBounds
 
     if (this.markers.length) {
       this.markers.forEach(marker => {
@@ -75,59 +83,95 @@ export default class extends Controller {
     this.markers = []
   }
 
-  updateMarkers(e) {
-    if (e?.detail?.photosData) {
-      // if the map is not ready yet
+  updateMarkers(photosData) {
+    // const bounds = new this.google.maps.LatLngBounds()
+
+    photosData.forEach(data => {
+      if (data.locations && data.locations.length) {
+        const loc = data.locations.find(l => l.shooting_location > 0) || data.locations[0]
+
+        const imageMarker = document.getElementById("mapmarker-template").content.firstElementChild.cloneNode(true)
+        // clone thumbnail template
+        const thumbnail = document.getElementById("photos-thumbnail").content.firstElementChild.cloneNode(true)
+
+        // set thumnail node element index
+        thumbnail.index = 0
+
+        // apply photo id to node
+        thumbnail.photoId = data.mid
+
+        // apply year data to node
+        thumbnail.year = data.year
+
+        // forcing to display the thumbnail always in small
+        thumbnail.customSizeRatio = 0.5
+
+        imageMarker.appendChild(thumbnail)
+
+        const gMarker = new this.google.maps.marker.AdvancedMarkerElement({
+          map: this.map,
+          position: { lat: loc.lat, lng: loc.lon },
+          content: imageMarker,
+        })
+
+        gMarker.addListener("click", () => {
+          this.hide()
+        })
+
+        this.markers.push(gMarker)
+        // bounds.extend({ lat: loc.lat, lng: loc.lon })
+      }
+    })
+
+    this.clusterer.addMarkers(this.markers)
+
+    // this.map.fitBounds(bounds)
+  }
+
+  setBounds(e) {
+    if (e?.detail?.bounds) {
       if (!this.map) {
-        this.delayedUpdateData = e.detail.photosData
+        this.delayedBounds = e.detail.bounds
         return
       }
+      console.log("setBounds", e)
 
-      const { photosData } = e.detail
       const bounds = new this.google.maps.LatLngBounds()
 
-      photosData.forEach(data => {
-        if (data.locations && data.locations.length) {
-          data.locations.forEach((loc, locIndex) => {
-            // console.log(loc)
-            const imageMarker = document.getElementById("mapmarker-template").content.firstElementChild.cloneNode(true)
-
-            // clone thumnail template
-            const thumbnail = document.getElementById("photos-thumbnail").content.firstElementChild.cloneNode(true)
-
-            // set thumnail node element index
-            thumbnail.index = locIndex
-
-            // apply photo id to node
-            thumbnail.photoId = data.mid
-
-            // apply year data to node
-            thumbnail.year = 1999
-
-            // forcing to display the thumbnail always in small
-            thumbnail.customSizeRatio = 0.5
-
-            imageMarker.appendChild(thumbnail)
-
-            const gMarker = new this.google.maps.marker.AdvancedMarkerElement({
-              map: this.map,
-              position: { lat: loc.lat, lng: loc.lon },
-              content: imageMarker,
-            })
-
-            gMarker.addListener("click", () => {
-              this.hide()
-            })
-
-            this.markers.push(gMarker)
-            bounds.extend({ lat: loc.lat, lng: loc.lon })
-          })
-        }
-      })
-
-      this.clusterer.addMarkers(this.markers)
+      bounds.extend({ lat: e.detail.bounds.top_left.lat, lng: e.detail.bounds.top_left.lng })
+      bounds.extend({ lat: e.detail.bounds.bottom_right.lat, lng: e.detail.bounds.bottom_right.lng })
 
       this.map.fitBounds(bounds)
+    }
+  }
+
+  async onBoundsChange() {
+    if (!this.mapDataRequested) {
+      trigger("loader:show", { id: "loaderBase" })
+
+      this.mapDataRequested = true
+
+      console.log("onBoundsChange")
+      const mb = this.map.getBounds()
+
+      console.log(mb.getNorthEast().lat(), mb.getNorthEast().lng(), mb.getSouthWest().lat(), mb.getSouthWest().lng())
+
+      const bounds = {
+        top_left: {
+          lat: mb.getNorthEast().lat(),
+          lng: mb.getNorthEast().lng(),
+        },
+        bottom_right: { lat: mb.getSouthWest().lat(), lng: mb.getSouthWest().lng() },
+      }
+
+      const photosData = await photoManager.loadMapPhotoData(bounds)
+
+      this.clearMarkers()
+      this.updateMarkers(photosData)
+
+      trigger("loader:hide", { id: "loaderBase" })
+
+      delete this.mapDataRequested
     }
   }
 }

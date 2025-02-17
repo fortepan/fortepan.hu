@@ -289,6 +289,32 @@ const search = params => {
       query.bool.must_not.push(...params.exclude)
     }
 
+    /* // location specific search
+    if (params.area) {
+      const hungaryBounds = {
+        body: {
+          query: {
+            bool: {
+              filter: {
+                geo_bounding_box: {
+                  location: {
+                    top_left: {
+                      lat: 48.59,
+                      lon: 16.11,
+                    },
+                    bottom_right: {
+                      lat: 45.73,
+                      lon: 22.9,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      }
+    } */
+
     const body = {
       size: params.size || 30,
       sort,
@@ -431,7 +457,7 @@ const getRandom = (size = 1) => {
 const getDataById = array => {
   return new Promise((resolve, reject) => {
     const body = {
-      size: array.length,
+      size: Math.min(10000, array.length),
       query: {
         ids: {
           values: array.map(item => `entity:media/${item}:hu`),

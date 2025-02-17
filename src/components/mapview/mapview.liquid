@@ -1,8 +1,7 @@
 <section class="mapview" data-controller="mapview"
   data-action="mapview:show@document->mapview#show
                mapview:hide@document->mapview#hide
-               mapview:clear@document->mapview#clearMarkers
-               mapview:update@document->mapview#updateMarkers
+               mapview:setbounds@document->mapview#setBounds
                theme:toggleTheme@document->mapview#toggleMapStyles"
 >
   <div class="map" id="MainMap" data-mapview-target="map"></div>
