@@ -134,7 +134,7 @@ export default class extends Controller {
         this.delayedBounds = e.detail.bounds
         return
       }
-      console.log("setBounds", e)
+      // console.log("setBounds", e)
 
       const bounds = new this.google.maps.LatLngBounds()
 
@@ -151,10 +151,10 @@ export default class extends Controller {
 
       this.mapDataRequested = true
 
-      console.log("onBoundsChange")
+      // console.log("onBoundsChange")
       const mb = this.map.getBounds()
 
-      console.log(mb.getNorthEast().lat(), mb.getNorthEast().lng(), mb.getSouthWest().lat(), mb.getSouthWest().lng())
+      // console.log(mb.getNorthEast().lat(), mb.getNorthEast().lng(), mb.getSouthWest().lat(), mb.getSouthWest().lng())
 
       const bounds = {
         top_left: {
