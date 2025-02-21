@@ -125,4 +125,9 @@ export default class extends Controller {
     else if (!appState("play-carousel-slideshow") && !appState("carousel-fullscreen") && !appState("is-embed"))
       this.show()
   }
+
+  openMapView() {
+    trigger("mapview:show")
+    trigger("mapview:update", { photosData: photoManager.getData()?.result?.items })
+  }
 }
