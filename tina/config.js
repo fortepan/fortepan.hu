@@ -6,7 +6,7 @@ import article from "./templates/article"
 import defaultTemplate from "./templates/default"
 
 // Your hosting provider likely exposes this as an environment variable
-const branch = process.env.BRANCH || "master"
+const branch = process.env.BRANCH || process.env.HEAD || "master"
 
 export default defineConfig({
   branch,
