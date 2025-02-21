@@ -6,10 +6,10 @@ import article from "./templates/article"
 import defaultTemplate from "./templates/default"
 
 // Your hosting provider likely exposes this as an environment variable
-const branch = process.env.HEAD || process.env.VERCEL_GIT_COMMIT_REF || "feature/map-google"
+const branch = process.env.HEAD || process.env.VERCEL_GIT_COMMIT_REF || "master"
 
 export default defineConfig({
-  branch: branch,
+  branch,
   clientId: process.env.TINA_CLIENT_ID,
   token: process.env.TINA_TOKEN,
   build: {
