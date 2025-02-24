@@ -1,8 +1,9 @@
 import { Controller } from "@hotwired/stimulus"
+import { throttle } from "lodash"
 
 import { Loader } from "@googlemaps/js-api-loader"
-import { MarkerClusterer } from "@googlemaps/markerclusterer"
-import { throttle } from "lodash"
+import { MarkerClusterer, SuperClusterAlgorithm } from "@googlemaps/markerclusterer"
+
 import { trigger } from "../../js/utils"
 import photoManager from "../../js/photo-manager"
 
@@ -57,7 +58,10 @@ export default class extends Controller {
 
       this.google = google
 
-      this.clusterer = new MarkerClusterer({ map: this.map })
+      this.clusterer = new MarkerClusterer({
+        map: this.map,
+        algorithm: new SuperClusterAlgorithm({ radius: 160, maxZoom: 18 }),
+      })
 
       if (this.delayedBounds) {
         this.setBounds({ detail: { bounds: this.delayedBounds } })
@@ -106,7 +110,7 @@ export default class extends Controller {
         // forcing to display the thumbnail always in small
         thumbnail.customSizeRatio = 0.5
 
-        imageMarker.appendChild(thumbnail)
+        imageMarker.querySelector(".mapmarker__thumbnail-wrapper").appendChild(thumbnail)
 
         const gMarker = new this.google.maps.marker.AdvancedMarkerElement({
           map: this.map,

@@ -1,4 +1,4 @@
-<section class="mapview" data-controller="mapview"
+<div class="mapview" data-controller="mapview"
   data-action="mapview:show@document->mapview#show
                mapview:hide@document->mapview#hide
                mapview:setbounds@document->mapview#setBounds
@@ -7,6 +7,8 @@
   <div class="map" id="MainMap" data-mapview-target="map"></div>
 
   <template id="mapmarker-template">
-    <div class="mapmarker" data-mapview-target="marker" data-action=""></div>
+    <div class="mapmarker" data-mapview-target="marker" data-action="">
+      <div class="mapmarker__thumbnail-wrapper"></div>
+    </div>
   </template>
-</section>
+</div>
