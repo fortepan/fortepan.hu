@@ -15,7 +15,7 @@
     "postcss:serve": "npm run postcss -- --watch",
     "tinacms": "npx tinacms build",
     "tinacms:serve": "npx tinacms dev",
-    "build": "ENV=production npm-run-all clean import-autocomplete-data import-rss-data tinacms webpack postcss eleventy",
+    "build": "ENV=production npm-run-all clean import-autocomplete-data import-rss-data webpack postcss eleventy",
     "dev": "ENV=development npm-run-all -l --silent clean import-autocomplete-data import-rss-data webpack postcss --parallel *:serve"
   },
   "repository": {
