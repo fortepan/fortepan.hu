@@ -214,7 +214,7 @@ const loadMorePhotoDataInContext = async (insertBefore = false) => {
 }
 
 const getLastPhotoDataInContext = () => {
-  if (hasData()) {
+  if (hasData() && photoData.result.years) {
     const lastYear =
       photoData.context && photoData.context.year > 0
         ? photoData.result.years.find(item => parseInt(item.year, 10) === parseInt(photoData.context.year, 10))
@@ -278,7 +278,7 @@ const selectNextPhoto = async () => {
 }
 
 const getFirstPhotoDataInContext = () => {
-  if (hasData()) {
+  if (hasData() && photoData.result.years) {
     const firstYear =
       photoData.context && photoData.context.year > 0
         ? photoData.result.years.find(item => parseInt(item.year, 10) === parseInt(photoData.context.year, 10))

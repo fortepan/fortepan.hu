@@ -16,6 +16,8 @@ export default class extends Controller {
     this.markers = []
 
     this.onBoundsChange = throttle(this.onBoundsChange, 1000)
+
+    // this.show()
   }
 
   async show() {
@@ -45,10 +47,10 @@ export default class extends Controller {
 
       this.map = new google.maps.Map(this.mapTarget, {
         center: {
-          lat: 0,
-          lng: 0,
+          lat: 47.4979,
+          lng: 19.0402,
         },
-        zoom: 4,
+        zoom: 18,
         mapId: "ForteMap",
       })
 
@@ -58,9 +60,42 @@ export default class extends Controller {
 
       this.google = google
 
+      const customRenderer = {
+        render: ({ count, position }) => {
+          const markerContent = document.createElement("div")
+          markerContent.className = "map-cluster-marker"
+          markerContent.textContent = count
+
+          return new google.maps.marker.AdvancedMarkerElement({
+            map: this.map,
+            content: markerContent,
+            position,
+          })
+          /*           return new google.maps.Marker({
+            position,
+            icon: {
+              path: google.maps.SymbolPath.CIRCLE,
+              scale: 15 + Math.log(count) * 5, // Scale based on count
+              fillColor: "#F73F13",
+              fillOpacity: 1,
+              strokeWeight: 1,
+              strokeColor: "white",
+            },
+            label: {
+              text: String(count),
+              color: "white",
+              fontSize: "14px",
+              fontWeight: "bold",
+            },
+          })
+ */
+        },
+      }
+
       this.clusterer = new MarkerClusterer({
         map: this.map,
-        algorithm: new SuperClusterAlgorithm({ radius: 160, maxZoom: 18 }),
+        algorithm: new SuperClusterAlgorithm({ radius: 80, maxZoom: 18 }),
+        // renderer: customRenderer,
       })
 
       if (this.delayedBounds) {
@@ -90,7 +125,7 @@ export default class extends Controller {
   updateMarkers(photosData) {
     // const bounds = new this.google.maps.LatLngBounds()
 
-    photosData.forEach(data => {
+    photosData.forEach((data, i) => {
       if (data.locations && data.locations.length) {
         const loc = data.locations.find(l => l.shooting_location > 0) || data.locations[0]
 
@@ -99,7 +134,7 @@ export default class extends Controller {
         const thumbnail = document.getElementById("photos-thumbnail").content.firstElementChild.cloneNode(true)
 
         // set thumnail node element index
-        thumbnail.index = 0
+        thumbnail.index = i
 
         // apply photo id to node
         thumbnail.photoId = data.mid
@@ -108,7 +143,7 @@ export default class extends Controller {
         thumbnail.year = data.year
 
         // forcing to display the thumbnail always in small
-        thumbnail.customSizeRatio = 0.5
+        thumbnail.customSizeRatio = 0.25
 
         imageMarker.querySelector(".mapmarker__thumbnail-wrapper").appendChild(thumbnail)
 
@@ -119,7 +154,7 @@ export default class extends Controller {
         })
 
         gMarker.addListener("click", () => {
-          this.hide()
+          // this.hide()
         })
 
         this.markers.push(gMarker)
@@ -138,7 +173,6 @@ export default class extends Controller {
         this.delayedBounds = e.detail.bounds
         return
       }
-      // console.log("setBounds", e)
 
       const bounds = new this.google.maps.LatLngBounds()
 
@@ -150,15 +184,12 @@ export default class extends Controller {
   }
 
   async onBoundsChange() {
-    if (!this.mapDataRequested) {
+    if (!this.mapDataLoading) {
+      this.mapDataLoading = true
+
       trigger("loader:show", { id: "loaderBase" })
 
-      this.mapDataRequested = true
-
-      // console.log("onBoundsChange")
       const mb = this.map.getBounds()
-
-      // console.log(mb.getNorthEast().lat(), mb.getNorthEast().lng(), mb.getSouthWest().lat(), mb.getSouthWest().lng())
 
       const bounds = {
         top_left: {
@@ -175,7 +206,7 @@ export default class extends Controller {
 
       trigger("loader:hide", { id: "loaderBase" })
 
-      delete this.mapDataRequested
+      delete this.mapDataLoading
     }
   }
 }

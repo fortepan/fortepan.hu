@@ -1,0 +1,21 @@
+.map {
+  .mapview {
+    top: rem(80px);
+
+    @media screen and (max-width: ($breakpoint-desktop - 1px)) {
+      top: rem(64px);
+    }
+  }
+
+  .carousel__photos,
+  .carousel-sidebar {
+    top: rem(80px);
+
+    @media screen and (max-width: ($breakpoint-desktop - 1px)) {
+      top: rem(64px);
+    }
+
+    bottom: 0;
+    height: auto;
+  }
+}
