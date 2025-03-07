@@ -17,7 +17,7 @@ export default class extends Controller {
 
     this.onBoundsChange = throttle(this.onBoundsChange, 1000)
 
-    // this.show()
+    this.show()
   }
 
   async show() {
@@ -65,37 +65,20 @@ export default class extends Controller {
           const markerContent = document.createElement("div")
           markerContent.className = "map-cluster-marker"
           markerContent.textContent = count
+          // markerContent.style.borderWidth = `${Math.floor(count / 20)}px`
 
           return new google.maps.marker.AdvancedMarkerElement({
             map: this.map,
             content: markerContent,
             position,
           })
-          /*           return new google.maps.Marker({
-            position,
-            icon: {
-              path: google.maps.SymbolPath.CIRCLE,
-              scale: 15 + Math.log(count) * 5, // Scale based on count
-              fillColor: "#F73F13",
-              fillOpacity: 1,
-              strokeWeight: 1,
-              strokeColor: "white",
-            },
-            label: {
-              text: String(count),
-              color: "white",
-              fontSize: "14px",
-              fontWeight: "bold",
-            },
-          })
- */
         },
       }
 
       this.clusterer = new MarkerClusterer({
         map: this.map,
-        algorithm: new SuperClusterAlgorithm({ radius: 80, maxZoom: 18 }),
-        // renderer: customRenderer,
+        algorithm: new SuperClusterAlgorithm({ radius: 160, maxZoom: 18 }),
+        renderer: customRenderer,
       })
 
       if (this.delayedBounds) {
@@ -143,7 +126,7 @@ export default class extends Controller {
         thumbnail.year = data.year
 
         // forcing to display the thumbnail always in small
-        thumbnail.customSizeRatio = 0.25
+        thumbnail.customSizeRatio = 0.5
 
         imageMarker.querySelector(".mapmarker__thumbnail-wrapper").appendChild(thumbnail)
 

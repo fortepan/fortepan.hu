@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 
-import { trigger } from "../../js/utils"
+// import { trigger } from "../../js/utils"
 
 export default class extends Controller {
   static get targets() {
@@ -8,7 +8,7 @@ export default class extends Controller {
   }
 
   connect() {
-    Promise.resolve(true).then(() => {
+    /* Promise.resolve(true).then(() => {
       // initial location // Gyor
       const bounds = {
         top_left: {
@@ -20,6 +20,7 @@ export default class extends Controller {
 
       trigger("mapview:show")
       trigger("mapview:setbounds", { bounds })
-    })
+    }) */
+    // document.querySelector(".header-nav").classList.add("has-shadow")
   }
 }
