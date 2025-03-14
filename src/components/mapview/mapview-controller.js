@@ -117,7 +117,7 @@ export default class extends Controller {
       if (!needed) {
         // markersRemoved += 1
         this.google.maps.event.clearListeners(marker.element, "click")
-        this.clusterer.removeMarker(marker.element)
+        // this.clusterer.removeMarker(marker.element)
         this.markers.splice(index, 1) // Remove the marker from the list of managed markers
       }
     })
@@ -222,7 +222,7 @@ export default class extends Controller {
 
       const photos = await photoManager.loadMapPhotoData(bounds)
 
-      // this.clearMarkers()
+      this.clearMarkers()
       this.updateMarkers(photos)
 
       trigger("loader:hide", { id: "loaderBase" })
