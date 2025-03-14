@@ -578,8 +578,12 @@ const loadMapPhotoData = async bounds => {
   if (bounds && bounds.top_left && bounds.bottom_right) {
     await loadLocationData()
 
-    // filter the locationdata to the coordinates
+    // storing the items so it can be accessed later
+    if (!photoData.result) {
+      photoData.result = {}
+    }
 
+    // filter the locationdata to the coordinates
     const filteredList = locationData.data.filter(data => {
       if (data.locations && data.locations.length) {
         const p = data.locations.find(loc => loc.shooting_location > 0) || data.locations[0]
@@ -594,25 +598,27 @@ const loadMapPhotoData = async bounds => {
       return false
     })
 
-    const ids = []
+    // collect the ids that we need to load
+    const needToLoad = []
+
     filteredList.forEach(data => {
-      ids.push(data.mid)
+      if (
+        !photoData.result.items ||
+        !photoData.result.items.find(item => item.mid.toString() === data.mid.toString())
+      ) {
+        needToLoad.push(data.mid)
+      }
     })
 
-    const resp = await searchAPI.getDataById(ids)
+    // load the image data for the specified ids
+    const resp = await searchAPI.getDataById(needToLoad)
 
-    // Temp location data - TODO: refactor and remove later ↓
+    // adding the location data to the results
     resp.items.forEach(imgData => {
       if (!imgData.locations) {
         imgData.locations = locationData.data.find(obj => obj.mid.toString() === imgData.mid.toString())?.locations
       }
     })
-    // Temp location data - TODO: refactor and remove later ↑
-
-    // storing the items so it can be accessed later
-    if (!photoData.result) {
-      photoData.result = {}
-    }
 
     if (photoData.result.items) {
       // add the new results to the end
@@ -626,7 +632,25 @@ const loadMapPhotoData = async bounds => {
     // storing the latest loaded set as well
     photoData.result.latestItems = resp.items
 
-    return resp.items
+    // creating the response
+    const response = []
+
+    filteredList.forEach(listData => {
+      const imgData = photoData.result.items.find(item => item.mid.toString() === listData.mid.toString())
+      if (imgData) {
+        response.push(imgData)
+      }
+    })
+
+    /* console.log(
+      "!!!!!!!!!!!!!!!!!!!",
+      filteredList.length,
+      needToLoad.length,
+      response.length,
+      photoData.result.items.length
+    ) */
+
+    return response
   }
 
   return false

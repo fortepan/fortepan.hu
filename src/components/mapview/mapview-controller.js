@@ -97,19 +97,42 @@ export default class extends Controller {
 
     if (this.markers.length) {
       this.markers.forEach(marker => {
-        this.google.maps.event.clearListeners(marker, "click")
+        this.google.maps.event.clearListeners(marker.element, "click")
       })
     }
 
     this.clusterer.clearMarkers()
-    this.markers = []
+    this.markers.length = 0
   }
 
   updateMarkers(photosData) {
     // const bounds = new this.google.maps.LatLngBounds()
 
+    // let markersRemoved = 0
+    // const beforeMarkers = this.markers.length
+
+    // remove the markers that are not in the set
+    this.markers.forEach((marker, index) => {
+      const needed = !!photosData.find(imgData => imgData.mid.toString() === marker.mid.toString())
+      if (!needed) {
+        // markersRemoved += 1
+        this.google.maps.event.clearListeners(marker.element, "click")
+        this.clusterer.removeMarker(marker.element)
+        this.markers.splice(index, 1) // Remove the marker from the list of managed markers
+      }
+    })
+
+    // const afterRemoved = this.markers.length
+
+    const markersToAdd = []
+
+    // create new markers
     photosData.forEach((data, i) => {
-      if (data.locations && data.locations.length) {
+      // check if there is a marker already existing for this image
+      const exists = !!this.markers.find(marker => marker.mid.toString() === data.mid.toString())
+
+      // only create the marker if it doesn't exist
+      if (!exists && data.locations && data.locations.length) {
         const loc = data.locations.find(l => l.shooting_location > 0) || data.locations[0]
 
         const imageMarker = document.getElementById("mapmarker-template").content.firstElementChild.cloneNode(true)
@@ -140,12 +163,27 @@ export default class extends Controller {
           // this.hide()
         })
 
-        this.markers.push(gMarker)
+        this.markers.push({ mid: data.mid, element: gMarker })
         // bounds.extend({ lat: loc.lat, lng: loc.lon })
+
+        markersToAdd.push(gMarker)
       }
     })
 
-    this.clusterer.addMarkers(this.markers)
+    this.clusterer.addMarkers(markersToAdd)
+
+    /* console.log(
+      "before:",
+      beforeMarkers,
+      "removed:",
+      markersRemoved,
+      "after removal:",
+      afterRemoved,
+      "new markers:",
+      markersToAdd.length,
+      "new total:",
+      this.markers.length
+    ) */
 
     // this.map.fitBounds(bounds)
   }
@@ -182,10 +220,10 @@ export default class extends Controller {
         bottom_right: { lat: mb.getSouthWest().lat(), lng: mb.getSouthWest().lng() },
       }
 
-      const photosData = await photoManager.loadMapPhotoData(bounds)
+      const photos = await photoManager.loadMapPhotoData(bounds)
 
-      this.clearMarkers()
-      this.updateMarkers(photosData)
+      // this.clearMarkers()
+      this.updateMarkers(photos)
 
       trigger("loader:hide", { id: "loaderBase" })
 
