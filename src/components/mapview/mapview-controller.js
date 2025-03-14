@@ -128,45 +128,49 @@ export default class extends Controller {
 
     // create new markers
     photosData.forEach((data, i) => {
-      // check if there is a marker already existing for this image
-      const exists = !!this.markers.find(marker => marker.mid.toString() === data.mid.toString())
-
       // only create the marker if it doesn't exist
-      if (!exists && data.locations && data.locations.length) {
-        const loc = data.locations.find(l => l.shooting_location > 0) || data.locations[0]
+      if (data.locations && data.locations.length) {
+        // check if there is a marker already existing for this image
+        const existingMarker = this.markers.find(marker => marker.mid.toString() === data.mid.toString())
 
-        const imageMarker = document.getElementById("mapmarker-template").content.firstElementChild.cloneNode(true)
-        // clone thumbnail template
-        const thumbnail = document.getElementById("photos-thumbnail").content.firstElementChild.cloneNode(true)
+        if (!existingMarker) {
+          const loc = data.locations.find(l => l.shooting_location > 0) || data.locations[0]
 
-        // set thumnail node element index
-        thumbnail.index = i
+          const imageMarker = document.getElementById("mapmarker-template").content.firstElementChild.cloneNode(true)
+          // clone thumbnail template
+          const thumbnail = document.getElementById("photos-thumbnail").content.firstElementChild.cloneNode(true)
 
-        // apply photo id to node
-        thumbnail.photoId = data.mid
+          // set thumnail node element index
+          thumbnail.index = i
 
-        // apply year data to node
-        thumbnail.year = data.year
+          // apply photo id to node
+          thumbnail.photoId = data.mid
 
-        // forcing to display the thumbnail always in small
-        thumbnail.customSizeRatio = 0.5
+          // apply year data to node
+          thumbnail.year = data.year
 
-        imageMarker.querySelector(".mapmarker__thumbnail-wrapper").appendChild(thumbnail)
+          // forcing to display the thumbnail always in small
+          thumbnail.customSizeRatio = 0.5
 
-        const gMarker = new this.google.maps.marker.AdvancedMarkerElement({
-          map: this.map,
-          position: { lat: loc.lat, lng: loc.lon },
-          content: imageMarker,
-        })
+          imageMarker.querySelector(".mapmarker__thumbnail-wrapper").appendChild(thumbnail)
 
-        gMarker.addListener("click", () => {
-          // this.hide()
-        })
+          const gMarker = new this.google.maps.marker.AdvancedMarkerElement({
+            map: this.map,
+            position: { lat: loc.lat, lng: loc.lon },
+            content: imageMarker,
+          })
 
-        this.markers.push({ mid: data.mid, element: gMarker })
-        // bounds.extend({ lat: loc.lat, lng: loc.lon })
+          gMarker.addListener("click", () => {
+            // this.hide()
+          })
 
-        markersToAdd.push(gMarker)
+          this.markers.push({ mid: data.mid, element: gMarker })
+          // bounds.extend({ lat: loc.lat, lng: loc.lon })
+
+          markersToAdd.push(gMarker)
+        } else {
+          markersToAdd.push(existingMarker)
+        }
       }
     })
 
