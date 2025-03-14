@@ -1,5 +1,4 @@
 import { Controller } from "@hotwired/stimulus"
-import { throttle } from "lodash"
 
 import { Loader } from "@googlemaps/js-api-loader"
 import { MarkerClusterer, SuperClusterAlgorithm } from "@googlemaps/markerclusterer"
@@ -14,8 +13,6 @@ export default class extends Controller {
 
   connect() {
     this.markers = []
-
-    this.onBoundsChange = throttle(this.onBoundsChange, 1000)
 
     this.show()
   }
@@ -33,6 +30,7 @@ export default class extends Controller {
   hide() {
     delete this.delayedBounds
     this.element.classList.remove("is-visible")
+    clearTimeout(this.updateTimer)
   }
 
   async initMap() {
@@ -152,24 +150,27 @@ export default class extends Controller {
           // forcing to display the thumbnail always in small
           thumbnail.customSizeRatio = 0.5
 
+          // omit viewport check for loading the image
+          thumbnail.forceImageLoad = true
+
           imageMarker.querySelector(".mapmarker__thumbnail-wrapper").appendChild(thumbnail)
 
-          const gMarker = new this.google.maps.marker.AdvancedMarkerElement({
+          const markerElement = new this.google.maps.marker.AdvancedMarkerElement({
             map: this.map,
             position: { lat: loc.lat, lng: loc.lon },
             content: imageMarker,
           })
 
-          gMarker.addListener("click", () => {
+          markerElement.addListener("click", () => {
             // this.hide()
           })
 
-          this.markers.push({ mid: data.mid, element: gMarker })
+          this.markers.push({ mid: data.mid, element: markerElement })
           // bounds.extend({ lat: loc.lat, lng: loc.lon })
 
-          markersToAdd.push(gMarker)
+          markersToAdd.push(markerElement)
         } else {
-          markersToAdd.push(existingMarker)
+          markersToAdd.push(existingMarker.element)
         }
       }
     })
@@ -209,29 +210,34 @@ export default class extends Controller {
   }
 
   async onBoundsChange() {
-    if (!this.mapDataLoading) {
-      this.mapDataLoading = true
+    clearTimeout(this.updateTimer)
 
-      trigger("loader:show", { id: "loaderBase" })
+    this.updateTimer = setTimeout(async () => {
+      if (!this.mapDataLoading) {
+        this.mapDataLoading = true
 
-      const mb = this.map.getBounds()
+        trigger("loader:show", { id: "loaderBase" })
 
-      const bounds = {
-        top_left: {
-          lat: mb.getNorthEast().lat(),
-          lng: mb.getNorthEast().lng(),
-        },
-        bottom_right: { lat: mb.getSouthWest().lat(), lng: mb.getSouthWest().lng() },
+        const mb = this.map.getBounds()
+
+        const bounds = {
+          top_left: {
+            lat: mb.getNorthEast().lat(),
+            lng: mb.getNorthEast().lng(),
+          },
+          bottom_right: { lat: mb.getSouthWest().lat(), lng: mb.getSouthWest().lng() },
+        }
+
+        const photos = await photoManager.loadMapPhotoData(bounds)
+
+        // this.clearMarkers()
+        this.clusterer.clearMarkers()
+        this.updateMarkers(photos)
+
+        trigger("loader:hide", { id: "loaderBase" })
+
+        delete this.mapDataLoading
       }
-
-      const photos = await photoManager.loadMapPhotoData(bounds)
-
-      this.clearMarkers()
-      this.updateMarkers(photos)
-
-      trigger("loader:hide", { id: "loaderBase" })
-
-      delete this.mapDataLoading
-    }
+    }, 200)
   }
 }
