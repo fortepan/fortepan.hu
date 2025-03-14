@@ -172,7 +172,7 @@ export default class extends Controller {
     if (
       !this.element.classList.contains("is-loaded") &&
       !this.loadInitiated &&
-      isElementInViewport(this.element, false)
+      (this.element.forceImageLoad || isElementInViewport(this.element, false))
     ) {
       const mediaId = this.element.photoId
 
