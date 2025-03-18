@@ -5,10 +5,6 @@
                theme:toggleTheme@document->mapview#toggleMapStyles"
 >
   <div class="map" id="MainMap" data-mapview-target="map"></div>
-
-  <template id="mapmarker-template">
-    <div class="mapmarker" data-mapview-target="marker" data-action="">
-      <div class="mapmarker__thumbnail-wrapper"></div>
-    </div>
-  </template>
 </div>
+
+{% include mapmarker/mapmarker.liquid %}

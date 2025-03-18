@@ -6,6 +6,8 @@ import { MarkerClusterer, SuperClusterAlgorithm } from "@googlemaps/markercluste
 import { trigger } from "../../js/utils"
 import photoManager from "../../js/photo-manager"
 
+const MAX_CLUSTERER_ZOOM = 22
+
 export default class extends Controller {
   static get targets() {
     return ["map"]
@@ -13,6 +15,7 @@ export default class extends Controller {
 
   connect() {
     this.markers = []
+    this.groupMarkers = []
 
     this.show()
   }
@@ -38,7 +41,7 @@ export default class extends Controller {
       const loader = new Loader({
         apiKey: "AIzaSyDM5TKRFlszuRdq-Wal3Y3Zf9TzvoRPgLw",
         version: "weekly",
-        libraries: ["maps", "marker"],
+        libraries: ["maps", "marker", "geometry"],
       })
 
       const google = await loader.load()
@@ -48,7 +51,7 @@ export default class extends Controller {
           lat: 47.4979,
           lng: 19.0402,
         },
-        zoom: 18,
+        zoom: 16,
         mapId: "ForteMap",
       })
 
@@ -59,23 +62,53 @@ export default class extends Controller {
       this.google = google
 
       const customRenderer = {
-        render: ({ count, position }) => {
-          const markerContent = document.createElement("div")
+        render: ({ count, position, markers }) => {
+          // TODO: build the proper group markers here instead of the custom grouping
+
+          const data = photoManager.getPhotoDataByID(markers[0].querySelector(".mapmarker").data.mid)
+
+          const mapMarker = document.getElementById("mapmarker-template").content.firstElementChild.cloneNode(true)
+          mapMarker.data = data
+
+          mapMarker.isGroup = true
+          mapMarker.classList.add("is-multiple")
+
+          mapMarker.count = count
+
+          const markerElement = new google.maps.marker.AdvancedMarkerElement({
+            map: this.map,
+            position,
+            content: mapMarker,
+          })
+
+          // markerElement.addListener("click", () => {
+          // this.hide()
+          // })
+
+          this.groupMarkers.push({ mid: data.mid, element: markerElement })
+          // bounds.extend({ lat: loc.lat, lng: loc.lon })
+
+          return markerElement
+
+          // ----
+
+          /*           const markerContent = document.createElement("div")
           markerContent.className = "map-cluster-marker"
           markerContent.textContent = count
-          // markerContent.style.borderWidth = `${Math.floor(count / 20)}px`
+
+
 
           return new google.maps.marker.AdvancedMarkerElement({
             map: this.map,
             content: markerContent,
             position,
-          })
+          }) */
         },
       }
 
       this.clusterer = new MarkerClusterer({
         map: this.map,
-        algorithm: new SuperClusterAlgorithm({ radius: 160, maxZoom: 18 }),
+        algorithm: new SuperClusterAlgorithm({ radius: 320, maxZoom: MAX_CLUSTERER_ZOOM }),
         renderer: customRenderer,
       })
 
@@ -90,6 +123,17 @@ export default class extends Controller {
     // TODO if needed
   }
 
+  getDistanceBetween(lat1, lon1, lat2, lon2) {
+    if (this.google) {
+      const p1 = new this.google.maps.LatLng(lat1, lon1)
+      const p2 = new this.google.maps.LatLng(lat2, lon2)
+      const distance = this.google.maps.geometry.spherical.computeDistanceBetween(p1, p2)
+      return distance
+    }
+
+    return -1
+  }
+
   clearMarkers() {
     delete this.delayedBounds
 
@@ -101,6 +145,17 @@ export default class extends Controller {
 
     this.clusterer.clearMarkers()
     this.markers.length = 0
+  }
+
+  clearGroupMarkers() {
+    if (this.groupMarkers.length) {
+      this.groupMarkers.forEach(marker => {
+        this.google.maps.event.clearListeners(marker.element, "click")
+      })
+    }
+
+    // this.clusterer.clearMarkers()
+    this.groupMarkers.length = 0
   }
 
   updateMarkers(photosData) {
@@ -120,59 +175,36 @@ export default class extends Controller {
       }
     })
 
-    // const afterRemoved = this.markers.length
-
     const markersToAdd = []
 
     // create new markers
-    photosData.forEach((data, i) => {
+    photosData.forEach(data => {
+      // check if there is a marker already existing for this image
+      const existingMarker = this.markers.find(marker => marker.mid.toString() === data.mid.toString())
+      let markerToAdd
+
       // only create the marker if it doesn't exist
-      if (data.locations && data.locations.length) {
-        // check if there is a marker already existing for this image
-        const existingMarker = this.markers.find(marker => marker.mid.toString() === data.mid.toString())
+      if (!existingMarker) {
+        const loc = data.locations.find(l => l.shooting_location > 0) || data.locations[0]
 
-        if (!existingMarker) {
-          const loc = data.locations.find(l => l.shooting_location > 0) || data.locations[0]
+        const mapMarker = document.getElementById("mapmarker-template").content.firstElementChild.cloneNode(true)
+        mapMarker.data = data
 
-          const imageMarker = document.getElementById("mapmarker-template").content.firstElementChild.cloneNode(true)
-          // clone thumbnail template
-          const thumbnail = document.getElementById("photos-thumbnail").content.firstElementChild.cloneNode(true)
+        const markerElement = new this.google.maps.marker.AdvancedMarkerElement({
+          map: this.map,
+          position: { lat: loc.lat, lng: loc.lon },
+          content: mapMarker,
+        })
 
-          // set thumnail node element index
-          thumbnail.index = i
+        this.markers.push({ mid: data.mid, element: markerElement })
+        // bounds.extend({ lat: loc.lat, lng: loc.lon })
 
-          // apply photo id to node
-          thumbnail.photoId = data.mid
-
-          // apply year data to node
-          thumbnail.year = data.year
-
-          // forcing to display the thumbnail always in small
-          thumbnail.customSizeRatio = 0.5
-
-          // omit viewport check for loading the image
-          thumbnail.forceImageLoad = true
-
-          imageMarker.querySelector(".mapmarker__thumbnail-wrapper").appendChild(thumbnail)
-
-          const markerElement = new this.google.maps.marker.AdvancedMarkerElement({
-            map: this.map,
-            position: { lat: loc.lat, lng: loc.lon },
-            content: imageMarker,
-          })
-
-          markerElement.addListener("click", () => {
-            // this.hide()
-          })
-
-          this.markers.push({ mid: data.mid, element: markerElement })
-          // bounds.extend({ lat: loc.lat, lng: loc.lon })
-
-          markersToAdd.push(markerElement)
-        } else {
-          markersToAdd.push(existingMarker.element)
-        }
+        markerToAdd = markerElement
+      } else {
+        markerToAdd = existingMarker.element
       }
+
+      markersToAdd.push(markerToAdd)
     })
 
     this.clusterer.addMarkers(markersToAdd)
@@ -218,6 +250,10 @@ export default class extends Controller {
 
         trigger("loader:show", { id: "loaderBase" })
 
+        this.clusterer.clearMarkers()
+        // clear group markers
+        this.clearGroupMarkers()
+
         const mb = this.map.getBounds()
 
         const bounds = {
@@ -231,7 +267,6 @@ export default class extends Controller {
         const photos = await photoManager.loadMapPhotoData(bounds)
 
         // this.clearMarkers()
-        this.clusterer.clearMarkers()
         this.updateMarkers(photos)
 
         trigger("loader:hide", { id: "loaderBase" })
