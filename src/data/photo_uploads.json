@@ -1,6 +1,15 @@
 {
   "uploads": [
     {
+      "name": "Tavaszi Tárlat",
+      "date": "2025-03-27T00:00:00.000Z",
+      "cover_image": "295114",
+      "hu": {
+        "title": "Tavaszi Tárlat",
+        "blurb": "Több mint hetven adományozó képeiből válogattunk a Fortepan Tavaszi Tárlatára. Bartók Bélától Petri Györgyig, Párizstól Brassóig, a Tanácsköztársaságtól a 87-es nagy havazásig kerültek fel új fotók a honlapra. A felejtés ellen tavasszal is legjobb a Fortepan!"
+      }
+    },
+    {
       "name": "Régi képek az Új Évre",
       "date": "2024-10-03T00:00:00.000Z",
       "cover_image": "292424",
