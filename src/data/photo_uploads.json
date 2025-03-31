@@ -6,7 +6,10 @@
       "cover_image": "295114",
       "hu": {
         "title": "Tavaszi Tárlat",
-        "blurb": "Több mint hetven adományozó képeiből válogattunk a Fortepan Tavaszi Tárlatára. Bartók Bélától Petri Györgyig, Párizstól Brassóig, a Tanácsköztársaságtól a 87-es nagy havazásig kerültek fel új fotók a honlapra. A felejtés ellen tavasszal is legjobb a Fortepan!"
+        "blurb": "Több mint hetven adományozó képeiből válogattunk a Fortepan Tavaszi Tárlatára. Bartók Bélától Petri Györgyig, Párizstól Brassóig, a Tanácsköztársaságtól a 87-es nagy havazásig kerültek fel új fotók a honlapra. A felejtés ellen tavasszal is legjobb a Fortepan!",
+        "actions": {
+          "all": "a teljes gyűjtemény"
+        }
       }
     },
     {
