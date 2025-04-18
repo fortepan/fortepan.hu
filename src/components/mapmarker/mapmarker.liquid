@@ -1,8 +1,27 @@
 <template id="mapmarker-template">
-  <div class="mapmarker" data-controller="mapmarker" data-mapview-target="marker" data-action="">
+  <div class="mapmarker" data-controller="mapmarker" data-mapview-target="marker"
+    data-action="mouseover->mapmarker#onMouseOver mouseout->mapmarker#onMouseOut"
+  >
+
     <div class="mapmarker__thumbnails">
+
       <div class="mapmarker__thumbnail-wrapper"></div>
+
+      <a href="#" class="button-circular mapmarker__pager mapmarker__pager--prev is-disabled"
+        data-mapmarker-target="prev"
+        data-action="click->mapmarker#onPrevClick">
+          {% inlineSVG src:"src/static/images/icons/24/icon-previous.svg" class:"button-circular__icon" %}
+      </a>
+
+      <a href="#" class="button-circular mapmarker__pager mapmarker__pager--next is-disabled"
+        data-mapmarker-target="next"
+        data-action="click->mapmarker#onNextClick">
+          {% inlineSVG src:"src/static/images/icons/24/icon-next.svg" class:"button-circular__icon" %}
+      </a>
+
     </div>
+
     <div class="map-cluster-marker" data-mapmarker-target="counter"></div>
+
   </div>
 </template>

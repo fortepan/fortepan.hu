@@ -44,66 +44,21 @@ export default class extends Controller {
         libraries: ["maps", "marker", "geometry"],
       })
 
-      const google = await loader.load()
+      this.google = await loader.load()
 
-      this.map = new google.maps.Map(this.mapTarget, {
+      this.map = new this.google.maps.Map(this.mapTarget, {
         center: {
           lat: 47.4979,
           lng: 19.0402,
         },
-        zoom: 16,
+        zoom: 18,
         mapId: "ForteMap",
       })
 
-      this.map.addListener("bounds_changed", () => {
-        this.onBoundsChange()
-      })
-
-      this.google = google
+      this.map.addListener("bounds_changed", this.onBoundsChange.bind(this))
 
       const customRenderer = {
-        render: ({ count, position, markers }) => {
-          // TODO: build the proper group markers here instead of the custom grouping
-
-          const data = photoManager.getPhotoDataByID(markers[0].querySelector(".mapmarker").data.mid)
-
-          const mapMarker = document.getElementById("mapmarker-template").content.firstElementChild.cloneNode(true)
-          mapMarker.data = data
-
-          mapMarker.isGroup = true
-          mapMarker.classList.add("is-multiple")
-
-          mapMarker.count = count
-
-          const markerElement = new google.maps.marker.AdvancedMarkerElement({
-            map: this.map,
-            position,
-            content: mapMarker,
-          })
-
-          // markerElement.addListener("click", () => {
-          // this.hide()
-          // })
-
-          this.groupMarkers.push({ mid: data.mid, element: markerElement })
-          // bounds.extend({ lat: loc.lat, lng: loc.lon })
-
-          return markerElement
-
-          // ----
-
-          /*           const markerContent = document.createElement("div")
-          markerContent.className = "map-cluster-marker"
-          markerContent.textContent = count
-
-
-
-          return new google.maps.marker.AdvancedMarkerElement({
-            map: this.map,
-            content: markerContent,
-            position,
-          }) */
-        },
+        render: this.renderClusterMarker.bind(this),
       }
 
       this.clusterer = new MarkerClusterer({
@@ -112,10 +67,53 @@ export default class extends Controller {
         renderer: customRenderer,
       })
 
+      this.clusterer.defaultOnClusterClick = this.clusterer.onClusterClick
+      this.clusterer.onClusterClick = this.onClusterClick.bind(this)
+
       if (this.delayedBounds) {
         this.setBounds({ detail: { bounds: this.delayedBounds } })
         delete this.delayedBounds
       }
+    }
+  }
+
+  renderClusterMarker({ count, position, markers }) {
+    // TODO: build the proper group markers here instead of the custom grouping
+
+    const data = []
+
+    markers.forEach(marker => {
+      data.push(photoManager.getPhotoDataByID(marker.querySelector(".mapmarker").data.mid))
+    })
+
+    const mapMarker = document.getElementById("mapmarker-template").content.firstElementChild.cloneNode(true)
+
+    mapMarker.isGroup = true
+    mapMarker.data = data
+    mapMarker.classList.add("is-multiple")
+
+    mapMarker.count = count
+
+    const markerElement = new this.google.maps.marker.AdvancedMarkerElement({
+      map: this.map,
+      position,
+      content: mapMarker,
+    })
+
+    // markerElement.addListener("click", () => {
+    // this.hide()
+    // })
+
+    this.groupMarkers.push({ mid: data.mid, element: markerElement })
+    // bounds.extend({ lat: loc.lat, lng: loc.lon })
+
+    return markerElement
+  }
+
+  onClusterClick(e, cluster, map) {
+    if (e?.domEvent?.target.classList.contains("map-cluster-marker")) {
+      // call the default cluster click only when the cluster marker is clicked
+      this.clusterer.defaultOnClusterClick(e, cluster, map)
     }
   }
 
