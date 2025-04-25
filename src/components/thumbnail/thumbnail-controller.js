@@ -50,24 +50,18 @@ export default class extends Controller {
     }
 
     let selectedPhotoData = this.element.photoData
-    let index
 
     if (!selectedPhotoData) {
       if (this.role === "lists") {
         selectedPhotoData = listManager.selectPhotoById(listManager.getSelectedListId(), this.element.photoId)
-        index = listManager.getSelectedPhotoIndex()
 
         if (!selectedPhotoData.isDataLoaded) {
           return
         }
       } else {
         selectedPhotoData = photoManager.selectPhotoById(this.element.photoId).data
-        index = photoManager.getSelectedPhotoIndex()
       }
     }
-
-    // select thumbnail in photos list
-    trigger("photos:selectThumbnail", { index })
 
     trigger("thumbnail:click", { data: selectedPhotoData })
   }
