@@ -69,7 +69,7 @@ export default class extends Controller {
             this.element.scrollTop = 0
 
             // Load photo in Carousel
-            trigger("photosThumbnail:select", { data: selectedPhotoData })
+            trigger("thumbnail:click", { data: selectedPhotoData })
           }
         }
       } else {

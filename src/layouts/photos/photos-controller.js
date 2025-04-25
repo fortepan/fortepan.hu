@@ -293,7 +293,7 @@ export default class extends Controller {
         if (getURLParams().id > 0) {
           // open carousel if @id parameter is present in the url's query string
           const selectedPhoto = photoManager.selectPhotoById(getURLParams().id)
-          trigger("photosThumbnail:select", { data: selectedPhoto.data })
+          trigger("thumbnail:click", { data: selectedPhoto.data })
         } else {
           trigger("photosCarousel:close")
         }

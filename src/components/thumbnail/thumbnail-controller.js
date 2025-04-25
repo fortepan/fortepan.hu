@@ -69,9 +69,6 @@ export default class extends Controller {
     // select thumbnail in photos list
     trigger("photos:selectThumbnail", { index })
 
-    // Load photo in Carousel
-    trigger("photosThumbnail:select", { data: selectedPhotoData })
-
     trigger("thumbnail:click", { data: selectedPhotoData })
   }
 
