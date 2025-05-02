@@ -70,6 +70,15 @@
     }
   }
 
+  &.is-selected &__thumbnails {
+    background-color: $red;
+
+    &:before,
+    &:after {
+      border-top-color: $red;
+    }
+  }
+
   &__thumbnail-wrapper {
     position: relative;
     border-radius: rem(4px);

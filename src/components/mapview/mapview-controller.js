@@ -16,8 +16,6 @@ export default class extends Controller {
   connect() {
     this.markers = []
     this.groupMarkers = []
-
-    this.show()
   }
 
   async show() {
@@ -89,9 +87,10 @@ export default class extends Controller {
     const mapMarker = document.getElementById("mapmarker-template").content.firstElementChild.cloneNode(true)
 
     mapMarker.isGroup = true
-    mapMarker.data = data
     mapMarker.classList.add("is-multiple")
 
+    mapMarker.data = data
+    mapMarker.id = `${data[0].mid}-${data[data.length - 1].mid}-${data.length}`
     mapMarker.count = count
 
     const markerElement = new this.google.maps.marker.AdvancedMarkerElement({
@@ -100,11 +99,7 @@ export default class extends Controller {
       content: mapMarker,
     })
 
-    // markerElement.addListener("click", () => {
-    // this.hide()
-    // })
-
-    this.groupMarkers.push({ mid: data.mid, element: markerElement })
+    this.groupMarkers.push({ id: mapMarker.id, element: markerElement })
     // bounds.extend({ lat: loc.lat, lng: loc.lon })
 
     return markerElement
@@ -164,7 +159,7 @@ export default class extends Controller {
 
     // remove the markers that are not in the set
     this.markers.forEach((marker, index) => {
-      const needed = !!photosData.find(imgData => imgData.mid.toString() === marker.mid.toString())
+      const needed = !!photosData.find(photo => photo.mid.toString() === marker.mid.toString())
       if (!needed) {
         // markersRemoved += 1
         this.google.maps.event.clearListeners(marker.element, "click")
@@ -272,5 +267,23 @@ export default class extends Controller {
         delete this.mapDataLoading
       }
     }, 200)
+  }
+
+  onMarkerPhotoSelected(e) {
+    this.showThumbnailsBar(e?.detail?.photoData, e?.detail?.photoId)
+  }
+
+  showThumbnailsBar(photoData, photoId) {
+    if (photoData) {
+      trigger("thumbnailsbar:show", { photoData, photoId })
+    }
+  }
+
+  hideThumbnailsBar() {
+    trigger("thumbnailsbar:hide")
+  }
+
+  onThumbnailsBarClosed() {
+    document.querySelectorAll(".mapmarker").forEach(marker => marker.classList.remove("is-selected"))
   }
 }

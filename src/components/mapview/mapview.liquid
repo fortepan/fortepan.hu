@@ -2,9 +2,14 @@
   data-action="mapview:show@document->mapview#show
                mapview:hide@document->mapview#hide
                mapview:setbounds@document->mapview#setBounds
-               theme:toggleTheme@document->mapview#toggleMapStyles"
+               theme:toggleTheme@document->mapview#toggleMapStyles
+
+               mapmarker:photoSelected@document->mapview#onMarkerPhotoSelected
+               thumbnailsbar:closed@document->mapview#onThumbnailsBarClosed"
 >
   <div class="map" id="MainMap" data-mapview-target="map"></div>
+  {% include thumbnailsbar/thumbnailsbar.liquid %}
+
 </div>
 
 {% include mapmarker/mapmarker.liquid %}

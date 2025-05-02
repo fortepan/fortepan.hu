@@ -1,6 +1,8 @@
 <template id="mapmarker-template">
   <div class="mapmarker" data-controller="mapmarker" data-mapview-target="marker"
-    data-action="mouseover->mapmarker#onMouseOver mouseout->mapmarker#onMouseOut"
+    data-action="mouseover->mapmarker#onMouseOver
+                 mouseout->mapmarker#onMouseOut
+                 thumbnailsbar:photoSelected@document->mapmarker#selectPhoto"
   >
 
     <div class="mapmarker__thumbnails">

@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import { trigger } from "../../js/utils"
 
 export default class extends Controller {
   static get targets() {
@@ -15,8 +16,13 @@ export default class extends Controller {
     // clone thumbnail template
     const thumbnail = document.getElementById("photos-thumbnail").content.firstElementChild.cloneNode(true)
 
-    // set thumnail node element index
-    // thumbnail.index = i
+    thumbnail.setAttribute(
+      "data-action",
+      `${thumbnail
+        .getAttribute("data-action")
+        .replace("click->thumbnail#clicked", "click->mapmarker#onThumbnailClicked")}`
+    )
+
     thumbnail.photoId = data.mid
 
     // apply year data to node
@@ -43,23 +49,37 @@ export default class extends Controller {
         this.counterTarget.textContent = this.element.data.length
       }
 
-      this.selectPhoto(0)
+      this.id = this.element.id
+
+      this.selectPhoto(null, 0)
 
       this.ready = true
     }
   }
 
   onNextClick() {
-    this.currentIndex = Math.min(this.element.data.length - 1, this.currentIndex + 1)
-    this.selectPhoto(this.currentIndex)
+    this.selectPhoto(null, this.currentIndex + 1 > this.element.data.length - 1 ? 0 : this.currentIndex + 1)
   }
 
   onPrevClick() {
-    this.currentIndex = Math.max(0, this.currentIndex - 1)
-    this.selectPhoto(this.currentIndex)
+    this.selectPhoto(null, this.currentIndex - 1 < 0 ? this.element.data.length - 1 : this.currentIndex - 1)
   }
 
-  selectPhoto(index) {
+  selectPhoto(e, i) {
+    if (e && e?.detail?.id !== this.id) return
+
+    let index
+
+    if (e?.detail?.index > -1 && e?.detail?.id === this.id) {
+      index = e.detail.index
+      document.querySelectorAll(".mapmarker").forEach(marker => marker.classList.remove("is-selected"))
+      this.element.classList.add("is-selected")
+    } else {
+      index = i
+    }
+
+    this.currentIndex = index
+
     const data = this.element.data.length ? this.element.data[index] : this.element.data
 
     let thumbnail = this.thumbnails?.find(thumb => {
@@ -73,6 +93,10 @@ export default class extends Controller {
 
     this.nextTarget.classList.toggle("is-disabled", index === this.element.data.length - 1)
     this.prevTarget.classList.toggle("is-disabled", index === 0)
+
+    if (this.element.classList.contains("is-selected")) {
+      trigger("mapmarker:photoSelected", { photoId: data.mid, photoData: this.element.data })
+    }
   }
 
   onMouseOver() {
@@ -81,5 +105,14 @@ export default class extends Controller {
 
   onMouseOut() {
     this.element.parentElement.style.removeProperty("z-index")
+  }
+
+  onThumbnailClicked(e) {
+    e?.preventDefault()
+
+    document.querySelectorAll(".mapmarker").forEach(marker => marker.classList.remove("is-selected"))
+    this.element.classList.add("is-selected")
+
+    trigger("mapmarker:photoSelected", { photoId: e?.currentTarget?.photoId, photoData: this.element.data })
   }
 }
