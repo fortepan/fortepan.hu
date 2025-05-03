@@ -4,10 +4,13 @@
   position: relative;
 
   &__thumbnails {
-    padding: 0.25rem;
-    border-radius: rem(8px);
+    padding: rem(3px);
+    border-radius: rem(7px);
     position: relative;
     margin-bottom: rem(12px);
+
+    transition: background-color 0.4s $ease-out-expo, outline 0.4s $ease-out-expo;
+    outline: none;
 
     .theme--light & {
       background-color: $light-base;
@@ -31,6 +34,8 @@
 
       border: 8px solid transparent;
       border-bottom: none;
+
+      transition: border-top-color 0.4s $ease-out-expo;
     }
 
     &:before {

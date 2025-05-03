@@ -57,11 +57,15 @@ export default class extends Controller {
     }
   }
 
-  onNextClick() {
+  onNextClick(e) {
+    e?.preventDefault()
+
     this.selectPhoto(null, this.currentIndex + 1 > this.element.data.length - 1 ? 0 : this.currentIndex + 1)
   }
 
-  onPrevClick() {
+  onPrevClick(e) {
+    e?.preventDefault()
+
     this.selectPhoto(null, this.currentIndex - 1 < 0 ? this.element.data.length - 1 : this.currentIndex - 1)
   }
 
