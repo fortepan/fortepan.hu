@@ -84,6 +84,8 @@ export default class extends Controller {
       data.push(photoManager.getPhotoDataByID(marker.querySelector(".mapmarker").data.mid))
     })
 
+    data.sort((a, b) => a.year - b.year) // sort the photos by year, ascending order
+
     const mapMarker = document.getElementById("mapmarker-template").content.firstElementChild.cloneNode(true)
 
     mapMarker.isGroup = true
@@ -242,6 +244,7 @@ export default class extends Controller {
         this.mapDataLoading = true
 
         trigger("loader:show", { id: "loaderBase" })
+        trigger("thumbnailsbar:hide")
 
         this.clusterer.clearMarkers()
         // clear group markers
