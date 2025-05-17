@@ -2,6 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 import throttle from "lodash/throttle"
 
 import { numberWithCommas, trigger } from "../../js/utils"
+import photoManager from "../../js/photo-manager"
 
 export default class extends Controller {
   static get targets() {
@@ -30,12 +31,14 @@ export default class extends Controller {
           // clone thumnail template
           const thumbnail = document.getElementById("photos-thumbnail").content.firstElementChild.cloneNode(true)
 
-          this.gridTarget.appendChild(thumbnail)
-
           thumbnail.setAttribute(
             "data-action",
-            `${thumbnail.getAttribute("data-action")} click->thumbnailsbar#onThumbnailClicked`
+            `${thumbnail
+              .getAttribute("data-action")
+              .replace("click->thumbnail#clicked", "click->thumbnailsbar#onThumbnailClicked")}`
           )
+
+          this.gridTarget.appendChild(thumbnail)
 
           // set thumnail node element index
           thumbnail.index = index
@@ -94,11 +97,15 @@ export default class extends Controller {
   onThumbnailClicked(e) {
     e?.preventDefault()
 
-    const index = this.photoData.findIndex(photo => photo.mid.toString() === e?.currentTarget?.photoId.toString())
+    const photoId = e?.currentTarget?.photoId
+    const index = this.photoData.findIndex(photo => photo.mid.toString() === photoId.toString())
 
     this.selectThumbnail(index, false)
 
-    trigger("thumbnailsbar:photoSelected", { id: this.id, index, mid: e?.currentTarget?.photoId })
+    trigger("thumbnailsbar:photoSelected", { id: this.id, index, mid: photoId })
+
+    photoManager.selectPhotoById(photoId)
+    trigger("thumbnail:click", { data: this.photoData[index], dataset: this.photoData })
   }
 
   hide() {

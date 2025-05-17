@@ -17,5 +17,10 @@
 
     bottom: 0;
     height: auto;
+
+    .play-carousel-slideshow &,
+    .carousel-fullscreen & {
+      top: 0;
+    }
   }
 }

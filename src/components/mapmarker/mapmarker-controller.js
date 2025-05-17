@@ -98,7 +98,7 @@ export default class extends Controller {
     this.nextTarget.classList.toggle("is-disabled", index === this.element.data.length - 1)
     this.prevTarget.classList.toggle("is-disabled", index === 0)
 
-    if (this.element.classList.contains("is-selected")) {
+    if (e?.type === "click" && this.element.classList.contains("is-selected")) {
       trigger("mapmarker:photoSelected", { photoId: data.mid, photoData: this.element.data })
     }
   }

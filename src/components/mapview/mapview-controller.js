@@ -273,7 +273,12 @@ export default class extends Controller {
   }
 
   onMarkerPhotoSelected(e) {
-    this.showThumbnailsBar(e?.detail?.photoData, e?.detail?.photoId)
+    if (e?.detail?.photoData?.length > 1) {
+      // for group markers display the thumbnailsbar
+      this.showThumbnailsBar(e?.detail?.photoData, e?.detail?.photoId)
+    } else {
+      // TODO: for individual markers open the photo carousel
+    }
   }
 
   showThumbnailsBar(photoData, photoId) {
