@@ -31,6 +31,7 @@ export default class extends Controller {
 
     this.prevPhotoId = null
     this.nextPhotoId = null
+    this.currentPhotoData = null
 
     if (isTouchDevice()) setAppState("is-touch-device")
   }
@@ -46,6 +47,9 @@ export default class extends Controller {
   }
 
   hide(e) {
+    // reset role so it can be used for different purposes the next time it opens again
+    this.role = appState("is-lists") ? "lists" : "photos"
+
     // hide all photos
     this.hideAllPhotos()
 
@@ -101,14 +105,9 @@ export default class extends Controller {
       photo.id = `Fortepan-${id}`
       photo.mid = id
 
-      const photoData =
-        this.role === "lists"
-          ? listManager.getListPhotoById(listManager.getSelectedListId(), id)
-          : photoManager.getPhotoDataByID(id)
+      photo.altText = getImgAltText(this.currentPhotoData)
 
-      photo.altText = getImgAltText(photoData)
-
-      if (this.role === "lists" && !photoData.isDataLoaded) {
+      if (this.role === "lists" && !this.currentPhotoData.isDataLoaded) {
         photo.noImage = true
         photo.classList.add("image-loader--no-image", "is-active")
         photo.textContent = lang("list_photo_removed")
@@ -121,9 +120,8 @@ export default class extends Controller {
 
       // age-restriction
       if (
-        !photoData.ageRestrictionRemoved &&
-        photoData.tags &&
-        photoData.tags.indexOf(config().AGE_RESTRICTION_TAG) > -1
+        !this.currentPhotoData.ageRestrictionRemoved &&
+        this.currentPhotoData?.tags?.indexOf(config().AGE_RESTRICTION_TAG) > -1
       ) {
         photo.noImage = true
         photo.ageRestricted = true
@@ -162,27 +160,41 @@ export default class extends Controller {
   }
 
   setPagers() {
-    this.pagerPrevTarget.href =
-      this.role === "lists"
-        ? `/${getLocale()}/lists/${listManager.getSelectedListId()}/photos/${this.prevPhotoId}`
-        : `/${getLocale()}/photos/?id=${this.prevPhotoId}`
+    const locale = getLocale()
+    let total
+    let prevHref
+    let nextHref
 
-    this.pagerNextTarget.href =
-      this.role === "lists"
-        ? `/${getLocale()}/lists/${listManager.getSelectedListId()}/photos/${this.nextPhotoId}`
-        : `/${getLocale()}/photos/?id=${this.nextPhotoId}`
+    if (this.role === "lists") {
+      const listId = listManager.getSelectedListId()
 
-    const total =
-      this.role === "lists" ? listManager.getSelectedList().photos.length : photoManager.getTotalPhotoCountInContext()
+      prevHref = `/${locale}/lists/${listId}/photos/${this.prevPhotoId}`
+      nextHref = `/${locale}/lists/${listId}/photos/${this.nextPhotoId}`
+
+      total = listManager.getSelectedList().photos.length
+    } else {
+      prevHref = `/${locale}/photos/?id=${this.prevPhotoId}`
+      nextHref = `/${locale}/photos/?id=${this.nextPhotoId}`
+
+      total = this.role === "dataset" ? this.dataset.length : photoManager.getTotalPhotoCountInContext()
+    }
+
+    this.pagerPrevTarget.href = prevHref
+    this.pagerNextTarget.href = nextHref
 
     this.pagerPrevTarget.classList.toggle("is-disabled", total === 1 || !this.prevPhotoId)
     this.pagerNextTarget.classList.toggle("is-disabled", total === 1 || !this.nextPhotoId)
 
     // counter for lists
-    if (this.role === "lists") {
+    if (this.role === "dataset" || this.role === "lists") {
       // setup
-      const currentIndex = listManager.getSelectedPhotoIndex()
+      const currentIndex =
+        this.role === "dataset"
+          ? this.dataset.findIndex(photo => this.currentPhotoData === photo)
+          : listManager.getSelectedPhotoIndex()
+
       const prevIndex = this.counterTarget.index || -1
+
       const currentRange = this.counterTarget.range || [
         Math.min(currentIndex, total - 3),
         Math.min(currentIndex + 2, total - 1),
@@ -241,7 +253,14 @@ export default class extends Controller {
   }
 
   async showPhoto(e, photoId) {
-    const id = e && e.detail && e.detail.data ? e.detail.data.mid : photoId
+    const id = e?.detail?.data?.mid || photoId
+
+    if (e?.detail?.dataset) {
+      // if a specific dataset is given switch to dataset mode
+      // this dataset has to be a subset of the photo data already loaded by the photoManager
+      this.role = "dataset"
+      this.dataset = e.detail.dataset
+    }
 
     if (id) {
       if (!this.element.classList.contains("is-visible")) this.show()
@@ -251,11 +270,27 @@ export default class extends Controller {
 
       trigger("loader:show", { id: "loaderCarousel" })
 
-      // get the next and previous photo id for SEO
-      // in the case of photos this will also triggering the load the previous and the next 40 photo data if needed
-      // and will cause to fill the photo list in the background too
-      this.prevPhotoId = this.role === "lists" ? listManager.getPrevPhotoId() : await photoManager.getPrevPhotoId()
-      this.nextPhotoId = this.role === "lists" ? listManager.getNextPhotoId() : await photoManager.getNextPhotoId()
+      if (this.role === "dataset") {
+        const index = this.dataset.findIndex(photo => photo.mid.toString() === id.toString())
+
+        this.prevPhotoId = this.dataset[index - 1]?.mid // returns undefined if index is lower than 0
+        this.nextPhotoId = this.dataset[index + 1]?.mid // returns undefined if index is higher than length - 1
+
+        this.currentPhotoData = this.dataset[index]
+      } else if (this.role === "lists") {
+        this.prevPhotoId = listManager.getPrevPhotoId()
+        this.nextPhotoId = listManager.getNextPhotoId()
+
+        this.currentPhotoData = listManager.getSelectedPhoto()
+      } else {
+        // get the next and previous photo id for SEO
+        // in the case of photos this will also triggering the load the previous and the next 40 photo data if needed
+        // and will cause to fill the photo list in the background too
+        this.prevPhotoId = await photoManager.getPrevPhotoId()
+        this.nextPhotoId = await photoManager.getNextPhotoId()
+
+        this.currentPhotoData = photoManager.getSelectedPhotoData()
+      }
 
       trigger("loader:hide", { id: "loaderCarousel" })
 
@@ -280,7 +315,12 @@ export default class extends Controller {
     let photoId
     let index
 
-    if (this.role === "lists") {
+    if (this.role === "dataset") {
+      const currentIndex = this.dataset.findIndex(photo => photo === this.currentPhotoData)
+      index = currentIndex + 1
+      photoId = this.dataset[index]?.mid
+      photoManager.selectPhotoById(photoId)
+    } else if (this.role === "lists") {
       photoId = listManager.selectNextPhoto().id
       index = listManager.getSelectedPhotoIndex()
     } else {
@@ -303,7 +343,12 @@ export default class extends Controller {
     let photoId
     let index
 
-    if (this.role === "lists") {
+    if (this.role === "dataset") {
+      const currentIndex = this.dataset.findIndex(photo => photo === this.currentPhotoData)
+      index = currentIndex - 1
+      photoId = this.dataset[index]?.mid
+      photoManager.selectPhotoById(photoId)
+    } else if (this.role === "lists") {
       photoId = listManager.selectPrevPhoto().id
       index = listManager.getSelectedPhotoIndex()
     } else {
@@ -489,7 +534,7 @@ export default class extends Controller {
 
     const photo = this.photosTarget.querySelector(".image-loader.is-active.is-loaded")
 
-    if (!photo.noImage) {
+    if (photo && !photo.noImage) {
       setAppState("carousel-photo-zoomed-in")
       setAppState("disable--selection")
 
@@ -605,7 +650,7 @@ export default class extends Controller {
   }
 
   onPhotoClick(e) {
-    if (e && e.currentTarget && e.currentTarget.classList.contains("image-loader--no-image")) return
+    if (e?.currentTarget?.classList?.contains("image-loader--no-image")) return
 
     if (isTouchDevice()) {
       // only listen to touch events on touch devices (no mouseup should fire the following)
@@ -668,11 +713,10 @@ export default class extends Controller {
   }
 
   isPhotoAvailable() {
-    const photoData = this.role === "lists" ? listManager.getSelectedPhoto() : photoManager.getSelectedPhotoData()
-
     if (
-      (this.role === "lists" && !photoData.isDataLoaded) ||
-      (!photoData.ageRestrictionRemoved && photoData.tags && photoData.tags.indexOf(config().AGE_RESTRICTION_TAG) > -1)
+      (this.role === "lists" && !this.currentPhotoData.isDataLoaded) ||
+      (!this.currentPhotoData.ageRestrictionRemoved &&
+        this.currentPhotoData?.tags?.indexOf(config().AGE_RESTRICTION_TAG) > -1)
     ) {
       return false
     }
@@ -705,8 +749,7 @@ export default class extends Controller {
   showAgeRestrictionDialog(e) {
     if (e) e.preventDefault()
 
-    const photoData = this.role === "lists" ? listManager.getSelectedPhoto() : photoManager.getSelectedPhotoData()
-    trigger("dialogAgeRestriction:show", { photoId: photoData.mid.toString() })
+    trigger("dialogAgeRestriction:show", { photoId: this.currentPhotoData.mid.toString() })
   }
 
   removeAgeRestriction(e) {
