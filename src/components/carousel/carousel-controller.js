@@ -186,7 +186,9 @@ export default class extends Controller {
     this.pagerNextTarget.classList.toggle("is-disabled", total === 1 || !this.nextPhotoId)
 
     // counter for lists
-    if (this.role === "dataset" || this.role === "lists") {
+    this.counterTarget.classList.toggle("is-visible", total > 1)
+
+    if (total > 1 && (this.role === "dataset" || this.role === "lists")) {
       // setup
       const currentIndex =
         this.role === "dataset"
@@ -241,7 +243,6 @@ export default class extends Controller {
       if (currentIndex === currentRange[0]) this.counterTooltipTarget.classList.add("left")
       if (currentIndex === currentRange[1]) this.counterTooltipTarget.classList.add("right")
 
-      this.counterTarget.classList.add("is-visible")
       this.counterTarget.index = currentIndex
       this.counterTarget.range = currentRange
       this.counterTarget.total = total
