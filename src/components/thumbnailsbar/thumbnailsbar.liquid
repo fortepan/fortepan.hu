@@ -3,7 +3,8 @@
                thumbnail:loaded@document->thumbnailsbar#loadThumbnails
                thumbnailsbar:show@document->thumbnailsbar#show
                thumbnailsbar:hide@document->thumbnailsbar#hide
-               keyup@window->thumbnailsbar#keyup"
+               keyup@window->thumbnailsbar#keyup
+               photos:selectThumbnail@document->thumbnailsbar#onCarouselPhotoSelected"
 >
 
   <div class="button-circular thumbnailsbar__close-button" data-action="click->thumbnailsbar#hide">

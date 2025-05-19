@@ -18,10 +18,10 @@ export default class extends Controller {
 
     if (photoData && photoData.length > 0) {
       // generating an id for comparison
-      const id = `${photoData[0].mid}-${photoData[photoData.length - 1].mid}-${photoData.length}`
+      const setId = `${photoData[0].mid}-${photoData[photoData.length - 1].mid}-${photoData.length}`
 
       // if the id is not set or have a different value remove & regenerate the thumbnails
-      if (this?.id !== id) {
+      if (this?.setId !== setId) {
         // if photoData is given remove all thumbnails first
         this.element.querySelectorAll(".photos-thumbnail").forEach(thumb => {
           thumb.remove()
@@ -63,7 +63,7 @@ export default class extends Controller {
       }, 400)
 
       this.photoData = photoData
-      this.id = id
+      this.setId = setId
     }
   }
 
@@ -102,10 +102,10 @@ export default class extends Controller {
 
     this.selectThumbnail(index, false)
 
-    trigger("thumbnailsbar:photoSelected", { id: this.id, index, mid: photoId })
+    trigger("thumbnailsbar:photoSelected", { setId: this.setId, index, mid: photoId })
 
     photoManager.selectPhotoById(photoId)
-    trigger("thumbnail:click", { data: this.photoData[index], dataset: this.photoData })
+    trigger("thumbnail:click", { data: this.photoData[index], dataset: this.photoData, setId: this.setId })
   }
 
   hide() {
@@ -118,6 +118,12 @@ export default class extends Controller {
   keyup(e) {
     if (e.key === "Escape") {
       this.hide()
+    }
+  }
+
+  onCarouselPhotoSelected(e) {
+    if (e?.detail?.setId === this.setId && this.element.classList.contains("is-visible")) {
+      this.selectThumbnail(e.detail?.index, true)
     }
   }
 }

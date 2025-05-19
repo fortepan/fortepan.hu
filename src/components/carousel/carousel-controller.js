@@ -277,6 +277,12 @@ export default class extends Controller {
         this.nextPhotoId = this.dataset[index + 1]?.mid // returns undefined if index is higher than length - 1
 
         this.currentPhotoData = this.dataset[index]
+
+        // setting setId for comparison
+        this.setId =
+          e?.detail?.setId ||
+          `${this.dataset[0].mid}-${this.dataset[this.dataset.length - 1].mid}-${this.dataset.length}`
+        //
       } else if (this.role === "lists") {
         this.prevPhotoId = listManager.getPrevPhotoId()
         this.nextPhotoId = listManager.getNextPhotoId()
@@ -331,7 +337,11 @@ export default class extends Controller {
     }
 
     this.showPhoto(null, photoId)
-    trigger("photos:selectThumbnail", { index })
+
+    const eventData = { index }
+    if (this.role === "dataset" && this.setId) eventData.setId = this.setId
+
+    trigger("photos:selectThumbnail", eventData)
   }
 
   async showPrevPhoto(e) {
@@ -359,7 +369,11 @@ export default class extends Controller {
     }
 
     this.showPhoto(null, photoId)
-    trigger("photos:selectThumbnail", { index })
+
+    const eventData = { index }
+    if (this.role === "dataset" && this.setId) eventData.setId = this.setId
+
+    trigger("photos:selectThumbnail", eventData)
   }
 
   // event listener for timeline:yearSelected

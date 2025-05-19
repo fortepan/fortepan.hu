@@ -47,9 +47,15 @@ export default class extends Controller {
         // group
         this.currentIndex = 0
         this.counterTarget.textContent = this.element.data.length
-      }
 
-      this.id = this.element.id
+        this.setId =
+          this.element.id.replace("marker-", "") ||
+          `${this.element.data[0].mid}-${this.element.data[this.element.data.length - 1].mid}-${
+            this.element.data.length
+          }`
+      } else {
+        this.setId = this.element.id.replace("marker-", "") || `${this.element.data.mid}}`
+      }
 
       this.selectPhoto(null, 0)
 
@@ -60,29 +66,39 @@ export default class extends Controller {
   onNextClick(e) {
     e?.preventDefault()
 
-    this.selectPhoto(null, this.currentIndex + 1 > this.element.data.length - 1 ? 0 : this.currentIndex + 1)
+    const index = this.currentIndex + 1 > this.element.data.length - 1 ? 0 : this.currentIndex + 1
+
+    this.selectPhoto(null, index)
+
+    if (this.element.classList.contains("is-selected")) {
+      trigger("mapmarker:photoSelected", { photoId: this.element.data[index].mid, photoData: this.element.data })
+    }
   }
 
   onPrevClick(e) {
     e?.preventDefault()
 
-    this.selectPhoto(null, this.currentIndex - 1 < 0 ? this.element.data.length - 1 : this.currentIndex - 1)
+    const index = this.currentIndex - 1 < 0 ? this.element.data.length - 1 : this.currentIndex - 1
+
+    this.selectPhoto(null, index)
+
+    if (this.element.classList.contains("is-selected")) {
+      trigger("mapmarker:photoSelected", { photoId: this.element.data[index].mid, photoData: this.element.data })
+    }
   }
 
   selectPhoto(e, i) {
-    if (e && e?.detail?.id !== this.id) return
+    if (e && e.detail?.setId !== this.setId) return
 
     let index
 
-    if (e?.detail?.index > -1 && e?.detail?.id === this.id) {
+    if (e?.detail?.index > -1 && e?.detail?.setId === this.setId) {
       index = e.detail.index
       document.querySelectorAll(".mapmarker").forEach(marker => marker.classList.remove("is-selected"))
       this.element.classList.add("is-selected")
     } else {
       index = i
     }
-
-    this.currentIndex = index
 
     const data = this.element.data.length ? this.element.data[index] : this.element.data
 
@@ -98,9 +114,7 @@ export default class extends Controller {
     this.nextTarget.classList.toggle("is-disabled", index === this.element.data.length - 1)
     this.prevTarget.classList.toggle("is-disabled", index === 0)
 
-    if (e?.type === "click" && this.element.classList.contains("is-selected")) {
-      trigger("mapmarker:photoSelected", { photoId: data.mid, photoData: this.element.data })
-    }
+    this.currentIndex = index
   }
 
   onMouseOver() {
@@ -117,6 +131,16 @@ export default class extends Controller {
     document.querySelectorAll(".mapmarker").forEach(marker => marker.classList.remove("is-selected"))
     this.element.classList.add("is-selected")
 
-    trigger("mapmarker:photoSelected", { photoId: e?.currentTarget?.photoId, photoData: this.element.data })
+    trigger("mapmarker:photoSelected", {
+      photoId: e?.currentTarget?.photoId,
+      photoData: this.element.data,
+      setId: this.setId,
+    })
+  }
+
+  onCarouselPhotoSelected(e) {
+    if (e?.detail?.setId === this.setId && this.element.classList.contains("is-selected")) {
+      this.selectPhoto(null, e.detail?.index)
+    }
   }
 }

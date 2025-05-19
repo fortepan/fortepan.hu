@@ -92,7 +92,7 @@ export default class extends Controller {
     mapMarker.classList.add("is-multiple")
 
     mapMarker.data = data
-    mapMarker.id = `${data[0].mid}-${data[data.length - 1].mid}-${data.length}`
+    mapMarker.id = `marker-${data[0].mid}-${data[data.length - 1].mid}-${data.length}`
     mapMarker.count = count
 
     const markerElement = new this.google.maps.marker.AdvancedMarkerElement({
@@ -184,6 +184,7 @@ export default class extends Controller {
 
         const mapMarker = document.getElementById("mapmarker-template").content.firstElementChild.cloneNode(true)
         mapMarker.data = data
+        mapMarker.id = `marker-${data.mid}`
 
         const markerElement = new this.google.maps.marker.AdvancedMarkerElement({
           map: this.map,
@@ -191,7 +192,7 @@ export default class extends Controller {
           content: mapMarker,
         })
 
-        this.markers.push({ mid: data.mid, element: markerElement })
+        this.markers.push({ id: mapMarker.id, mid: data.mid, element: markerElement })
         // bounds.extend({ lat: loc.lat, lng: loc.lon })
 
         markerToAdd = markerElement
@@ -245,6 +246,7 @@ export default class extends Controller {
 
         trigger("loader:show", { id: "loaderBase" })
         trigger("thumbnailsbar:hide")
+        trigger("photosCarousel:close")
 
         this.clusterer.clearMarkers()
         // clear group markers
