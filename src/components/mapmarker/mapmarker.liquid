@@ -5,26 +5,24 @@
                  thumbnailbar:photoSelected@document->mapmarker#selectPhoto
                  photos:selectThumbnail@document->mapmarker#onCarouselPhotoSelected"
   >
-
-    <div class="mapmarker__thumbnails">
-
-      <div class="mapmarker__thumbnail-wrapper"></div>
-
-      <a href="#" class="button-circular mapmarker__pager mapmarker__pager--prev is-disabled"
-        data-mapmarker-target="prev"
-        data-action="click->mapmarker#onPrevClick">
-          {% inlineSVG src:"src/static/images/icons/24/icon-previous.svg" class:"button-circular__icon" %}
-      </a>
-
-      <a href="#" class="button-circular mapmarker__pager mapmarker__pager--next is-disabled"
-        data-mapmarker-target="next"
-        data-action="click->mapmarker#onNextClick">
-          {% inlineSVG src:"src/static/images/icons/24/icon-next.svg" class:"button-circular__icon" %}
-      </a>
-
-    </div>
-
     <div class="map-cluster-marker" data-mapmarker-target="counter"></div>
+  </div>
+</template>
+
+<template id="mapmarker-thumbnails-template">
+  <div class="mapmarker__thumbnails">
+
+    <div class="mapmarker__thumbnail-wrapper"></div>
+
+    <a href="#" class="button-circular mapmarker__pager mapmarker__pager--prev is-disabled"
+      data-action="click->mapmarker#onPrevClick">
+        {% inlineSVG src:"src/static/images/icons/24/icon-previous.svg" class:"button-circular__icon" %}
+    </a>
+
+    <a href="#" class="button-circular mapmarker__pager mapmarker__pager--next is-disabled"
+      data-action="click->mapmarker#onNextClick">
+        {% inlineSVG src:"src/static/images/icons/24/icon-next.svg" class:"button-circular__icon" %}
+    </a>
 
   </div>
 </template>

@@ -118,10 +118,6 @@
       display: block;
     }
 
-    /* &.is-disabled {
-      display: none;
-    } */
-
     &--prev {
       left: -0.5rem;
       transform: translate(-100%, -50%);
@@ -184,5 +180,9 @@
     height: auto;
     padding: 0 rem(12px);
     display: inline-block;
+  }
+
+  .is-over-limit & {
+    padding: rem(4px) rem(16px);
   }
 }

@@ -1,6 +1,8 @@
 import { Controller } from "@hotwired/stimulus"
 import { trigger } from "../../js/utils"
 
+const MARKER_PHOTO_LIMIT = 150
+
 export default class extends Controller {
   static get targets() {
     return ["counter", "prev", "next"]
@@ -57,7 +59,16 @@ export default class extends Controller {
         this.setId = this.element.id.replace("marker-", "") || `${this.element.data.mid}}`
       }
 
-      this.selectPhoto(null, 0)
+      if (this.element.data.length > MARKER_PHOTO_LIMIT) {
+        this.element.classList.add("is-over-limit")
+      } else {
+        const thumbnails = document
+          .getElementById("mapmarker-thumbnails-template")
+          .content.firstElementChild.cloneNode(true)
+        this.element.prepend(thumbnails)
+
+        this.selectPhoto(null, 0)
+      }
 
       this.ready = true
     }
@@ -88,7 +99,7 @@ export default class extends Controller {
   }
 
   selectPhoto(e, i) {
-    if (e && e.detail?.setId !== this.setId) return
+    if ((e && e.detail?.setId !== this.setId) || this.element.data.length > MARKER_PHOTO_LIMIT) return
 
     let index
 
@@ -108,11 +119,9 @@ export default class extends Controller {
 
     if (!thumbnail) thumbnail = this.createThumbnail(data)
 
-    this.element.querySelector(".mapmarker__thumbnail-wrapper").innerHTML = ""
-    this.element.querySelector(".mapmarker__thumbnail-wrapper").appendChild(thumbnail)
-
-    this.nextTarget.classList.toggle("is-disabled", index === this.element.data.length - 1)
-    this.prevTarget.classList.toggle("is-disabled", index === 0)
+    const thumbnailWrapper = this.element.querySelector(".mapmarker__thumbnail-wrapper")
+    thumbnailWrapper.innerHTML = ""
+    thumbnailWrapper.appendChild(thumbnail)
 
     this.currentIndex = index
   }
