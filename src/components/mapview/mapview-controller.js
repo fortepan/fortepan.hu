@@ -245,7 +245,7 @@ export default class extends Controller {
         this.mapDataLoading = true
 
         trigger("loader:show", { id: "loaderBase" })
-        trigger("thumbnailsbar:hide")
+        trigger("thumbnailbar:hide")
         trigger("photosCarousel:close")
 
         this.clusterer.clearMarkers()
@@ -276,7 +276,7 @@ export default class extends Controller {
 
   onMarkerPhotoSelected(e) {
     if (e?.detail?.photoData?.length > 1) {
-      // for group markers display the thumbnailsbar
+      // for group markers display the thumbnailbar
       this.showThumbnailsBar(e?.detail?.photoData, e?.detail?.photoId)
     } else {
       // TODO: for individual markers open the photo carousel
@@ -285,12 +285,12 @@ export default class extends Controller {
 
   showThumbnailsBar(photoData, photoId) {
     if (photoData) {
-      trigger("thumbnailsbar:show", { photoData, photoId })
+      trigger("thumbnailbar:show", { photoData, photoId })
     }
   }
 
   hideThumbnailsBar() {
-    trigger("thumbnailsbar:hide")
+    trigger("thumbnailbar:hide")
   }
 
   onThumbnailsBarClosed() {

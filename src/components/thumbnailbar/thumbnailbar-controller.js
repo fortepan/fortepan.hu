@@ -35,7 +35,7 @@ export default class extends Controller {
             "data-action",
             `${thumbnail
               .getAttribute("data-action")
-              .replace("click->thumbnail#clicked", "click->thumbnailsbar#onThumbnailClicked")}`
+              .replace("click->thumbnail#clicked", "click->thumbnailbar#onThumbnailClicked")}`
           )
 
           this.gridTarget.appendChild(thumbnail)
@@ -102,7 +102,7 @@ export default class extends Controller {
 
     this.selectThumbnail(index, false)
 
-    trigger("thumbnailsbar:photoSelected", { setId: this.setId, index, mid: photoId })
+    trigger("thumbnailbar:photoSelected", { setId: this.setId, index, mid: photoId })
 
     photoManager.selectPhotoById(photoId)
     trigger("thumbnail:click", { data: this.photoData[index], dataset: this.photoData, setId: this.setId })
@@ -111,7 +111,7 @@ export default class extends Controller {
   hide() {
     this.element.classList.remove("is-visible")
 
-    trigger("thumbnailsbar:closed")
+    trigger("thumbnailbar:closed")
   }
 
   // create a new tag element when people hit ENTER

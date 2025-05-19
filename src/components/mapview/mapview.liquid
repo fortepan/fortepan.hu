@@ -5,10 +5,10 @@
                theme:toggleTheme@document->mapview#toggleMapStyles
 
                mapmarker:photoSelected@document->mapview#onMarkerPhotoSelected
-               thumbnailsbar:closed@document->mapview#onThumbnailsBarClosed"
+               thumbnailbar:closed@document->mapview#onThumbnailsBarClosed"
 >
   <div class="map" id="MainMap" data-mapview-target="map"></div>
-  {% include thumbnailsbar/thumbnailsbar.liquid %}
+  {% include thumbnailbar/thumbnailbar.liquid %}
 
 </div>
 
