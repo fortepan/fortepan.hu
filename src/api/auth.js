@@ -46,6 +46,7 @@ const signin = async body => {
 
 const signout = async () => {
   const authData = JSON.parse(localStorage.getItem("auth")) || {}
+
   const url = `${appState("is-dev") ? config().DRUPAL_HOST_DEV : config().DRUPAL_HOST}/user/logout?_format=json&token=${
     authData.logout_token
   }`
@@ -173,7 +174,9 @@ const getUserStatus = async () => {
 
 const requestUserData = async id => {
   // check localstorage auth data
-  const url = `${appState("is-dev") ? config().DRUPAL_HOST_DEV : config().DRUPAL_HOST}/jsonapi/user/user/${id}`
+  const url = `${
+    appState("is-dev") ? config().DRUPAL_HOST_DEV : config().DRUPAL_HOST
+  }/jsonapi/user/user?filter[uid]=${id}`
   const resp = await fetch(url, {
     method: "GET",
     credentials: "include",
@@ -186,57 +189,30 @@ const requestUserData = async id => {
   return resp
 }
 
-const getUserId = async () => {
-  const url = `${appState("is-dev") ? config().DRUPAL_HOST_DEV : config().DRUPAL_HOST}/jsonapi`
-  const resp = await fetch(url, {
-    method: "GET",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/vnd.api+json",
-      Accept: "application/vnd.api+json",
-    },
-  })
-
-  const respData = await resp.json()
-  if (resp.status === 200) {
-    return respData.meta.links.me.meta.id
-  }
-
-  throw respData.message
-}
-
 const querySignedInUser = async () => {
   const authData = JSON.parse(localStorage.getItem("auth")) || {}
 
-  const userIsAlreadySignedIn = await getUserStatus()
+  const userLoggedIn = await getUserStatus()
 
-  if (userIsAlreadySignedIn) {
-    setLoginStatus(true)
+  setLoginStatus(userLoggedIn)
 
-    // TODO
-    // currently the server not returns user related date due to CORS error
-    /* const id = await getUserId()
-    const resp = await requestUserData(id)
-    const respData = await resp.json()
+  // return the user data if we have the user id
+  if (userLoggedIn && authData?.current_user?.uid) {
+    if (!authData?.current_user?.mail) {
+      const resp = await requestUserData(authData.current_user.uid)
+      const respData = await resp.json()
 
-    if (resp.status === 200) {
-      if (!authData.current_user) authData.current_user = {}
+      authData.current_user.mail = respData.data[0].attributes.mail
+      authData.current_user.id = respData.data[0].id
+      authData.current_user.links = respData.data[0].links
 
-      authData.current_user.id = respData.data.id
-      authData.current_user.name = respData.data.attributes.name
-
-      // store the user details
       localStorage.setItem("auth", JSON.stringify(authData))
-      setLoginStatus(true)
-      return respData
     }
 
-    setLoginStatus(false)
-    throw respData */
-  } else {
-    // user is not signed in
-    setLoginStatus(false)
+    return { name: authData.current_user.name, mail: authData.current_user.mail }
   }
+
+  return null
 }
 
 export default {
