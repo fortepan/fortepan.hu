@@ -299,8 +299,15 @@
   }
 
   p {
-    opacity: 0.64;
     max-width: 50rem;
+
+    .theme--light & {
+      color: rgba($dark-base, 0.64);
+    }
+
+    .theme--dark & {
+      color: rgba($light-base, 0.64);
+    }
   }
 
   h2 + p {
@@ -480,5 +487,32 @@
     top: 4.5rem;
     right: 0;
     margin-top: 0;
+  }
+}
+
+.home__usp__capa-logo {
+  display: block;
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+  width: rem(107px);
+  height: rem(40px);
+  line-height: 100vh;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  body[data-lang="hu"].theme--light & {
+    background-image: url("/images/project_logos/CapaKozpontLogo.png");
+  }
+
+  body[data-lang="hu"].theme--dark & {
+    background-image: url("/images/project_logos/CapaKozpontLogoInverz.png");
+  }
+
+  body[data-lang="en"].theme--light & {
+    background-image: url("/images/project_logos/CapaCenterLogo.png");
+  }
+
+  body[data-lang="en"].theme--dark & {
+    background-image: url("/images/project_logos/CapaCenterLogoInverz.png");
   }
 }

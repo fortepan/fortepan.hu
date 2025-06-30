@@ -188,6 +188,7 @@ module.exports = {
       label: "Összetett keresés",
       empty: "Üres",
     },
+    capa_center_caption: "Capa Központ",
   },
   en: {
     about_us: "About us",
@@ -370,5 +371,6 @@ module.exports = {
       label: "Advanced search",
       empty: "Empty",
     },
+    capa_center_caption: "Capa Center",
   },
 }

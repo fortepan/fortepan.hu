@@ -27,8 +27,9 @@ blog:
   caption: >-
     Magyarul hetente, angolul ritkábban frissülő blogunkon a Fortepanra
     felkerülő fényképek és adományozóik háttértörténetét dolgozzuk fel gazdagon
-    illusztrált írásokban. A Heti Fortepan Blog a Capa Központ támogatásával és
-    együttműködésével készül. Minden cikkünk CC licensz alatt újraközölhető.
+    illusztrált írásokban. A Heti Fortepan Blog a <a
+    href="https://capacenter.hu" target="_blank">Capa Központ</a> támogatásával
+    és együttműködésével készül. Minden cikkünk CC licensz alatt újraközölhető.
   action:
     label: Még több Heti Fortepan
     url: 'https://hetifortepan.capacenter.hu/'

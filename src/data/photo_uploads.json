@@ -1,6 +1,48 @@
 {
   "uploads": [
     {
+      "name": "Tavaszi Tárlat",
+      "date": "2025-03-27T00:00:00.000Z",
+      "cover_image": "294355",
+      "hu": {
+        "title": "Tavaszi Tárlat",
+        "blurb": "Több mint hetven adományozó képeiből válogattunk a Fortepan Tavaszi Tárlatára. Bartók Bélától Petri Györgyig, Párizstól Brassóig, a Tanácsköztársaságtól a 87-es nagy havazásig kerültek fel új fotók a honlapra. Műtermek, lövészárkok, az első Május 1. Gyermekvédő Liga, egy dunai őrnaszád, cserkész jamboree. Jezsuita térítők, hegymászók az Alpokban, önkéntesek a spanyol polgárháborúban. Észak-Erdély, Bácska, bombázások Kolozsváron és Budapesten. Új egyetem Veszprémben, 56 színesben. Az első út Nyugaton, turisták és emigránsok, hosszú hétvégék hátizsákkal.\nA felejtés ellen tavasszal is legjobb a Fortepan!",
+        "actions": {
+          "best_of": "150 jó kép",
+          "all": "a teljes gyűjtemény"
+        }
+      },
+      "en": {
+        "title": "Sring Edition",
+        "blurb": "This selection from images of more than seventy donors add up to a sort of  „Spring Exhibition”. From Béla Bartók to György Petri, from Paris to Brasov, from the the Soviet Republic of 1919 to the great snowfall of '87. Artists’ studios,  galleries, trenches, the first May 1st parade, Children's Defence League, a Danube warship, a scout jamboree. Jesuit missionaries, climbers in the Alps, volunteers in the Spanish Civil War. Northern Transylvania, Bačka (now in Serbia), bombing of Kolozsvár (now Cluj, Romania) and of Budapest. New university in Veszprém, 1956 events in colour. First trips to the West, tourists and emigrants, long weekends with backpacks.\nThe best way to fight forgetfulness in spring: Fortepan!",
+        "actions": {
+          "best_of": "150 best of",
+          "all": "All collection"
+        }
+      }
+    },
+    {
+      "name": "Régi képek az Új Évre",
+      "date": "2024-10-03T00:00:00.000Z",
+      "cover_image": "292424",
+      "hu": {
+        "title": "Régi képek az Új Évre",
+        "blurb": "4000 fotó az egyre távolodó XX. századból. Szerzői hagyatékok és gyűjtemények legérdekesebb kockái a Fortepan idei utolsó kiadásában. Hétköznapok háborúk és forradalmak, politikusok, felfedezők, színészek és sportolók nélkül. Helyettük nagy főzések, hajnali horgászat, sziklamászás, érettségi vizsgák és unalmas május elsejék. Ezek is mi voltunk egykor. ",
+        "actions": {
+          "best_of": "170 jó kép",
+          "all": "a teljes gyűjtemény"
+        }
+      },
+      "en": {
+        "title": "Old Photos for New Year",
+        "blurb": "4000 photos from the 20th century, which is becoming more and more distant. The most interesting frames from authors' estates and collections in this year's last edition of Fortepan. Everyday life without wars and revolutions, politicians, explorers, actors and sportsmen. In their place, big barbecues, dawn fishing, rock climbing, school exams and boring May Day parades. That's what we used to be. Us, too.",
+        "actions": {
+          "best_of": "170 best of",
+          "all": "All collection"
+        }
+      }
+    },
+    {
       "name": "Két szerző - két történet",
       "date": "2024-08-29T00:00:00.000Z",
       "cover_image": "288843",
