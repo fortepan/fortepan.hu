@@ -3,7 +3,14 @@
     {
       "name": "Eötvös Lóránd fényképei",
       "date": "2025-07-15T00:00:00.000Z",
-      "cover_image": "303282"
+      "cover_image": "303282",
+      "hu": {
+        "title": "Eötvös Lóránd fényképei",
+        "actions": {
+          "best_of": "30 jó kép",
+          "all": "A teljes gyűjtemény"
+        }
+      }
     },
     {
       "name": "Tavaszi Tárlat",
