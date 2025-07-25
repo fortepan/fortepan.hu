@@ -85,7 +85,12 @@
     <a class="header-nav__link header-nav__link--top" href="https://forum.index.hu/Article/showArticle?t=9204653" target="_blank">{{ lang[locale].forum }}</a>
     <a class="header-nav__link header-nav__link--top" href="https://www.facebook.com/FortepanArchivum/" target="_blank">Facebook</a>
     <a class="header-nav__link header-nav__link--top" href="https://www.instagram.com/fortepan/" target="_blank">Instagram</a>
-    <a class="header-nav__link header-nav__link--top header-nav__link--separator-after" href="/{{ locale }}/projects/">{{ lang[locale].projects }}</a>
+    {% if locale == "hu" %}
+      <a class="header-nav__link header-nav__link--top" href="/{{ locale }}/projects/">{{ lang[locale].projects }}</a>
+      <a class="header-nav__link header-nav__link--top header-nav__link--separator-after" href="/{{ locale }}/fortepan-abc/">{{ lang[locale].fortepan_abc }}</a>
+    {% else %}
+      <a class="header-nav__link header-nav__link--top header-nav__link--separator-after" href="/{{ locale }}/projects/">{{ lang[locale].projects }}</a>
+    {% endif %}
     <a class="header-nav__link" href="mailto:fortepan@gmail.com">{{ lang[locale].contact_us }}</a>
     <a class="header-nav__link header-nav__link--desktop-only" href="/{{ locale }}/privacy/">{{ lang[locale].privacy_policy }}</a>
     <div class="header-nav__link--hide-on-desktop">
