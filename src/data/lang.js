@@ -189,6 +189,7 @@ module.exports = {
       empty: "Üres",
     },
     capa_center_caption: "Capa Központ",
+    fortepan_abc: "Fortepan ABC",
   },
   en: {
     about_us: "About us",
@@ -372,5 +373,6 @@ module.exports = {
       empty: "Empty",
     },
     capa_center_caption: "Capa Center",
+    fortepan_abc: "Fortepan ABC",
   },
 }

@@ -1,6 +1,27 @@
 {
   "uploads": [
     {
+      "name": "Eötvös Loránd fényképei",
+      "date": "2025-07-15T00:00:00.000Z",
+      "cover_image": "303321",
+      "hu": {
+        "title": "Eötvös Loránd fényképei",
+        "blurb": "430 fénykép Eötvös Loránd fizikus, feltaláló és hegymászó fotós hagyatékából. A képek két forrásból, a Földtani Szolgálat és a Magyar Műszaki és Közlekedési Múzeum gyűjteményéből származnak. Ebben a rendhagyó összeállításban először láthatóak együtt a két közgyűjteménybe került életmű legfontosabb felvételei. Sztereó fotók és üvegnegatívok a századfordulós Budapestről, az Alpokban tett magashegyi túrákról és fizikai kísérletekről. A XIX. század vége egy kalandkedvelő, kísérletező polihisztor kameráján keresztül.",
+        "actions": {
+          "best_of": "40 jó kép",
+          "all": "A teljes gyűjtemény"
+        }
+      },
+      "en": {
+        "title": "Loránd Eötvös' photos",
+        "blurb": "430 photographs from the legacy of Loránd Eötvös, physicist, inventor and mountaineering photographer. The images come from two collections, from the that of the Geological Survey and of the Hungarian Museum of Technology and Transport, respectively. This is the first time that the most important images from the two public collections are presented together in this unusual compilation. Stereo photographs and glass negatives of Budapest at the turn of the century, of high mountain hikes and physical experiments in the Alps. The end of the 19th century through the camera of an adventurous, experimental polyhistor.",
+        "actions": {
+          "best_of": "40 best of",
+          "all": "all collection"
+        }
+      }
+    },
+    {
       "name": "Tavaszi Tárlat",
       "date": "2025-03-27T00:00:00.000Z",
       "cover_image": "294355",

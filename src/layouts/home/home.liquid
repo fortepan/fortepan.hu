@@ -106,7 +106,7 @@ layout: base/base.liquid
       <ul class="home__usp__list">
         {% assign count = 0 %}
         {% for article in rss[locale] %}
-        {% assign content = article.contentSnippet | split: 'The post' %}
+        {% assign article_content = article.contentSnippet | split: 'The post' %}
         {% if count < 4 %}
         {% assign count = count | plus: 1 %}
         <li class="list-item">
@@ -121,7 +121,7 @@ layout: base/base.liquid
           <div class="list-item__meta">
             <p class="text-small text-secondary">{% date article.isoDate, locale %}</p>
             <h5><a href="{{ article.link }}" class="list-item__title" target="_blank">{{ article.title }}</a></h5>
-            <p class="text-medium text-secondary">{{ content[0] | truncatewords: 24, '…' }}</p>
+            <p class="text-medium text-secondary">{{ article_content[0] | truncatewords: 24, '…' }}</p>
             <p class="text-medium"><a href="{{ article.link }}" target="_blank">{{ lang[locale].read_more }} →</a></p>
           </div>
         </li>

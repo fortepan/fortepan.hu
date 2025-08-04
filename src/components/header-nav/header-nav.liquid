@@ -85,7 +85,12 @@
     <a class="header-nav__link header-nav__link--top" href="https://forum.index.hu/Article/showArticle?t=9204653" target="_blank">{{ lang[locale].forum }}</a>
     <a class="header-nav__link header-nav__link--top" href="https://www.facebook.com/FortepanArchivum/" target="_blank">Facebook</a>
     <a class="header-nav__link header-nav__link--top" href="https://www.instagram.com/fortepan/" target="_blank">Instagram</a>
-    <a class="header-nav__link header-nav__link--top header-nav__link--separator-after" href="/{{ locale }}/projects/">{{ lang[locale].projects }}</a>
+    {% if locale == "hu" %}
+      <a class="header-nav__link header-nav__link--top" href="/{{ locale }}/projects/">{{ lang[locale].projects }}</a>
+      <a class="header-nav__link header-nav__link--top header-nav__link--separator-after" href="/{{ locale }}/fortepan-abc/">{{ lang[locale].fortepan_abc }}</a>
+    {% else %}
+      <a class="header-nav__link header-nav__link--top header-nav__link--separator-after" href="/{{ locale }}/projects/">{{ lang[locale].projects }}</a>
+    {% endif %}
     <a class="header-nav__link" href="mailto:fortepan@gmail.com">{{ lang[locale].contact_us }}</a>
     <a class="header-nav__link header-nav__link--desktop-only" href="/{{ locale }}/privacy/">{{ lang[locale].privacy_policy }}</a>
     <div class="header-nav__link--hide-on-desktop">
@@ -129,8 +134,8 @@
       {% capture now %}{% now %}{% endcapture %}
       {% assign count = 0 %}
       {% for article in rss[locale] %}
-      {% assign title = article.title | split: ' – ' %}
-      {% assign content = article.contentSnippet | split: 'The post' %}
+      {% assign article_title = article.title | split: ' – ' %}
+      {% assign article_content = article.contentSnippet | split: 'The post' %}
       {% capture date_ms %}{% date_to_ms article.isoDate %}{% endcapture %}
       {% if date_ms < now and count < 4 %}
       {% assign count = count | plus: 1 %}
@@ -139,12 +144,12 @@
           data-date="{{ article.isoDate }}"
       >
         <header class="header-nav__notifications__message__header">
-          <h5 class="header-nav__notifications__message__title"><a href="{{ article.link }}" target="_blank">{{ title[0] }}</a></h5>
+          <h5 class="header-nav__notifications__message__title"><a href="{{ article.link }}" target="_blank">{{ article_title[0] }}</a></h5>
           <span class="header-nav__notifications__message__date">{% date article.isoDate, locale %}</span>
         </header>
         <div class="header-nav__notifications__message__content">
-          {% if title[1] %}<p><a href="{{ article.link }}" target="_blank">{{ title[1] }}</a></p>{% endif %}
-          <p>{{ content[0] }}</p>
+          {% if article_title[1] %}<p><a href="{{ article.link }}" target="_blank">{{ article_title[1] }}</a></p>{% endif %}
+          <p>{{ article_content[0] }}</p>
           <p><a href="{{ article.link }}" target="_blank">{{ lang[locale].read_more }} →</a></p>
         </div>
       </li>
