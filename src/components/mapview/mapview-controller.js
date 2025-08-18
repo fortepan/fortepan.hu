@@ -18,12 +18,19 @@ export default class extends Controller {
     this.groupMarkers = []
   }
 
+  getTime() {
+    return `[${new Date().toLocaleTimeString("en-GB")}:${String(new Date().getMilliseconds()).padStart(3, "0")}] -`
+  }
+
   async show() {
     trigger("loader:show", { id: "loaderBase" })
 
     this.element.classList.add("is-visible")
+    console.log(this.getTime(), "initMap")
 
     await this.initMap()
+
+    console.log(this.getTime(), "initMap finished")
 
     trigger("loader:hide", { id: "loaderBase" })
   }
@@ -37,7 +44,7 @@ export default class extends Controller {
   async initMap() {
     if (!this.map) {
       const loader = new Loader({
-        apiKey: "AIzaSyDM5TKRFlszuRdq-Wal3Y3Zf9TzvoRPgLw",
+        apiKey: "AIzaSyAotaPmPmNRqB3HN7JgB8DVjcGKp7ZuJ74",
         version: "weekly",
         libraries: ["maps", "marker", "geometry"],
       })
@@ -49,7 +56,7 @@ export default class extends Controller {
           lat: 47.4979,
           lng: 19.0402,
         },
-        zoom: 18,
+        zoom: 15,
         mapId: "ForteMap",
       })
 
@@ -87,6 +94,7 @@ export default class extends Controller {
     data.sort((a, b) => a.year - b.year) // sort the photos by year, ascending order
 
     const mapMarker = document.getElementById("mapmarker-template").content.firstElementChild.cloneNode(true)
+    // const mapMarker = document.createElement("div")
 
     mapMarker.isGroup = true
     mapMarker.classList.add("is-multiple")
@@ -183,6 +191,9 @@ export default class extends Controller {
         const loc = data.locations.find(l => l.shooting_location > 0) || data.locations[0]
 
         const mapMarker = document.getElementById("mapmarker-template").content.firstElementChild.cloneNode(true)
+        // const mapMarker = document.createElement("div")
+        // mapMarker.classList.add("mapmarker")
+
         mapMarker.data = data
         mapMarker.id = `marker-${data.mid}`
 
@@ -204,19 +215,6 @@ export default class extends Controller {
     })
 
     this.clusterer.addMarkers(markersToAdd)
-
-    /* console.log(
-      "before:",
-      beforeMarkers,
-      "removed:",
-      markersRemoved,
-      "after removal:",
-      afterRemoved,
-      "new markers:",
-      markersToAdd.length,
-      "new total:",
-      this.markers.length
-    ) */
 
     // this.map.fitBounds(bounds)
   }
@@ -244,13 +242,10 @@ export default class extends Controller {
       if (!this.mapDataLoading) {
         this.mapDataLoading = true
 
-        trigger("loader:show", { id: "loaderBase" })
         trigger("thumbnailbar:hide")
         trigger("photosCarousel:close")
 
-        this.clusterer.clearMarkers()
-        // clear group markers
-        this.clearGroupMarkers()
+        trigger("loader:show", { id: "loaderBase" })
 
         const mb = this.map.getBounds()
 
@@ -262,10 +257,29 @@ export default class extends Controller {
           bottom_right: { lat: mb.getSouthWest().lat(), lng: mb.getSouthWest().lng() },
         }
 
+        let start = Date.now()
+        console.log(this.getTime(), "loading data")
         const photos = await photoManager.loadMapPhotoData(bounds)
+        let t = Date.now() - start
+        console.log(
+          this.getTime(),
+          `finish loading ${photos.length} photos in:`,
+          `${String(Math.floor(t / 1000)).padStart(2, "0")}:${String(Math.floor(t % 1000)).padStart(3, "0")}`
+        )
 
-        // this.clearMarkers()
+        this.clusterer.clearMarkers()
+        // clear group markers
+        this.clearGroupMarkers()
+
+        start = Date.now()
+        console.log(this.getTime(), "update markers")
         this.updateMarkers(photos)
+        t = Date.now() - start
+        console.log(
+          this.getTime(),
+          "update markers finished in:",
+          `${String(Math.floor(t / 1000)).padStart(2, "0")}:${String(Math.floor(t % 1000)).padStart(3, "0")}`
+        )
 
         trigger("loader:hide", { id: "loaderBase" })
 
