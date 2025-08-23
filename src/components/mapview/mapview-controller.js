@@ -5,8 +5,11 @@ import { MarkerClusterer, SuperClusterAlgorithm } from "@googlemaps/markercluste
 
 import { trigger } from "../../js/utils"
 import photoManager from "../../js/photo-manager"
+import { appState } from "../../js/app"
 
 const MAX_CLUSTERER_ZOOM = 22
+const GOOGLE_MAPS_KEY = "AIzaSyAotaPmPmNRqB3HN7JgB8DVjcGKp7ZuJ74"
+const GOOGLE_MAPS_ID = "d6ac709a2949ac5eed859912"
 
 export default class extends Controller {
   static get targets() {
@@ -44,7 +47,7 @@ export default class extends Controller {
   async initMap() {
     if (!this.map) {
       const loader = new Loader({
-        apiKey: "AIzaSyAotaPmPmNRqB3HN7JgB8DVjcGKp7ZuJ74",
+        apiKey: GOOGLE_MAPS_KEY,
         version: "weekly",
         libraries: ["maps", "marker", "geometry"],
       })
@@ -57,7 +60,8 @@ export default class extends Controller {
           lng: 19.0402,
         },
         zoom: 15,
-        mapId: "ForteMap",
+        mapId: GOOGLE_MAPS_ID,
+        colorScheme: appState("theme--light") ? this.google.maps.ColorScheme.LIGHT : this.google.maps.ColorScheme.DARK,
       })
 
       this.map.addListener("bounds_changed", this.onBoundsChange.bind(this))
@@ -123,7 +127,13 @@ export default class extends Controller {
   }
 
   toggleMapStyles() {
-    // TODO if needed
+    // TODO: dynamic theme changing is not supported, need to re-initalize the map or reload the page
+    /*
+      if (!this.map) return
+
+      this.map.setOptions({
+      colorScheme: appState("theme--light") ? this.google.maps.ColorScheme.LIGHT : this.google.maps.ColorScheme.DARK,
+    }) */
   }
 
   getDistanceBetween(lat1, lon1, lat2, lon2) {
