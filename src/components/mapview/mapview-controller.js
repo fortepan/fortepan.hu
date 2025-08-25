@@ -3,7 +3,7 @@ import { Controller } from "@hotwired/stimulus"
 import { Loader } from "@googlemaps/js-api-loader"
 import { MarkerClusterer, SuperClusterAlgorithm } from "@googlemaps/markerclusterer"
 
-import { trigger } from "../../js/utils"
+import { getLocale, getURLParams, trigger } from "../../js/utils"
 import photoManager from "../../js/photo-manager"
 import { appState } from "../../js/app"
 
@@ -54,12 +54,14 @@ export default class extends Controller {
 
       this.google = await loader.load()
 
+      const params = getURLParams()
+
       this.map = new this.google.maps.Map(this.mapTarget, {
         center: {
-          lat: 47.4979,
-          lng: 19.0402,
+          lat: Number(params?.center?.split(",")[0]) || 47.4979,
+          lng: Number(params?.center?.split(",")[1]) || 19.0402,
         },
-        zoom: 15,
+        zoom: Number(params?.zoom) || 15,
         mapId: GOOGLE_MAPS_ID,
         colorScheme: appState("theme--light") ? this.google.maps.ColorScheme.LIGHT : this.google.maps.ColorScheme.DARK,
       })
@@ -127,13 +129,7 @@ export default class extends Controller {
   }
 
   toggleMapStyles() {
-    // TODO: dynamic theme changing is not supported, need to re-initalize the map or reload the page
-    /*
-      if (!this.map) return
-
-      this.map.setOptions({
-      colorScheme: appState("theme--light") ? this.google.maps.ColorScheme.LIGHT : this.google.maps.ColorScheme.DARK,
-    }) */
+    if (this.map) window.location.reload()
   }
 
   getDistanceBetween(lat1, lon1, lat2, lon2) {
@@ -257,6 +253,8 @@ export default class extends Controller {
 
         trigger("loader:show", { id: "loaderBase" })
 
+        this.pushHistoryState()
+
         const mb = this.map.getBounds()
 
         const bounds = {
@@ -326,5 +324,21 @@ export default class extends Controller {
 
   onThumbnailsBarClosed() {
     document.querySelectorAll(".mapmarker").forEach(marker => marker.classList.remove("is-selected"))
+  }
+
+  pushHistoryState() {
+    if (this.map) {
+      window.history.pushState(
+        null,
+        null,
+        `/${getLocale()}/map/?center=${this.map
+          .getCenter()
+          .lat()
+          .toFixed(4)},${this.map
+          .getCenter()
+          .lng()
+          .toFixed(4)}&zoom=${this.map.getZoom()}`
+      )
+    }
   }
 }
