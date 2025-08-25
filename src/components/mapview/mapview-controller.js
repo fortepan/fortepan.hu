@@ -328,17 +328,17 @@ export default class extends Controller {
 
   pushHistoryState() {
     if (this.map) {
-      window.history.pushState(
-        null,
-        null,
-        `/${getLocale()}/map/?center=${this.map
-          .getCenter()
-          .lat()
-          .toFixed(4)},${this.map
-          .getCenter()
-          .lng()
-          .toFixed(4)}&zoom=${this.map.getZoom()}`
-      )
+      const lat = this.map
+        .getCenter()
+        .lat()
+        .toFixed(4)
+      const lng = this.map
+        .getCenter()
+        .lng()
+        .toFixed(4)
+      const zoom = this.map.getZoom()
+
+      window.history.pushState(null, null, `/${getLocale()}/map/?center=${lat},${lng}&zoom=${zoom}`)
     }
   }
 }
