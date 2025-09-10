@@ -3,7 +3,11 @@
     {
       "name": "45 boldog, boldogtalan év",
       "date": "2025-09-08T00:00:00.000Z",
-      "cover_image": "300069"
+      "cover_image": "300069",
+      "hu": {
+        "title": "45 boldog, boldogtalan év",
+        "blurb": "A Fortepan friss kiadásába az államszocializmus éveiből válogattunk 3000 képet. A fotókon egyszerre jelennek meg a boldogtalan történelmi és a boldog(abb) emberi jelenetek, helyzetek. Igy próbálták meg szüleink át- és túlélni a XX. század második felét. Utazások és séták Budapesten, a Mátrában, vagy az NDK-ban. A szerencsésebbeknek, hazai konzervekkel, Párizsban. Minden jó lesz, de semmi sincs jól."
+      }
     },
     {
       "name": "Eötvös Loránd fényképei",
