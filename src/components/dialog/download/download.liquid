@@ -11,9 +11,19 @@
         {% inlineSVG src:"src/static/images/icons/24/icon-close.svg" class:"button-circular__icon" %}
         <div class="button-circular__label">{{ lang[locale].close }}</div>
       </div>
-      <h3 class="dialog__title">{{ lang[locale].download }}</h3>
 
-      <p class="dialog__content" data-dialog--download-target="content"></p>
+      <h3 class="dialog__title">{{ lang[locale].download }}</h3>
+      <p class="dialog__content">{{ lang[locale].dialog_download }}</p>
+
+      <div class="dialog-download__credits">
+        <p class="dialog__content dialog-download__credits__content" data-dialog--download-target="content"></p>
+        <a href="#" class="button-circular button-circular--no-background dialog-download__credits__icon"
+          data-action="click->dialog--download#onCopyClicked">
+            {% inlineSVG src:"src/static/images/icons/24/icon-copy.svg" class:"button-circular__icon" %}
+            <div class="button-circular__label">{{ lang[locale].copy_to_clipboard }}</div>
+        </a>
+      </div>
+
       <button class="button button--primary dialog__button" data-action="dialog--download#downloadImage">{{ lang[locale].dialog_download_action }}</button>
 
      {% include dialog/embed/upsell/upsell role:role %}
