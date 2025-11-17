@@ -30,6 +30,12 @@ export default class extends Controller {
   downloadImage(e) {
     if (e) e.preventDefault()
 
+    if (window.gtag) {
+      window.gtag("event", "download_image", {
+        photo_id: this.photoData.mid.toString(),
+      })
+    }
+
     const a = document.createElement("a")
     a.href = `${config().PHOTO_SOURCE_LARGE}${this.photoData.mid}.jpg`
     a.click()
