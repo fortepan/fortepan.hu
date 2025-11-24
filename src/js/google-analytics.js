@@ -19,6 +19,8 @@ const GA4 = {
     }
     gtag("js", new Date())
     gtag("config", "G-BQPYXSY6WP")
+
+    window.gtag = gtag
   },
 }
 

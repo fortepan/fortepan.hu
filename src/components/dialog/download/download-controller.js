@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 import config from "../../../data/siteConfig"
-import { lang } from "../../../js/utils"
+import { copyToClipboard } from "../../../js/utils"
 import { appState } from "../../../js/app"
 import photoManager from "../../../js/photo-manager"
 import listManager from "../../../js/list-manager"
@@ -15,10 +15,12 @@ export default class extends Controller {
     this.element.classList.add("is-visible")
 
     this.photoData = appState("is-lists") ? listManager.getSelectedPhoto() : photoManager.getSelectedPhotoData()
-    this.contentTarget.innerHTML = lang("dialog_download").replace(
-      "$donor",
-      `<br><b>Fortepan / ${this.photoData.donor}</b>`
-    )
+    this.photoCredits = `Fortepan / ${this.photoData.donor}`
+    if (this.photoData.author) {
+      this.photoCredits += ` / ${this.photoData.author}`
+    }
+
+    this.contentTarget.innerHTML = this.photoCredits
   }
 
   hide() {
@@ -28,8 +30,20 @@ export default class extends Controller {
   downloadImage(e) {
     if (e) e.preventDefault()
 
+    if (window.gtag) {
+      window.gtag("event", "download_image", {
+        photo_id: this.photoData.mid.toString(),
+      })
+    }
+
     const a = document.createElement("a")
     a.href = `${config().PHOTO_SOURCE_LARGE}${this.photoData.mid}.jpg`
     a.click()
+  }
+
+  onCopyClicked(e) {
+    if (e) e.preventDefault()
+
+    copyToClipboard(this.photoCredits)
   }
 }

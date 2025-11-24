@@ -1,6 +1,27 @@
 {
   "uploads": [
     {
+      "name": "45 boldog, boldogtalan év",
+      "date": "2025-09-07T00:00:00.000Z",
+      "cover_image": "302008",
+      "hu": {
+        "title": "45 boldog, boldogtalan év",
+        "blurb": "A Fortepan friss kiadásába az államszocializmus éveiből válogattunk 3000 képet. A fotókon egyszerre jelennek meg a boldogtalan történelmi és a boldog(abb) emberi jelenetek, helyzetek. Igy próbálták meg szüleink át- és túlélni a XX. század második felét. Utazások és séták Budapesten, a Mátrában, vagy az NDK-ban. A szerencsésebbeknek, Globus konzervekkel, Párizsban. Semmi sincs jól, de minden jó lesz.",
+        "actions": {
+          "best_of": "100 jó kép",
+          "all": "A teljes gyűjtemény"
+        }
+      },
+      "en": {
+        "title": "45 happy, unhappy years",
+        "blurb": "We selected 3,000 photos from the years of state socialism for the latest edition of Fortepan. The photos show both unhappy historical events and happy (or happier) human scenes and situations. This is how our parents tried to get through and survive the second half of the 20th century. Trips and walks in Budapest, to the Mátra Mountains, or to East Germany, the so-called GDR. For the luckier ones, with Hungarian canned food, in Paris. Nothing is OK for the moment, but everything will turn out fine in the end.",
+        "actions": {
+          "best_of": "100 best of",
+          "all": "all collection"
+        }
+      }
+    },
+    {
       "name": "Eötvös Loránd fényképei",
       "date": "2025-07-15T00:00:00.000Z",
       "cover_image": "303321",
