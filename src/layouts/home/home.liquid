@@ -68,9 +68,11 @@ layout: base/base.liquid
       <div class="home__intro__text">{{ content }}</div>
     </div>
 
-    {% if locale == "hu" %}<div class="home__yt-video">
+    {% if locale == "hu" %}
+    <div class="home__yt-video">
       <iframe width="100%"  style="aspect-ratio:16/9;" src="https://www.youtube-nocookie.com/embed/a-EYtrbGrlc?si=-rXuwzkNtnDOlavV&rel=0&modestbranding=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    </div>{% endif %}
+    </div>
+    {% endif %}
 
     {% comment %}
     <div class="home__usp home__usp--collections">
