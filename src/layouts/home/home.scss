@@ -516,3 +516,13 @@
     background-image: url("/images/project_logos/CapaCenterLogoInverz.png");
   }
 }
+
+.home__yt-video {
+  position: relative;
+  padding-bottom: 4.5rem;
+
+  iframe {
+    display: block;
+    border-radius: rem(4px);
+  }
+}
