@@ -3,7 +3,13 @@
     {
       "name": "Hat év egy fotóriporter életéből",
       "date": "2025-12-07T00:00:00.000Z",
-      "cover_image": "303925"
+      "cover_image": "303925",
+      "hu": {
+        "actions": {
+          "best_of": "50 jó kép",
+          "all": "A teljes gyűjtemény"
+        }
+      }
     },
     {
       "name": "45 boldog, boldogtalan év",
