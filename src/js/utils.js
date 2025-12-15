@@ -230,3 +230,17 @@ export const escapeHTML = unsafe => {
       })
     : ""
 }
+
+export const formatNumber = number => {
+  const options = {
+    useGrouping: true,
+    maximumFractionDigits: 2,
+  }
+
+  if (getLocale() === "en") {
+    options.notation = "compact"
+    options.compactDisplay = "short"
+  }
+
+  return new Intl.NumberFormat(getLocale(), options).format(number)
+}
