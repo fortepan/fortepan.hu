@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
-import { trigger } from "../../js/utils"
+import { formatNumber, trigger } from "../../js/utils"
 
 const MARKER_PHOTO_LIMIT = 150
 
@@ -45,10 +45,14 @@ export default class extends Controller {
 
   init() {
     if (!this.ready) {
-      if (this.element.data.length) {
+      if (this.element.data.doc_count || this.element.data[0]?.doc_count) {
+        // cluster
+        this.counterTarget.textContent = formatNumber(this.element.data.doc_count || this.element.counter)
+        this.setId = this.element.id.replace("marker-", "") || `cluster-${this.element.data.key}`
+      } else if (this.element.data.length) {
         // group
         this.currentIndex = 0
-        this.counterTarget.textContent = this.element.data.length
+        this.counterTarget.textContent = formatNumber(this.element.counter)
 
         this.setId =
           this.element.id.replace("marker-", "") ||
@@ -59,7 +63,11 @@ export default class extends Controller {
         this.setId = this.element.id.replace("marker-", "") || `${this.element.data.mid}}`
       }
 
-      if (this.element.data.length > MARKER_PHOTO_LIMIT) {
+      if (
+        this.element.data.doc_count ||
+        this.element.data[0]?.doc_count ||
+        this.element.data.length > MARKER_PHOTO_LIMIT
+      ) {
         this.element.classList.add("is-over-limit")
       } else {
         const thumbnails = document
@@ -99,7 +107,12 @@ export default class extends Controller {
   }
 
   selectPhoto(e, i) {
-    if ((e && e.detail?.setId !== this.setId) || this.element.data.length > MARKER_PHOTO_LIMIT) return
+    if (
+      (e && e.detail?.setId !== this.setId) ||
+      this.element.data.length > MARKER_PHOTO_LIMIT ||
+      this.element.data.doc_count
+    )
+      return
 
     let index
 

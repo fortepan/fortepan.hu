@@ -8,6 +8,7 @@ import photoManager from "../../js/photo-manager"
 import { appState } from "../../js/app"
 
 const MAX_CLUSTERER_ZOOM = 22
+const MAX_INDIVIDUAL_MARKERS = 640
 const GOOGLE_MAPS_KEY = "AIzaSyAotaPmPmNRqB3HN7JgB8DVjcGKp7ZuJ74"
 const GOOGLE_MAPS_ID = "d6ac709a2949ac5eed859912"
 
@@ -29,11 +30,11 @@ export default class extends Controller {
     trigger("loader:show", { id: "loaderBase" })
 
     this.element.classList.add("is-visible")
-    console.log(this.getTime(), "initMap")
+    // console.log(this.getTime(), "initMap")
 
     await this.initMap()
 
-    console.log(this.getTime(), "initMap finished")
+    // console.log(this.getTime(), "initMap finished")
 
     trigger("loader:hide", { id: "loaderBase" })
   }
@@ -41,7 +42,7 @@ export default class extends Controller {
   hide() {
     delete this.delayedBounds
     this.element.classList.remove("is-visible")
-    clearTimeout(this.updateTimer)
+    clearTimeout(this.onBoundsChangeTimer)
   }
 
   async initMap() {
@@ -50,18 +51,25 @@ export default class extends Controller {
         apiKey: GOOGLE_MAPS_KEY,
         version: "weekly",
         libraries: ["maps", "marker", "geometry"],
+        language: getLocale(),
       })
 
       this.google = await loader.load()
 
       const params = getURLParams()
 
+      if (!params.gc && params.gb) {
+        const gtl = params.gb.split(",").slice(0, 2)
+        const gbr = params.gb.split(",").slice(2, 4)
+        params.gc = `${(Number(gtl[0]) + Number(gbr[0])) / 2},${(Number(gtl[1]) + Number(gbr[1])) / 2}`
+      }
+
       this.map = new this.google.maps.Map(this.mapTarget, {
         center: {
-          lat: Number(params?.center?.split(",")[0]) || 47.4979,
-          lng: Number(params?.center?.split(",")[1]) || 19.0402,
+          lat: Number(params?.gc?.split(",")[0]) || 47.4979,
+          lng: Number(params?.gc?.split(",")[1]) || 19.0402,
         },
-        zoom: Number(params?.zoom) || 15,
+        zoom: Number(params?.gz) || 15,
         mapId: GOOGLE_MAPS_ID,
         colorScheme: appState("theme--light") ? this.google.maps.ColorScheme.LIGHT : this.google.maps.ColorScheme.DARK,
       })
@@ -89,25 +97,31 @@ export default class extends Controller {
   }
 
   renderClusterMarker({ count, position, markers }) {
-    // TODO: build the proper group markers here instead of the custom grouping
-
     const data = []
+    let counter = count
 
-    markers.forEach(marker => {
-      data.push(photoManager.getPhotoDataByID(marker.querySelector(".mapmarker").data.mid))
+    markers.forEach((marker, i) => {
+      if (marker.querySelector(".mapmarker").data.mid) {
+        // individual photo marker
+        data.push(photoManager.getPhotoDataByID(marker.querySelector(".mapmarker").data.mid))
+      } else {
+        // ES cluster marker
+        if (i === 0) counter = 0 // reset counter for clusters
+        data.push(marker.querySelector(".mapmarker").data)
+        counter += marker.querySelector(".mapmarker").data.doc_count
+      }
     })
 
-    data.sort((a, b) => a.year - b.year) // sort the photos by year, ascending order
+    if (data[0].year) data.sort((a, b) => a.year - b.year) // sort the photos by year, ascending order
 
     const mapMarker = document.getElementById("mapmarker-template").content.firstElementChild.cloneNode(true)
-    // const mapMarker = document.createElement("div")
 
     mapMarker.isGroup = true
     mapMarker.classList.add("is-multiple")
 
     mapMarker.data = data
     mapMarker.id = `marker-${data[0].mid}-${data[data.length - 1].mid}-${data.length}`
-    mapMarker.count = count
+    mapMarker.counter = counter
 
     const markerElement = new this.google.maps.marker.AdvancedMarkerElement({
       map: this.map,
@@ -116,7 +130,6 @@ export default class extends Controller {
     })
 
     this.groupMarkers.push({ id: mapMarker.id, element: markerElement })
-    // bounds.extend({ lat: loc.lat, lng: loc.lon })
 
     return markerElement
   }
@@ -130,17 +143,6 @@ export default class extends Controller {
 
   toggleMapStyles() {
     if (this.map) window.location.reload()
-  }
-
-  getDistanceBetween(lat1, lon1, lat2, lon2) {
-    if (this.google) {
-      const p1 = new this.google.maps.LatLng(lat1, lon1)
-      const p2 = new this.google.maps.LatLng(lat2, lon2)
-      const distance = this.google.maps.geometry.spherical.computeDistanceBetween(p1, p2)
-      return distance
-    }
-
-    return -1
   }
 
   clearMarkers() {
@@ -168,18 +170,12 @@ export default class extends Controller {
   }
 
   updateMarkers(photosData) {
-    // const bounds = new this.google.maps.LatLngBounds()
-
-    // let markersRemoved = 0
-    // const beforeMarkers = this.markers.length
-
     // remove the markers that are not in the set
     this.markers.forEach((marker, index) => {
-      const needed = !!photosData.find(photo => photo.mid.toString() === marker.mid.toString())
+      const needed = !!photosData.items.find(photo => photo.mid.toString() === marker.mid.toString())
+
       if (!needed) {
-        // markersRemoved += 1
         this.google.maps.event.clearListeners(marker.element, "click")
-        // this.clusterer.removeMarker(marker.element)
         this.markers.splice(index, 1) // Remove the marker from the list of managed markers
       }
     })
@@ -187,30 +183,25 @@ export default class extends Controller {
     const markersToAdd = []
 
     // create new markers
-    photosData.forEach(data => {
+    photosData.items.forEach(data => {
       // check if there is a marker already existing for this image
       const existingMarker = this.markers.find(marker => marker.mid.toString() === data.mid.toString())
       let markerToAdd
 
       // only create the marker if it doesn't exist
       if (!existingMarker) {
-        const loc = data.locations.find(l => l.shooting_location > 0) || data.locations[0]
-
         const mapMarker = document.getElementById("mapmarker-template").content.firstElementChild.cloneNode(true)
-        // const mapMarker = document.createElement("div")
-        // mapMarker.classList.add("mapmarker")
 
         mapMarker.data = data
         mapMarker.id = `marker-${data.mid}`
 
         const markerElement = new this.google.maps.marker.AdvancedMarkerElement({
           map: this.map,
-          position: { lat: loc.lat, lng: loc.lon },
+          position: { lat: data.location.lat, lng: data.location.lon },
           content: mapMarker,
         })
 
         this.markers.push({ id: mapMarker.id, mid: data.mid, element: markerElement })
-        // bounds.extend({ lat: loc.lat, lng: loc.lon })
 
         markerToAdd = markerElement
       } else {
@@ -219,6 +210,30 @@ export default class extends Controller {
 
       markersToAdd.push(markerToAdd)
     })
+
+    // display cluster markers coming from ES
+    if (photosData.clusters) {
+      photosData.clusters.forEach(data => {
+        const mapMarker = document.getElementById("mapmarker-template").content.firstElementChild.cloneNode(true)
+
+        mapMarker.isGroup = true
+        mapMarker.classList.add("is-multiple")
+
+        mapMarker.data = data
+        mapMarker.id = `marker-${data.key}`
+        mapMarker.count = data.doc_count
+
+        const markerElement = new this.google.maps.marker.AdvancedMarkerElement({
+          map: this.map,
+          position: { lat: data.center.location.lat, lng: data.center.location.lon },
+          content: mapMarker,
+        })
+
+        this.markers.push({ id: mapMarker.id, mid: data.key, element: markerElement })
+
+        markersToAdd.push(markerElement)
+      })
+    }
 
     this.clusterer.addMarkers(markersToAdd)
 
@@ -242,9 +257,9 @@ export default class extends Controller {
   }
 
   async onBoundsChange() {
-    clearTimeout(this.updateTimer)
+    clearTimeout(this.onBoundsChangeTimer)
 
-    this.updateTimer = setTimeout(async () => {
+    this.onBoundsChangeTimer = setTimeout(async () => {
       if (!this.mapDataLoading) {
         this.mapDataLoading = true
 
@@ -255,39 +270,24 @@ export default class extends Controller {
 
         this.pushHistoryState()
 
-        const mb = this.map.getBounds()
+        const params = getURLParams()
+        params.size = 0
+        params.clustered = true
 
-        const bounds = {
-          top_left: {
-            lat: mb.getNorthEast().lat(),
-            lng: mb.getNorthEast().lng(),
-          },
-          bottom_right: { lat: mb.getSouthWest().lat(), lng: mb.getSouthWest().lng() },
+        let photoData = await photoManager.loadPhotoData(params)
+
+        if (photoData?.clusters?.length && photoData.total <= MAX_INDIVIDUAL_MARKERS) {
+          // we have clusters and total is <= MAX_INDIVIDUAL_MARKERS, reloading without clustering
+          params.size = 9999
+          params.clustered = false
+          photoData = await photoManager.loadPhotoData(params)
         }
-
-        let start = Date.now()
-        console.log(this.getTime(), "loading data")
-        const photos = await photoManager.loadMapPhotoData(bounds)
-        let t = Date.now() - start
-        console.log(
-          this.getTime(),
-          `finish loading ${photos.length} photos in:`,
-          `${String(Math.floor(t / 1000)).padStart(2, "0")}:${String(Math.floor(t % 1000)).padStart(3, "0")}`
-        )
 
         this.clusterer.clearMarkers()
         // clear group markers
         this.clearGroupMarkers()
 
-        start = Date.now()
-        console.log(this.getTime(), "update markers")
-        this.updateMarkers(photos)
-        t = Date.now() - start
-        console.log(
-          this.getTime(),
-          "update markers finished in:",
-          `${String(Math.floor(t / 1000)).padStart(2, "0")}:${String(Math.floor(t % 1000)).padStart(3, "0")}`
-        )
+        this.updateMarkers(photoData)
 
         trigger("loader:hide", { id: "loaderBase" })
 
@@ -328,17 +328,45 @@ export default class extends Controller {
 
   pushHistoryState() {
     if (this.map) {
-      const lat = this.map
-        .getCenter()
-        .lat()
-        .toFixed(4)
-      const lng = this.map
-        .getCenter()
-        .lng()
-        .toFixed(4)
+      let params = getURLParams()
+      delete params.gb
+      delete params.gc
+      delete params.gz
+      params = new URLSearchParams(params).toString()
+
+      const mb = this.map.getBounds()
+      const b = {
+        tl: {
+          lat: mb
+            .getNorthEast()
+            .lat()
+            .toFixed(4),
+          lng: mb
+            .getSouthWest()
+            .lng()
+            .toFixed(4),
+        },
+        br: {
+          lat: mb
+            .getSouthWest()
+            .lat()
+            .toFixed(4),
+          lng: mb
+            .getNorthEast()
+            .lng()
+            .toFixed(4),
+        },
+      }
+
       const zoom = this.map.getZoom()
 
-      window.history.pushState(null, null, `/${getLocale()}/map/?center=${lat},${lng}&zoom=${zoom}`)
+      window.history.pushState(
+        null,
+        null,
+        `/${getLocale()}/map/?gb=${b.tl.lat},${b.tl.lng},${b.br.lat},${b.br.lng}&gz=${Math.round(zoom)}${
+          params ? `&${params}` : ""
+        }`
+      )
     }
   }
 }

@@ -11,12 +11,20 @@ const transformResults = resp => {
   }
 
   // adding the aggregated years (photo count per all year in search range) to the results
-  if (resp.aggregations && resp.aggregations.years && resp.aggregations.years.buckets) {
+  if (resp.aggregations?.years?.buckets) {
     r.years = []
     resp.aggregations.years.buckets.forEach(year => {
       if (year.key > 0) {
         r.years.push({ year: year.key, count: year.doc_count })
       }
+    })
+  }
+
+  // adding clustered geo buckets if they're present in the response (map view)
+  if (resp.aggregations?.clusters?.buckets) {
+    r.clusters = []
+    resp.aggregations.clusters.buckets.forEach(bucket => {
+      r.clusters.push(bucket)
     })
   }
 
@@ -39,6 +47,26 @@ const transformResults = resp => {
       item.city = l === "hu" ? h.varos_name : h.varos_en
       item.place = l === "hu" ? h.helyszin_name : h.helyszin_en
 
+      if (h.latlon && h.latlon.length) {
+        let latlon
+
+        if (
+          h.latlon.length > 1 &&
+          h.latlon.length === h.shooting_location.length &&
+          h.shooting_location.findIndex(i => i === true || i === 1) > -1
+        ) {
+          latlon = h.latlon[h.shooting_location.findIndex(i => i === true || i === 1)]
+        } else {
+          // eslint-disable-next-line prefer-destructuring
+          latlon = h.latlon[0]
+        }
+
+        item.location = {
+          lat: Number(latlon.split(",")[0]),
+          lon: Number(latlon.split(",")[1]),
+        }
+      }
+
       r.items.push(item)
     })
   }
@@ -59,14 +87,7 @@ const elasticRequest = async data => {
   const resp = await fetch(url, {
     method: "POST",
     headers: {
-      Authorization: `Basic ${btoa(
-        // eslint-disable-next-line no-nested-ternary
-        q.esurl && q.esauth
-          ? q.esauth
-          : appState("is-dev")
-          ? "agZbr6VTXh:PXUnDNzGgeB6f8LjWaQ52A"
-          : "reader:r3adm31024read"
-      )}`,
+      Authorization: `Basic ${btoa(q.esurl && q.esauth ? q.esauth : "reader:r3adm31024read")}`,
       "Content-Type": "application/json;charset=UTF-8",
     },
     body: JSON.stringify(data),
@@ -85,6 +106,8 @@ const search = params => {
         must_not: [],
       },
     }
+
+    let aggs
 
     const sortOrder = params && params.reverseOrder ? "desc" : "asc"
     const sortOrderIverse = params && params.reverseOrder ? "asc" : "desc"
@@ -289,37 +312,55 @@ const search = params => {
       query.bool.must_not.push(...params.exclude)
     }
 
-    /* // location specific search
-    if (params.area) {
-      const hungaryBounds = {
-        body: {
-          query: {
-            bool: {
-              filter: {
-                geo_bounding_box: {
-                  location: {
-                    top_left: {
-                      lat: 48.59,
-                      lon: 16.11,
-                    },
-                    bottom_right: {
-                      lat: 45.73,
-                      lon: 22.9,
-                    },
-                  },
+    // location specific search
+    if (params.gb) {
+      const gtl = params.gb.split(",").slice(0, 2)
+      const gbr = params.gb.split(",").slice(2, 4)
+
+      if (!query.bool.filter) query.bool.filter = []
+
+      query.bool.filter.push({
+        geo_bounding_box: {
+          latlon: {
+            top_left: {
+              lat: Number(gtl[0]),
+              lon: Number(gtl[1]),
+            },
+            bottom_right: {
+              lat: Number(gbr[0]),
+              lon: Number(gbr[1]),
+            },
+          },
+        },
+      })
+
+      // clustering hits
+      if (params.clustered) {
+        params.size = 0
+        aggs = {
+          clusters: {
+            geotile_grid: {
+              field: "latlon",
+              precision: Number(params.gz) || 10,
+            },
+            aggs: {
+              center: {
+                geo_centroid: {
+                  field: "latlon",
                 },
               },
             },
           },
-        },
+        }
       }
-    } */
+    }
 
     const body = {
-      size: params.size || 30,
+      size: params.size === 0 ? 0 : params.size || 30,
       sort,
       track_total_hits: true,
       query,
+      aggs,
     }
 
     if (params.search_after) {

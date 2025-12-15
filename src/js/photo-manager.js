@@ -2,27 +2,6 @@ import config from "../data/siteConfig"
 import { lang, trigger, setPageMeta } from "./utils"
 import searchAPI from "../api/search"
 
-// Temp location data - TODO: refactor and remove later ↓
-const locationData = {}
-
-const loadLocationData = async () => {
-  if (!locationData.data) {
-    const url = `/temp_locations.json`
-
-    const resp = await fetch(url, {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    })
-
-    locationData.data = await resp.json()
-  }
-}
-// Temp location data - TODO: refactor and remove later ↑
-
 // creating a context object to store the latest request parameters and results
 const photoData = {}
 
@@ -43,16 +22,6 @@ const loadPhotoData = async (params, silent, lockContext) => {
   }
 
   const resp = await searchAPI.search(params)
-
-  // Temp location data - TODO: refactor and remove later ↓
-  await loadLocationData()
-
-  resp.items.forEach(imgData => {
-    if (!imgData.locations) {
-      imgData.locations = locationData.data.find(obj => obj.mid.toString() === imgData.mid.toString())?.locations
-    }
-  })
-  // Temp location data - TODO: refactor and remove later ↑
 
   // storing the items so it can be accessed later
   if (!photoData.result) {
@@ -111,6 +80,10 @@ const loadPhotoData = async (params, silent, lockContext) => {
     total: photoData.result.total,
     years: photoData.result.years,
     reverseOrder: params && params.reverseOrder,
+  }
+
+  if (resp.clusters) {
+    result.clusters = resp.clusters
   }
 
   if (!silent) {
@@ -574,88 +547,6 @@ const clearAllData = () => {
   trigger("photoManager:allDataCleared")
 }
 
-const loadMapPhotoData = async bounds => {
-  if (bounds && bounds.top_left && bounds.bottom_right) {
-    await loadLocationData()
-
-    // storing the items so it can be accessed later
-    if (!photoData.result) {
-      photoData.result = {}
-    }
-
-    // filter the locationdata to the coordinates
-    const filteredList = locationData.data.filter(data => {
-      if (data.locations && data.locations.length) {
-        const p = data.locations.find(loc => loc.shooting_location > 0) || data.locations[0]
-
-        return (
-          p.lat <= bounds.top_left.lat &&
-          p.lat >= bounds.bottom_right.lat &&
-          p.lon <= bounds.top_left.lng &&
-          p.lon >= bounds.bottom_right.lng
-        )
-      }
-      return false
-    })
-
-    // collect the ids that we need to load
-    const needToLoad = []
-
-    filteredList.forEach(data => {
-      if (
-        !photoData.result.items ||
-        !photoData.result.items.find(item => item.mid.toString() === data.mid.toString())
-      ) {
-        needToLoad.push(data.mid)
-      }
-    })
-
-    // load the image data for the specified ids
-    const resp = await searchAPI.getDataById(needToLoad)
-
-    // adding the location data to the results
-    resp.items.forEach(imgData => {
-      if (!imgData.locations) {
-        imgData.locations = locationData.data.find(obj => obj.mid.toString() === imgData.mid.toString())?.locations
-      }
-    })
-
-    if (photoData.result.items) {
-      // add the new results to the end
-      photoData.result.items = photoData.result.items.concat(resp.items)
-    } else if (resp.items) {
-      photoData.result.items = [].concat(resp.items)
-    } else {
-      photoData.result.items = []
-    }
-
-    // storing the latest loaded set as well
-    photoData.result.latestItems = resp.items
-
-    // creating the response
-    const response = []
-
-    filteredList.forEach(listData => {
-      const imgData = photoData.result.items.find(item => item.mid.toString() === listData.mid.toString())
-      if (imgData) {
-        response.push(imgData)
-      }
-    })
-
-    /* console.log(
-      "!!!!!!!!!!!!!!!!!!!",
-      filteredList.length,
-      needToLoad.length,
-      response.length,
-      photoData.result.items.length
-    ) */
-
-    return response
-  }
-
-  return false
-}
-
 export default {
   loadPhotoData,
   hasData,
@@ -683,5 +574,4 @@ export default {
   clearAllData,
   getNextPhotoId,
   getPrevPhotoId,
-  loadMapPhotoData,
 }
