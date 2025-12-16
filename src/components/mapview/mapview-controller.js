@@ -8,7 +8,8 @@ import photoManager from "../../js/photo-manager"
 import { appState } from "../../js/app"
 
 const MAX_CLUSTERER_ZOOM = 22
-const MAX_INDIVIDUAL_MARKERS = 640
+const MAX_INDIVIDUAL_MARKERS = 999
+
 const GOOGLE_MAPS_KEY = "AIzaSyAotaPmPmNRqB3HN7JgB8DVjcGKp7ZuJ74"
 const GOOGLE_MAPS_ID = "d6ac709a2949ac5eed859912"
 
@@ -69,7 +70,7 @@ export default class extends Controller {
           lat: Number(params?.gc?.split(",")[0]) || 47.4979,
           lng: Number(params?.gc?.split(",")[1]) || 19.0402,
         },
-        zoom: Number(params?.gz) || 15,
+        zoom: Number(params?.gz) || 12,
         mapId: GOOGLE_MAPS_ID,
         colorScheme: appState("theme--light") ? this.google.maps.ColorScheme.LIGHT : this.google.maps.ColorScheme.DARK,
       })
