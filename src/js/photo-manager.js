@@ -56,7 +56,11 @@ const loadPhotoData = async (params, silent, lockContext) => {
 
   // storing the aggregated years (photo count per all year in search range) in the results
   // -- only once per search context
-  if (!photoData.result.years || !photoData.result.total || (!lockContext && resp.years)) {
+  if (
+    (!params.disableAggregatedYears && !photoData.result.years) ||
+    !photoData.result.total ||
+    (!lockContext && resp.years)
+  ) {
     // load the total aggregated years if id or year is present (in wich case there's only one year loaded)
     if (!resp.years || resp.years.length <= 1) {
       const contextParams = {}

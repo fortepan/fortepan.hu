@@ -45,11 +45,16 @@ export default class extends Controller {
 
   init() {
     if (!this.ready) {
-      if (this.element.data.doc_count || this.element.data[0]?.doc_count) {
+      // element properties:
+      // - isESCluster
+      // - containsESCluster
+      // - isGroup
+
+      if (this.element.isESCluster) {
         // cluster
         this.counterTarget.textContent = formatNumber(this.element.data.doc_count || this.element.counter)
-        this.setId = this.element.id.replace("marker-", "") || `cluster-${this.element.data.key}`
-      } else if (this.element.data.length) {
+        this.setId = this.element.id.replace("marker-", "") || `${this.element.data.key}`
+      } else if (this.element.isGroup) {
         // group
         this.currentIndex = 0
         this.counterTarget.textContent = formatNumber(this.element.counter)
@@ -64,10 +69,12 @@ export default class extends Controller {
       }
 
       if (
-        this.element.data.doc_count ||
-        this.element.data[0]?.doc_count ||
-        this.element.data.length > MARKER_PHOTO_LIMIT
+        this.element.isESCluster ||
+        this.element.containsESCluster ||
+        (this.element.isGroup && this.element.counter > MARKER_PHOTO_LIMIT)
       ) {
+        // if the marker is an ES cluster, or a group contains an ES cluster, or a group with too many photos
+        // we don't render the thumbnails
         this.element.classList.add("is-over-limit")
       } else {
         const thumbnails = document
