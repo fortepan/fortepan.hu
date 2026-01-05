@@ -291,6 +291,19 @@ export default class extends Controller {
     }
   }
 
+  onPopState() {
+    const params = getURLParams()
+
+    if (params.gc && this.map) {
+      const gc = params.gc.split(",")
+      this.map.setCenter({ lat: Number(gc[0]), lng: Number(gc[1]) })
+    }
+
+    if (params.gz && this.map) {
+      this.map.setZoom(Number(params.gz))
+    }
+  }
+
   async onBoundsChange() {
     // clear markers when zoom is changed
     if (this.mapZoom !== this.map.getZoom()) {

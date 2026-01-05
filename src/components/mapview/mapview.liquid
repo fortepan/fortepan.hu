@@ -3,6 +3,7 @@
                mapview:hide@document->mapview#hide
                mapview:setbounds@document->mapview#setBounds
                theme:toggleTheme@document->mapview#toggleMapStyles
+               popstate@window->mapview#onPopState
 
                mapmarker:photoSelected@document->mapview#onMarkerPhotoSelected
                thumbnailbar:closed@document->mapview#onThumbnailsBarClosed"
