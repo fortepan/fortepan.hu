@@ -4,10 +4,10 @@ blockquote {
   border-left: rem(8px) solid $red;
 
   .theme--dark & {
-    color: $grey;
+    color: rgba($light-base, 0.7);
   }
 
   .theme--light & {
-    color: $grey;
+    color: rgba($dark-base, 0.7);
   }
 }

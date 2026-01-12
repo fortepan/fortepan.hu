@@ -221,6 +221,10 @@
     padding: 1.5rem 0;
   }
 
+  &__content {
+    flex: 0 0 50%;
+  }
+
   &__headline {
     font-size: rem(24px);
     flex: 0 0 50%;
@@ -232,6 +236,18 @@
     p {
       font-size: rem(14px);
       line-height: rem(24px);
+    }
+  }
+
+  &__yt-video {
+    position: relative;
+    margin: 2rem 0;
+    flex: 1 1 100%;
+
+    iframe {
+      display: block;
+      border-radius: rem(4px);
+      aspect-ratio: 16/9;
     }
   }
 }
