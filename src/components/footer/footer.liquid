@@ -10,7 +10,7 @@
     <a class="footer__link" href="/{{ locale }}/projects/">{{ lang[locale].projects }}</a>
     {% if locale == "hu" %}<a class="footer__link" href="/{{ locale }}/fortepan-abc/">{{ lang[locale].fortepan_abc }}</a>{% endif %}
     <small class="footer__small">
-    FORTEPAN ©2010-2022 &nbsp;·&nbsp;&nbsp;<a href="mailto:fortepan@gmail.com">{{ lang[locale].contact_us }}</a> &nbsp;·&nbsp;&nbsp;<a href="/{{ locale }}/privacy/">{{ lang[locale].privacy_policy }}</a><br/>
+    FORTEPAN ©2010-{{ 'now' | date: '%Y' }} &nbsp;·&nbsp;&nbsp;<a href="mailto:fortepan@gmail.com">{{ lang[locale].contact_us }}</a> &nbsp;·&nbsp;&nbsp;<a href="/{{ locale }}/privacy/">{{ lang[locale].privacy_policy }}</a><br/>
 under Creative Commons CC-BY-SA-3.0 licence
     </small>
     <div class="footer__icons">
