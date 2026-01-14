@@ -14,6 +14,34 @@ Anyagi támogatásával a Fortepan fenntartását és új gyűjtemények digital
 
 ---
 
-### Köszönjük kiemelt támogatóinknak
+### A Fortepan Archívum támogatói az elmúlt 12 hónapban
 
-> Köszönet Rényi Andreának, aki a Fortepan 2026. évi működését 800.000 Ft adománnyal támogatta.
+- 1%-os felajánlók
+- Animatiqua Kft.
+- Archive for Modern Conflict, Toronto
+- Bartal Csaba
+- Creative Europe (EU)
+- Eidolon Alapítvány
+- Illés Gábor
+- Kieselbach Tamás
+- Magyar Művészeti Akadémia
+- Mátyásfalvi János
+- MOL-Új Európa Alapítvány
+- Nemzeti Kulturális Alap
+- Polgár András
+- Rényi Andrea
+- Robert Capa Kortárs Művészeti Központ
+- Shiwaforce Kft.
+- Simó György
+- Szabó László
+- Varga Zoltán
+- Virág Judit
+
+### Korábbi támogatóink
+
+- Balogh Ákos
+- Bojár Gábor
+- Korányi G. Tamás
+- Lakatos Péter
+- Open Society Archives
+- Rév István

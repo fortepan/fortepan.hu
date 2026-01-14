@@ -14,6 +14,34 @@ Your financial support helps maintaining Fortepan and supporting the digitizatio
 
 ---
 
-### With special thanks to our supporters
+### Fortepan Archive supporters in the last 12 months
 
-> Our thanks to Andrea Rényi, who supported Fortepan’s operations in 2026 with a donation of 800,000 HUF.
+- 1% income tax donators
+- Animatiqua Kft.
+- Archive for Modern Conflict, Toronto
+- Csaba Bartal
+- Creative Europe (EU)
+- Eidolon Foundation
+- Gábor Illés
+- Tamás Kieselbach
+- Hungarian Academy of Arts
+- János Mátyásfalvi
+- MOL-Új Európa Alapítvány
+- Hungarian National Cultural Fund (NKA)
+- András Polgár
+- Andrea Rényi
+- Robert Capa Contemporary Photography Center
+- Shiwaforce Kft.
+- György Simó
+- László Szabó
+- Zoltán Varga
+- Judit Virág
+
+### Previous supporters
+
+- Ákos Balogh
+- Gábor Bojár
+- G. Tamás Korányi
+- Péter Lakatos
+- Open Society Archives
+- István Rév
