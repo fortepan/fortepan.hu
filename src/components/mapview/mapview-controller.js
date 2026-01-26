@@ -23,19 +23,11 @@ export default class extends Controller {
     this.groupMarkers = []
   }
 
-  getTime() {
-    return `[${new Date().toLocaleTimeString("en-GB")}:${String(new Date().getMilliseconds()).padStart(3, "0")}] -`
-  }
-
   async show() {
     trigger("loader:show", { id: "loaderBase" })
 
     this.element.classList.add("is-visible")
-    // console.log(this.getTime(), "initMap")
-
     await this.initMap()
-
-    // console.log(this.getTime(), "initMap finished")
 
     trigger("loader:hide", { id: "loaderBase" })
   }
@@ -88,7 +80,8 @@ export default class extends Controller {
       })
 
       this.clusterer.defaultOnClusterClick = this.clusterer.onClusterClick
-      this.clusterer.onClusterClick = this.onClusterClick.bind(this)
+      // this.clusterer.onClusterClick = this.onClusterClick.bind(this)
+      this.clusterer.onClusterClick = null
 
       if (this.delayedBounds) {
         this.setBounds({ detail: { bounds: this.delayedBounds } })
@@ -97,16 +90,12 @@ export default class extends Controller {
     }
   }
 
-  renderClusterMarker({
-    // count,
-    position,
-    markers,
-  }) {
+  renderClusterMarker(cluster) {
     const data = []
     let counter = 0
     let containsESCluster = false
 
-    markers.forEach(marker => {
+    cluster.markers.forEach(marker => {
       if (marker.querySelector(".mapmarker").isESCluster) {
         // this will a cluster of ES cluster marker
         data.push(marker.querySelector(".mapmarker").data)
@@ -126,15 +115,19 @@ export default class extends Controller {
     mapMarker.isGroup = true
     mapMarker.containsESCluster = containsESCluster
     mapMarker.classList.add("is-multiple")
+    mapMarker.cluster = cluster
 
     mapMarker.data = data
     mapMarker.id = `marker-${data[0].mid}-${data[data.length - 1].mid}-${data.length}`
     mapMarker.counter = counter
 
+    mapMarker.addEventListener("click", this.onClusterClick.bind(this))
+
     const markerElement = new this.google.maps.marker.AdvancedMarkerElement({
       map: this.map,
-      position,
+      position: cluster.position,
       content: mapMarker,
+      gmpClickable: true,
     })
 
     this.groupMarkers.push({ id: mapMarker.id, element: markerElement })
@@ -142,15 +135,16 @@ export default class extends Controller {
     return markerElement
   }
 
-  onClusterClick(e, cluster, map) {
-    if (e?.domEvent?.target.classList.contains("map-cluster-marker")) {
-      const markerElement = e.domEvent.target.parentElement
-      if (markerElement.classList.contains("is-es-cluster")) {
-        // for ES clusters
+  onClusterClick(e) {
+    if (e?.target?.classList.contains("map-cluster-marker")) {
+      const markerElement = e?.target?.parentElement
+      if (markerElement.isESCluster) {
+        // ES cluster marker is clicked
         this.map.fitBounds(this.geotileToBounds(markerElement.data.key, this.map))
-      } else {
+      } else if (markerElement.isGroup && markerElement.cluster) {
+        // grouped cluster marker clicked
         // call the default cluster click only when the cluster marker is clicked
-        this.clusterer.defaultOnClusterClick(e, cluster, map)
+        this.clusterer.defaultOnClusterClick(e, markerElement.cluster, this.map)
       }
     }
   }
@@ -183,7 +177,7 @@ export default class extends Controller {
 
     if (this.markers.length) {
       this.markers.forEach(marker => {
-        this.google.maps.event.clearListeners(marker.element, "click")
+        marker.element.removeEventListener("click", this.onClusterClick)
       })
     }
 
@@ -194,11 +188,10 @@ export default class extends Controller {
   clearGroupMarkers() {
     if (this.groupMarkers.length) {
       this.groupMarkers.forEach(marker => {
-        this.google.maps.event.clearListeners(marker.element, "click")
+        marker.element.removeEventListener("click", this.onClusterClick)
       })
     }
 
-    // this.clusterer.clearMarkers()
     this.groupMarkers.length = 0
   }
 
@@ -208,7 +201,7 @@ export default class extends Controller {
       const needed = !!photosData.items.find(photo => photo.mid.toString() === marker.mid.toString())
 
       if (!needed) {
-        this.google.maps.event.clearListeners(marker.element, "click")
+        marker.element.removeEventListener("click", this.onClusterClick)
         this.markers.splice(index, 1) // Remove the marker from the list of managed markers
       }
     })
@@ -262,7 +255,7 @@ export default class extends Controller {
           content: mapMarker,
         })
 
-        markerElement.addListener("click", this.onClusterClick.bind(this))
+        markerElement.addEventListener("click", this.onClusterClick.bind(this))
 
         this.markers.push({ id: mapMarker.id, mid: data.key, element: markerElement })
 

@@ -46,9 +46,10 @@ export default class extends Controller {
   init() {
     if (!this.ready) {
       // element properties:
-      // - isESCluster
-      // - containsESCluster
-      // - isGroup
+      // - isESCluster: it is a single ES cluster marker
+      // - isGroup: normal clustered group of markers
+      // - containsESCluster: the cluster marker contains at least one ES cluster marker
+      // - none of the above: normal single photo marker
 
       if (this.element.isESCluster) {
         // cluster

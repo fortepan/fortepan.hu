@@ -66,7 +66,7 @@
   },
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.16.10",
-    "@googlemaps/markerclusterer": "^2.5.3",
+    "@googlemaps/markerclusterer": "^2.6.2",
     "@hotwired/stimulus": "^3.2.1",
     "@hotwired/stimulus-webpack-helpers": "^1.0.1",
     "@tinacms/cli": "^1.4.0",
