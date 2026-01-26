@@ -21,6 +21,8 @@ export default class extends Controller {
   connect() {
     this.markers = []
     this.groupMarkers = []
+
+    this.boundOnClusterClick = this.onClusterClick.bind(this)
   }
 
   async show() {
@@ -80,7 +82,7 @@ export default class extends Controller {
       })
 
       this.clusterer.defaultOnClusterClick = this.clusterer.onClusterClick
-      // this.clusterer.onClusterClick = this.onClusterClick.bind(this)
+      // this.clusterer.onClusterClick = this.boundOnClusterClick
       this.clusterer.onClusterClick = null
 
       if (this.delayedBounds) {
@@ -121,7 +123,7 @@ export default class extends Controller {
     mapMarker.id = `marker-${data[0].mid}-${data[data.length - 1].mid}-${data.length}`
     mapMarker.counter = counter
 
-    mapMarker.addEventListener("click", this.onClusterClick.bind(this))
+    mapMarker.addEventListener("click", this.boundOnClusterClick)
 
     const markerElement = new this.google.maps.marker.AdvancedMarkerElement({
       map: this.map,
@@ -255,7 +257,7 @@ export default class extends Controller {
           content: mapMarker,
         })
 
-        markerElement.addEventListener("click", this.onClusterClick.bind(this))
+        markerElement.addEventListener("click", this.boundOnClusterClick)
 
         this.markers.push({ id: mapMarker.id, mid: data.key, element: markerElement })
 
