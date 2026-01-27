@@ -11,6 +11,14 @@
           "best_of": "100 jó kép",
           "all": "A teljes gyűjtemény"
         }
+      },
+      "en": {
+        "title": "The Photo Legacy of Anikó Gazda, architect and landmark conservationist",
+        "blurb": "For 25 years, Anikó Gazda photographed the changes and deterioration of the architectural values of Hungarian settlements. In her exceptional oeuvre, she revealed the dramatic transformation of the monuments proper and of monument-grade buildings and streetscapes of the Hungarian countryside. Her photographs document what we lost during the decades of socialism with the reconstruction or demolition of the characteristic buildings of villages and small towns that had developed over centuries. In addition to mansions, mills, wine press houses, roadside crosses, and synagogues, he also sought to showcase the values of contemporary architecture in Hungary and in Western Europe, taking a fresh glance at his homeland and of the wider world",
+        "actions": {
+          "best_of": "100 best of",
+          "all": "all collection"
+        }
       }
     },
     {
