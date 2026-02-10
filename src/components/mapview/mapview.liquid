@@ -6,7 +6,8 @@
                popstate@window->mapview#onPopState
 
                mapmarker:photoSelected@document->mapview#onMarkerPhotoSelected
-               thumbnailbar:closed@document->mapview#onThumbnailsBarClosed"
+               thumbnailbar:closed@document->mapview#onThumbnailsBarClosed
+               mapview:load@document->mapview#onBoundsChange"
 >
   <div class="map" id="MainMap" data-mapview-target="map"></div>
   {% include thumbnailbar/thumbnailbar.liquid %}

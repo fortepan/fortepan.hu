@@ -207,8 +207,6 @@ export default class extends Controller {
     }
 
     // set up the search field
-    trigger("search:clear")
-
     const urlParams = getURLParams()
     const values = []
 
@@ -220,9 +218,12 @@ export default class extends Controller {
       }
     })
 
-    setTimeout(() => {
-      trigger("search:setValue", { value: values.join(",") })
-    }, 20)
+    if (values.length > 0) {
+      trigger("search:clear")
+      setTimeout(() => {
+        trigger("search:setValue", { value: values.join(",") })
+      }, 20)
+    }
 
     // show loading indicator
     setTimeout(() => {

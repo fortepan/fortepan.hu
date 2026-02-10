@@ -1,5 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 import { trigger } from "../../js/utils"
+import { setAppState } from "../../js/app"
 
 // import { trigger } from "../../js/utils"
 
@@ -23,6 +24,8 @@ export default class extends Controller {
       trigger("mapview:setbounds", { bounds })
     }) */
     // document.querySelector(".header-nav").classList.add("has-shadow")
+
+    setAppState("is-map")
 
     Promise.resolve(true).then(() => {
       trigger("mapview:show")

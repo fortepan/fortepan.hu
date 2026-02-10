@@ -6,6 +6,7 @@ import { MarkerClusterer, SuperClusterAlgorithm } from "@googlemaps/markercluste
 import { getLocale, getURLParams, trigger } from "../../js/utils"
 import photoManager from "../../js/photo-manager"
 import { appState } from "../../js/app"
+import config from "../../data/siteConfig"
 
 const MAX_CLUSTERER_ZOOM = 22
 const MAX_INDIVIDUAL_MARKERS = 999
@@ -320,6 +321,26 @@ export default class extends Controller {
         this.pushHistoryState()
 
         const params = getURLParams()
+
+        // fill in the search field if there's regular search params in the url
+        const values = []
+
+        Object.keys(params).forEach(key => {
+          if (key === "q") {
+            values.push(`${params[key]}`)
+          } else if (config().ADVANCED_SEARCH_KEYS.includes(key) && params.advancedSearch) {
+            values.push(`${key}:${params[key]}`)
+          }
+        })
+
+        if (values.length > 0) {
+          trigger("search:clear")
+          setTimeout(() => {
+            trigger("search:setValue", { value: values.join(",") })
+          }, 20)
+        }
+
+        // set up params for the API call
         params.size = 0
         params.clustered = true
 
@@ -407,21 +428,28 @@ export default class extends Controller {
   pushHistoryState() {
     if (this.map) {
       let params = getURLParams()
+
+      const prevGC = params.gc
+      const prevGZ = params.gz
+
       delete params.gb
       delete params.gc
       delete params.gz
-      params = new URLSearchParams(params).toString()
+      params = new URLSearchParams(params).toString().replace("+", "%20")
 
-      const gc = this.map.getCenter()
-      const zoom = this.map.getZoom()
+      const gc = `${this.map
+        .getCenter()
+        .lat()
+        .toFixed(4)},${this.map
+        .getCenter()
+        .lng()
+        .toFixed(4)}`
 
-      window.history.pushState(
-        null,
-        null,
-        `/${getLocale()}/map/?gc=${gc.lat().toFixed(4)},${gc.lng().toFixed(4)}&gz=${Math.round(zoom)}${
-          params ? `&${params}` : ""
-        }`
-      )
+      const zoom = Math.round(this.map.getZoom()).toString()
+
+      if (gc !== prevGC || zoom !== prevGZ) {
+        window.history.pushState(null, null, `/${getLocale()}/map/?gc=${gc}&gz=${zoom}${params ? `&${params}` : ""}`)
+      }
     }
   }
 }
