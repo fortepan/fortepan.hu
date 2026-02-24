@@ -24,4 +24,9 @@ export default class extends Controller {
       }, 5000)
     }
   }
+
+  hide() {
+    clearTimeout(this.snackbarTimer)
+    this.element.classList.remove("snackbar--show")
+  }
 }

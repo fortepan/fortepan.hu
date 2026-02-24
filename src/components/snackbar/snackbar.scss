@@ -1,9 +1,9 @@
 .snackbar {
   position: absolute;
-  border-radius: 16px;
-  line-height: 1rem;
+  border-radius: 1rem;
+  line-height: 1.5;
   font-size: rem(13px);
-  padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+  padding: 0.75rem 1.5rem;
   box-shadow: 0 8px 24px 0 rgba($dark-base, 0.08), 0 0 0 1px rgba($dark-base, 0.07);
   max-width: rem(440px);
   z-index: 1000;
