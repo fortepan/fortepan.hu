@@ -191,6 +191,9 @@ module.exports = {
     },
     capa_center_caption: "Capa Központ",
     fortepan_abc: "Fortepan ABC",
+    map: {
+      no_results: "Nincs találat ezen a területen.",
+    },
   },
   en: {
     about_us: "About us",
@@ -376,5 +379,8 @@ module.exports = {
     },
     capa_center_caption: "Capa Center",
     fortepan_abc: "Fortepan ABC",
+    map: {
+      no_results: "No results found in this area.",
+    },
   },
 }

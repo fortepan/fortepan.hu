@@ -3,7 +3,7 @@ import { Controller } from "@hotwired/stimulus"
 import { Loader } from "@googlemaps/js-api-loader"
 import { MarkerClusterer, SuperClusterAlgorithm } from "@googlemaps/markerclusterer"
 
-import { getLocale, getURLParams, trigger } from "../../js/utils"
+import { getLocale, getURLParams, trigger, lang } from "../../js/utils"
 import photoManager from "../../js/photo-manager"
 import { appState } from "../../js/app"
 import config from "../../data/siteConfig"
@@ -313,6 +313,7 @@ export default class extends Controller {
       if (!this.mapDataLoading) {
         this.mapDataLoading = true
 
+        trigger("snackbar:hide")
         trigger("thumbnailbar:hide")
         trigger("photosCarousel:close")
 
@@ -389,6 +390,16 @@ export default class extends Controller {
         this.updateMarkers(photoData)
 
         trigger("loader:hide", { id: "loaderBase" })
+
+        // handling zero results
+        if ((Array.isArray(photoData.clusters) && photoData.clusters.length === 0) || photoData.total === 0) {
+          // ES clusters
+          trigger("snackbar:show", {
+            message: `${lang("map").no_results}`,
+            status: "error",
+            autoHide: false,
+          })
+        }
 
         delete this.mapDataLoading
       }
