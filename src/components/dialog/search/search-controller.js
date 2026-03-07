@@ -38,7 +38,7 @@ export default class extends Controller {
     let query = params.length > 0 ? `?${params.join("&")}` : `?q`
 
     if (appState("is-map")) {
-      // when we are in the map view we need to trigger the mapview:load event to reload the map with the new query parameters
+      // when we are in the map view we need to trigger the mapview:load event to reload the map with new query parameters
       const existingQueryParams = getURLParams()
       const mapQuery = []
 
