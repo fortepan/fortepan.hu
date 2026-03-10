@@ -16,6 +16,8 @@ Your financial support helps maintaining Fortepan and supporting the digitizatio
 
 ### Fortepan Archive supporters in the last 12 months
 
+<p><img src="/images/project_logos/MMAlogo@2x.png" alt="MMA logo" style="width: 220px; height: auto;"></p>
+
 - 1% income tax donators
 - Animatiqua Kft.
 - Archive for Modern Conflict, Toronto

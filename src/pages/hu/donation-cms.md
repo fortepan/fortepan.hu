@@ -16,6 +16,8 @@ Anyagi támogatásával a Fortepan fenntartását és új gyűjtemények digital
 
 ### A Fortepan Archívum támogatói az elmúlt 12 hónapban
 
+<p><img src="/images/project_logos/MMAlogo@2x.png" alt="MMA logo" style="width: 220px; height: auto;"></p>
+
 - 1%-os felajánlók
 - Animatiqua Kft.
 - Archive for Modern Conflict, Toronto
