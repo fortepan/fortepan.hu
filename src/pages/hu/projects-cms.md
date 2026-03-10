@@ -2,9 +2,9 @@
 layout: projects/projects.liquid
 permalink: /hu/projects/
 hide_search: true
-title: ''
+title: "Projektek"
 projects:
-  - title: 'Fortepan ABC c. kiállítás a Fortepan Galériában, Kőszegen a Magyar Művészeti Akadémia támogatásával'
+  - title: "Fortepan ABC c. kiállítás a Fortepan Galériában, Kőszegen a Magyar Művészeti Akadémia támogatásával"
     project_date: 2025. július 26 - szeptember 30.
     description: |
       A kiállítás alapját a “Fortepan ABC” c. kiadvány adta, amely 580 fényképpel mutatja be a sűrű, ismerős, vagy elfelejtett XX. századot, mely a betű évszázada volt. Betűk, jelszavak, reklámok vettek körbe minket a plakátokon, táblákon, házakon. Folyóírásos neon-betűk, címfestők míves betűi, mésszel falakra mázolt betűk. Napilapok címsorai, faliújságok lelkesítő szavai, egy óvóhely ÓH betűi. Zsidókat nem szolgálunk ki, Mindent vissza, Jézus hív, Termelj többet, Le az uszítókkal! – palánkokra, transzparensekre, kirakatokra írt jelmondatok.
@@ -22,15 +22,15 @@ projects:
 
       Az ingyenes kiállítást kb. 3500 fő látta.
     funding_logo: /images/project_logos/MMAlogo@2x.png
-  - title: 'Fotógyűjtés, digitalizálás és kiállítás a MOL-Új Európa Alapítvány támogatásával'
-    project_date: '2024.'
+  - title: "Fotógyűjtés, digitalizálás és kiállítás a MOL-Új Európa Alapítvány támogatásával"
+    project_date: "2024."
     description: |
       A támogatás segítségével:
 
       * kiállítást rendezünk Lissák Tivadar fotográfus életművéből a kőszegi Fortepan Fotógalériában.
       * több jelentős hagyatékot is feldolgozunk. Terveink szerint elkészülünk Prohászka Imre, Csaba László, Fábián József, Szebeni András és Inkey Tibor negatívjaival. A digitalizált anyagok jórésze 2024. végéig fölkerül a Fortepanra.
       * elindítjuk a [Fortemap.hu](https://fortemap.hu/photos "") oldalt, ahol a Fortepan Budapest belvárosi és győri fotóit térképre helyezzük. Az Alapítvány támogatásával és önkéntesek segítségével, több mint tízezer fénykép kerül föl a térképre és a projektet 2025-ben is folytatjuk.
-    funding_info: ''
+    funding_info: ""
     funding_logo: /images/project_logos/MOL_MUEA_logo.svg
   - title: Ostrom 80 - képmentési akció Budapest ostromának nyolcvanadik évfordulója alkalmából
     project_date: 2024. november 22. -
@@ -75,7 +75,7 @@ projects:
     project_date: 2022. május 30 - december 15.
     description: |
       A projekt időtartama alatt a korábbi években megkezdett, V. kerületre vonatkozó fotógyűjtő munkát és publikálást folytatjuk.
-    funding_info: 'A projekt Belváros-Lipótváros, Budapest Főváros V. kerület Önkormányzata támogatásával valósult meg.'
+    funding_info: "A projekt Belváros-Lipótváros, Budapest Főváros V. kerület Önkormányzata támogatásával valósult meg."
     funding_logo: /images/project_logos/belvaros_jovo_varosa.png
   - title: Saját galéria létrehozásának lehetősége a Fortepan on-line fotóarchívumban
     project_date: 2022. január 1 - 2022. december 31.
@@ -85,4 +85,3 @@ projects:
     funding_logo: /images/project_logos/MMAlogo@2x.png
 _template: projects
 ---
-
