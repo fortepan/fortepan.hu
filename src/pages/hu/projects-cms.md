@@ -4,13 +4,6 @@ permalink: /hu/projects/
 hide_search: true
 title: ''
 projects:
-  - title: Lissák Tivadar fotónaplója c. nyitó kiállítás a kőszegi Fortepan Galériában a Magyar Művészeti Akadémia támogatásával
-    project_date: 2024. július 25 - szeptember 29.
-    description: |
-      A Galéria első kiállítása 2024. július 25 - szeptember 29. között volt látogatható Kőszegen. A kiállítás témájául választott életmű Lissák Tivadar, az 1909-es születésű mérnök hagyatéka volt. Amatőr fotósként mindig ott lógott a nyakában a kamera, sok érdekes élethelyzetet örökített meg 1934–48 között. Képein a fővárosi polgári középosztály miliője mellett láthatjuk a katonatársakkal közös mókázásokat, a propagandaplakátokkal teleragasztott budapesti házfalakat vagy a fotón ritkán megörökített Dávid-csillagot a csillagos házak kapuján – mindezt a Horthy-érából indulva a nyilas rémuralmon keresztül egészen a kommunista hatalomátvételig.
-
-      Az ingyenes kiállítást kb. 3500 fő látta.
-    funding_logo: /images/project_logos/MMAlogo@2x.png
   - title: 'Fortepan ABC c. kiállítás a Fortepan Galériában, Kőszegen a Magyar Művészeti Akadémia támogatásával'
     project_date: 2025. július 26 - szeptember 30.
     description: |
@@ -21,6 +14,13 @@ projects:
       A mintegy 600 képből 60 db-ot válogatott ki a kurátor.
 
       Az ingyenes kiállítást mintegy 3500 fő látta.
+    funding_logo: /images/project_logos/MMAlogo@2x.png
+  - title: Lissák Tivadar fotónaplója c. nyitó kiállítás a kőszegi Fortepan Galériában a Magyar Művészeti Akadémia támogatásával
+    project_date: 2024. július 25 - szeptember 29.
+    description: |
+      A Galéria első kiállítása 2024. július 25 - szeptember 29. között volt látogatható Kőszegen. A kiállítás témájául választott életmű Lissák Tivadar, az 1909-es születésű mérnök hagyatéka volt. Amatőr fotósként mindig ott lógott a nyakában a kamera, sok érdekes élethelyzetet örökített meg 1934–48 között. Képein a fővárosi polgári középosztály miliője mellett láthatjuk a katonatársakkal közös mókázásokat, a propagandaplakátokkal teleragasztott budapesti házfalakat vagy a fotón ritkán megörökített Dávid-csillagot a csillagos házak kapuján – mindezt a Horthy-érából indulva a nyilas rémuralmon keresztül egészen a kommunista hatalomátvételig.
+
+      Az ingyenes kiállítást kb. 3500 fő látta.
     funding_logo: /images/project_logos/MMAlogo@2x.png
   - title: 'Fotógyűjtés, digitalizálás és kiállítás a MOL-Új Európa Alapítvány támogatásával'
     project_date: '2024.'
