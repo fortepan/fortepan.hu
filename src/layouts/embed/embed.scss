@@ -6,7 +6,7 @@
   bottom: 0;
   left: 0;
 
-  min-width: rem(320px);
+  min-width: torem(320px);
 
   .carousel__photos,
   .carousel-sidebar {
@@ -33,7 +33,7 @@
 
   .embed-logo {
     position: relative;
-    height: rem(48px);
+    height: torem(48px);
     display: flex;
     align-items: center;
 
@@ -48,8 +48,8 @@
 
       span {
         @include font-heading-bold();
-        margin-left: rem(16px);
-        font-size: rem(16px);
+        margin-left: torem(16px);
+        font-size: torem(16px);
         text-transform: uppercase;
         letter-spacing: 0.1em;
         overflow: hidden;
@@ -61,7 +61,7 @@
     }
 
     &__logo {
-      width: rem(48px);
+      width: torem(48px);
     }
   }
 }
@@ -137,13 +137,13 @@
       }
 
       @media screen and (max-height: ($breakpoint-phone-sm - 1px)) {
-        font-size: rem(28px);
+        font-size: torem(28px);
         letter-spacing: 0;
       }
 
       @media screen and (max-height: ($breakpoint-phone-xs - 1px)) {
-        font-size: rem(18px);
-        line-height: rem(24px);
+        font-size: torem(18px);
+        line-height: torem(24px);
         letter-spacing: 0;
       }
     }
@@ -224,7 +224,7 @@
 
     .list-info {
       width: 100%;
-      max-width: rem(480px);
+      max-width: torem(480px);
       margin: 0 auto;
 
       @media screen and (min-width: $breakpoint-tablet) {

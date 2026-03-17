@@ -21,22 +21,22 @@
 
   &,
   &.photos {
-    padding: rem(104px) rem(24px) rem(96px);
+    padding: torem(104px) torem(24px) torem(96px);
   }
 
   @media screen and (max-width: ($breakpoint-desktop - 1px)) {
     &,
     &.photos {
-      padding: rem(88px) rem(8px) rem(96px);
+      padding: torem(88px) torem(8px) torem(96px);
     }
   }
 
   & ~ .carousel {
     .carousel__photos {
-      top: rem(80px);
+      top: torem(80px);
 
       @media screen and (max-width: ($breakpoint-desktop - 1px)) {
-        top: rem(64px);
+        top: torem(64px);
       }
 
       .play-carousel-slideshow &,
@@ -46,11 +46,11 @@
     }
 
     .carousel-sidebar {
-      top: rem(80px);
+      top: torem(80px);
       height: calc(100vh - 5rem);
 
       @media screen and (max-width: ($breakpoint-desktop - 1px)) {
-        top: rem(64px);
+        top: torem(64px);
         height: calc(100vh - 4rem);
       }
 
@@ -74,7 +74,7 @@
   .photos-title {
     &__username {
       @include font-heading-demi();
-      font-size: rem(18px);
+      font-size: torem(18px);
 
       opacity: 0.3;
     }
@@ -84,7 +84,7 @@
     } */
 
     &__label {
-      margin-right: rem(4px);
+      margin-right: torem(4px);
     }
 
     &__subtitle {
@@ -131,7 +131,7 @@
 
     &.photos-title__list-link {
       @include font-heading-demi();
-      font-size: rem(18px);
+      font-size: torem(18px);
 
       opacity: 0.3;
 
@@ -167,10 +167,10 @@
   overflow: hidden;
   opacity: 0;
 
-  max-width: rem(570px);
-  font-size: rem(14px);
+  max-width: torem(570px);
+  font-size: torem(14px);
   font-weight: 500;
-  line-height: rem(24px);
+  line-height: torem(24px);
 
   transition: opacity 0.3s $ease-out-expo;
 

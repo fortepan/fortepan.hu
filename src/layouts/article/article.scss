@@ -2,13 +2,13 @@
   position: absolute;
   width: 100%;
   left: 0;
-  top: rem(80px);
+  top: torem(80px);
   bottom: 0;
-  padding: 0 rem(32px);
+  padding: 0 torem(32px);
   box-sizing: border-box;
 
   @media screen and (max-width: ($breakpoint-desktop - 1px)) {
-    top: rem(64px);
+    top: torem(64px);
   }
 
   h1,
@@ -146,13 +146,13 @@
 
     &,
     img {
-      border-radius: rem(4px);
+      border-radius: torem(4px);
     }
   }
 }
 
 .article__content {
   position: relative;
-  max-width: rem(800px);
+  max-width: torem(800px);
   margin: 0 auto;
 }

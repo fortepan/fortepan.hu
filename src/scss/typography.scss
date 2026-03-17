@@ -24,20 +24,20 @@ html {
 
 h1,
 .h1 {
-  font-size: rem(64px);
-  line-height: rem(72px);
+  font-size: torem(64px);
+  line-height: torem(72px);
   @include font-heading-bold();
   letter-spacing: -2px;
 
   @media screen and (max-width: ($breakpoint-phone - 1px)) {
-    font-size: rem(48px);
-    line-height: rem(56px);
+    font-size: torem(48px);
+    line-height: torem(56px);
   }
 }
 
 h2,
 .h2 {
-  font-size: rem(36px);
+  font-size: torem(36px);
   line-height: 1.1;
   @include font-heading-bold();
   letter-spacing: -1px;
@@ -45,28 +45,28 @@ h2,
 
 h3,
 .h3 {
-  font-size: rem(28px);
+  font-size: torem(28px);
   @include font-heading-bold();
 }
 
 h5,
 .h5 {
-  font-size: rem(18px);
-  line-height: rem(24px);
+  font-size: torem(18px);
+  line-height: torem(24px);
   @include font-heading-bold();
 }
 
 h6,
 .caption {
   @include font-heading-demi();
-  font-size: rem(13px);
+  font-size: torem(13px);
   text-transform: uppercase;
   letter-spacing: 1px;
-  line-height: rem(20px);
+  line-height: torem(20px);
 }
 
 p {
-  font-size: rem(16px);
+  font-size: torem(16px);
   line-height: 1.7;
   font-weight: 500;
 }
@@ -84,11 +84,11 @@ p a {
 }
 
 .text-medium {
-  font-size: rem(14px);
+  font-size: torem(14px);
 }
 
 .text-small {
-  font-size: rem(12px);
+  font-size: torem(12px);
 }
 
 .text-secondary {

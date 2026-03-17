@@ -30,16 +30,16 @@
 
 .dialog__close {
   position: absolute;
-  right: rem(8px);
-  top: rem(8px);
+  right: torem(8px);
+  top: torem(8px);
 }
 
 .dialog__wrapper {
   margin: auto;
-  padding: rem(24px);
-  box-shadow: 0 rem(12px) rem(24px) 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
-  border-radius: rem(8px);
-  max-width: rem(440px);
+  padding: torem(24px);
+  box-shadow: 0 torem(12px) torem(24px) 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+  border-radius: torem(8px);
+  max-width: torem(440px);
   min-height: min-content;
   max-height: max-content;
   height: auto;
@@ -61,7 +61,7 @@
     z-index: 1;
     pointer-events: none;
     opacity: 0;
-    border-radius: rem(8px);
+    border-radius: torem(8px);
     transition: opacity 0.2s ease-out;
   }
 
@@ -92,17 +92,17 @@
 }
 
 .dialog__content {
-  margin: rem(4px) 0 0 0;
-  font-size: rem(14px);
+  margin: torem(4px) 0 0 0;
+  font-size: torem(14px);
   font-weight: 400;
-  line-height: rem(24px);
+  line-height: torem(24px);
 }
 
 .dialog__content__action {
   @include font-heading-demi();
   display: block;
   margin: 0;
-  padding: rem(8px) 0 rem(8px) rem(28px);
+  padding: torem(8px) 0 torem(8px) torem(28px);
   position: relative;
 
   svg {
@@ -141,5 +141,5 @@
 }
 
 .dialog__link--small {
-  font-size: rem(13px);
+  font-size: torem(13px);
 }

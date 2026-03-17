@@ -1,10 +1,10 @@
 .photos-timeline {
   display: block;
   position: absolute;
-  top: rem(48px + 2 * 16px);
+  top: torem(48px + 2 * 16px);
   left: 0;
   right: 0;
-  height: rem(48px);
+  height: torem(48px);
   box-sizing: border-box;
   opacity: 0;
   pointer-events: none;
@@ -12,7 +12,7 @@
   transition: transform 0.8s $ease-out-expo, opacity 0.8s $ease-out-expo;
 
   @media screen and (max-width: ($breakpoint-desktop - 1px)) {
-    top: rem(48px + 2 * 8px);
+    top: torem(48px + 2 * 8px);
   }
 
   &.is-visible {
@@ -27,8 +27,8 @@
       content: "";
       left: 0;
       right: 0;
-      bottom: rem(-12px);
-      height: rem(12px);
+      bottom: torem(-12px);
+      height: torem(12px);
       background: linear-gradient(0deg, rgba($dark-base, 0) 0%, rgba($dark-base, 0.06) 100%);
     }
   }
@@ -48,22 +48,22 @@
   position: absolute;
   top: 0;
   bottom: 0;
-  left: rem(16px + 28px + 16px);
-  right: rem(16px + 28px + 16px);
+  left: torem(16px + 28px + 16px);
+  right: torem(16px + 28px + 16px);
   cursor: pointer;
 }
 
 .photos-timeline__slider {
   position: absolute;
   top: calc(50% - 1.625rem / 2);
-  height: rem(26px);
-  padding: 0 rem(10px);
+  height: torem(26px);
+  padding: 0 torem(10px);
   border-radius: 4px;
   transition: left 0.4s $ease-out-expo, background-color 0.3s $ease-out-expo;
   cursor: pointer;
   @include font-heading-bold();
-  font-size: rem(14px);
-  line-height: rem(26px);
+  font-size: torem(14px);
+  line-height: torem(26px);
   box-sizing: border-box;
   user-select: none;
 
@@ -108,11 +108,11 @@
 
     &:before {
       position: absolute;
-      bottom: rem(-4px);
+      bottom: torem(-4px);
       margin: auto;
       left: calc(50% - 8px);
       border-bottom: 0;
-      border-top: rem(6px) solid transparent;
+      border-top: torem(6px) solid transparent;
     }
 
     .theme--light &:before {
@@ -130,7 +130,7 @@
 
   .photos-timeline__year-indicator & {
     top: auto;
-    bottom: rem(20px);
+    bottom: torem(20px);
   }
 
   .photos-timeline__slider:hover &,
@@ -210,14 +210,14 @@
 
 .photos-timeline__year-label {
   position: absolute;
-  width: rem(44px);
-  top: rem(13px);
-  bottom: rem(13px);
-  left: rem(10px);
+  width: torem(44px);
+  top: torem(13px);
+  bottom: torem(13px);
+  left: torem(10px);
   cursor: pointer;
   @include font-heading-bold();
-  font-size: rem(11px);
-  line-height: rem(22px);
+  font-size: torem(11px);
+  line-height: torem(22px);
   text-align: center;
   border-radius: 4px;
   box-sizing: border-box;
@@ -242,7 +242,7 @@
 
   &.photos-timeline__year-label--yearEnd {
     left: auto;
-    right: rem(10px);
+    right: torem(10px);
   }
 }
 
@@ -252,16 +252,16 @@
 
   cursor: pointer;
   @include font-heading-bold();
-  font-size: rem(11px);
+  font-size: torem(11px);
 
   &:before {
     content: "";
     display: block;
     position: absolute;
-    top: rem(-7px);
-    left: rem(-1px);
-    width: rem(2px);
-    height: rem(14px);
+    top: torem(-7px);
+    left: torem(-1px);
+    width: torem(2px);
+    height: torem(14px);
     border-radius: 1px;
     background-color: $red;
 
@@ -294,10 +294,10 @@
     content: "";
     display: block;
     position: absolute;
-    top: rem(-7px);
-    left: rem(-1px);
-    width: rem(2px);
-    height: rem(14px);
+    top: torem(-7px);
+    left: torem(-1px);
+    width: torem(2px);
+    height: torem(14px);
     border-radius: 1px;
   }
 

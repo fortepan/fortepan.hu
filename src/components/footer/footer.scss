@@ -1,10 +1,10 @@
 .footer {
-  padding: rem(64px) 2rem 3rem;
+  padding: torem(64px) 2rem 3rem;
   overflow: hidden;
   text-align: center;
 
   @media screen and (max-width: ($breakpoint-tablet - 1px)) {
-    padding: rem(64px) 2rem 3rem;
+    padding: torem(64px) 2rem 3rem;
   }
 }
 
@@ -14,9 +14,9 @@
   color: inherit;
   @include font-heading-demi();
   text-transform: uppercase;
-  margin: 0 rem(16px);
+  margin: 0 torem(16px);
   letter-spacing: 1px;
-  line-height: rem(32px);
+  line-height: torem(32px);
 
   .theme--dark & {
     color: $grey;
@@ -38,8 +38,8 @@
 .footer__small {
   display: block;
   margin-top: 1.5rem;
-  font-size: rem(12px);
-  line-height: rem(20px);
+  font-size: torem(12px);
+  line-height: torem(20px);
 
   a {
     color: inherit;

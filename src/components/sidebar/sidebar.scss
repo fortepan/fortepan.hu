@@ -1,9 +1,9 @@
 .carousel-sidebar {
   position: absolute;
-  padding: 0 rem(24px) rem(24px);
+  padding: 0 torem(24px) torem(24px);
   top: 8rem;
   right: 0;
-  width: rem(280px);
+  width: torem(280px);
   height: calc(100vh - 8rem);
   box-sizing: border-box;
   transition: transform 0.4s $ease-out-expo, top 0.4s $ease-out-expo, height 0.4s $ease-out-expo, opacity 0.2s ease-out;
@@ -69,7 +69,7 @@
 .carousel-sidebar__year,
 .carousel-sidebar__tags-title {
   width: 50%;
-  margin-top: rem(24px);
+  margin-top: torem(24px);
   margin-bottom: 0;
 }
 
@@ -77,14 +77,14 @@
 .carousel-sidebar__location,
 .carousel-sidebar__photographer {
   width: 100%;
-  margin-top: rem(24px);
+  margin-top: torem(24px);
 }
 
 .carousel-sidebar__description {
-  margin-top: rem(24px);
+  margin-top: torem(24px);
   width: 100%;
-  font-size: rem(14px);
-  line-height: rem(20px);
+  font-size: torem(14px);
+  line-height: torem(20px);
 }
 
 .carousel-sidebar__description__empty {
@@ -95,8 +95,8 @@
 
 .carousel-sidebar__tags {
   margin: 0;
-  font-size: rem(12px);
-  line-height: rem(20px);
+  font-size: torem(12px);
+  line-height: torem(20px);
   font-weight: normal;
 
   a {

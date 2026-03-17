@@ -2,10 +2,10 @@
   &__credits {
     display: flex;
 
-    padding: rem(8px) rem(8px) rem(8px) rem(12px);
-    gap: rem(12px);
-    border-radius: rem(4px);
-    margin-top: rem(8px);
+    padding: torem(8px) torem(8px) torem(8px) torem(12px);
+    gap: torem(12px);
+    border-radius: torem(4px);
+    margin-top: torem(8px);
 
     .theme--light & {
       background: $light-primary;
@@ -22,7 +22,7 @@
     }
 
     &__icon {
-      margin: rem(-12px);
+      margin: torem(-12px);
 
       svg {
         opacity: 0.4;

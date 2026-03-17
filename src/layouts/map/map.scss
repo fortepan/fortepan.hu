@@ -1,18 +1,18 @@
 .map {
   .mapview {
-    top: rem(80px);
+    top: torem(80px);
 
     @media screen and (max-width: ($breakpoint-desktop - 1px)) {
-      top: rem(64px);
+      top: torem(64px);
     }
   }
 
   .carousel__photos,
   .carousel-sidebar {
-    top: rem(80px);
+    top: torem(80px);
 
     @media screen and (max-width: ($breakpoint-desktop - 1px)) {
-      top: rem(64px);
+      top: torem(64px);
     }
 
     bottom: 0;

@@ -10,8 +10,8 @@
   pointer-events: none;
   transition: opacity 0.5s $ease-out-expo;
   border-radius: 0.25rem;
-  box-shadow: 0 rem(12px) rem(24px) 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
-  font-size: rem(14px);
+  box-shadow: 0 torem(12px) torem(24px) 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+  font-size: torem(14px);
 
   &.is-visible {
     opacity: 1;

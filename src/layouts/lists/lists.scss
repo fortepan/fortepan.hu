@@ -5,11 +5,11 @@
   left: 0;
   top: 0;
   bottom: 0;
-  padding: rem(104px) rem(24px) rem(96px);
+  padding: torem(104px) torem(24px) torem(96px);
   box-sizing: border-box;
 
   @media screen and (max-width: ($breakpoint-desktop - 1px)) {
-    padding: rem(88px) rem(8px) rem(96px);
+    padding: torem(88px) torem(8px) torem(96px);
   }
 
   &.is-visible {
@@ -18,7 +18,7 @@
 }
 
 .lists__heading {
-  max-width: rem(1080px);
+  max-width: torem(1080px);
   margin: 0 auto 2rem;
 
   h1 {
@@ -71,7 +71,7 @@
 }
 
 .lists__grid {
-  max-width: rem(1080px);
+  max-width: torem(1080px);
   margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
@@ -112,8 +112,8 @@
   width: 100%;
   height: 0;
   padding-top: 75%; // for 4:3 proportion
-  border-radius: rem(4px);
-  margin-bottom: rem(12px);
+  border-radius: torem(4px);
+  margin-bottom: torem(12px);
   cursor: pointer;
 
   transition: filter 0.3s ease-out;
@@ -129,7 +129,7 @@
   right: 0;
   bottom: 0;
   left: 0;
-  border-radius: rem(4px);
+  border-radius: torem(4px);
 }
 
 .lists__item__photo {
@@ -203,7 +203,7 @@
 
     &,
     img {
-      border-radius: rem(4px);
+      border-radius: torem(4px);
     }
 
     &:nth-of-type(1) {
@@ -221,7 +221,7 @@
 
       &,
       img {
-        border-radius: rem(4px) 0 0 rem(4px);
+        border-radius: torem(4px) 0 0 torem(4px);
       }
     }
 
@@ -230,7 +230,7 @@
 
       &,
       img {
-        border-radius: 0 rem(4px) rem(4px) 0;
+        border-radius: 0 torem(4px) torem(4px) 0;
       }
     }
 
@@ -251,7 +251,7 @@
 
       &,
       img {
-        border-radius: rem(4px) 0 0 rem(4px);
+        border-radius: torem(4px) 0 0 torem(4px);
       }
     }
 
@@ -262,7 +262,7 @@
 
       &,
       img {
-        border-radius: 0 rem(4px) 0 0;
+        border-radius: 0 torem(4px) 0 0;
       }
     }
 
@@ -273,7 +273,7 @@
 
       &,
       img {
-        border-radius: 0 0 rem(4px) 0;
+        border-radius: 0 0 torem(4px) 0;
       }
     }
 
@@ -295,7 +295,7 @@
 
       &,
       img {
-        border-radius: rem(4px) 0 0 0;
+        border-radius: torem(4px) 0 0 0;
       }
     }
 
@@ -305,7 +305,7 @@
 
       &,
       img {
-        border-radius: 0 rem(4px) 0 0;
+        border-radius: 0 torem(4px) 0 0;
       }
     }
 
@@ -315,7 +315,7 @@
 
       &,
       img {
-        border-radius: 0 0 0 rem(4px);
+        border-radius: 0 0 0 torem(4px);
       }
     }
 
@@ -325,7 +325,7 @@
 
       &,
       img {
-        border-radius: 0 0 rem(4px) 0;
+        border-radius: 0 0 torem(4px) 0;
       }
     }
   } */
@@ -338,7 +338,7 @@
   left: calc(50% + 1px);
   width: calc(50% - 1px);
   bottom: 0;
-  border-radius: 0 0 rem(4px) 0;
+  border-radius: 0 0 torem(4px) 0;
 
   color: $light-base;
   background: rgba($dark-base, 0.5);
@@ -361,7 +361,7 @@
 
   text-align: center;
   font-weight: 600;
-  font-size: rem(18px);
+  font-size: torem(18px);
   line-height: 1rem;
 }
 
@@ -370,7 +370,7 @@
 
   h5 {
     margin: 0;
-    padding-right: rem(40px);
+    padding-right: torem(40px);
 
     a {
       color: inherit;
@@ -388,7 +388,7 @@
 
 .lists-private-icon {
   display: none;
-  margin-left: rem(-5px);
+  margin-left: torem(-5px);
 
   svg {
     display: block;
@@ -402,9 +402,9 @@
 
 .lists__item__description {
   display: none;
-  margin-top: rem(8px);
-  font-size: rem(12px);
-  line-height: rem(16px);
+  margin-top: torem(8px);
+  font-size: torem(12px);
+  line-height: torem(16px);
   opacity: 0.64;
 
   &.is-visible {
@@ -414,8 +414,8 @@
 
 .context-menu--lists {
   position: absolute;
-  top: rem(-12px);
-  right: rem(-8px);
+  top: torem(-12px);
+  right: torem(-8px);
   opacity: 0.3;
   transition: opacity 0.3s $ease-out-expo;
 
@@ -432,7 +432,7 @@
         content: "";
         position: absolute;
         top: 100%;
-        height: rem(8px);
+        height: torem(8px);
         left: 0;
         right: 0;
         background-color: transparent;
@@ -442,7 +442,7 @@
 
   & .header-nav__popup {
     top: 3rem;
-    right: rem(8px);
+    right: torem(8px);
     transform: translate(0, 8px);
 
     &.is-visible {
@@ -456,7 +456,7 @@
 }
 
 .lists__placeholder {
-  max-width: rem(1080px);
+  max-width: torem(1080px);
   margin: 15vh auto 0;
   padding: 0 0.5rem;
   box-sizing: border-box;
@@ -477,7 +477,7 @@
   }
 
   p {
-    max-width: rem(570px);
+    max-width: torem(570px);
     color: $grey;
     margin: 0 0 2rem;
   }

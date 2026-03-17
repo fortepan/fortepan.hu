@@ -49,11 +49,11 @@
 .dialog-lists__list-tag {
   display: none;
   position: relative;
-  font-size: rem(13px);
+  font-size: torem(13px);
   line-height: 1rem;
   font-weight: 500;
   padding: 0.25rem 0.5rem;
-  border-radius: rem(2px);
+  border-radius: torem(2px);
   margin: 0 0.25rem 0.25rem 0;
   user-select: none;
 
@@ -74,7 +74,7 @@
   }
 
   &--large {
-    font-size: rem(16px);
+    font-size: torem(16px);
     line-height: 1.25rem;
     font-weight: 400;
   }
@@ -93,8 +93,8 @@
         display: block;
         position: absolute;
 
-        top: rem(-4px);
-        height: rem(4px);
+        top: torem(-4px);
+        height: torem(4px);
         right: 0;
         left: 0;
       }
@@ -173,6 +173,6 @@
   }
 
   .input-wrapper__label {
-    margin: rem(4px) 0 0 0;
+    margin: torem(4px) 0 0 0;
   }
 }
