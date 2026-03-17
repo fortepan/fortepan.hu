@@ -70,10 +70,10 @@ export default class extends Controller {
   resize() {
     let h = THUMBNAIL_HEIGHT
 
-    if (window.innerWidth < 640 || window.innerHeight < 480 || this.element.forceSmallSize) {
-      h = (THUMBNAIL_HEIGHT / 3) * 2
-    } else if (this.element.customSizeRatio) {
+    if (this.element.customSizeRatio) {
       h = THUMBNAIL_HEIGHT * this.element.customSizeRatio
+    } else if (window.innerWidth < 640 || window.innerHeight < 480 || this.element.forceSmallSize) {
+      h = (THUMBNAIL_HEIGHT / 3) * 2
     }
 
     if (!this.naturalWidth) return
