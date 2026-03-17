@@ -14,7 +14,7 @@ export default class extends Controller {
 
   connect() {
     // role defines if the thumbnail is loaded on the photos page or on the lists page
-    // possible values (strict): [ lists | photos (default) ]
+    // possible values (strict): lists | photos (default)
     this.role = appState("is-lists") ? "lists" : "photos"
 
     // add stimulus class reference to node
