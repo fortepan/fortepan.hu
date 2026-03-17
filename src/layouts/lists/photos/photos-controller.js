@@ -69,7 +69,7 @@ export default class extends Controller {
             this.element.scrollTop = 0
 
             // Load photo in Carousel
-            trigger("photosThumbnail:select", { data: selectedPhotoData })
+            trigger("thumbnail:click", { data: selectedPhotoData })
           }
         }
       } else {
@@ -167,6 +167,10 @@ export default class extends Controller {
       // set the proper url
       window.history.pushState(null, `Fortepan — ${this.listData.name} — #${id}`, url)
     }
+
+    this.element.querySelectorAll(".photos-thumbnail").forEach((thumbnail, i) => {
+      thumbnail.classList.toggle("is-selected", i === listManager.getSelectedPhotoIndex())
+    })
   }
 
   onCarouselClosed() {

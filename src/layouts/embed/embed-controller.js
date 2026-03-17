@@ -59,7 +59,7 @@ export default class extends Controller {
           this.onScroll()
 
           // opening the carousel at the first photo if no photos are defined in the url to start with
-          trigger("photosThumbnail:select", { data: listManager.selectPhotoById(listData.id, listData.photos[0].id) })
+          trigger("thumbnail:click", { data: listManager.selectPhotoById(listData.id, listData.photos[0].id) })
 
           // selecting the relevant thumbnail
           trigger("photos:selectThumbnail", { index: listManager.getSelectedPhotoIndex() })

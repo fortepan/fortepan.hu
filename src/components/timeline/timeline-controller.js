@@ -328,12 +328,6 @@ export default class extends Controller {
   }
 
   toggleShadow(e) {
-    if (e && e.type === "photosThumbnail:select") {
-      this.element.classList.add("has-shadow")
-    }
-
-    if (e && e.type === "photosCarousel:hide") {
-      this.element.classList.remove("has-shadow")
-    }
+    this.element.classList.toggle("has-shadow", e?.type === "thumbnail:click")
   }
 }

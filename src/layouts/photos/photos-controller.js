@@ -207,8 +207,6 @@ export default class extends Controller {
     }
 
     // set up the search field
-    trigger("search:clear")
-
     const urlParams = getURLParams()
     const values = []
 
@@ -220,9 +218,12 @@ export default class extends Controller {
       }
     })
 
-    setTimeout(() => {
-      trigger("search:setValue", { value: values.join(",") })
-    }, 20)
+    if (values.length > 0) {
+      trigger("search:clear")
+      setTimeout(() => {
+        trigger("search:setValue", { value: values.join(",") })
+      }, 20)
+    }
 
     // show loading indicator
     setTimeout(() => {
@@ -293,7 +294,7 @@ export default class extends Controller {
         if (getURLParams().id > 0) {
           // open carousel if @id parameter is present in the url's query string
           const selectedPhoto = photoManager.selectPhotoById(getURLParams().id)
-          trigger("photosThumbnail:select", { data: selectedPhoto.data })
+          trigger("thumbnail:click", { data: selectedPhoto.data })
         } else {
           trigger("photosCarousel:close")
         }

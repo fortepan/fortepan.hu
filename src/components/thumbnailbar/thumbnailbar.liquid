@@ -1,0 +1,22 @@
+<div class="thumbnailbar scrollview" data-controller="thumbnailbar"
+  data-action="scroll->thumbnailbar#onScroll
+               thumbnail:loaded@document->thumbnailbar#loadThumbnails
+               thumbnailbar:show@document->thumbnailbar#show
+               thumbnailbar:hide@document->thumbnailbar#hide
+               keyup@window->thumbnailbar#keyup
+               photos:selectThumbnail@document->thumbnailbar#onCarouselPhotoSelected"
+>
+
+  <div class="button-circular thumbnailbar__close-button" data-action="click->thumbnailbar#hide">
+      {% inlineSVG src:"src/static/images/icons/24/icon-close.svg" class:"button-circular__icon" %}
+      <div class="button-circular__label">{{ lang[locale].close }}</div>
+  </div>
+
+  <h5 class="thumbnailbar__title" data-thumbnailbar-target="title">
+    <span data-thumbnailbar-target="count" class="thumbnailbar__title__count"></span>
+    {{ lang[locale].photo_results }}
+  </h5>
+
+  <div class="thumbnailbar__grid" data-thumbnailbar-target="grid"></div>
+
+</div>

@@ -1,0 +1,17 @@
+<div class="mapview" data-controller="mapview"
+  data-action="mapview:show@document->mapview#show
+               mapview:hide@document->mapview#hide
+               mapview:setbounds@document->mapview#setBounds
+               theme:toggleTheme@document->mapview#toggleMapStyles
+               popstate@window->mapview#onPopState
+
+               mapmarker:photoSelected@document->mapview#onMarkerPhotoSelected
+               thumbnailbar:closed@document->mapview#onThumbnailsBarClosed
+               mapview:load@document->mapview#onBoundsChange"
+>
+  <div class="map" id="MainMap" data-mapview-target="map"></div>
+  {% include thumbnailbar/thumbnailbar.liquid %}
+
+</div>
+
+{% include mapmarker/mapmarker.liquid %}

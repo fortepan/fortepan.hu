@@ -15,7 +15,7 @@
     "postcss:serve": "npm run postcss -- --watch",
     "tinacms": "npx tinacms build",
     "tinacms:serve": "npx tinacms dev",
-    "build": "ENV=production npm-run-all clean import-autocomplete-data import-rss-data tinacms webpack postcss eleventy",
+    "build": "ENV=production npm-run-all clean import-autocomplete-data import-rss-data webpack postcss eleventy",
     "dev": "ENV=development npm-run-all -l --silent clean import-autocomplete-data import-rss-data webpack postcss --parallel *:serve"
   },
   "repository": {
@@ -65,6 +65,8 @@
     "webpack-manifest-plugin": "^5.0.0"
   },
   "dependencies": {
+    "@googlemaps/js-api-loader": "^1.16.10",
+    "@googlemaps/markerclusterer": "^2.6.2",
     "@hotwired/stimulus": "^3.2.1",
     "@hotwired/stimulus-webpack-helpers": "^1.0.1",
     "@tinacms/cli": "^1.4.0",

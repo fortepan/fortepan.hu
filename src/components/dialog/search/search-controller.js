@@ -35,9 +35,25 @@ export default class extends Controller {
     if (params.length > 0) params.push(`advancedSearch=1`)
     if (queryValues.length > 0) params.push(`q=${queryValues.join(", ")}`)
 
-    const query = params.length > 0 ? `?${params.join("&")}` : `?q`
+    let query = params.length > 0 ? `?${params.join("&")}` : `?q`
 
-    if (window.location.pathname.indexOf("/photos") === -1 || appState("is-lists")) {
+    if (appState("is-map")) {
+      // when we are in the map view we need to trigger the mapview:load event to reload the map with new query parameters
+      const existingQueryParams = getURLParams()
+      const mapQuery = []
+
+      if (existingQueryParams.gb) mapQuery.push(`gb=${existingQueryParams.gb}`)
+      if (existingQueryParams.gc) mapQuery.push(`gc=${existingQueryParams.gc}`)
+      if (existingQueryParams.gz) mapQuery.push(`gz=${existingQueryParams.gz}`)
+
+      query = `?${mapQuery.join("&")}&${query.replace("?", "")}`
+
+      this.hide()
+
+      window.history.pushState(null, null, `/${getLocale()}/map/${query}`)
+      // will load the map with new parameters
+      trigger("mapview:load")
+    } else if (window.location.pathname.indexOf("/photos") === -1 || appState("is-lists")) {
       window.location = `/${getLocale()}/photos/${query}`
     } else {
       trigger("photos:historyPushState", {

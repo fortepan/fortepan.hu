@@ -85,7 +85,7 @@ export default class extends Controller {
       this.authorTarget.parentNode.style.display = "none"
     }
 
-    if (!appState("is-lists")) {
+    if (!appState("is-lists") && !appState("is-map")) {
       // bind history api calls to sidabar anchors
       this.element.querySelectorAll(".carousel-sidebar a:not([class])").forEach(anchorNode => {
         anchorNode.addEventListener("click", event => {
@@ -124,5 +124,10 @@ export default class extends Controller {
     if (window.innerWidth < 768) this.hide()
     else if (!appState("play-carousel-slideshow") && !appState("carousel-fullscreen") && !appState("is-embed"))
       this.show()
+  }
+
+  openMapView() {
+    trigger("mapview:show")
+    trigger("mapview:update", { photosData: photoManager.getData()?.result?.items })
   }
 }

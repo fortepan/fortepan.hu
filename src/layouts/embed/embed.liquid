@@ -45,10 +45,8 @@ layout: base/base.liquid
     </div>
 
     <div class="thumbnails"
-        data-action="photos:selectThumbnail@document->embed#selectThumbnail
-                      photosCarousel:photoSelected@document->embed#onPhotoSelected
-                      photosCarousel:hide@document->embed#onCarouselClosed
-                      thumbnail:loaded@document->embed#loadThumbnails"
+      data-action="photosCarousel:hide@document->embed#onCarouselClosed
+                   thumbnail:loaded@document->embed#loadThumbnails"
     >
       <div class="photos__grid is-hidden" data-embed-target="grid"></div>
     </div>

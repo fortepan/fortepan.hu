@@ -1,0 +1,27 @@
+.mapview {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: none;
+
+  &.is-visible {
+    display: block;
+  }
+
+  .theme--dark & {
+    background-color: $dark-base;
+  }
+
+  .theme--light & {
+    background-color: $light-base;
+  }
+
+  .map {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+}

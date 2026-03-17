@@ -50,37 +50,31 @@ export default class extends Controller {
     }
 
     let selectedPhotoData = this.element.photoData
-    let index
 
     if (!selectedPhotoData) {
       if (this.role === "lists") {
         selectedPhotoData = listManager.selectPhotoById(listManager.getSelectedListId(), this.element.photoId)
-        index = listManager.getSelectedPhotoIndex()
 
         if (!selectedPhotoData.isDataLoaded) {
           return
         }
       } else {
         selectedPhotoData = photoManager.selectPhotoById(this.element.photoId).data
-        index = photoManager.getSelectedPhotoIndex()
       }
     }
-
-    // select thumbnail in photos list
-    trigger("photos:selectThumbnail", { index })
-
-    // Load photo in Carousel
-    trigger("photosThumbnail:select", { data: selectedPhotoData })
 
     trigger("thumbnail:click", { data: selectedPhotoData })
   }
 
   // resize thumbnail when the browser window gets resized
   resize() {
-    const h =
-      window.innerWidth < 640 || window.innerHeight < 480 || this.element.forceSmallSize
-        ? (THUMBNAIL_HEIGHT * 2) / 3
-        : THUMBNAIL_HEIGHT
+    let h = THUMBNAIL_HEIGHT
+
+    if (this.element.customSizeRatio) {
+      h = THUMBNAIL_HEIGHT * this.element.customSizeRatio
+    } else if (window.innerWidth < 640 || window.innerHeight < 480 || this.element.forceSmallSize) {
+      h = (THUMBNAIL_HEIGHT / 3) * 2
+    }
 
     if (!this.naturalWidth) return
     const w = Math.min(240, (this.naturalWidth / this.naturalHeight) * h)
@@ -169,7 +163,7 @@ export default class extends Controller {
     if (
       !this.element.classList.contains("is-loaded") &&
       !this.loadInitiated &&
-      isElementInViewport(this.element, false)
+      (this.element.forceImageLoad || isElementInViewport(this.element, false))
     ) {
       const mediaId = this.element.photoId
 
