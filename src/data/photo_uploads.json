@@ -632,7 +632,13 @@
     },
     {
       "name": "5000 fotó időutazóknak",
-      "cover_image": "312649"
+      "cover_image": "312649",
+      "hu": {
+        "actions": {
+          "best_of": "200 jó kép",
+          "all": "A teljes gyűjtemény"
+        }
+      }
     }
   ]
 }
