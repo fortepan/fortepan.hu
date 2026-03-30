@@ -59,6 +59,7 @@
     "stylelint-prettier": "^5.0.3",
     "terser": "^5.46.1",
     "terser-webpack-plugin": "5.4.0",
+    "tinacms": "^3.7.1",
     "webpack": "^5.105.4",
     "webpack-cli": "^7.0.1",
     "webpack-manifest-plugin": "^6.0.1"
@@ -72,7 +73,6 @@
     "lodash": "^4.17.23",
     "markdown-it": "^14.1.1",
     "node-fetch": "^2.7.0",
-    "rss-parser": "^3.13.0",
-    "tinacms": "^3.7.1"
+    "rss-parser": "^3.13.0"
   }
 }
