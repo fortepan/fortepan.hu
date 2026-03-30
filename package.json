@@ -72,6 +72,6 @@
     "lodash": "^4.17.23",
     "markdown-it": "^14.1.1",
     "rss-parser": "^3.13.0",
-    "tinacms": "^3.6.2"
+    "tinacms": "^3.7.1"
   }
 }
