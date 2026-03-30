@@ -6,8 +6,8 @@
 .donors__group {
   width: 33.33%;
   box-sizing: border-box;
-  padding-right: rem(24px);
-  margin-bottom: rem(48px);
+  padding-right: torem(24px);
+  margin-bottom: torem(48px);
 
   @media screen and (max-width: ($breakpoint-tablet - 1px)) {
     width: 50%;
@@ -18,11 +18,11 @@
   display: block;
   text-decoration: none;
   @include font-heading-demi();
-  font-size: rem(18px);
-  line-height: rem(20px);
+  font-size: torem(18px);
+  line-height: torem(20px);
 
   & + & {
-    margin-top: rem(12px);
+    margin-top: torem(12px);
   }
 }
 
@@ -43,7 +43,7 @@
 }
 
 .donors__donor__doc-count {
-  padding-left: rem(4px);
+  padding-left: torem(4px);
   transition: color 0.3s $ease-out-expo;
 
   .theme--light & {

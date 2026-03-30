@@ -1,15 +1,15 @@
 .photos-thumbnail {
   position: relative;
   cursor: pointer;
-  margin: rem(16px) rem(8px);
+  margin: torem(16px) torem(8px);
   box-sizing: border-box;
 
   flex: 192 1 0%;
-  min-width: rem(192px);
+  min-width: torem(192px);
 
   @media screen and (max-width: ($breakpoint-phone - 1px)), (max-height: ($breakpoint-phone-sm - 1px)) {
     flex: calc(192 * 2 / 3) 1 0%;
-    min-width: rem(calc(192px * 2 / 3));
+    min-width: torem(calc(192px * 2 / 3));
   }
 
   opacity: 0;
@@ -24,14 +24,14 @@
   }
 
   .context-menu--lists {
-    top: rem(6px);
-    right: rem(6px);
+    top: torem(6px);
+    right: torem(6px);
     opacity: 0.5;
 
     .button-circular {
       width: 1.5rem;
       height: 1.25rem;
-      border-radius: rem(4px);
+      border-radius: torem(4px);
 
       .theme--light & {
         color: $dark-base;
@@ -78,14 +78,14 @@
 }
 
 .photos-thumbnail__image {
-  border-radius: rem(4px);
-  margin-bottom: rem(8px);
+  border-radius: torem(4px);
+  margin-bottom: torem(8px);
 
   width: 100%;
-  height: rem(160px);
+  height: torem(160px);
 
   @media screen and (max-width: ($breakpoint-phone - 1px)), (max-height: ($breakpoint-phone-sm - 1px)) {
-    height: rem(calc(160px * 2 / 3));
+    height: torem(calc(160px * 2 / 3));
   }
 
   position: relative;
@@ -181,7 +181,7 @@
       &__title,
       &__content,
       &__link {
-        font-size: rem(11px);
+        font-size: torem(11px);
       }
     }
   }
@@ -193,7 +193,7 @@
 
 .photos-thumbnail__meta {
   position: relative;
-  font-size: rem(12px);
+  font-size: torem(12px);
   line-height: 1.33;
   font-weight: 400;
   white-space: nowrap;
@@ -211,14 +211,14 @@
 
   .photos-thumbnail:not(.is-loaded) & {
     width: 50%;
-    border-radius: rem(4px);
+    border-radius: torem(4px);
 
     &--description {
       width: 25%;
     }
 
-    height: rem(10px);
-    margin: rem(2px) 0 rem(4px) 0;
+    height: torem(10px);
+    margin: torem(2px) 0 torem(4px) 0;
 
     .theme--light & {
       background-color: $light-primary;

@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 
-import { Loader } from "@googlemaps/js-api-loader"
+import { setOptions, importLibrary } from "@googlemaps/js-api-loader"
 import { MarkerClusterer, SuperClusterAlgorithm } from "@googlemaps/markerclusterer"
 
 import { getLocale, getURLParams, trigger, lang } from "../../js/utils"
@@ -43,14 +43,20 @@ export default class extends Controller {
 
   async initMap() {
     if (!this.map) {
-      const loader = new Loader({
-        apiKey: GOOGLE_MAPS_KEY,
+      setOptions({
+        key: GOOGLE_MAPS_KEY,
         version: "weekly",
-        libraries: ["maps", "marker", "geometry"],
         language: getLocale(),
       })
 
-      this.google = await loader.load()
+      const [googleMaps, googleMapsMarker] = await Promise.all([
+        importLibrary("maps"),
+        importLibrary("marker"),
+        importLibrary("geometry"),
+      ])
+
+      this.googleMaps = googleMaps
+      this.googleMapsMarker = googleMapsMarker
 
       const params = getURLParams()
 
@@ -60,14 +66,14 @@ export default class extends Controller {
         params.gc = `${(Number(gtl[0]) + Number(gbr[0])) / 2},${(Number(gtl[1]) + Number(gbr[1])) / 2}`
       }
 
-      this.map = new this.google.maps.Map(this.mapTarget, {
+      this.map = new this.googleMaps.Map(this.mapTarget, {
         center: {
           lat: Number(params?.gc?.split(",")[0]) || 47.4979,
           lng: Number(params?.gc?.split(",")[1]) || 19.0402,
         },
         zoom: Number(params?.gz) || 12,
         mapId: GOOGLE_MAPS_ID,
-        colorScheme: appState("theme--light") ? this.google.maps.ColorScheme.LIGHT : this.google.maps.ColorScheme.DARK,
+        colorScheme: appState("theme--light") ? "LIGHT" : "DARK",
       })
 
       this.map.addListener("bounds_changed", this.onBoundsChange.bind(this))
@@ -126,7 +132,7 @@ export default class extends Controller {
 
     mapMarker.addEventListener("click", this.boundOnClusterClick)
 
-    const markerElement = new this.google.maps.marker.AdvancedMarkerElement({
+    const markerElement = new this.googleMapsMarker.AdvancedMarkerElement({
       map: this.map,
       position: cluster.position,
       content: mapMarker,
@@ -162,13 +168,13 @@ export default class extends Controller {
     const projection = map.getProjection()
 
     // World pixel coordinates
-    const nwPoint = new this.google.maps.Point((x * TILE_SIZE) / scale, (y * TILE_SIZE) / scale)
-    const sePoint = new this.google.maps.Point(((x + 1) * TILE_SIZE) / scale, ((y + 1) * TILE_SIZE) / scale)
+    const nwPoint = new this.googleMaps.Point((x * TILE_SIZE) / scale, (y * TILE_SIZE) / scale)
+    const sePoint = new this.googleMaps.Point(((x + 1) * TILE_SIZE) / scale, ((y + 1) * TILE_SIZE) / scale)
 
     const nwLatLng = projection.fromPointToLatLng(nwPoint)
     const seLatLng = projection.fromPointToLatLng(sePoint)
 
-    return new this.google.maps.LatLngBounds(nwLatLng, seLatLng)
+    return new this.googleMaps.LatLngBounds(nwLatLng, seLatLng)
   }
 
   toggleMapStyles() {
@@ -224,7 +230,7 @@ export default class extends Controller {
         mapMarker.data = data
         mapMarker.id = `marker-${data.mid}`
 
-        const markerElement = new this.google.maps.marker.AdvancedMarkerElement({
+        const markerElement = new this.googleMapsMarker.AdvancedMarkerElement({
           map: this.map,
           position: { lat: data.location.lat, lng: data.location.lon },
           content: mapMarker,
@@ -252,7 +258,7 @@ export default class extends Controller {
         mapMarker.id = `marker-${data.key}`
         mapMarker.count = data.doc_count
 
-        const markerElement = new this.google.maps.marker.AdvancedMarkerElement({
+        const markerElement = new this.googleMapsMarker.AdvancedMarkerElement({
           map: this.map,
           position: { lat: data.center.location.lat, lng: data.center.location.lon },
           content: mapMarker,
@@ -278,7 +284,7 @@ export default class extends Controller {
         return
       }
 
-      const bounds = new this.google.maps.LatLngBounds()
+      const bounds = new this.googleMaps.LatLngBounds()
 
       bounds.extend({ lat: e.detail.bounds.top_left.lat, lng: e.detail.bounds.top_left.lng })
       bounds.extend({ lat: e.detail.bounds.bottom_right.lat, lng: e.detail.bounds.bottom_right.lng })

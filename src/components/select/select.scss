@@ -5,7 +5,7 @@
 
 .select-wrapper__label {
   display: block;
-  font-size: rem(13px);
+  font-size: torem(13px);
   font-weight: 500;
   line-height: 1rem;
   color: $grey;
@@ -29,7 +29,7 @@
   line-height: 2rem;
   border-radius: 0.25rem;
 
-  background-size: rem(16px) rem(16px);
+  background-size: torem(16px) torem(16px);
   background-position: calc(100% - 1rem) center;
   background-repeat: no-repeat;
 

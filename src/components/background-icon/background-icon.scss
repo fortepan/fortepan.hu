@@ -1,7 +1,7 @@
 .background-icon {
   position: absolute;
-  left: rem(-280px);
-  bottom: rem(64px);
+  left: torem(-280px);
+  bottom: torem(64px);
   perspective: 800;
   pointer-events: none;
   z-index: -1;

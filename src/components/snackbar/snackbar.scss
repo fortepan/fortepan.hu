@@ -2,13 +2,13 @@
   position: absolute;
   border-radius: 1rem;
   line-height: 1.5;
-  font-size: rem(13px);
+  font-size: torem(13px);
   padding: 0.75rem 1.5rem;
   box-shadow: 0 8px 24px 0 rgba($dark-base, 0.08), 0 0 0 1px rgba($dark-base, 0.07);
-  max-width: rem(440px);
+  max-width: torem(440px);
   z-index: 1000;
   left: 50%;
-  top: rem(96px);
+  top: torem(96px);
   transition: opacity 0.5s $ease-out-expo, transform 0.5s $ease-out-expo;
   transform: translateX(-50%) scale(0.98);
   opacity: 0;
@@ -17,7 +17,7 @@
   font-weight: 600;
 
   .is-embed & {
-    top: rem(16px);
+    top: torem(16px);
   }
 }
 
@@ -38,7 +38,7 @@
 
 .snackbar__close {
   position: absolute;
-  right: rem(12px);
+  right: torem(12px);
   top: 50%;
   transform: translateY(-50%);
   width: 1rem;

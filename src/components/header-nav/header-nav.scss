@@ -4,7 +4,7 @@
   left: 0;
   top: 0;
   width: 100%;
-  padding: rem(16px) rem(8px) rem(16px) rem(16px);
+  padding: torem(16px) torem(8px) torem(16px) torem(16px);
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -18,7 +18,7 @@
   }
 
   @media screen and (max-width: ($breakpoint-desktop - 1px)) {
-    padding: rem(8px);
+    padding: torem(8px);
 
     .play-carousel-slideshow &,
     .carousel-fullscreen & {
@@ -59,7 +59,7 @@
 
 .header-nav__logo {
   display: flex;
-  height: rem(48px);
+  height: torem(48px);
   align-items: center;
 }
 
@@ -79,7 +79,7 @@
 }
 
 .header-nav__search__search {
-  max-width: rem(400px);
+  max-width: torem(400px);
 }
 
 .header-nav__logo__link {
@@ -91,8 +91,8 @@
 
   span {
     @include font-heading-bold();
-    margin-left: rem(16px);
-    font-size: rem(20px);
+    margin-left: torem(16px);
+    font-size: torem(20px);
     text-transform: uppercase;
     letter-spacing: 2px;
     overflow: hidden;
@@ -109,7 +109,7 @@
 }
 
 .header-nav__actions {
-  height: rem(48px);
+  height: torem(48px);
   position: relative;
   display: flex;
   justify-content: flex-end;
@@ -118,7 +118,7 @@
 .header-nav__actions__group {
   display: flex;
   position: relative;
-  padding: 0 rem(8px);
+  padding: 0 torem(8px);
   align-items: center;
 
   &:last-child {
@@ -147,14 +147,14 @@
 }
 
 .header-nav__actions__group--search {
-  padding-right: rem(8px);
+  padding-right: torem(8px);
   @media screen and (min-width: ($breakpoint-desktop)) {
     display: none;
   }
 }
 
 .header-nav__actions__group--items {
-  padding: 0 rem(12px);
+  padding: 0 torem(12px);
   @media screen and (max-width: ($breakpoint-desktop - 1px)) {
     display: none;
   }
@@ -164,17 +164,17 @@
   padding: 1rem 0;
   position: absolute;
   box-sizing: border-box;
-  top: rem(64px);
+  top: torem(64px);
   transform: translate(-90%, 8px);
   opacity: 0;
-  border-radius: rem(8px);
+  border-radius: torem(8px);
   user-select: none;
   pointer-events: none;
   transition: transform 0.3s $ease-out-expo, opacity 0.3s $ease-out-expo;
   transform-origin: 50% 0;
   white-space: nowrap;
-  min-width: rem(200px);
-  max-width: rem(400px);
+  min-width: torem(200px);
+  max-width: torem(400px);
   z-index: 700;
 
   max-height: calc(100vh - 8rem);
@@ -182,8 +182,8 @@
 
   &--small {
     padding: 0.5rem 0;
-    min-width: rem(128px);
-    border-radius: rem(4px);
+    min-width: torem(128px);
+    border-radius: torem(4px);
   }
 
   @media screen and (max-width: ($breakpoint-phone-sm - 1px)) {
@@ -198,13 +198,13 @@
   h6 {
     color: $grey;
     margin: 0;
-    padding: 0 rem(24px);
+    padding: 0 torem(24px);
     line-height: 1.5rem;
   }
 
   &--small {
     h6 {
-      padding: 0 rem(12px);
+      padding: 0 torem(12px);
     }
   }
 
@@ -241,11 +241,11 @@
 
 .header-nav__link {
   display: block;
-  font-size: rem(13px);
+  font-size: torem(13px);
   font-weight: 500;
   text-decoration: none;
-  line-height: rem(16px);
-  padding: rem(8px) rem(24px);
+  line-height: torem(16px);
+  padding: torem(8px) torem(24px);
   transition: color 0.3s $ease-out-expo, background-color 0.3s $ease-out-expo;
 
   > * {
@@ -254,7 +254,7 @@
   }
 
   .header-nav__popup--small & {
-    padding: rem(6px) rem(12px);
+    padding: torem(6px) torem(12px);
   }
 
   .theme--light & {
@@ -307,17 +307,17 @@
 
 .header-nav__link--top {
   @include font-heading-demi();
-  font-size: rem(18px);
+  font-size: torem(18px);
   position: relative;
 
   .header-nav__popup--small & {
-    font-size: rem(15px);
+    font-size: torem(15px);
   }
 }
 
 .header-nav__link__small {
   @include font-body;
-  font-size: rem(12px);
+  font-size: torem(12px);
   font-weight: 400;
   white-space: nowrap;
   overflow: hidden;
@@ -335,7 +335,7 @@
 }
 
 .header-nav__link--top-action {
-  padding: rem(8px) rem(16px);
+  padding: torem(8px) torem(16px);
   border-radius: 1rem;
 
   .header-nav--transparent:not(.has-shadow) & {
@@ -404,12 +404,12 @@ body[data-lang="en"] .header-nav__link.lang-en {
   position: relative;
   &::after {
     content: "";
-    width: rem(10px);
-    height: rem(10px);
+    width: torem(10px);
+    height: torem(10px);
     border-radius: 50%;
     background-color: $red;
     position: absolute;
-    right: rem(14px);
+    right: torem(14px);
     top: 0.75rem;
     transform: scale(0);
     opacity: 0;
@@ -466,7 +466,7 @@ body[data-lang="en"] .header-nav__link.lang-en {
 
 .header-nav__notifications {
   width: calc(100vw - 2rem);
-  max-height: calc(100vh - #{rem(128px)});
+  max-height: calc(100vh - #{torem(128px)});
   overflow: auto;
 
   .theme--light & {
@@ -515,7 +515,7 @@ body[data-lang="en"] .header-nav__link.lang-en {
 
 .header-nav__notifications__message__date {
   margin-left: 1.5rem;
-  font-size: rem(14px);
+  font-size: torem(14px);
   line-height: 1.5rem;
   color: $grey;
   white-space: nowrap;
@@ -524,7 +524,7 @@ body[data-lang="en"] .header-nav__link.lang-en {
 .header-nav__notifications__message__content {
   &,
   & p {
-    font-size: rem(14px);
+    font-size: torem(14px);
     line-height: 1.25rem;
     font-weight: 400;
     margin: 0.5rem 0 0;

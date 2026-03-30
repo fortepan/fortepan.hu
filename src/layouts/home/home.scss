@@ -16,7 +16,7 @@
   overflow: hidden;
 
   @media screen and (max-width: ($breakpoint-desktop - 1px)) {
-    padding: rem(20px);
+    padding: torem(20px);
   }
 }
 
@@ -48,10 +48,10 @@
 }
 
 .home__announcement__blurb {
-  max-width: rem(570px);
-  font-size: rem(14px);
+  max-width: torem(570px);
+  font-size: torem(14px);
   font-weight: 500;
-  line-height: rem(24px);
+  line-height: torem(24px);
 }
 
 .home__announcement__actions {
@@ -111,11 +111,11 @@
 
 .home__content {
   padding: 0 2rem;
-  max-width: rem(1140px);
+  max-width: torem(1140px);
   margin: 0 auto;
 
   @media screen and (max-width: ($breakpoint-desktop - 1px)) {
-    padding: 0 rem(20px);
+    padding: 0 torem(20px);
   }
 }
 
@@ -133,7 +133,7 @@
     margin: 0 auto 1.5rem;
 
     .search__form__actions {
-      right: rem(12px);
+      right: torem(12px);
     }
 
     .selectize-control--search {
@@ -142,7 +142,7 @@
 
     .selectize-control--search .selectize-input {
       padding-right: 0;
-      margin-right: rem(96px);
+      margin-right: torem(96px);
     }
   }
 
@@ -150,7 +150,7 @@
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.3s $ease-out-expo;
-    font-size: rem(24px);
+    font-size: torem(24px);
 
     a {
       text-decoration: none;
@@ -207,10 +207,10 @@
 .home__intro {
   position: relative;
   display: flex;
-  gap: rem(40px);
+  gap: torem(40px);
 
   padding: 3rem 0;
-  border-top: rem(6px) solid $red;
+  border-top: torem(6px) solid $red;
 
   @media screen and (max-width: ($breakpoint-tablet - 1px)) {
     flex-direction: column;
@@ -226,16 +226,16 @@
   }
 
   &__headline {
-    font-size: rem(24px);
+    font-size: torem(24px);
     flex: 0 0 50%;
   }
 
   &__text {
-    padding: rem(12px) 0;
+    padding: torem(12px) 0;
 
     p {
-      font-size: rem(14px);
-      line-height: rem(24px);
+      font-size: torem(14px);
+      line-height: torem(24px);
     }
   }
 
@@ -246,7 +246,7 @@
 
     iframe {
       display: block;
-      border-radius: rem(4px);
+      border-radius: torem(4px);
       aspect-ratio: 16/9;
     }
   }
@@ -275,11 +275,11 @@
   }
 
   .photos-thumbnail {
-    min-width: rem(calc(192px * 2 / 3));
+    min-width: torem(calc(192px * 2 / 3));
   }
 
   .photos-thumbnail__image {
-    height: rem(calc(160px * 2 / 3));
+    height: torem(calc(160px * 2 / 3));
   }
 }
 
@@ -303,7 +303,7 @@
 }
 
 .home__usp__header {
-  margin-bottom: rem(48px);
+  margin-bottom: torem(48px);
 
   @media screen and (min-width: $breakpoint-tablet) {
     margin-right: 33%;
@@ -327,7 +327,7 @@
   }
 
   h2 + p {
-    margin-top: rem(4px);
+    margin-top: torem(4px);
   }
 }
 
@@ -367,7 +367,7 @@
       cursor: pointer;
       position: relative;
       width: 100%;
-      border-radius: rem(4px);
+      border-radius: torem(4px);
       overflow: hidden;
 
       &:hover {
@@ -395,7 +395,7 @@
       span {
         display: flex;
         color: $light-base;
-        border-bottom: rem(6px) solid $red;
+        border-bottom: torem(6px) solid $red;
 
         transition: all 0.2s ease-out;
       }
@@ -410,7 +410,7 @@
     }
 
     &__meta {
-      margin-top: rem(12px);
+      margin-top: torem(12px);
 
       p {
         margin: 0;
@@ -443,7 +443,7 @@
 
       h5 + p,
       h5 + p + p {
-        margin-top: rem(8px);
+        margin-top: torem(8px);
       }
     }
 
@@ -510,8 +510,8 @@
   display: block;
   margin-bottom: 0.75rem;
   overflow: hidden;
-  width: rem(107px);
-  height: rem(40px);
+  width: torem(107px);
+  height: torem(40px);
   line-height: 100vh;
   background-repeat: no-repeat;
   background-size: cover;

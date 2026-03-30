@@ -36,9 +36,9 @@
     }
 
     .theme--dark & img {
-      padding: rem(12px);
+      padding: torem(12px);
       background-color: $light-base;
-      border-radius: rem(3px);
+      border-radius: torem(3px);
     }
   }
 

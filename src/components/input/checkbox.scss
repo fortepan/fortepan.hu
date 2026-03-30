@@ -1,7 +1,7 @@
 .checkbox-wrapper {
   display: flex;
   align-items: center;
-  gap: rem(8px);
+  gap: torem(8px);
 }
 
 .checkbox-wrapper__input {
@@ -9,8 +9,8 @@
   -webkit-appearance: none;
   cursor: pointer;
 
-  width: rem(16px);
-  height: rem(16px);
+  width: torem(16px);
+  height: torem(16px);
   padding: 0;
   margin: 0;
   border: none;
@@ -19,7 +19,7 @@
   background-position: center center;
 
   &[type="checkbox"] {
-    border-radius: rem(4px);
+    border-radius: torem(4px);
 
     .theme--light & {
       background-color: $light-primary;

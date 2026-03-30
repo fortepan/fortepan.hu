@@ -4,10 +4,10 @@
   position: relative;
 
   &__thumbnails {
-    padding: rem(3px);
-    border-radius: rem(7px);
+    padding: torem(3px);
+    border-radius: torem(7px);
     position: relative;
-    margin-bottom: rem(12px);
+    margin-bottom: torem(12px);
 
     transition: background-color 0.4s $ease-out-expo, outline 0.4s $ease-out-expo;
     outline: none;
@@ -28,7 +28,7 @@
       position: absolute;
       left: 50%;
       transform: translateX(-50%);
-      bottom: rem(-8px);
+      bottom: torem(-8px);
       width: 0;
       height: 0;
 
@@ -49,7 +49,7 @@
     }
 
     &:after {
-      bottom: rem(-6px);
+      bottom: torem(-6px);
 
       .theme--light & {
         border-top-color: $light-base;
@@ -61,12 +61,12 @@
     }
 
     .photos-thumbnail {
-      min-width: rem(calc(192px * 0.5));
+      min-width: torem(calc(192px * 0.5));
       margin: 0;
     }
 
     .photos-thumbnail__image {
-      height: rem(calc(160px * 0.5));
+      height: torem(calc(160px * 0.5));
       margin: 0;
     }
 
@@ -86,16 +86,16 @@
 
   &__thumbnail-wrapper {
     position: relative;
-    border-radius: rem(4px);
+    border-radius: torem(4px);
 
     .is-multiple &:before {
       content: "";
       display: block;
       position: absolute;
       top: 0;
-      right: rem(-42px);
+      right: torem(-42px);
       bottom: 0;
-      left: rem(-42px);
+      left: torem(-42px);
     }
   }
 
@@ -110,8 +110,8 @@
     transition: opacity 0.1s ease-out;
 
     svg {
-      width: calc(rem(24px) * 0.8);
-      height: calc(rem(24px) * 0.8);
+      width: calc(torem(24px) * 0.8);
+      height: calc(torem(24px) * 0.8);
     }
 
     .is-multiple & {
@@ -150,14 +150,14 @@
 
   cursor: pointer;
 
-  width: rem(8px);
-  height: rem(8px);
+  width: torem(8px);
+  height: torem(8px);
 
   @include font-heading-bold();
-  font-size: rem(14px);
-  line-height: rem(26px);
+  font-size: torem(14px);
+  line-height: torem(26px);
 
-  border-radius: rem(26px);
+  border-radius: torem(26px);
 
   color: $light-base;
   background: $red;
@@ -180,11 +180,11 @@
   .is-multiple & {
     width: auto;
     height: auto;
-    padding: 0 rem(12px);
+    padding: 0 torem(12px);
     display: inline-block;
   }
 
   .is-over-limit & {
-    padding: rem(4px) rem(16px);
+    padding: torem(4px) torem(16px);
   }
 }

@@ -24,19 +24,19 @@
 .carousel__photos {
   position: absolute;
   left: 0;
-  top: rem(80px + 48px);
-  right: rem(280px);
-  min-width: rem(320px);
-  bottom: rem(0px);
+  top: torem(80px + 48px);
+  right: torem(280px);
+  min-width: torem(320px);
+  bottom: torem(0px);
   transition: top 0.4s $ease-out-expo, right 0.4s $ease-out-expo, bottom 0.4s $ease-out-expo;
   background-color: $dark-base;
 
   @media screen and (max-width: ($breakpoint-desktop - 1px)) {
-    top: rem(64px + 48px);
+    top: torem(64px + 48px);
   }
 
   @media screen and (max-width: ($breakpoint-tablet - 1px)) {
-    left: rem(-280px);
+    left: torem(-280px);
   }
 
   .hide-carousel-sidebar & {
@@ -86,17 +86,17 @@
 
 .carousel__photos__all {
   position: absolute;
-  left: rem(16px);
-  top: rem(16px);
-  right: rem(16px);
-  bottom: rem(16px);
+  left: torem(16px);
+  top: torem(16px);
+  right: torem(16px);
+  bottom: torem(16px);
   transition: top 0.4s $ease-out-expo, right 0.4s $ease-out-expo, bottom 0.4s $ease-out-expo, left 0.4s $ease-out-expo;
 
   @media screen and (max-width: ($breakpoint-phone - 1px)) {
-    left: rem(12px);
-    right: rem(12px);
-    top: rem(12px);
-    bottom: rem(12px);
+    left: torem(12px);
+    right: torem(12px);
+    top: torem(12px);
+    bottom: torem(12px);
   }
 
   .carousel-photo-zoomed-in & {
@@ -170,9 +170,9 @@
   left: 0;
   top: 0;
   right: 0;
-  height: rem(64px);
+  height: torem(64px);
   box-sizing: border-box;
-  padding: 0 rem(8px);
+  padding: 0 torem(8px);
   z-index: 1;
   transition: top 0.4s $ease-out-expo, right 0.4s $ease-out-expo, opacity 0.4s $ease-out-expo;
 
@@ -261,7 +261,7 @@
 }
 
 .carousel__photos__pager--left {
-  left: rem(8px);
+  left: torem(8px);
 
   .carousel__photos.hide-controls & {
     transform: translateY(-50%) translateX(12px);
@@ -270,7 +270,7 @@
 }
 
 .carousel__photos__pager--right {
-  right: rem(8px);
+  right: torem(8px);
 
   .carousel__photos.hide-controls & {
     transform: translateY(-50%) translateX(-12px);
@@ -281,7 +281,7 @@
 .carousel__photos__counter {
   position: absolute;
   z-index: 2;
-  bottom: rem(24px);
+  bottom: torem(24px);
 
   display: none;
   left: 50%;
@@ -301,10 +301,10 @@
     position: absolute;
     content: "";
     display: block;
-    top: rem(-15px);
-    height: rem(25px);
-    left: rem(-44px);
-    width: rem(88px);
+    top: torem(-15px);
+    height: torem(25px);
+    left: torem(-44px);
+    width: torem(88px);
   }
 
   .embed & {
@@ -312,7 +312,7 @@
   }
 
   .button-circular__label {
-    bottom: rem(19px);
+    bottom: torem(19px);
     top: auto;
 
     transform: translate(-50%, -0.25rem);
@@ -327,11 +327,11 @@
 
     &:before {
       position: absolute;
-      bottom: rem(-4px);
+      bottom: torem(-4px);
       margin: auto;
       left: calc(50% - 8px);
       border-bottom: 0;
-      border-top: rem(6px) solid transparent;
+      border-top: torem(6px) solid transparent;
     }
 
     .theme--light &:before {
@@ -371,9 +371,9 @@
   .dot {
     position: absolute;
     bottom: 0;
-    left: rem(-2.5px);
-    width: rem(5px);
-    height: rem(5px);
+    left: torem(-2.5px);
+    width: torem(5px);
+    height: torem(5px);
     display: block;
     background: $light-base;
     opacity: 0.5;

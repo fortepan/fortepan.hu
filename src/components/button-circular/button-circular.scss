@@ -1,7 +1,7 @@
 .button-circular {
   display: block;
-  width: rem(48px);
-  height: rem(48px);
+  width: torem(48px);
+  height: torem(48px);
   border-radius: 50%;
   border: 0;
   padding: 0;
@@ -22,7 +22,7 @@
   }
 
   & + & {
-    margin-left: rem(4px);
+    margin-left: torem(4px);
   }
 
   .theme--light & {
@@ -139,10 +139,10 @@
     width: 1px;
     height: 100%;
     position: absolute;
-    right: rem(-12px);
+    right: torem(-12px);
 
     .button-circular + & {
-      margin-left: rem(24px);
+      margin-left: torem(24px);
     }
 
     .theme--light & {
@@ -173,13 +173,13 @@
   z-index: 9999;
   left: 50%;
   top: 100%;
-  font-size: rem(11px);
+  font-size: torem(11px);
   font-weight: 600;
-  padding: rem(2px) rem(8px);
-  border-radius: rem(2px);
+  padding: torem(2px) torem(8px);
+  border-radius: torem(2px);
   visibility: hidden;
   opacity: 0;
-  transform: translate(-50%, rem(4px));
+  transform: translate(-50%, torem(4px));
   transition: transform 0.2s $ease-out-expo, opacity 0.2s $ease-out-expo, visibility 0s linear 0.2s;
   white-space: nowrap;
   pointer-events: none;
@@ -187,13 +187,13 @@
   &::before {
     content: "";
     position: relative;
-    margin: rem(-6px) auto 0 auto;
+    margin: torem(-6px) auto 0 auto;
     display: block;
     width: 0;
     height: 0;
-    border-left: rem(8px) solid transparent;
-    border-right: rem(8px) solid transparent;
-    border-bottom: rem(6px) solid transparent;
+    border-left: torem(8px) solid transparent;
+    border-right: torem(8px) solid transparent;
+    border-bottom: torem(6px) solid transparent;
     transition: opacity 0.2s $ease-out-expo;
     opacity: 0;
   }
@@ -238,7 +238,7 @@
 .button-circular__text {
   display: block;
   @include font-heading-demi();
-  font-size: rem(18px);
+  font-size: torem(18px);
   text-align: center;
-  line-height: rem(48px);
+  line-height: torem(48px);
 }

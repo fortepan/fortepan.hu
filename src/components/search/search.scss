@@ -9,14 +9,14 @@
 
 .search__form__actions {
   position: absolute;
-  right: rem(6px);
+  right: torem(6px);
   top: 50%;
   transform: translateY(-50%);
 
   display: flex;
 
   .button-circular {
-    width: rem(36px);
+    width: torem(36px);
     margin: 0;
   }
 }

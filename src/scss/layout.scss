@@ -1,7 +1,7 @@
 blockquote {
   margin: 0 0 2rem;
   padding: 0 1.5rem;
-  border-left: rem(8px) solid $red;
+  border-left: torem(8px) solid $red;
 
   .theme--dark & {
     color: rgba($light-base, 0.7);

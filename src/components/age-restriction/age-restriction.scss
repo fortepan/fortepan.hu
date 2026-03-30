@@ -51,25 +51,25 @@
       border: 6px solid $red;
       margin-bottom: 1rem;
 
-      font-size: rem(28px);
+      font-size: torem(28px);
       @include font-heading-bold();
     }
 
     &__title {
-      font-size: rem(18px);
+      font-size: torem(18px);
       @include font-heading-bold();
     }
 
     &__content {
       display: block;
-      max-width: rem(360px);
+      max-width: torem(360px);
       margin: 0 auto 1rem;
     }
 
     &__content,
     &__link {
-      font-size: rem(14px);
-      line-height: rem(20px);
+      font-size: torem(14px);
+      line-height: torem(20px);
     }
   }
 }

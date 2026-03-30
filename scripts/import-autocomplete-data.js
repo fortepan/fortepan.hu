@@ -134,6 +134,7 @@ const saveAutocompleteLangFile = lang => {
     .then(() => {
       fs.writeFile(`src/static/autocomplete-${lang.toLowerCase()}.json`, JSON.stringify(keywords), err => {
         if (err) console.log("error", err)
+        else console.log(`Successfully wrote src/static/autocomplete-${lang.toLowerCase()}.json`)
       })
     })
     .catch(err => {

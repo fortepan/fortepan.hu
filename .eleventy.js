@@ -1,6 +1,6 @@
 const MarkdownIt = require("markdown-it")
 const inlineSVG = require("./plugins/inlineSVG")
-const htmlmin = require("html-minifier")
+const htmlmin = require("html-minifier-terser")
 
 module.exports = eleventyConfig => {
   // Disable .gitignore and use eleventy's own ignore file instead
