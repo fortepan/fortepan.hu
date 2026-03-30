@@ -69,7 +69,7 @@
     "@googlemaps/markerclusterer": "^2.6.2",
     "@hotwired/stimulus": "^3.2.2",
     "@hotwired/stimulus-webpack-helpers": "^1.0.1",
-    "@tinacms/cli": "^2.1.10",
+    "@tinacms/cli": "^2.2.1",
     "lodash": "^4.17.23",
     "markdown-it": "^14.1.1",
     "node-fetch": "^2.7.0",
