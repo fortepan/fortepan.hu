@@ -71,6 +71,7 @@
     "@tinacms/cli": "^2.1.10",
     "lodash": "^4.17.23",
     "markdown-it": "^14.1.1",
+    "node-fetch": "^2.7.0",
     "rss-parser": "^3.13.0",
     "tinacms": "^3.7.1"
   }
