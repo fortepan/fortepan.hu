@@ -1,6 +1,19 @@
 {
   "uploads": [
     {
+      "name": "5000 fotó időutazóknak",
+      "date": "2026-03-29T12:03:34.142Z",
+      "cover_image": "312649",
+      "hu": {
+        "title": "5000 fotó időutazóknak",
+        "blurb": "A Fortepan tavaszi kiadásában 30 adományozó 5000 archív fotójával találkozhatnak. Kivételesen sok az utazásokon készült fénykép. A századelő alpinista túráitól az időtlen Velencén és a Lidón át az ötvenes-hatvanas évek olasz, nyugat-német, francia körútjaiig képek százai mesélnek arról, milyennek láttuk Európát. De egy svéd utazó 1935-ös képeiből az is kiderül, milyennek láttak mások minket magyarokat? Újabb árnyalatokat kap a szürke Kádár-korszak és a felemelő 89-es év. Bordács Ferenc, Krizsán Árpád, Petrók Károly és Veres Júlia személyében pedig fontos új szerzőket is felfedezhetünk. ",
+        "actions": {
+          "best_of": "200 fontos kép",
+          "all": "A teljes sorozat"
+        }
+      }
+    },
+    {
       "name": "Gazda Anikó fényképei",
       "date": "2026-01-27T00:00:00.000Z",
       "cover_image": "308146",
@@ -627,19 +640,6 @@
         "actions": {
           "best_of": "100 favorites",
           "all": "All Kereki photos"
-        }
-      }
-    },
-    {
-      "name": "5000 fotó időutazóknak",
-      "date": "2026-03-29T12:03:34.142Z",
-      "cover_image": "312649",
-      "hu": {
-        "title": "5000 fotó időutazóknak",
-        "blurb": "A Fortepan tavaszi kiadásában 30 adományozó 5000 archív fotójával találkozhatnak. Kivételesen sok az utazásokon készült fénykép. A századelő alpinista túráitól az időtlen Velencén és a Lidón át az ötvenes-hatvanas évek olasz, nyugat-német, francia körútjaiig képek százai mesélnek arról, milyennek láttuk Európát. De egy svéd utazó 1935-ös képeiből az is kiderül, milyennek láttak mások minket magyarokat? Újabb árnyalatokat kap a szürke Kádár-korszak és a felemelő 89-es év. Bordács Ferenc, Krizsán Árpád, Petrók Károly és Veres Júlia személyében pedig fontos új szerzőket is felfedezhetünk. ",
-        "actions": {
-          "best_of": "200 fontos kép",
-          "all": "A teljes sorozat"
         }
       }
     }
