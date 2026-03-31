@@ -11,6 +11,14 @@
           "best_of": "200 fontos kép",
           "all": "A teljes sorozat"
         }
+      },
+      "en": {
+        "title": "5,000 Photos for Time Travelers",
+        "blurb": "In the spring issue of Fortepan, you can explore 5,000 archival photos donated by 30 contributors. There is an exceptionally large number of photographs taken during travels. From turn-of-the-century mountaineering expeditions to timeless Venice and the Lido, through to the Italian, West German, and French tours of the 1950s and 1960s, hundreds of images tell the story of how we saw Europe. But a Swedish traveler’s photos from 1935 also reveal how others saw us Hungarians. The gray Kádár era and the uplifting year of 1989 take on new nuances. And in the persons of Ferenc Bordács, Árpád Krizsán, Károly Petrók, and Júlia Veres, we can also discover important new authors. ",
+        "actions": {
+          "best_of": "200 best of",
+          "all": "all collection"
+        }
       }
     },
     {
