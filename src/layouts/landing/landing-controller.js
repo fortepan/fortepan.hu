@@ -113,6 +113,12 @@ export default class extends Controller {
           pl: "zdjęć w kolekcji Fortepan",
           it: "immagini nella collezione Fortepan"
         },
+        suisse: {
+          en: "photos in SUISSE Collection",
+          hu: "kép a SUISSE gyűjteményében",
+          pl: "zdjęć w kolekcji SUISSE",
+          it: "immagini nella collezione SUISSE"
+        },
         null: {
           en: "photos in total",
           hu: "kép összesen",
