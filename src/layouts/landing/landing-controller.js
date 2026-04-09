@@ -99,38 +99,44 @@ export default class extends Controller {
           en: "photos in Photolux Festival Collection",
           hu: "kép a Photolux Festival gyűjteményében",
           pl: "zdjęć w kolekcji Photolux Festival",
-          it: "immagini nella collezione Photolux Festival"
+          it: "immagini nella collezione Photolux Festival",
+          fr: "photos dans la collection Photolux Festival"
         },
         poland: {
           en: "photos in Fotofestiwal Collection",
           hu: "kép a Fotofestiwal Collection gyűjteményében",
           pl: "zdjęć w kolekcji Fotofestiwal",
-          it: "immagini nella collezione Fotofestiwal"
+          it: "immagini nella collezione Fotofestiwal",
+          fr: "photos dans la collection Fotofestiwal"
         },
         hungary: {
           en: "photos in Fortepan Collection",
           hu: "kép a Fortepan gyűjteményében",
           pl: "zdjęć w kolekcji Fortepan",
-          it: "immagini nella collezione Fortepan"
+          it: "immagini nella collezione Fortepan",
+          fr: "photos dans la collection Fortepan"
         },
         suisse: {
           en: "photos in SUISSE Collection",
           hu: "kép a SUISSE gyűjteményében",
           pl: "zdjęć w kolekcji SUISSE",
-          it: "immagini nella collezione SUISSE"
+          it: "immagini nella collezione SUISSE",
+          fr: "photos dans la collection SUISSE"
         },
         null: {
           en: "photos in total",
           hu: "kép összesen",
           pl:  "zdjęć",
-          it: "immagini in totale"
+          it: "immagini in totale",
+          fr: "photos au total"
         },
       }
       let homeT = {
         en: "Browse all photos of the Fortepan Method Project!",
         it: "Naviga tutte le immagini del Progetto Fortepan Method!",
         hu: "Nézze meg a Fortepan Method Projekt összes képét",
-        pl: "Przeglądaj wszystkie zdjęcia z projektu Fortepan Method!"
+        pl: "Przeglądaj wszystkie zdjęcia z projektu Fortepan Method!",
+        fr: "Parcourez toutes les photos du projet Fortepan Method!"
       }
       this.totalValTarget.textContent = numberWithCommas(data.total)
       this.extraTextTarget.textContent = langvar[getOrg()][getLocale()]

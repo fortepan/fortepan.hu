@@ -1,7 +1,7 @@
 ---
 layout: donors/donors.liquid
 title: Donors
-permalink: /it/donors/
+permalink: /fr/donors/
 hide_search: true
-locale: it
+locale: fr
 ---

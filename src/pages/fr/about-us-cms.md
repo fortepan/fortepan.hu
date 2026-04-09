@@ -1,10 +1,9 @@
 ---
 layout: article/article.liquid
 title: About us
-permalink: "/it/about-us/"
+permalink: "/fr/about-us/"
 hide_search: true
-locale: it
-
+locale: fr
 ---
 ### Fortepan is a copyright-free and community-based photo archive with over 100,000 photographs available for anyone to browse and download in high-resolution, free of charge.
 

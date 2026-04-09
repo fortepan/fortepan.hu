@@ -20,12 +20,14 @@ module.exports = {
     { code: "hu", text: "Magyar" },
     { code: "it", text: "Italian" },
     { code: "pl", text: "Polska" },
+    { code: "fr", text: "Français" },
   ],
   // LOCALES: {
   //   en: "English",
   //   hu: "Magyar",
   //   it: "Italian",
   //   pl: "Polska",
+  //   fr: "Français",
   // },
   AGE_RESTRICTION_TAG: "18+",
 }
