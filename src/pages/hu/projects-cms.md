@@ -17,7 +17,7 @@ projects:
 
       A Fortepan ABC c. album a Kieselbach Kiadó gondozásában jelenik meg 2025-ben.
 
-      [Lapozzon bele →](https://heyzine.com/flip-book/05227e8507.html)
+      [Lapozzon bele →](https://heyzine.com/flip-book/05227e8507.html)\
       [A könyvben szereplő képek a Fortepanon →](https://fortepan.hu/hu/lists/696301)
     funding_info: '<iframe width="100%"  style="aspect-ratio:3/2;border-radius:6px" src="https://fortepan.hu/hu/embed/696301" frameborder="0" allow="fullscreen" allowfullscreen="true" loading="lazy"></iframe>'
   - title: 'Fortepan ABC c. kiállítás a Fortepan Galériában, Kőszegen a Magyar Művészeti Akadémia támogatásával'
