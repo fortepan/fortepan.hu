@@ -33,7 +33,20 @@ export default class extends Controller {
     this.nextPhotoId = null
     this.currentPhotoData = null
 
-    if (isTouchDevice()) setAppState("is-touch-device")
+    if (isTouchDevice()) {
+      setAppState("is-touch-device")
+      this.initTouchPinchZoom()
+    }
+  }
+
+  initTouchPinchZoom() {
+    // Initialize pinch zoom state for touch devices only
+    // Event listeners are bound using data-action in carousel.liquid
+    this.initialTouchDistance = 0
+    this.initialScale = 1
+    this.currentScale = 1
+    this.minPinchThreshold = 20 // minimum pixels movement to trigger pinch
+    this.touchIdentifiers = []
   }
 
   show() {
@@ -192,7 +205,7 @@ export default class extends Controller {
       // setup
       const currentIndex =
         this.role === "dataset"
-          ? this.dataset.findIndex(photo => this.currentPhotoData === photo)
+          ? this.dataset.findIndex((photo) => this.currentPhotoData === photo)
           : listManager.getSelectedPhotoIndex()
 
       const prevIndex = this.counterTarget.index || -1
@@ -272,7 +285,7 @@ export default class extends Controller {
       trigger("loader:show", { id: "loaderCarousel" })
 
       if (this.role === "dataset") {
-        const index = this.dataset.findIndex(photo => photo.mid.toString() === id.toString())
+        const index = this.dataset.findIndex((photo) => photo.mid.toString() === id.toString())
 
         this.prevPhotoId = this.dataset[index - 1]?.mid // returns undefined if index is lower than 0
         this.nextPhotoId = this.dataset[index + 1]?.mid // returns undefined if index is higher than length - 1
@@ -323,7 +336,7 @@ export default class extends Controller {
     let index
 
     if (this.role === "dataset") {
-      const currentIndex = this.dataset.findIndex(photo => photo === this.currentPhotoData)
+      const currentIndex = this.dataset.findIndex((photo) => photo === this.currentPhotoData)
       index = currentIndex + 1
       photoId = this.dataset[index]?.mid
       photoManager.selectPhotoById(photoId)
@@ -355,7 +368,7 @@ export default class extends Controller {
     let index
 
     if (this.role === "dataset") {
-      const currentIndex = this.dataset.findIndex(photo => photo === this.currentPhotoData)
+      const currentIndex = this.dataset.findIndex((photo) => photo === this.currentPhotoData)
       index = currentIndex - 1
       photoId = this.dataset[index]?.mid
       photoManager.selectPhotoById(photoId)
@@ -389,7 +402,7 @@ export default class extends Controller {
   }
 
   hideAllPhotos() {
-    this.photoTargets.forEach(photo => {
+    this.photoTargets.forEach((photo) => {
       photo.classList.remove("is-active")
     })
   }
@@ -501,7 +514,7 @@ export default class extends Controller {
       let overlap = false
 
       // check if mouse is over _any_ of the targets
-      targets.forEach(item => {
+      targets.forEach((item) => {
         if (!overlap) {
           const bounds = item.getBoundingClientRect()
           if (page.x >= bounds.left && page.x <= bounds.right && page.y >= bounds.top && page.y <= bounds.bottom) {
@@ -591,7 +604,7 @@ export default class extends Controller {
     removeAppState("carousel-photo-zoomed-in")
     removeAppState("disable--selection")
 
-    this.photoTargets.forEach(photo => {
+    this.photoTargets.forEach((photo) => {
       photo.classList.remove("is-zoomed-in")
       if (photo.largePhoto) {
         photo.largePhoto.removeAttribute("style")
@@ -768,7 +781,7 @@ export default class extends Controller {
   }
 
   removeAgeRestriction(e) {
-    this.photoTargets.forEach(photo => {
+    this.photoTargets.forEach((photo) => {
       if (photo.noImage && photo.ageRestricted && e?.detail?.photoId.toString() === photo.mid.toString()) {
         delete photo.noImage
         delete photo.ageRestricted
@@ -781,5 +794,89 @@ export default class extends Controller {
         }
       }
     })
+  }
+
+  /**
+   * Pinch Zoom Implementation for Touch Devices
+   *
+   * Detects multi-touch pinch gestures and triggers photo zoom
+   * - Pinch out (zoom in): opens large photo view
+   * - Pinch in (zoom out): closes large photo view
+   * - Prevents page scroll while pinching
+   * - Only active on touch devices; desktop mouse-based pan is preserved
+   */
+
+  calculateDistance(touch1, touch2) {
+    const dx = touch1.clientX - touch2.clientX
+    const dy = touch1.clientY - touch2.clientY
+    return Math.sqrt(dx * dx + dy * dy)
+  }
+
+  calculateMidpoint(touch1, touch2) {
+    return {
+      x: (touch1.clientX + touch2.clientX) / 2,
+      y: (touch1.clientY + touch2.clientY) / 2,
+    }
+  }
+
+  onCarouselTouchStart(e) {
+    // Only handle multi-touch gestures
+    if (e.touches.length === 2) {
+      this.touchIdentifiers = [e.touches[0].identifier, e.touches[1].identifier]
+      this.initialTouchDistance = this.calculateDistance(e.touches[0], e.touches[1])
+      this.initialScale = this.currentScale
+      this.pinchStartTime = Date.now()
+    }
+  }
+
+  onCarouselTouchMove(e) {
+    // Only handle if we started with two fingers
+    if (
+      e.touches.length === 2 &&
+      this.touchIdentifiers.length === 2 &&
+      e.touches[0].identifier === this.touchIdentifiers[0] &&
+      e.touches[1].identifier === this.touchIdentifiers[1]
+    ) {
+      const currentDistance = this.calculateDistance(e.touches[0], e.touches[1])
+      const distanceDelta = currentDistance - this.initialTouchDistance
+
+      // Only trigger pinch if movement exceeds threshold
+      if (Math.abs(distanceDelta) > this.minPinchThreshold) {
+        // Calculate scale change
+        const scaleFactor = 1 + distanceDelta / 300 // 300px = 1x scale change
+        this.currentScale = Math.max(0.8, Math.min(2, this.initialScale * scaleFactor))
+
+        // Prevent vertical scroll while pinching
+        if (e.cancelable) {
+          e.preventDefault()
+        }
+      }
+    }
+  }
+
+  onCarouselTouchEnd(e) {
+    // Handle end of two-finger touch
+    if (this.initialTouchDistance > 0) {
+      const pinchDuration = Date.now() - this.pinchStartTime
+      const scaleChange = Math.abs(this.currentScale - this.initialScale)
+
+      // Trigger zoom based on final scale
+      if (scaleChange > 0.3) {
+        // Meaningful pinch detected
+        if (this.currentScale > this.initialScale + 0.2) {
+          // Pinch out - zoom in
+          this.showLargePhotoView()
+        } else if (this.currentScale < this.initialScale - 0.2) {
+          // Pinch in - zoom out
+          this.hideLargePhotoView()
+        }
+      }
+
+      // Reset pinch state
+      this.initialTouchDistance = 0
+      this.initialScale = 1
+      this.currentScale = 1
+      this.touchIdentifiers = []
+    }
   }
 }
