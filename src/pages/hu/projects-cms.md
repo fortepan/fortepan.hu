@@ -2,9 +2,25 @@
 layout: projects/projects.liquid
 permalink: /hu/projects/
 hide_search: true
-title: "Projektek"
+title: Projektek
 projects:
-  - title: "Fortepan ABC c. kiállítás a Fortepan Galériában, Kőszegen a Magyar Művészeti Akadémia támogatásával"
+  - title: Fortepan ABC album
+    project_date: '2025'
+    description: |
+      A XX. század a betű évszázada volt. Betűk, jelszavak, reklámok vettek körbe minket a plakátokon, táblákon, házakon. Folyóírásos neon-betűk, címfestők míves betűi, mésszel falakra mázolt betűk. Napilapok címsorai, faliújságok lelkesítő szavai, egy óvóhely ÓH betűi. Zsidókat nem szolgálunk ki, Mindent vissza, Jézus hív, Termelj többet, Le az uszítókkal! – palánkokra, transzparensekre, kirakatokra írt jelmondatok.
+
+      Ügyes reklámszövegek, a Kakas cipőpaszta, a Hutter szappan, a Guttman Áruház és a Modiano szivarkapapír hirdetési. Szép arányú betűk a paplankészítő, az üvegező, vagy a fényképész portáljain, Casco, Fabulon és Orion reklámok a háborús foghíjak tűzfalain. Levert vagy átírt utcatáblák, Ruszkik haza meg Mindszenty jön feliratok egy villamos oldalán, Csizma tér a ledöntött Sztálin szoborból megmaradt bronzcsizmán. A lázadó fiatalok falfirkái, a prágai tavasz, Gazsi bácsi lótetű és a Nemzet csótánya graffitik.
+
+      A Fortepan ABC [580 fényképpel](https://fortepan.hu/hu/lists/696301) mutatja be a sűrű, ismerős, vagy elfelejtett XX. századot. Minden képen betűkkel, szövegekkel, feliratokkal találkozhatunk, színes üzenetekkel a fekete-fehér világból. A fotók többsége amatőr felvétel, a Fortepant jellemző hétköznapian emberi helyzetekkel.
+
+      A szerző, a Fortepan alapító-szerkesztője Tamási Miklós, a címszavak köré rendezett fotók hátterét is igyekezett feltárni. Minden képet rövid szövegek kísérnek a fotó szerzőjéről, a helyszínről, vagy az elkapott eseményről. A fényképek történeti hátterét 3 szakértő, Szalai András, Zubreczki Dávid és Zsuppán András egy beszélgetésben is megpróbálta föltárni. A beszélgetés szerkesztett változatban olvasható a kötetben.
+
+      A Fortepan ABC c. album a Kieselbach Kiadó gondozásában jelenik meg 2025-ben.
+
+      [Lapozzon bele →](https://heyzine.com/flip-book/05227e8507.html)
+      [A könyvben szereplő képek a Fortepanon →](https://fortepan.hu/hu/lists/696301)
+    funding_info: '<iframe width="100%"  style="aspect-ratio:3/2;border-radius:6px" src="https://fortepan.hu/hu/embed/696301" frameborder="0" allow="fullscreen" allowfullscreen="true" loading="lazy"></iframe>'
+  - title: 'Fortepan ABC c. kiállítás a Fortepan Galériában, Kőszegen a Magyar Művészeti Akadémia támogatásával'
     project_date: 2025. július 26 - szeptember 30.
     description: |
       A kiállítás alapját a “Fortepan ABC” c. kiadvány adta, amely 580 fényképpel mutatja be a sűrű, ismerős, vagy elfelejtett XX. századot, mely a betű évszázada volt. Betűk, jelszavak, reklámok vettek körbe minket a plakátokon, táblákon, házakon. Folyóírásos neon-betűk, címfestők míves betűi, mésszel falakra mázolt betűk. Napilapok címsorai, faliújságok lelkesítő szavai, egy óvóhely ÓH betűi. Zsidókat nem szolgálunk ki, Mindent vissza, Jézus hív, Termelj többet, Le az uszítókkal! – palánkokra, transzparensekre, kirakatokra írt jelmondatok.
@@ -22,15 +38,15 @@ projects:
 
       Az ingyenes kiállítást kb. 3500 fő látta.
     funding_logo: /images/project_logos/MMAlogo@2x.png
-  - title: "Fotógyűjtés, digitalizálás és kiállítás a MOL-Új Európa Alapítvány támogatásával"
-    project_date: "2024."
+  - title: 'Fotógyűjtés, digitalizálás és kiállítás a MOL-Új Európa Alapítvány támogatásával'
+    project_date: '2024.'
     description: |
       A támogatás segítségével:
 
       * kiállítást rendezünk Lissák Tivadar fotográfus életművéből a kőszegi Fortepan Fotógalériában.
       * több jelentős hagyatékot is feldolgozunk. Terveink szerint elkészülünk Prohászka Imre, Csaba László, Fábián József, Szebeni András és Inkey Tibor negatívjaival. A digitalizált anyagok jórésze 2024. végéig fölkerül a Fortepanra.
-      * elindítjuk a [Fortemap.hu](https://fortemap.hu/photos "") oldalt, ahol a Fortepan Budapest belvárosi és győri fotóit térképre helyezzük. Az Alapítvány támogatásával és önkéntesek segítségével, több mint tízezer fénykép kerül föl a térképre és a projektet 2025-ben is folytatjuk.
-    funding_info: ""
+      * elindítjuk a [Fortemap.hu](https://fortemap.hu/photos) oldalt, ahol a Fortepan Budapest belvárosi és győri fotóit térképre helyezzük. Az Alapítvány támogatásával és önkéntesek segítségével, több mint tízezer fénykép kerül föl a térképre és a projektet 2025-ben is folytatjuk.
+    funding_info: ''
     funding_logo: /images/project_logos/MOL_MUEA_logo.svg
   - title: Ostrom 80 - képmentési akció Budapest ostromának nyolcvanadik évfordulója alkalmából
     project_date: 2024. november 22. -
@@ -51,12 +67,12 @@ projects:
 
       A képeket – együtt a már ismert képanyagból készült válogatással – 2025 őszén, Budapest Ostromának 80. évfordulójára emlékezve a Fortepan és az Eidolon Centre által szervezett kiállításon tervezzük bemutatni.
 
-      További információ a projektről – és arról, hogy a fényképeket hogyan tudják nekünk eljuttatni – [ezen a linken](https://fb.me/e/2B0fWmTrJ "").
+      További információ a projektről – és arról, hogy a fényképeket hogyan tudják nekünk eljuttatni – [ezen a linken](https://fb.me/e/2B0fWmTrJ).
     funding_logo: /images/project_logos/eidolon_centre_black.png
   - title: Fortepan Method - Making Europe’s private visual history freely accessible
     project_date: 2022. szeptember 1 - 2025. augusztus 31.
     description: |
-      A projekt során a Fortepan módszerére építve létrehozunk egy európai szintű, szabad felhasználású digitális privát fotó archívumot, amely gazdagítja Európa a XX. századról alkotott vizuális emlékezetét. A megvalósításban szakmai partnereink a lengyel [Fundacja Edukacji Wizualnej](https://fotofestiwal.com/2022/en/ "") és az olasz [http://www.photoluxfestival.it/](http://www.photoluxfestival.it/ ""). Három éven keresztül gyűjtünk fotókat Európa-szerte; a kiválogatott fotók felkerülnek a digitális archívumba, emellett mindhárom országban kiállítást rendezünk belőlük.
+      A projekt során a Fortepan módszerére építve létrehozunk egy európai szintű, szabad felhasználású digitális privát fotó archívumot, amely gazdagítja Európa a XX. századról alkotott vizuális emlékezetét. A megvalósításban szakmai partnereink a lengyel [Fundacja Edukacji Wizualnej](https://fotofestiwal.com/2022/en/) és az olasz [http://www.photoluxfestival.it/](http://www.photoluxfestival.it/). Három éven keresztül gyűjtünk fotókat Európa-szerte; a kiválogatott fotók felkerülnek a digitális archívumba, emellett mindhárom országban kiállítást rendezünk belőlük.
     funding_info: A projektet az Európai Bizottság Creative Europe programja támogatja.
     funding_logo: /images/project_logos/eu_co-funded_hu.svg
   - title: Fortepan Pannonia
@@ -75,7 +91,7 @@ projects:
     project_date: 2022. május 30 - december 15.
     description: |
       A projekt időtartama alatt a korábbi években megkezdett, V. kerületre vonatkozó fotógyűjtő munkát és publikálást folytatjuk.
-    funding_info: "A projekt Belváros-Lipótváros, Budapest Főváros V. kerület Önkormányzata támogatásával valósult meg."
+    funding_info: 'A projekt Belváros-Lipótváros, Budapest Főváros V. kerület Önkormányzata támogatásával valósult meg.'
     funding_logo: /images/project_logos/belvaros_jovo_varosa.png
   - title: Saját galéria létrehozásának lehetősége a Fortepan on-line fotóarchívumban
     project_date: 2022. január 1 - 2022. december 31.
@@ -85,3 +101,4 @@ projects:
     funding_logo: /images/project_logos/MMAlogo@2x.png
 _template: projects
 ---
+
