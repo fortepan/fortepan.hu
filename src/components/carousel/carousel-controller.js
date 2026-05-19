@@ -42,6 +42,7 @@ export default class extends Controller {
     this.nextPhotoId = null
     this.currentPhotoData = null
     this.desktopZoomPointer = null
+    this.sidebarZoomRecalcTimeout = 0
 
     if (isTouchDevice()) {
       setAppState("is-touch-device")
@@ -795,6 +796,17 @@ export default class extends Controller {
 
   toggleSidebar() {
     trigger("carouselSidebar:toggle")
+    if (!this.isPhotoZoomedIn) return
+
+    this.setLargePhotoPosition()
+    if (isTouchDevice()) this.scheduleTouchZoomLayoutSync()
+
+    clearTimeout(this.sidebarZoomRecalcTimeout)
+    this.sidebarZoomRecalcTimeout = setTimeout(() => {
+      if (!this.isPhotoZoomedIn) return
+      this.setLargePhotoPosition()
+      if (isTouchDevice()) this.scheduleTouchZoomLayoutSync()
+    }, TOUCH_LAYOUT_SYNC_DELAY)
   }
 
   get isFullscreen() {
