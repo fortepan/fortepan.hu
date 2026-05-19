@@ -118,67 +118,57 @@
   .image-loader.is-active.is-loaded:not(.image-loader--no-image) {
     cursor: zoom-in;
 
-    .large-image-loader {
-      display: none;
-      position: absolute;
-      padding: 6rem;
-      pointer-events: none;
-      transform-origin: center center;
-      will-change: transform;
-
-      img {
-        position: relative;
-        display: block;
-        width: auto;
-        height: auto;
-        object-fit: none;
-      }
-    }
-
     &.is-zoomed-in {
       cursor: zoom-out;
       overflow: hidden;
 
       img {
         pointer-events: none;
+        transform-origin: center center;
+        will-change: transform;
       }
 
-      .large-image-loader {
-        display: block;
+      .is-touch-device & {
+        overflow: hidden;
 
-        .is-touch-device & {
-          top: 0;
-          right: 0;
-          bottom: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          overflow: hidden;
+        img {
           pointer-events: all;
-          padding: 0;
-
-          img {
-            pointer-events: all;
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            user-select: none;
-            -webkit-user-select: none;
-            -webkit-user-drag: none;
-            touch-action: none;
-          }
+          user-select: none;
+          -webkit-user-select: none;
+          -webkit-user-drag: none;
+          touch-action: none;
         }
       }
 
-      &:not(.large-photo-loaded) > img {
-        opacity: 0.5;
-      }
+      body:not(.is-touch-device) & {
+        overflow: hidden;
+        padding: 6rem;
+        box-sizing: border-box;
 
-      &.large-photo-loaded > img {
-        display: none;
+        img {
+          position: relative;
+          transform-origin: top left;
+          width: auto;
+          height: auto;
+          max-width: none;
+          max-height: none;
+          object-fit: initial;
+          will-change: auto;
+        }
+
+        &.desktop-preload-size--landscape {
+          img {
+            width: 2560px;
+            height: auto;
+          }
+        }
+
+        &.desktop-preload-size--portrait {
+          img {
+            width: auto;
+            height: 2560px;
+          }
+        }
       }
     }
   }
