@@ -6,7 +6,9 @@
   top: 0;
   bottom: 0;
   z-index: 20;
-  transition: background-color 0.2s $ease-out-expo, color 0.2s $ease-out-expo;
+  transition:
+    background-color 0.2s $ease-out-expo,
+    color 0.2s $ease-out-expo;
 
   .theme--light & {
     background-color: $light-secondary;
@@ -28,8 +30,12 @@
   right: torem(280px);
   min-width: torem(320px);
   bottom: torem(0px);
-  transition: top 0.4s $ease-out-expo, right 0.4s $ease-out-expo, bottom 0.4s $ease-out-expo;
+  transition:
+    top 0.4s $ease-out-expo,
+    right 0.4s $ease-out-expo,
+    bottom 0.4s $ease-out-expo;
   background-color: $dark-base;
+  touch-action: none;
 
   @media screen and (max-width: ($breakpoint-desktop - 1px)) {
     top: torem(64px + 48px);
@@ -47,7 +53,6 @@
     }
   }
 
-  .play-carousel-slideshow &,
   .carousel-fullscreen & {
     top: 0;
   }
@@ -90,7 +95,11 @@
   top: torem(16px);
   right: torem(16px);
   bottom: torem(16px);
-  transition: top 0.4s $ease-out-expo, right 0.4s $ease-out-expo, bottom 0.4s $ease-out-expo, left 0.4s $ease-out-expo;
+  transition:
+    top 0.4s $ease-out-expo,
+    right 0.4s $ease-out-expo,
+    bottom 0.4s $ease-out-expo,
+    left 0.4s $ease-out-expo;
 
   @media screen and (max-width: ($breakpoint-phone - 1px)) {
     left: torem(12px);
@@ -109,54 +118,57 @@
   .image-loader.is-active.is-loaded:not(.image-loader--no-image) {
     cursor: zoom-in;
 
-    .large-image-loader {
-      display: none;
-      position: absolute;
-      padding: 6rem;
-      pointer-events: none;
-
-      img {
-        position: relative;
-        display: block;
-        width: auto;
-        height: auto;
-        object-fit: none;
-      }
-    }
-
     &.is-zoomed-in {
       cursor: zoom-out;
       overflow: hidden;
 
       img {
         pointer-events: none;
+        transform-origin: center center;
+        will-change: transform;
       }
 
-      .large-image-loader {
-        display: block;
+      .is-touch-device & {
+        overflow: hidden;
 
-        .is-touch-device & {
-          top: 0;
-          right: 0;
-          bottom: 0;
-          left: 0;
-          overflow: auto;
+        img {
           pointer-events: all;
-          padding: 0;
-
-          img {
-            pointer-events: all;
-            padding: 6rem;
-          }
+          user-select: none;
+          -webkit-user-select: none;
+          -webkit-user-drag: none;
+          touch-action: none;
         }
       }
 
-      &:not(.large-photo-loaded) > img {
-        opacity: 0.5;
-      }
+      body:not(.is-touch-device) & {
+        overflow: hidden;
+        padding: 6rem;
+        box-sizing: border-box;
 
-      &.large-photo-loaded > img {
-        display: none;
+        img {
+          position: relative;
+          transform-origin: top left;
+          width: auto;
+          height: auto;
+          max-width: none;
+          max-height: none;
+          object-fit: initial;
+          will-change: auto;
+        }
+
+        &.desktop-preload-size--landscape {
+          img {
+            width: 2560px;
+            height: auto;
+          }
+        }
+
+        &.desktop-preload-size--portrait {
+          img {
+            width: auto;
+            height: 2560px;
+          }
+        }
       }
     }
   }
@@ -174,7 +186,10 @@
   box-sizing: border-box;
   padding: 0 torem(8px);
   z-index: 1;
-  transition: top 0.4s $ease-out-expo, right 0.4s $ease-out-expo, opacity 0.4s $ease-out-expo;
+  transition:
+    top 0.4s $ease-out-expo,
+    right 0.4s $ease-out-expo,
+    opacity 0.4s $ease-out-expo;
 
   .carousel__photos.hide-controls & {
     pointer-events: none;
@@ -187,7 +202,10 @@
     & > *:not(.embed-logo),
     &:before,
     .embed-logo .embed-logo__link span {
-      transition: top 0.4s $ease-out-expo, right 0.4s $ease-out-expo, opacity 0.4s $ease-out-expo;
+      transition:
+        top 0.4s $ease-out-expo,
+        right 0.4s $ease-out-expo,
+        opacity 0.4s $ease-out-expo;
     }
   }
 
@@ -250,7 +268,9 @@
 .carousel__photos__pager {
   position: absolute;
   top: 50%;
-  transition: transform 0.4s $ease-out-expo, opacity 0.4s $ease-out-expo;
+  transition:
+    transform 0.4s $ease-out-expo,
+    opacity 0.4s $ease-out-expo;
   transform: translateY(-50%);
   z-index: 2;
 }
@@ -290,7 +310,9 @@
     display: block;
   }
 
-  transition: transform 0.4s $ease-out-expo, opacity 0.4s $ease-out-expo;
+  transition:
+    transform 0.4s $ease-out-expo,
+    opacity 0.4s $ease-out-expo;
 
   .carousel__photos.hide-controls & {
     transform: translateX(-50%) translateY(-6px);
@@ -346,7 +368,10 @@
   &:hover .button-circular__label {
     visibility: visible;
     opacity: 1;
-    transition: transform 0.4s $ease-out-expo, opacity 0.4s $ease-out-expo, visibility 0s linear 0s;
+    transition:
+      transform 0.4s $ease-out-expo,
+      opacity 0.4s $ease-out-expo,
+      visibility 0s linear 0s;
 
     &:before {
       transition: opacity 0.4s $ease-out-expo;
@@ -380,7 +405,9 @@
     border-radius: 50%;
     pointer-events: none;
 
-    transition: transform 0.4s $ease-out-expo, opacity 0.4s $ease-out-expo;
+    transition:
+      transform 0.4s $ease-out-expo,
+      opacity 0.4s $ease-out-expo;
 
     &.range--more {
       transform: translateX(-44px) scale(0);

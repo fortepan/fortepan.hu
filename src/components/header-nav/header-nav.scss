@@ -12,7 +12,6 @@
     transform 0.6s $ease-out-expo;
   user-select: none;
 
-  .play-carousel-slideshow &,
   .carousel-fullscreen & {
     transform: translateY(-8rem);
   }
@@ -20,7 +19,6 @@
   @media screen and (max-width: ($breakpoint-desktop - 1px)) {
     padding: torem(8px);
 
-    .play-carousel-slideshow &,
     .carousel-fullscreen & {
       transform: translateY(-7rem);
     }

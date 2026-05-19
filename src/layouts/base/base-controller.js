@@ -12,6 +12,32 @@ export default class extends Controller {
     this.checkDevStatus()
   }
 
+  /**
+   * Global pinch zoom prevention
+   * Prevents browser default pinch-to-zoom on all pages
+   * Carousel view has custom pinch zoom handling via carousel-controller
+   *
+   * Event listeners are attached via data-action in the base.liquid template
+   */
+  shouldAllowCustomCarouselGesture() {
+    const carousel = document.querySelector(".carousel")
+    const isCarouselVisible = carousel?.classList?.contains("is-visible")
+    return !!isCarouselVisible
+  }
+
+  onDocumentTouchMove(e) {
+    if (e.touches.length > 1 && !this.shouldAllowCustomCarouselGesture()) {
+      e.preventDefault()
+    }
+  }
+
+  onDocumentGestureChange(e) {
+    // Prevent zoom on gesturechange (iOS)
+    if (!this.shouldAllowCustomCarouselGesture()) {
+      e.preventDefault()
+    }
+  }
+
   checkDevStatus() {
     const params = getURLParams()
 

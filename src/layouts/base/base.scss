@@ -2,7 +2,10 @@ body {
   padding: 0;
   margin: 0;
   overflow: hidden;
-  transition: color 0.2s $ease-out-expo, background-color 0.2s $ease-out-expo;
+  touch-action: manipulation;
+  transition:
+    color 0.2s $ease-out-expo,
+    background-color 0.2s $ease-out-expo;
 
   main {
     display: block;

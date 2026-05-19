@@ -6,6 +6,15 @@ import { setAppState, removeAppState, appState } from "../../js/app"
 import photoManager from "../../js/photo-manager"
 import listManager from "../../js/list-manager"
 
+const TOUCH_ZOOM_MIN_SCALE = 1
+const TOUCH_ZOOM_EPSILON = 0.001
+const TOUCH_PAN_RESISTANCE = 0.35
+const TOUCH_SCALE_RESISTANCE = 0.2
+const TOUCH_SNAP_DURATION = 180
+const TOUCH_SNAP_EASING = "cubic-bezier(0.22, 1, 0.36, 1)"
+const TOUCH_LAYOUT_SYNC_DELAY = 450
+const LARGE_PHOTO_EDGE_PADDING_PX = 96
+
 export default class extends Controller {
   static get targets() {
     return [
@@ -32,8 +41,374 @@ export default class extends Controller {
     this.prevPhotoId = null
     this.nextPhotoId = null
     this.currentPhotoData = null
+    this.desktopZoomPointer = null
+    this.sidebarZoomRecalcTimeout = 0
 
-    if (isTouchDevice()) setAppState("is-touch-device")
+    if (isTouchDevice()) {
+      setAppState("is-touch-device")
+      this.initTouchPinchZoom()
+    }
+  }
+
+  initTouchPinchZoom() {
+    this.touchSnapTimeout = 0
+    this.touchLayoutSettled = true
+    this.touchScale = TOUCH_ZOOM_MIN_SCALE
+    this.touchTranslation = { x: 0, y: 0 }
+    this.touchStartScale = TOUCH_ZOOM_MIN_SCALE
+    this.touchStartDistance = 0
+    this.touchStartTranslation = { x: 0, y: 0 }
+    this.touchPinchStartCenter = { x: 0, y: 0 }
+    this.touchPanStart = { x: 0, y: 0 }
+    this.isTouchPinching = false
+    this.isTouchPanning = false
+    this.touchIdentifiers = []
+  }
+
+  resetTouchZoomState() {
+    clearTimeout(this.touchSnapTimeout)
+    this.stopTouchLayoutSync()
+    this.touchLayoutSettled = true
+    this.touchScale = TOUCH_ZOOM_MIN_SCALE
+    this.touchTranslation = { x: 0, y: 0 }
+    this.resetTouchGestureState()
+  }
+
+  resetTouchGestureState() {
+    this.touchStartScale = this.touchScale
+    this.touchStartDistance = 0
+    this.touchStartTranslation = { ...this.touchTranslation }
+    this.touchPinchStartCenter = { x: 0, y: 0 }
+    this.touchPanStart = { x: 0, y: 0 }
+    this.isTouchPinching = false
+    this.isTouchPanning = false
+    this.touchIdentifiers = []
+  }
+
+  getActiveZoomedPhoto() {
+    return this.photosTarget.querySelector(".image-loader.is-active.is-loaded.is-zoomed-in")
+  }
+
+  getPhotoImage(photo) {
+    return photo?.querySelector(":scope > img")
+  }
+
+  getLargePhotoSrc(photo) {
+    if (!photo?.mid) return null
+    return `${config().PHOTO_SOURCE}2560/fortepan_${photo.mid}.jpg`
+  }
+
+  clearDesktopPreloadSizeClasses(photo) {
+    if (!photo) return
+    photo.classList.remove("desktop-preload-size--landscape", "desktop-preload-size--portrait")
+  }
+
+  applyDesktopPreloadSizeClass(photo) {
+    if (!photo) return
+
+    const img = this.getPhotoImage(photo)
+    const width = img?.naturalWidth || 0
+    const height = img?.naturalHeight || 0
+
+    this.clearDesktopPreloadSizeClasses(photo)
+    photo.classList.add(`desktop-preload-size--${!width || !height || width >= height ? "landscape" : "portrait"}`)
+  }
+
+  preloadLargePhotoOnBaseImage(photo) {
+    if (!photo || photo.noImage || photo.largeSrcLoaded) return
+
+    const img = this.getPhotoImage(photo)
+    const largeSrc = this.getLargePhotoSrc(photo)
+    if (!img || !largeSrc) return
+
+    if (img.src === largeSrc) {
+      photo.largeSrcLoaded = true
+      if (!isTouchDevice()) {
+        this.clearDesktopPreloadSizeClasses(photo)
+        if (photo.classList.contains("is-zoomed-in")) this.setLargePhotoPosition()
+      }
+      return
+    }
+
+    const loadToken = `${photo.mid}-${Date.now()}`
+    photo.largeSrcLoadToken = loadToken
+
+    const preloader = new Image()
+    preloader.onload = () => {
+      if (photo.largeSrcLoadToken !== loadToken) return
+      if (!photo.classList.contains("is-active")) return
+
+      const onBaseImageLoaded = () => {
+        if (photo.largeSrcLoadToken !== loadToken) return
+        if (!photo.classList.contains("is-active")) return
+
+        photo.largeSrcLoaded = true
+
+        if (photo.classList.contains("is-zoomed-in")) {
+          if (isTouchDevice()) this.normalizeTouchZoomPosition(photo)
+          else {
+            this.clearDesktopPreloadSizeClasses(photo)
+            this.setLargePhotoPosition()
+          }
+        }
+      }
+
+      img.addEventListener("load", onBaseImageLoaded, { once: true })
+      img.src = largeSrc
+    }
+    preloader.src = largeSrc
+  }
+
+  getTouchByIdentifier(touches, identifier) {
+    if (identifier == null) return null
+    for (let i = 0; i < touches.length; i += 1) {
+      if (touches[i].identifier === identifier) return touches[i]
+    }
+    return null
+  }
+
+  beginTouchPinch(firstTouch, secondTouch) {
+    const center = this.calculateMidpoint(firstTouch, secondTouch)
+
+    this.touchIdentifiers = [firstTouch.identifier, secondTouch.identifier]
+    this.touchStartDistance = this.calculateDistance(firstTouch, secondTouch)
+    this.touchStartScale = this.touchScale
+    this.touchStartTranslation = { ...this.touchTranslation }
+    this.touchPinchStartCenter = center
+    this.isTouchPinching = true
+    this.isTouchPanning = false
+  }
+
+  beginTouchPan(touch, options = {}) {
+    const { normalize = false } = options
+    if (normalize) this.normalizeTouchZoomPosition()
+
+    this.touchIdentifiers = [touch.identifier]
+    this.touchPanStart = { x: touch.clientX, y: touch.clientY }
+    this.touchStartTranslation = { ...this.touchTranslation }
+    this.touchStartDistance = 0
+    this.isTouchPinching = false
+    this.isTouchPanning = this.isTouchZoomed()
+  }
+
+  isTouchZoomed() {
+    return this.touchScale > TOUCH_ZOOM_MIN_SCALE + TOUCH_ZOOM_EPSILON
+  }
+
+  isTouchScaleAtMin() {
+    return this.touchScale <= TOUCH_ZOOM_MIN_SCALE + TOUCH_ZOOM_EPSILON
+  }
+
+  clampTouchZoomTranslation(photo, scale, translation) {
+    const limits = this.getTouchZoomLimits(photo, scale)
+    if (!limits) return translation
+
+    return {
+      x: Math.max(limits.minX, Math.min(limits.maxX, translation.x)),
+      y: Math.max(limits.minY, Math.min(limits.maxY, translation.y)),
+    }
+  }
+
+  getTouchZoomLimits(photo, scale) {
+    const photoBounds = photo.getBoundingClientRect()
+    if (!photoBounds.width || !photoBounds.height) return null
+
+    const viewport = this.getTouchImageViewport(photo)
+    if (!viewport) return null
+
+    const edgePadding = LARGE_PHOTO_EDGE_PADDING_PX
+    const paddedBoundsWidth = Math.max(0, photoBounds.width - edgePadding * 2)
+    const paddedBoundsHeight = Math.max(0, photoBounds.height - edgePadding * 2)
+
+    const maxX = Math.max(0, (viewport.width * scale - paddedBoundsWidth) / 2)
+    const maxY = Math.max(0, (viewport.height * scale - paddedBoundsHeight) / 2)
+
+    return {
+      minX: -maxX,
+      maxX,
+      minY: -maxY,
+      maxY,
+    }
+  }
+
+  applyTouchResistance(value, min, max, factor = TOUCH_PAN_RESISTANCE) {
+    if (value < min) return min - (min - value) * factor
+    if (value > max) return max + (value - max) * factor
+    return value
+  }
+
+  getTouchContainSize(containerWidth, containerHeight, naturalWidth, naturalHeight) {
+    if (!naturalWidth || !naturalHeight || !containerWidth || !containerHeight) {
+      return { width: containerWidth, height: containerHeight }
+    }
+
+    const scale = Math.min(containerWidth / naturalWidth, containerHeight / naturalHeight)
+    return {
+      width: naturalWidth * scale,
+      height: naturalHeight * scale,
+    }
+  }
+
+  getTouchImageViewport(photo) {
+    if (!photo) return null
+
+    const photoBounds = photo.getBoundingClientRect()
+    if (!photoBounds.width || !photoBounds.height) return null
+
+    const img = this.getPhotoImage(photo)
+    const naturalWidth = img?.naturalWidth
+    const naturalHeight = img?.naturalHeight
+
+    const contain = this.getTouchContainSize(photoBounds.width, photoBounds.height, naturalWidth, naturalHeight)
+
+    return {
+      left: (photoBounds.width - contain.width) / 2,
+      top: (photoBounds.height - contain.height) / 2,
+      width: contain.width,
+      height: contain.height,
+    }
+  }
+
+  getTouchZoomMaxScale(photo = this.getActiveZoomedPhoto()) {
+    if (!photo?.imageLoaded) return TOUCH_ZOOM_MIN_SCALE
+
+    const img = this.getPhotoImage(photo)
+    const naturalWidth = img?.naturalWidth
+    const naturalHeight = img?.naturalHeight
+    if (!naturalWidth || !naturalHeight) return TOUCH_ZOOM_MIN_SCALE
+
+    const photoBounds = photo.getBoundingClientRect()
+    if (!photoBounds.width || !photoBounds.height) return TOUCH_ZOOM_MIN_SCALE
+
+    const contain = this.getTouchContainSize(photoBounds.width, photoBounds.height, naturalWidth, naturalHeight)
+    if (!contain.width || !contain.height) return TOUCH_ZOOM_MIN_SCALE
+
+    const maxByWidth = naturalWidth / contain.width
+    const maxByHeight = naturalHeight / contain.height
+    return Math.max(TOUCH_ZOOM_MIN_SCALE, Math.min(maxByWidth, maxByHeight))
+  }
+
+  preventIfCancelable(e) {
+    if (e?.cancelable) e.preventDefault()
+  }
+
+  isTouchOnCarouselControl(target) {
+    if (!target?.closest) return false
+
+    return Boolean(
+      target.closest(
+        ".carousel__photos__actions, .carousel__photos__pager, .carousel__photos__counter, .button-circular"
+      )
+    )
+  }
+
+  stopTouchSnapAnimation(photo = this.getActiveZoomedPhoto()) {
+    clearTimeout(this.touchSnapTimeout)
+    const img = this.getPhotoImage(photo)
+    if (img) img.style.transition = ""
+  }
+
+  stopTouchLayoutSync() {
+    clearTimeout(this.touchLayoutSyncTimeout)
+    if (this.touchLayoutSyncHandler && this.photosTarget) {
+      this.photosTarget.removeEventListener("transitionend", this.touchLayoutSyncHandler)
+      this.touchLayoutSyncHandler = null
+    }
+  }
+
+  scheduleTouchZoomLayoutSync(photo = this.getActiveZoomedPhoto()) {
+    if (!isTouchDevice() || !photo) return
+
+    this.touchLayoutSettled = false
+    this.stopTouchLayoutSync()
+
+    const sync = () => {
+      if (this.isTouchPinching || this.isTouchPanning) {
+        this.touchLayoutSyncTimeout = setTimeout(sync, 120)
+        return
+      }
+
+      this.stopTouchLayoutSync()
+      if (photo.classList.contains("is-zoomed-in")) {
+        this.normalizeTouchZoomPosition(photo)
+      }
+      this.touchLayoutSettled = true
+    }
+
+    this.touchLayoutSyncHandler = (event) => {
+      if (event.target !== this.photosTarget) return
+      if (!["left", "right", "top", "bottom"].includes(event.propertyName)) return
+      sync()
+    }
+
+    this.photosTarget.addEventListener("transitionend", this.touchLayoutSyncHandler)
+    this.touchLayoutSyncTimeout = setTimeout(sync, TOUCH_LAYOUT_SYNC_DELAY)
+  }
+
+  applyTouchZoomTransform(photo = this.getActiveZoomedPhoto(), options = {}) {
+    if (!isTouchDevice() || !photo?.imageLoaded) return
+
+    const { resist = false, animate = false } = options
+
+    const img = this.getPhotoImage(photo)
+    if (!img) return
+
+    const limits = this.getTouchZoomLimits(photo, this.touchScale)
+    if (limits) {
+      if (resist) {
+        this.touchTranslation = {
+          x: this.applyTouchResistance(this.touchTranslation.x, limits.minX, limits.maxX),
+          y: this.applyTouchResistance(this.touchTranslation.y, limits.minY, limits.maxY),
+        }
+      } else {
+        this.touchTranslation = this.clampTouchZoomTranslation(photo, this.touchScale, this.touchTranslation)
+      }
+    }
+
+    if (animate) {
+      img.style.transition = `transform ${TOUCH_SNAP_DURATION}ms ${TOUCH_SNAP_EASING}`
+      clearTimeout(this.touchSnapTimeout)
+      this.touchSnapTimeout = setTimeout(() => {
+        const activeImg = this.getPhotoImage(photo)
+        if (activeImg) activeImg.style.transition = ""
+      }, TOUCH_SNAP_DURATION)
+    } else {
+      this.stopTouchSnapAnimation(photo)
+    }
+
+    img.style.transform = `translate3d(${this.touchTranslation.x}px, ${this.touchTranslation.y}px, 0) scale(${this.touchScale})`
+  }
+
+  snapTouchZoomToBounds(photo = this.getActiveZoomedPhoto()) {
+    if (!photo) return
+
+    const maxScale = this.getTouchZoomMaxScale(photo)
+    this.touchScale = Math.max(TOUCH_ZOOM_MIN_SCALE, Math.min(maxScale, this.touchScale))
+
+    if (this.isTouchScaleAtMin()) {
+      this.touchScale = TOUCH_ZOOM_MIN_SCALE
+      this.touchTranslation = { x: 0, y: 0 }
+    } else {
+      this.touchTranslation = this.clampTouchZoomTranslation(photo, this.touchScale, this.touchTranslation)
+    }
+
+    this.applyTouchZoomTransform(photo, { animate: true })
+  }
+
+  normalizeTouchZoomPosition(photo = this.getActiveZoomedPhoto()) {
+    if (!photo) return
+
+    const maxScale = this.getTouchZoomMaxScale(photo)
+    this.touchScale = Math.max(TOUCH_ZOOM_MIN_SCALE, Math.min(maxScale, this.touchScale))
+
+    if (this.isTouchScaleAtMin()) {
+      this.touchScale = TOUCH_ZOOM_MIN_SCALE
+      this.touchTranslation = { x: 0, y: 0 }
+    } else {
+      this.touchTranslation = this.clampTouchZoomTranslation(photo, this.touchScale, this.touchTranslation)
+    }
+
+    this.applyTouchZoomTransform(photo)
   }
 
   show() {
@@ -192,7 +567,7 @@ export default class extends Controller {
       // setup
       const currentIndex =
         this.role === "dataset"
-          ? this.dataset.findIndex(photo => this.currentPhotoData === photo)
+          ? this.dataset.findIndex((photo) => this.currentPhotoData === photo)
           : listManager.getSelectedPhotoIndex()
 
       const prevIndex = this.counterTarget.index || -1
@@ -272,7 +647,7 @@ export default class extends Controller {
       trigger("loader:show", { id: "loaderCarousel" })
 
       if (this.role === "dataset") {
-        const index = this.dataset.findIndex(photo => photo.mid.toString() === id.toString())
+        const index = this.dataset.findIndex((photo) => photo.mid.toString() === id.toString())
 
         this.prevPhotoId = this.dataset[index - 1]?.mid // returns undefined if index is lower than 0
         this.nextPhotoId = this.dataset[index + 1]?.mid // returns undefined if index is higher than length - 1
@@ -323,7 +698,7 @@ export default class extends Controller {
     let index
 
     if (this.role === "dataset") {
-      const currentIndex = this.dataset.findIndex(photo => photo === this.currentPhotoData)
+      const currentIndex = this.dataset.findIndex((photo) => photo === this.currentPhotoData)
       index = currentIndex + 1
       photoId = this.dataset[index]?.mid
       photoManager.selectPhotoById(photoId)
@@ -355,7 +730,7 @@ export default class extends Controller {
     let index
 
     if (this.role === "dataset") {
-      const currentIndex = this.dataset.findIndex(photo => photo === this.currentPhotoData)
+      const currentIndex = this.dataset.findIndex((photo) => photo === this.currentPhotoData)
       index = currentIndex - 1
       photoId = this.dataset[index]?.mid
       photoManager.selectPhotoById(photoId)
@@ -389,7 +764,7 @@ export default class extends Controller {
   }
 
   hideAllPhotos() {
-    this.photoTargets.forEach(photo => {
+    this.photoTargets.forEach((photo) => {
       photo.classList.remove("is-active")
     })
   }
@@ -404,17 +779,11 @@ export default class extends Controller {
     this.slideshowTimeout = setTimeout(() => {
       this.showNextPhoto()
     }, config().CAROUSEL_SLIDESHOW_DELAY)
-
-    this.wasFullScreen = appState("carousel-fullscreen")
-
-    this.openFullscreen()
   }
 
   pauseSlideshow() {
     removeAppState("play-carousel-slideshow")
     clearTimeout(this.slideshowTimeout)
-
-    if (!this.wasFullScreen) this.closeFullscreen()
   }
 
   toggleSlideshow() {
@@ -427,6 +796,17 @@ export default class extends Controller {
 
   toggleSidebar() {
     trigger("carouselSidebar:toggle")
+    if (!this.isPhotoZoomedIn) return
+
+    this.setLargePhotoPosition()
+    if (isTouchDevice()) this.scheduleTouchZoomLayoutSync()
+
+    clearTimeout(this.sidebarZoomRecalcTimeout)
+    this.sidebarZoomRecalcTimeout = setTimeout(() => {
+      if (!this.isPhotoZoomedIn) return
+      this.setLargePhotoPosition()
+      if (isTouchDevice()) this.scheduleTouchZoomLayoutSync()
+    }, TOUCH_LAYOUT_SYNC_DELAY)
   }
 
   get isFullscreen() {
@@ -453,7 +833,6 @@ export default class extends Controller {
     this.showControls(null, true)
 
     if (!this.sidebarWasHidden) trigger("carouselSidebar:show")
-    if (this.isPhotoZoomedIn) this.hideLargePhotoView()
   }
 
   openFullscreen() {
@@ -481,11 +860,8 @@ export default class extends Controller {
   }
 
   toggleFullscreen() {
-    if (this.isPhotoZoomedIn) {
-      this.hideLargePhotoView()
-    } else if (this.isFullscreen) {
-      if (this.slideshowIsPlaying) this.pauseSlideshow()
-      if (this.isFullscreen) this.closeFullscreen()
+    if (this.isFullscreen) {
+      this.closeFullscreen()
     } else {
       this.openFullscreen()
     }
@@ -501,7 +877,7 @@ export default class extends Controller {
       let overlap = false
 
       // check if mouse is over _any_ of the targets
-      targets.forEach(item => {
+      targets.forEach((item) => {
         if (!overlap) {
           const bounds = item.getBoundingClientRect()
           if (page.x >= bounds.left && page.x <= bounds.right && page.y >= bounds.top && page.y <= bounds.bottom) {
@@ -556,110 +932,100 @@ export default class extends Controller {
       if (this.slideshowIsPlaying) this.pauseSlideshow()
 
       photo.classList.add("is-zoomed-in")
-
-      if (!photo.largePhoto) {
-        const container = document.createElement("div")
-        container.dataset.controller = "image-loader"
-        container.className = "large-image-loader"
-        container.altText = photo.altText
-
-        photo.appendChild(container)
-        photo.largePhoto = container
+      if (!isTouchDevice() && !photo.largeSrcLoaded) {
+        this.applyDesktopPreloadSizeClass(photo)
       }
-
-      if (!photo.largePhoto.imageLoaded) {
-        trigger("loader:show", { id: "loaderCarousel" })
-
-        photo.largePhoto.imageSrc = `${config().PHOTO_SOURCE}2560/fortepan_${photo.mid}.jpg`
-
-        photo.largePhoto.loadCallback = () => {
-          photo.classList.add("large-photo-loaded")
-          trigger("loader:hide", { id: "loaderCarousel" })
-          this.setLargePhotoPosition()
-        }
-
-        photo.largePhoto.classList.add("is-active")
-      } else {
-        trigger("loader:hide", { id: "loaderCarousel" })
-        this.setLargePhotoPosition()
-      }
+      this.preloadLargePhotoOnBaseImage(photo)
+      this.setLargePhotoPosition(e)
+      this.scheduleTouchZoomLayoutSync(photo)
     }
   }
 
   hideLargePhotoView(e) {
     if (e) e.preventDefault()
+    this.stopTouchLayoutSync()
     removeAppState("carousel-photo-zoomed-in")
     removeAppState("disable--selection")
 
-    this.photoTargets.forEach(photo => {
+    this.photoTargets.forEach((photo) => {
       photo.classList.remove("is-zoomed-in")
-      if (photo.largePhoto) {
-        photo.largePhoto.removeAttribute("style")
+      this.clearDesktopPreloadSizeClasses(photo)
+      const img = this.getPhotoImage(photo)
+      if (img) {
+        img.style.transform = ""
+        img.style.transition = ""
       }
     })
+    this.desktopZoomPointer = null
 
-    trigger("loader:hide", { id: "loaderCarousel" })
+    if (isTouchDevice()) {
+      this.resetTouchZoomState()
+    }
+
     this.showControls(null, true)
   }
 
-  toggleLargePhotoView() {
+  toggleLargePhotoView(e) {
     if (this.isPhotoZoomedIn) {
       this.hideLargePhotoView()
     } else {
-      this.showLargePhotoView()
+      this.showLargePhotoView(e)
     }
   }
 
   setLargePhotoPosition(e) {
-    if (e) {
-      if (isTouchDevice()) {
-        return
-      }
-      e.preventDefault()
-    }
+    if (e && isTouchDevice()) return
+    if (e?.preventDefault) e.preventDefault()
 
     const photo = this.photosTarget.querySelector(".image-loader.is-active.is-loaded.is-zoomed-in")
 
-    if (photo && photo.largePhoto && photo.largePhoto.imageLoaded) {
+    if (photo && photo.imageLoaded) {
+      const img = this.getPhotoImage(photo)
+      if (!img) return
+
       const bounds = photo.getBoundingClientRect()
-      bounds.centerX = bounds.left + bounds.width / 2
-      bounds.centerY = bounds.top + bounds.height / 2
 
       if (isTouchDevice()) {
-        const img = {
-          width: photo.largePhoto.querySelector("img").offsetWidth,
-          height: photo.largePhoto.querySelector("img").offsetHeight,
-        }
-
-        photo.largePhoto.scrollTo((img.width - bounds.width) / 2, (img.height - bounds.height) / 2)
+        this.applyTouchZoomTransform(photo)
       } else {
-        const m = {}
-        if (e) {
-          m.x = e.touches ? e.touches[0].pageX : e.pageX
-          m.y = e.touches ? e.touches[0].pageY : e.pageY
-        } else {
-          m.x = bounds.centerX
-          m.y = bounds.centerY
+        const mousePoint = e
+          ? {
+              x: e.touches ? e.touches[0].pageX : e.pageX,
+              y: e.touches ? e.touches[0].pageY : e.pageY,
+            }
+          : null
+
+        if (mousePoint && typeof mousePoint.x === "number" && typeof mousePoint.y === "number") {
+          this.desktopZoomPointer = mousePoint
         }
 
-        const img = {
-          width: photo.largePhoto.offsetWidth,
-          height: photo.largePhoto.offsetHeight,
+        const point = this.desktopZoomPointer || {
+          x: bounds.left + bounds.width / 2,
+          y: bounds.top + bounds.height / 2,
         }
 
-        photo.largePhoto.style.left = `${(bounds.width - img.width) / 2}px`
-        photo.largePhoto.style.top = `${(bounds.height - img.height) / 2}px`
+        const pointerRatioX = bounds.width ? (point.x - bounds.left) / bounds.width : 0
+        const pointerRatioY = bounds.height ? (point.y - bounds.top) / bounds.height : 0
 
-        const translateX =
-          img.width > bounds.width
-            ? ((bounds.centerX - m.x) / (bounds.width / 2)) * ((img.width - bounds.width) / img.width) * 50
-            : 0
-        const translateY =
-          img.height > bounds.height
-            ? ((bounds.centerY - m.y) / (bounds.height / 2)) * ((img.height - bounds.height) / img.height) * 50
-            : 0
+        const normalizedX = Math.max(0, Math.min(1, pointerRatioX))
+        const normalizedY = Math.max(0, Math.min(1, pointerRatioY))
 
-        photo.largePhoto.style.transform = `translate(${translateX}%, ${translateY}%)`
+        const computed = getComputedStyle(photo)
+        const paddingX = (parseFloat(computed.paddingLeft) || 0) + (parseFloat(computed.paddingRight) || 0)
+        const paddingY = (parseFloat(computed.paddingTop) || 0) + (parseFloat(computed.paddingBottom) || 0)
+
+        const viewportWidth = Math.max(1, photo.clientWidth - paddingX)
+        const viewportHeight = Math.max(1, photo.clientHeight - paddingY)
+        const imageWidth = img.getBoundingClientRect().width
+        const imageHeight = img.getBoundingClientRect().height
+
+        const overflowX = Math.max(0, imageWidth - viewportWidth)
+        const overflowY = Math.max(0, imageHeight - viewportHeight)
+
+        const translateX = -normalizedX * overflowX
+        const translateY = -normalizedY * overflowY
+
+        img.style.transform = `translate(${translateX}px, ${translateY}px)`
       }
     }
   }
@@ -668,23 +1034,14 @@ export default class extends Controller {
     if (e?.currentTarget?.classList?.contains("image-loader--no-image")) return
 
     if (isTouchDevice()) {
-      // only listen to touch events on touch devices (no mouseup should fire the following)
-      if (e && e.type === "touchstart") {
-        // if controls are hidden, on mobile the first touch should open the controls
-        // (event listener is on photosContainer)
-        if (!this.photosContainerTarget.classList.contains("hide-controls")) {
-          if (!appState("is-embed") && !this.isFullscreen) {
-            this.openFullscreen()
-          } else if (!this.isPhotoZoomedIn) {
-            this.showLargePhotoView()
-          }
-        }
+      if (this.isPhotoZoomedIn && (this.isTouchPanning || this.isTouchPinching || this.isTouchZoomed())) {
+        return
       }
-    } else if (!appState("is-embed") && !this.isFullscreen) {
-      // only put the carousel to fullscreen when not in embed mode
-      this.openFullscreen()
+
+      // Touch zoom is pinch-only. Single tap should not toggle large view.
+      return
     } else {
-      this.toggleLargePhotoView()
+      this.toggleLargePhotoView(e)
     }
   }
 
@@ -692,7 +1049,6 @@ export default class extends Controller {
     if (this.isPhotoZoomedIn) {
       this.hideLargePhotoView()
     } else if (this.slideshowIsPlaying || this.isFullscreen) {
-      // pause slideshow if the slideshow is playing & close the fullscreen state if we are in fullscreen
       if (this.slideshowIsPlaying) this.pauseSlideshow()
       if (this.isFullscreen) this.closeFullscreen()
     } else if (!appState("is-embed")) {
@@ -700,12 +1056,9 @@ export default class extends Controller {
     }
   }
 
-  // bind key events
   boundKeydownListener(e) {
-    // if carousel is not visible then keyboard actions shouldn't work
     if (!this.element.classList.contains("is-visible")) return
 
-    // if an input is in focused state, keyboard actions shouldn't work
     const { activeElement } = document
     const inputs = ["input", "select", "button", "textarea"]
     if (activeElement && inputs.indexOf(activeElement.tagName.toLowerCase()) !== -1) return
@@ -768,7 +1121,7 @@ export default class extends Controller {
   }
 
   removeAgeRestriction(e) {
-    this.photoTargets.forEach(photo => {
+    this.photoTargets.forEach((photo) => {
       if (photo.noImage && photo.ageRestricted && e?.detail?.photoId.toString() === photo.mid.toString()) {
         delete photo.noImage
         delete photo.ageRestricted
@@ -781,5 +1134,139 @@ export default class extends Controller {
         }
       }
     })
+  }
+
+  calculateDistance(touch1, touch2) {
+    const dx = touch1.clientX - touch2.clientX
+    const dy = touch1.clientY - touch2.clientY
+    return Math.sqrt(dx * dx + dy * dy)
+  }
+
+  calculateMidpoint(touch1, touch2) {
+    return {
+      x: (touch1.clientX + touch2.clientX) / 2,
+      y: (touch1.clientY + touch2.clientY) / 2,
+    }
+  }
+
+  onCarouselTouchStart(e) {
+    if (!isTouchDevice()) return
+
+    if (this.isTouchOnCarouselControl(e.target)) return
+
+    this.stopTouchSnapAnimation()
+
+    if (e.touches.length === 2) {
+      if (!this.isPhotoZoomedIn) {
+        this.showLargePhotoView()
+      }
+
+      this.beginTouchPinch(e.touches[0], e.touches[1])
+      this.preventIfCancelable(e)
+    } else if (e.touches.length === 1 && this.isPhotoZoomedIn && this.isTouchZoomed()) {
+      if (!this.touchLayoutSettled) {
+        this.scheduleTouchZoomLayoutSync()
+        return
+      }
+      this.beginTouchPan(e.touches[0])
+      this.preventIfCancelable(e)
+    }
+  }
+
+  onCarouselTouchMove(e) {
+    if (!isTouchDevice() || !this.isPhotoZoomedIn) return
+
+    if (e.touches.length === 2) {
+      const touch1 = this.getTouchByIdentifier(e.touches, this.touchIdentifiers[0]) || e.touches[0]
+      const touch2 = this.getTouchByIdentifier(e.touches, this.touchIdentifiers[1]) || e.touches[1]
+
+      if (!touch1 || !touch2) return
+
+      const photo = this.getActiveZoomedPhoto()
+      if (!photo) return
+
+      const currentDistance = this.calculateDistance(touch1, touch2)
+      const distanceRatio = this.touchStartDistance > 0 ? currentDistance / this.touchStartDistance : 1
+      const rawScale = this.touchStartScale * distanceRatio
+      const maxScale = this.getTouchZoomMaxScale(photo)
+      let scale = rawScale
+
+      if (rawScale < TOUCH_ZOOM_MIN_SCALE) {
+        scale = TOUCH_ZOOM_MIN_SCALE - (TOUCH_ZOOM_MIN_SCALE - rawScale) * TOUCH_SCALE_RESISTANCE
+      } else if (rawScale > maxScale) {
+        scale = maxScale + (rawScale - maxScale) * TOUCH_SCALE_RESISTANCE
+      }
+
+      scale = Math.max(TOUCH_ZOOM_MIN_SCALE * 0.85, Math.min(maxScale * 1.2, scale))
+
+      const bounds = photo.getBoundingClientRect()
+      const startCenterX = this.touchPinchStartCenter.x - bounds.left - bounds.width / 2
+      const startCenterY = this.touchPinchStartCenter.y - bounds.top - bounds.height / 2
+      const center = this.calculateMidpoint(touch1, touch2)
+      const currentCenterX = center.x - bounds.left - bounds.width / 2
+      const currentCenterY = center.y - bounds.top - bounds.height / 2
+      const scaleRatio = this.touchStartScale > 0 ? scale / this.touchStartScale : 1
+
+      this.touchScale = scale
+      this.touchTranslation = {
+        x: currentCenterX - scaleRatio * (startCenterX - this.touchStartTranslation.x),
+        y: currentCenterY - scaleRatio * (startCenterY - this.touchStartTranslation.y),
+      }
+
+      if (this.touchScale < TOUCH_ZOOM_MIN_SCALE) {
+        this.touchTranslation = { x: 0, y: 0 }
+      }
+
+      this.applyTouchZoomTransform(photo, { resist: true })
+      this.isTouchPinching = true
+      this.isTouchPanning = false
+      this.preventIfCancelable(e)
+    } else if (e.touches.length === 1 && this.isTouchZoomed() && this.isTouchPanning) {
+      if (!this.touchLayoutSettled) return
+
+      const photo = this.getActiveZoomedPhoto()
+      if (!photo) return
+
+      const deltaX = e.touches[0].clientX - this.touchPanStart.x
+      const deltaY = e.touches[0].clientY - this.touchPanStart.y
+
+      this.isTouchPanning = true
+      this.touchTranslation = {
+        x: this.touchStartTranslation.x + deltaX,
+        y: this.touchStartTranslation.y + deltaY,
+      }
+      this.applyTouchZoomTransform(photo)
+      this.preventIfCancelable(e)
+    }
+  }
+
+  onCarouselTouchEnd(e) {
+    if (!isTouchDevice()) return
+
+    if (e.touches.length === 0) {
+      this.resetTouchGestureState()
+      if (this.isPhotoZoomedIn && this.isTouchScaleAtMin()) {
+        this.hideLargePhotoView()
+      } else {
+        this.snapTouchZoomToBounds()
+      }
+      return
+    }
+
+    if (e.touches.length === 1) {
+      if (this.isTouchZoomed()) {
+        this.beginTouchPan(e.touches[0], { normalize: true })
+      } else {
+        this.touchScale = TOUCH_ZOOM_MIN_SCALE
+        this.touchTranslation = { x: 0, y: 0 }
+        this.resetTouchGestureState()
+        this.applyTouchZoomTransform()
+      }
+      return
+    }
+
+    if (e.touches.length >= 2) {
+      this.beginTouchPinch(e.touches[0], e.touches[1])
+    }
   }
 }

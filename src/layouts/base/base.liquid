@@ -56,7 +56,9 @@
     itemscope
     itemtype="http://schema.org/WebPage"
     data-lang="{{ locale }}"
-    data-controller="base">
+    data-controller="base"
+    data-action="touchmove@document->base#onDocumentTouchMove
+               gesturechange@document->base#onDocumentGestureChange">
     <main>
       {{ content }}
     </main>
