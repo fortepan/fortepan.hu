@@ -1,3 +1,11 @@
+body.carousel-photo-zoomed-in:not(.is-touch-device) {
+  overscroll-behavior-x: none;
+
+  .carousel__photos__all {
+    transition: none;
+  }
+}
+
 .carousel {
   position: absolute;
   width: 100%;
@@ -55,6 +63,10 @@
 
   .carousel-fullscreen & {
     top: 0;
+  }
+
+  body.carousel-photo-zoomed-in:not(.is-touch-device) & {
+    overscroll-behavior-x: none;
   }
 }
 
@@ -141,13 +153,14 @@
       }
 
       body:not(.is-touch-device) & {
-        overflow: hidden;
+        overflow: auto;
+        overscroll-behavior: none;
         padding: 6rem;
         box-sizing: border-box;
 
         img {
+          display: block;
           position: relative;
-          transform-origin: top left;
           width: auto;
           height: auto;
           max-width: none;

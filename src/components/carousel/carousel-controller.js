@@ -43,6 +43,7 @@ export default class extends Controller {
     this.currentPhotoData = null
     this.desktopZoomPointer = null
     this.sidebarZoomRecalcTimeout = 0
+    this.desktopZoomWheelHandler = null
 
     if (isTouchDevice()) {
       setAppState("is-touch-device")
@@ -98,62 +99,69 @@ export default class extends Controller {
     return `${config().PHOTO_SOURCE}2560/fortepan_${photo.mid}.jpg`
   }
 
-  clearDesktopPreloadSizeClasses(photo) {
+  desktopLargeReady(photo) {
+    if (!photo) return false
+    if (photo.largeSrcLoaded) return true
+    const img = this.getPhotoImage(photo)
+    const src = this.getLargePhotoSrc(photo)
+    if (!img || !src || img.src !== src) return false
+    photo.largeSrcLoaded = true
+    return true
+  }
+
+  clearDesktopPreload(photo) {
     if (!photo) return
     photo.classList.remove("desktop-preload-size--landscape", "desktop-preload-size--portrait")
+    const img = this.getPhotoImage(photo)
+    if (img) {
+      img.style.width = ""
+      img.style.height = ""
+    }
   }
 
   applyDesktopPreloadSizeClass(photo) {
-    if (!photo) return
-
+    if (!photo || this.desktopLargeReady(photo)) return
     const img = this.getPhotoImage(photo)
-    const width = img?.naturalWidth || 0
-    const height = img?.naturalHeight || 0
-
-    this.clearDesktopPreloadSizeClasses(photo)
-    photo.classList.add(`desktop-preload-size--${!width || !height || width >= height ? "landscape" : "portrait"}`)
+    const w = img?.naturalWidth || 0
+    const h = img?.naturalHeight || 0
+    this.clearDesktopPreload(photo)
+    photo.classList.add(`desktop-preload-size--${!w || !h || w >= h ? "landscape" : "portrait"}`)
   }
 
   preloadLargePhotoOnBaseImage(photo) {
-    if (!photo || photo.noImage || photo.largeSrcLoaded) return
-
+    if (!photo || photo.noImage) return
     const img = this.getPhotoImage(photo)
     const largeSrc = this.getLargePhotoSrc(photo)
     if (!img || !largeSrc) return
 
-    if (img.src === largeSrc) {
-      photo.largeSrcLoaded = true
+    if (this.desktopLargeReady(photo)) {
       if (!isTouchDevice()) {
-        this.clearDesktopPreloadSizeClasses(photo)
+        this.clearDesktopPreload(photo)
         if (photo.classList.contains("is-zoomed-in")) this.setLargePhotoPosition()
       }
       return
     }
 
-    const loadToken = `${photo.mid}-${Date.now()}`
-    photo.largeSrcLoadToken = loadToken
-
+    const token = `${photo.mid}-${Date.now()}`
+    photo.largeSrcLoadToken = token
     const preloader = new Image()
     preloader.onload = () => {
-      if (photo.largeSrcLoadToken !== loadToken) return
-      if (!photo.classList.contains("is-active")) return
-
-      const onBaseImageLoaded = () => {
-        if (photo.largeSrcLoadToken !== loadToken) return
-        if (!photo.classList.contains("is-active")) return
-
+      if (photo.largeSrcLoadToken !== token || !photo.classList.contains("is-active")) return
+      const onLoad = () => {
+        if (photo.largeSrcLoadToken !== token || !photo.classList.contains("is-active")) return
         photo.largeSrcLoaded = true
-
-        if (photo.classList.contains("is-zoomed-in")) {
-          if (isTouchDevice()) this.normalizeTouchZoomPosition(photo)
-          else {
-            this.clearDesktopPreloadSizeClasses(photo)
-            this.setLargePhotoPosition()
-          }
+        if (!photo.classList.contains("is-zoomed-in")) return
+        if (isTouchDevice()) this.normalizeTouchZoomPosition(photo)
+        else this.restoreDesktopScrollAfterLargeSrcLoad(photo)
+      }
+      if (!isTouchDevice() && photo.classList.contains("is-zoomed-in")) {
+        photo.classList.remove("desktop-preload-size--landscape", "desktop-preload-size--portrait")
+        if (preloader.naturalWidth) {
+          img.style.width = `${preloader.naturalWidth}px`
+          img.style.height = `${preloader.naturalHeight}px`
         }
       }
-
-      img.addEventListener("load", onBaseImageLoaded, { once: true })
+      img.addEventListener("load", onLoad, { once: true })
       img.src = largeSrc
     }
     preloader.src = largeSrc
@@ -932,24 +940,75 @@ export default class extends Controller {
       if (this.slideshowIsPlaying) this.pauseSlideshow()
 
       photo.classList.add("is-zoomed-in")
-      if (!isTouchDevice() && !photo.largeSrcLoaded) {
-        this.applyDesktopPreloadSizeClass(photo)
-      }
+      if (!isTouchDevice() && !this.desktopLargeReady(photo)) this.applyDesktopPreloadSizeClass(photo)
       this.preloadLargePhotoOnBaseImage(photo)
       this.setLargePhotoPosition(e)
       this.scheduleTouchZoomLayoutSync(photo)
+      this.bindDesktopZoomWheelGuard()
     }
+  }
+
+  restoreDesktopScrollAfterLargeSrcLoad(photo) {
+    let anchor
+    if (photo && this.desktopZoomPointer) {
+      const b = photo.getBoundingClientRect()
+      const p = this.desktopZoomPointer
+      anchor = { x: photo.scrollLeft + p.x - b.left, y: photo.scrollTop + p.y - b.top }
+    }
+    this.clearDesktopPreload(photo)
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        if (!photo.classList.contains("is-zoomed-in")) return
+        if (!anchor || !this.desktopZoomPointer) {
+          this.setLargePhotoPosition()
+          return
+        }
+        const b = photo.getBoundingClientRect()
+        const p = this.desktopZoomPointer
+        const maxX = Math.max(0, photo.scrollWidth - photo.clientWidth)
+        const maxY = Math.max(0, photo.scrollHeight - photo.clientHeight)
+        photo.scrollLeft = Math.max(0, Math.min(maxX, anchor.x - (p.x - b.left)))
+        photo.scrollTop = Math.max(0, Math.min(maxY, anchor.y - (p.y - b.top)))
+      })
+    })
+  }
+
+  bindDesktopZoomWheelGuard() {
+    if (isTouchDevice() || this.desktopZoomWheelHandler) return
+    this.desktopZoomWheelHandler = (e) => {
+      if (!this.isPhotoZoomedIn || !e.deltaX) return
+      const photo = this.getActiveZoomedPhoto()
+      if (!photo) return
+      const max = photo.scrollWidth - photo.clientWidth
+      if (
+        max <= 0 ||
+        (photo.scrollLeft <= 0 && e.deltaX < 0) ||
+        (photo.scrollLeft >= max - 1 && e.deltaX > 0)
+      ) {
+        e.preventDefault()
+      }
+    }
+    this.photosTarget.addEventListener("wheel", this.desktopZoomWheelHandler, { passive: false })
+  }
+
+  unbindDesktopZoomWheelGuard() {
+    if (!this.desktopZoomWheelHandler) return
+    this.photosTarget.removeEventListener("wheel", this.desktopZoomWheelHandler, { passive: false })
+    this.desktopZoomWheelHandler = null
   }
 
   hideLargePhotoView(e) {
     if (e) e.preventDefault()
     this.stopTouchLayoutSync()
+    this.unbindDesktopZoomWheelGuard()
     removeAppState("carousel-photo-zoomed-in")
     removeAppState("disable--selection")
 
     this.photoTargets.forEach((photo) => {
       photo.classList.remove("is-zoomed-in")
-      this.clearDesktopPreloadSizeClasses(photo)
+      this.clearDesktopPreload(photo)
+      photo.scrollLeft = 0
+      photo.scrollTop = 0
       const img = this.getPhotoImage(photo)
       if (img) {
         img.style.transform = ""
@@ -977,56 +1036,31 @@ export default class extends Controller {
     if (e && isTouchDevice()) return
     if (e?.preventDefault) e.preventDefault()
 
-    const photo = this.photosTarget.querySelector(".image-loader.is-active.is-loaded.is-zoomed-in")
+    const photo = this.getActiveZoomedPhoto()
 
     if (photo && photo.imageLoaded) {
       const img = this.getPhotoImage(photo)
       if (!img) return
 
-      const bounds = photo.getBoundingClientRect()
-
       if (isTouchDevice()) {
         this.applyTouchZoomTransform(photo)
-      } else {
-        const mousePoint = e
-          ? {
-              x: e.touches ? e.touches[0].pageX : e.pageX,
-              y: e.touches ? e.touches[0].pageY : e.pageY,
-            }
-          : null
-
-        if (mousePoint && typeof mousePoint.x === "number" && typeof mousePoint.y === "number") {
-          this.desktopZoomPointer = mousePoint
-        }
-
-        const point = this.desktopZoomPointer || {
-          x: bounds.left + bounds.width / 2,
-          y: bounds.top + bounds.height / 2,
-        }
-
-        const pointerRatioX = bounds.width ? (point.x - bounds.left) / bounds.width : 0
-        const pointerRatioY = bounds.height ? (point.y - bounds.top) / bounds.height : 0
-
-        const normalizedX = Math.max(0, Math.min(1, pointerRatioX))
-        const normalizedY = Math.max(0, Math.min(1, pointerRatioY))
-
-        const computed = getComputedStyle(photo)
-        const paddingX = (parseFloat(computed.paddingLeft) || 0) + (parseFloat(computed.paddingRight) || 0)
-        const paddingY = (parseFloat(computed.paddingTop) || 0) + (parseFloat(computed.paddingBottom) || 0)
-
-        const viewportWidth = Math.max(1, photo.clientWidth - paddingX)
-        const viewportHeight = Math.max(1, photo.clientHeight - paddingY)
-        const imageWidth = img.getBoundingClientRect().width
-        const imageHeight = img.getBoundingClientRect().height
-
-        const overflowX = Math.max(0, imageWidth - viewportWidth)
-        const overflowY = Math.max(0, imageHeight - viewportHeight)
-
-        const translateX = -normalizedX * overflowX
-        const translateY = -normalizedY * overflowY
-
-        img.style.transform = `translate(${translateX}px, ${translateY}px)`
+        return
       }
+
+      if (e) {
+        const x = e.touches ? e.touches[0].pageX : e.pageX
+        const y = e.touches ? e.touches[0].pageY : e.pageY
+        if (typeof x === "number") this.desktopZoomPointer = { x, y }
+      }
+
+      const bounds = photo.getBoundingClientRect()
+      const p = this.desktopZoomPointer
+      const clamp = (v) => Math.max(0, Math.min(1, v))
+      const rx = p && bounds.width ? (p.x - bounds.left) / bounds.width : 0.5
+      const ry = p && bounds.height ? (p.y - bounds.top) / bounds.height : 0.5
+      photo.scrollLeft = clamp(rx) * Math.max(0, photo.scrollWidth - photo.clientWidth)
+      photo.scrollTop = clamp(ry) * Math.max(0, photo.scrollHeight - photo.clientHeight)
+      if (img.style.transform) img.style.transform = ""
     }
   }
 
