@@ -1075,6 +1075,8 @@ export default class extends Controller {
       // Touch zoom is pinch-only. Single tap should not toggle large view.
       return
     } else {
+      // Keep native browser context menu (right click / ctrl-click).
+      if (e?.button !== 0 || e?.ctrlKey) return
       this.toggleLargePhotoView(e)
     }
   }

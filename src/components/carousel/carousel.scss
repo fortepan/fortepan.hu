@@ -159,6 +159,7 @@ body.carousel-photo-zoomed-in:not(.is-touch-device) {
         box-sizing: border-box;
 
         img {
+          pointer-events: all;
           display: block;
           position: relative;
           width: auto;
