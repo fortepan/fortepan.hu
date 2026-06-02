@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 import throttle from "lodash/throttle"
-import { getLocale, trigger, escapeHTML } from "../../js/utils"
+import { getLocale, trigger, escapeHTML, asArray } from "../../js/utils"
 import { setAppState, removeAppState, toggleAppState, appState } from "../../js/app"
 import photoManager from "../../js/photo-manager"
 import listManager from "../../js/list-manager"
@@ -21,6 +21,8 @@ export default class extends Controller {
   init() {
     const data = appState("is-lists") ? listManager.getSelectedPhoto() : photoManager.getSelectedPhotoData()
 
+    if (!data) return
+
     if (appState("is-lists") && !data.isDataLoaded) {
       this.element.classList.add("is-hidden")
       return
@@ -30,18 +32,16 @@ export default class extends Controller {
     // fill template with data
     const baseUrl = `/${getLocale()}/photos/`
 
-    // create a string of anchors from array
     const convertToHref = key => {
-      if (data[key]) {
-        const resp = []
-        data[key].forEach(item => {
-          resp.push(
+      const values = asArray(data[key])
+      if (values.length === 0) return null
+
+      return values
+        .map(
+          item =>
             `<a href="${baseUrl}?${key}=${encodeURIComponent(item)}">${escapeHTML(item)}</a>`
-          )
-        })
-        return resp.join(",<br/>")
-      }
-      return null
+        )
+        .join(",<br/>")
     }
 
     const locationArray = ["country", "city", "place"].map(val => convertToHref(val)).filter(Boolean)
@@ -60,16 +60,17 @@ export default class extends Controller {
       this.descriptionTarget.parentNode.style.display = "none"
     }
 
-    if (data.tags) {
-      this.tagsTarget.innerHTML = data.tags
+    const tags = asArray(data.tags)
+    if (tags.length > 0) {
+      this.tagsTarget.innerHTML = tags
         .map(tag => `<a href="${baseUrl}?tag=${encodeURIComponent(tag)}">${escapeHTML(tag)}</a>`)
         .join(", ")
     } else {
       this.tagsTarget.innerHTML = `<span class="carousel-sidebar__tags__empty">–</span>`
     }
 
-    this.midTarget.innerHTML = `<a href="${baseUrl}?id=${data.mid}">${escapeHTML(String(data.mid))}</a>`
-    this.yearTarget.innerHTML = `<a href="${baseUrl}?year=${data.year}">${escapeHTML(String(data.year))}</a>`
+    this.midTarget.innerHTML = `<a href="${baseUrl}?id=${data.mid}">${escapeHTML(data.mid)}</a>`
+    this.yearTarget.innerHTML = `<a href="${baseUrl}?year=${data.year}">${escapeHTML(data.year)}</a>`
 
     if (data.donor) {
       this.donorTarget.innerHTML = `<a href="${baseUrl}?donor=${encodeURIComponent(data.donor)}">${escapeHTML(

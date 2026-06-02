@@ -1,5 +1,5 @@
 ---
-layout: article/cms.liquid
+layout: article/article.liquid
 hide_search: true
 title: Lists and embedding
 permalink: /en/docs/embed/

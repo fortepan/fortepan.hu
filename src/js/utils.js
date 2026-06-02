@@ -223,12 +223,16 @@ export const globalSettings = {
   },
 }
 
+export const asArray = value => {
+  if (value == null || value === "") return []
+  return Array.isArray(value) ? value.filter(v => v != null && v !== "") : [value]
+}
+
 export const escapeHTML = unsafe => {
-  return unsafe
-    ? unsafe.replace(/[\u00A0-\u9999<>&]/g, i => {
-        return `&#${i.charCodeAt(0)};`
-      })
-    : ""
+  if (unsafe == null) return ""
+  return String(unsafe).replace(/[\u00A0-\u9999<>&]/g, i => {
+    return `&#${i.charCodeAt(0)};`
+  })
 }
 
 export const formatNumber = number => {
