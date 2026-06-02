@@ -10,6 +10,12 @@
   publish = "_dist/"
   autoLaunch = false
 
+[[redirects]]
+  from = "/api/elastic/*"
+  to = "/.netlify/functions/elastic-proxy/:splat"
+  status = 200
+  force = true
+
 ## This rule redirects to an external API, signing requests with a secret
 [[redirects]]
   from = "/search-api/*"

@@ -1,3 +1,5 @@
+require("dotenv").config()
+
 const { Client } = require("@elastic/elasticsearch")
 const fs = require("fs")
 
@@ -6,9 +8,22 @@ const KEYS = {
   EN: ["orszag_en", "varos_en", "helyszin_en", "adomanyozo_name", "szerzo_en", "cimke_en"],
 }
 
-const client = new Client({
-  nodes: ["https://reader:r3adm31024read@elastic.fortepan.hu"],
-})
+const host = process.env.ELASTIC_HOST
+const auth = process.env.ELASTIC_AUTH
+if (!host || !auth) {
+  console.error("Missing ELASTIC_HOST or ELASTIC_AUTH (see .env.example)")
+  process.exit(1)
+}
+const node = new URL(host)
+const i = auth.indexOf(":")
+if (i === -1) {
+  console.error("ELASTIC_AUTH must be user:password")
+  process.exit(1)
+}
+node.username = auth.slice(0, i)
+node.password = auth.slice(i + 1)
+
+const client = new Client({ nodes: [node.toString()] })
 
 const getKeywords = (key, callback, error) => {
   client.search(

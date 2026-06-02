@@ -1,4 +1,5 @@
 import config from "../data/siteConfig"
+import { elasticRequest } from "./elastic-client"
 import { appState } from "../js/app"
 
 const createList = async (name, description, isPrivate = false) => {
@@ -173,96 +174,18 @@ const getContainingLists = async photoId => {
   return respData
 }
 
-// ElasticSearch related api calls
+const loadPublicListDataById = id =>
+  elasticRequest({ size: 1, query: { term: { tid: { value: id } } } }, "lists")
 
-const listsElasticRequest = async data => {
-  const url = appState("is-dev")
-    ? `${config().ELASTIC_HOST_DEV}/elasticsearch_index_fortepandrupaldevelop_cwoou_lists/_search?pretty`
-    : `${config().ELASTIC_HOST}/elasticsearch_index_fortepandrupalmain_hd64t_lists/_search?pretty`
-
-  const resp = await fetch(url, {
-    method: "POST",
-    headers: {
-      Authorization: `Basic ${btoa(
-        appState("is-dev") ? "agZbr6VTXh:PXUnDNzGgeB6f8LjWaQ52A" : "reader:r3adm31024read"
-      )}`,
-      "Content-Type": "application/json;charset=UTF-8",
-    },
-    body: JSON.stringify(data),
-  })
-
-  return resp.json()
-}
-
-const listsContentElasticRequest = async data => {
-  const url = appState("is-dev")
-    ? `${config().ELASTIC_HOST_DEV}/elasticsearch_index_fortepandrupaldevelop_cwoou_list_content/_search?pretty`
-    : `${config().ELASTIC_HOST}/elasticsearch_index_fortepandrupalmain_hd64t_list_content/_search?pretty`
-
-  const resp = await fetch(url, {
-    method: "POST",
-    headers: {
-      Authorization: `Basic ${btoa(
-        appState("is-dev") ? "agZbr6VTXh:PXUnDNzGgeB6f8LjWaQ52A" : "reader:r3adm31024read"
-      )}`,
-      "Content-Type": "application/json;charset=UTF-8",
-    },
-    body: JSON.stringify(data),
-  })
-
-  return resp.json()
-}
-
-const loadPublicListDataById = async id => {
-  return new Promise((resolve, reject) => {
-    const body = {
-      size: 1,
-      query: {
-        term: {
-          tid: {
-            value: id,
-          },
-        },
-      },
-    }
-
-    listsElasticRequest(body)
-      .then(resp => {
-        resolve(resp)
-      })
-      .catch(err => {
-        reject(err)
-      })
-  })
-}
-
-const loadPublicListContentById = async id => {
-  return new Promise((resolve, reject) => {
-    const body = {
+const loadPublicListContentById = id =>
+  elasticRequest(
+    {
       size: 10000,
-      query: {
-        term: {
-          lista: {
-            value: id,
-          },
-        },
-      },
-      sort: {
-        created: {
-          order: "desc",
-        },
-      },
-    }
-
-    listsContentElasticRequest(body)
-      .then(resp => {
-        resolve(resp)
-      })
-      .catch(err => {
-        reject(err)
-      })
-  })
-}
+      query: { term: { lista: { value: id } } },
+      sort: { created: { order: "desc" } },
+    },
+    "list_content"
+  )
 
 export default {
   createList,
