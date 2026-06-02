@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
-import { trigger, lang } from "../../../js/utils"
+import { trigger, lang, escapeHTML } from "../../../js/utils"
 import auth from "../../../api/auth"
 
 export default class extends Controller {
@@ -34,7 +34,7 @@ export default class extends Controller {
       "Sorry, unrecognized username or password.": lang("user_signin_error"),
     }
 
-    return errorMessages[text]
+    return errorMessages[text] ?? escapeHTML(text)
   }
 
   error(statusText) {

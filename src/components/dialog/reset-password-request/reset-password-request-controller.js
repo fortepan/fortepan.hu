@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
-import { trigger, lang } from "../../../js/utils"
+import { trigger, lang, escapeHTML } from "../../../js/utils"
 import auth from "../../../api/auth"
 
 export default class extends Controller {
@@ -42,7 +42,7 @@ export default class extends Controller {
       "The user has not been activated or is blocked.": lang("password_forgot_not_activated"),
     }
 
-    return errorMessages[text]
+    return errorMessages[text] ?? escapeHTML(text)
   }
 
   hide() {

@@ -96,7 +96,7 @@ export default class extends Controller {
         } else {
           // the list doesn't exist in the public domain, show the login screen instead
           trigger("snackbar:show", {
-            message: `${lang("list_404")}\n${lang("list_signin_alert")}`,
+            message: `${lang("list_404")}<br/>${lang("list_signin_alert")}`,
             status: "error",
             autoHide: true,
           })
