@@ -1,5 +1,5 @@
 ---
-layout: article/article.liquid
+layout: article/cms.liquid
 hide_search: true
 title: Donation
 permalink: /en/donation/

@@ -1,5 +1,5 @@
 ---
-layout: article/article.liquid
+layout: article/cms.liquid
 hide_search: true
 title: Listák és beágyazás
 permalink: /hu/docs/embed/

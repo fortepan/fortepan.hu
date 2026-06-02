@@ -69,7 +69,7 @@ layout: base/base.liquid
       {% endif %}
 
       <h3 class="home__intro__headline">{{ description }}</h3>
-      <div class="home__intro__text">{{ content }}</div>
+      <div class="home__intro__text">{{ content | sanitizeHtml }}</div>
 
       {% if locale == "hu" %}
       </div>
@@ -113,7 +113,7 @@ layout: base/base.liquid
       <div class="home__usp__header">
         <a class="home__usp__capa-logo" href="https://capacenter.hu{% if locale == "en" %}/en{% endif %}" target="_blank">{{ lang[locale].capa_center_caption }}</a>
         <h2>{{ blog.title }}</h2>
-        <p class="text-medium">{{ blog.caption }}</p>
+        <p class="text-medium">{{ blog.caption | sanitizeHtml }}</p>
       </div>
 
       <ul class="home__usp__list">

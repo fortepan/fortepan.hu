@@ -1,5 +1,5 @@
 ---
-layout: article/article.liquid
+layout: article/cms.liquid
 title: 1% ADÓ - 100% FOTÓ
 permalink: /hu/ado-1-szazalek/
 hide_search: true
