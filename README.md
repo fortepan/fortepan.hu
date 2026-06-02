@@ -33,8 +33,6 @@ Credentials are **not** stored in the repository. Copy [`.env.example`](.env.exa
 
 On **Netlify**, set the same variables in Site settings → Environment variables. Deploy the `elastic-proxy` function and frontend together.
 
-**Security:** If credentials were ever committed to git, rotate them on Elasticsearch before deploying.
-
 #### Running and serving a dev build
 
 Photo search and lists call `/api/elastic/...`, which is served by a Netlify Function. Use:
@@ -54,8 +52,6 @@ npm run build
 ```
 
 Requires `ELASTIC_HOST` and `ELASTIC_AUTH` (via `.env` or CI env) for the autocomplete import step.
-
-HTTP security headers (CSP, HSTS, etc.) are defined in [`src/static/_headers`](src/static/_headers) and copied to `_dist` on build. Embed pages (`/hu/embed/*`, `/en/embed/*`) allow `frame-ancestors *` so third-party sites can iframe them.
 
 #### Project structure
 
