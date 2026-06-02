@@ -20,7 +20,7 @@ export default class extends Controller {
       this.photoCredits += ` / ${this.photoData.author}`
     }
 
-    this.contentTarget.innerHTML = this.photoCredits
+    this.contentTarget.textContent = this.photoCredits
   }
 
   hide() {

@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 
-import { getLocale } from "../../js/utils"
+import { escapeHTML, getLocale } from "../../js/utils"
 import searchAPI from "../../api/search"
 
 const ALPHABET = [
@@ -77,7 +77,7 @@ export default class extends Controller {
       dataSorted.forEach(itemData => {
         // create link node
         const itemNode = document.createElement("a")
-        itemNode.innerHTML = `<span class="donors__donor__name">${itemData.key}</span><span class="donors__donor__doc-count">(${itemData.doc_count})</span>`
+        itemNode.innerHTML = `<span class="donors__donor__name">${escapeHTML(itemData.key)}</span><span class="donors__donor__doc-count">(${itemData.doc_count})</span>`
         itemNode.href = `/${getLocale()}/photos/?donor=${encodeURIComponent(itemData.key)}`
         itemNode.className = "donors__donor"
 

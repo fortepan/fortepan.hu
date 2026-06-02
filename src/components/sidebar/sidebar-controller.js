@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 import throttle from "lodash/throttle"
-import { getLocale, trigger } from "../../js/utils"
+import { getLocale, trigger, escapeHTML } from "../../js/utils"
 import { setAppState, removeAppState, toggleAppState, appState } from "../../js/app"
 import photoManager from "../../js/photo-manager"
 import listManager from "../../js/list-manager"
@@ -35,7 +35,9 @@ export default class extends Controller {
       if (data[key]) {
         const resp = []
         data[key].forEach(item => {
-          resp.push(`<a href="${baseUrl}?${key}=${encodeURIComponent(item)}">${item}</a>`)
+          resp.push(
+            `<a href="${baseUrl}?${key}=${encodeURIComponent(item)}">${escapeHTML(item)}</a>`
+          )
         })
         return resp.join(",<br/>")
       }
@@ -52,7 +54,7 @@ export default class extends Controller {
 
     this.descriptionTarget.innerHTML = ""
     if (data.description) {
-      this.descriptionTarget.innerHTML = data.description
+      this.descriptionTarget.innerHTML = escapeHTML(data.description)
       this.descriptionTarget.parentNode.style.display = "block"
     } else if (locationArray.length === 0) {
       this.descriptionTarget.parentNode.style.display = "none"
@@ -60,26 +62,28 @@ export default class extends Controller {
 
     if (data.tags) {
       this.tagsTarget.innerHTML = data.tags
-        .map(tag => `<a href="${baseUrl}?tag=${encodeURIComponent(tag)}">${tag}</a>`)
+        .map(tag => `<a href="${baseUrl}?tag=${encodeURIComponent(tag)}">${escapeHTML(tag)}</a>`)
         .join(", ")
     } else {
       this.tagsTarget.innerHTML = `<span class="carousel-sidebar__tags__empty">–</span>`
     }
 
-    this.midTarget.innerHTML = `<a href="${baseUrl}?id=${data.mid}">${data.mid}</a>`
-    this.yearTarget.innerHTML = `<a href="${baseUrl}?year=${data.year}">${data.year}</a>`
+    this.midTarget.innerHTML = `<a href="${baseUrl}?id=${data.mid}">${escapeHTML(String(data.mid))}</a>`
+    this.yearTarget.innerHTML = `<a href="${baseUrl}?year=${data.year}">${escapeHTML(String(data.year))}</a>`
 
     if (data.donor) {
-      this.donorTarget.innerHTML = `<a href="${baseUrl}?donor=${encodeURIComponent(data.donor)}">${data.donor}</a>`
+      this.donorTarget.innerHTML = `<a href="${baseUrl}?donor=${encodeURIComponent(data.donor)}">${escapeHTML(
+        data.donor
+      )}</a>`
       this.donorTarget.parentNode.style.display = "block"
     } else {
       this.donorTarget.parentNode.style.display = "none"
     }
 
     if (data.author) {
-      this.authorTarget.innerHTML = `<a href="${baseUrl}?photographer=${encodeURIComponent(data.author)}">${
+      this.authorTarget.innerHTML = `<a href="${baseUrl}?photographer=${encodeURIComponent(
         data.author
-      }</a>`
+      )}">${escapeHTML(data.author)}</a>`
       this.authorTarget.parentNode.style.display = "block"
     } else {
       this.authorTarget.parentNode.style.display = "none"

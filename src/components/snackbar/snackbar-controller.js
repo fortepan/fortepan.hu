@@ -7,7 +7,8 @@ export default class extends Controller {
 
   show(e) {
     if (!e.detail) return
-    this.element.innerHTML = e.detail.message
+    this.element.style.whiteSpace = "pre-line"
+    this.element.textContent = e.detail.message ?? ""
 
     this.element.classList.remove("snackbar--success")
     this.element.classList.remove("snackbar--error")

@@ -83,7 +83,7 @@ const signup = async body => {
     return respData
   }
 
-  throw respData.message.replace(/(?:\r\n|\r|\n)/g, "<br />")
+  throw respData.message.replace(/(?:\r\n|\r|\n)/g, "\n")
 }
 
 const forgot = async val => {
