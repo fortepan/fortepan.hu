@@ -20,11 +20,6 @@ export default class extends Controller {
 
     this.onScroll = throttle(this.onScroll, 200)
 
-    // allow cookies by default
-    setTimeout(() => {
-      trigger("cookieConsent:cookiesAllowed")
-    }, 100)
-
     this.show()
   }
 
