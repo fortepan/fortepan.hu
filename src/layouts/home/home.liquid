@@ -111,7 +111,7 @@ layout: base/base.liquid
 
     <div class="home__usp home__usp--blog-summary">
       <div class="home__usp__header">
-        <a class="home__usp__capa-logo" href="https://capacenter.hu{% if locale == "en" %}/en{% endif %}" target="_blank">{{ lang[locale].capa_center_caption }}</a>
+        <a class="home__usp__capa-logo" href="https://capacenter.hu{% if locale == "en" %}/en{% endif %}" target="_blank" rel="noopener noreferrer">{{ lang[locale].capa_center_caption }}</a>
         <h2>{{ blog.title }}</h2>
         <p class="text-medium">{{ blog.caption | sanitizeHtml }}</p>
       </div>
@@ -133,9 +133,9 @@ layout: base/base.liquid
           </div>
           <div class="list-item__meta">
             <p class="text-small text-secondary">{% date article.isoDate, locale %}</p>
-            <h5><a href="{{ article.link }}" class="list-item__title" target="_blank">{{ article.title }}</a></h5>
+            <h5><a href="{{ article.link }}" class="list-item__title" target="_blank" rel="noopener noreferrer">{{ article.title }}</a></h5>
             <p class="text-medium text-secondary">{{ article_content[0] | truncatewords: 24, '…' }}</p>
-            <p class="text-medium"><a href="{{ article.link }}" target="_blank">{{ lang[locale].read_more }} →</a></p>
+            <p class="text-medium"><a href="{{ article.link }}" target="_blank" rel="noopener noreferrer">{{ lang[locale].read_more }} →</a></p>
           </div>
         </li>
         {% endif %}
@@ -143,7 +143,7 @@ layout: base/base.liquid
       </ul>
 
       <div class="home__usp__action">
-        <a href="{{ blog.action.url }}" class="button button--medium button--primary" target="_blank">
+        <a href="{{ blog.action.url }}" class="button button--medium button--primary" target="_blank" rel="noopener noreferrer">
           <span>{{ blog.action.label }}</span>
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="10" viewBox="0 0 14 10">
             <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2,6 L6,10 L10,6 M6,-2 L6,9" transform="rotate(-90 7 4)"/>

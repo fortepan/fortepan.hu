@@ -5,18 +5,18 @@
     <a class="footer__link" href="/{{ locale }}/donors/">{{ lang[locale].donors }}</a>
     {% if locale == "hu" %}<a class="footer__link" href="/{{ locale }}/ado-1-szazalek/">{{ lang[locale].tax1percent.menu_label }}</a>{% endif %}
     <a class="footer__link" href="/{{ locale }}/donation/">{{ lang[locale].donation }}</a>
-    <a class="footer__link" href="https://hetifortepan.capacenter.hu/{% if locale == "en" %}/{{locale}}{% endif %}" target="_blank">{{ lang[locale].weekly_fortepan }}</a>
-    <a class="footer__link" href="https://forum.index.hu/Article/showArticle?t=9204653" target="_blank">{{ lang[locale].forum }}</a>
+    <a class="footer__link" href="https://hetifortepan.capacenter.hu/{% if locale == "en" %}/{{locale}}{% endif %}" target="_blank" rel="noopener noreferrer">{{ lang[locale].weekly_fortepan }}</a>
+    <a class="footer__link" href="https://forum.index.hu/Article/showArticle?t=9204653" target="_blank" rel="noopener noreferrer">{{ lang[locale].forum }}</a>
     <a class="footer__link" href="/{{ locale }}/projects/">{{ lang[locale].projects }}</a>
     <small class="footer__small">
     FORTEPAN ©2010-{{ 'now' | date: '%Y' }} &nbsp;·&nbsp;&nbsp;<a href="mailto:fortepan@gmail.com">{{ lang[locale].contact_us }}</a> &nbsp;·&nbsp;&nbsp;<a href="/{{ locale }}/privacy/">{{ lang[locale].privacy_policy }}</a><br/>
 under Creative Commons CC-BY-SA-3.0 licence
     </small>
     <div class="footer__icons">
-        <a class="footer__icons__icon footer__icons__icon--netlify-badge" href="https://www.netlify.com" target="_blank">
+        <a class="footer__icons__icon footer__icons__icon--netlify-badge" href="https://www.netlify.com" target="_blank" rel="noopener noreferrer">
             {% inlineSVG src:"src/static/images/icons/netlify/icon-netlify.svg" width:114 height:51 %}
         </a>
-        <a class="footer__icons__icon footer__icons__icon--cc" href="https://creativecommons.org/licenses/by-sa/3.0/deed.{{ locale }}" target="_blank">
+        <a class="footer__icons__icon footer__icons__icon--cc" href="https://creativecommons.org/licenses/by-sa/3.0/deed.{{ locale }}" target="_blank" rel="noopener noreferrer">
             {% inlineSVG src:"src/static/images/icons/cc/icon-cc.svg" width:32 height:32 %}
             {% inlineSVG src:"src/static/images/icons/cc/icon-cc-by.svg" width:32 height:32 %}
             {% inlineSVG src:"src/static/images/icons/cc/icon-cc-sa.svg" width:32 height:32 %}

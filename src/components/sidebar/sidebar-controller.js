@@ -104,6 +104,7 @@ export default class extends Controller {
       // bind history api calls to sidabar anchors
       this.element.querySelectorAll(".carousel-sidebar a").forEach(anchorNode => {
         anchorNode.setAttribute("target", "_blank")
+        anchorNode.setAttribute("rel", "noopener noreferrer")
       })
     }
   }

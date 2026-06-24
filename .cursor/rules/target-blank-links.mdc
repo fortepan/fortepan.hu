@@ -1,0 +1,30 @@
+---
+description: target="_blank" links must include rel="noopener noreferrer"
+globs: src/**/*.{liquid,js},plugins/**/*.js,scripts/**/*.js
+alwaysApply: false
+---
+
+# External links (`target="_blank"`)
+
+Every link that opens in a new tab must include `rel="noopener noreferrer"` to prevent tabnabbing and limit referrer leakage.
+
+```html
+<!-- ❌ BAD -->
+<a href="https://example.com" target="_blank">Example</a>
+
+<!-- ✅ GOOD -->
+<a href="https://example.com" target="_blank" rel="noopener noreferrer">Example</a>
+```
+
+```javascript
+// ❌ BAD
+anchor.setAttribute("target", "_blank")
+
+// ✅ GOOD
+anchor.setAttribute("target", "_blank")
+anchor.setAttribute("rel", "noopener noreferrer")
+```
+
+**CMS markdown** (`src/pages/**/*-cms.md` via `sanitizeHtml`) gets `rel` at render — no need to duplicate in source.
+
+**Verify:** run `npm run check:target-blank` (full repo) before release. Pre-commit runs `--warn --staged` on changed files only.

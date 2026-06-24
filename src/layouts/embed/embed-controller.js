@@ -112,7 +112,7 @@ export default class extends Controller {
 
     this.usernameTarget.textContent = this.listData.username // only exists (and visible) when it's public
 
-    this.titleTarget.innerHTML = `<a href="https://fortepan.hu${this.listData.url}" target="_blank">${escapeHTML(
+    this.titleTarget.innerHTML = `<a href="https://fortepan.hu${this.listData.url}" target="_blank" rel="noopener noreferrer">${escapeHTML(
       this.listData.name
     )}</a>`
     this.subtitleTarget.classList.remove("is-visible")
