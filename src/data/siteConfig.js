@@ -4,7 +4,7 @@ module.exports = () => {
     SITE: "https://www.fortepan.hu",
     SITE_DEV: "http://localhost:8888",
     DRUPAL_HOST: "https://new.fortepan.hu",
-    ELASTIC_HOST: "https://elastic.fortepan.hu",
+    ELASTIC_HOST: "https://new.fortepan.hu:9200",
     DRUPAL_HOST_DEV: "https://backend-develop.fortepan.hu",
     ELASTIC_HOST_DEV: "https://elastic-develop.fortepan.hu",
     PHOTO_SOURCE: "https://fortepan.download/file/fortepan-eu/",
