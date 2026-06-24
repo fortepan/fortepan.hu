@@ -3,7 +3,7 @@ module.exports = () => {
     ENV: process.env.ENV,
     SITE: "https://www.fortepan.hu",
     SITE_DEV: "http://localhost:8888",
-    DRUPAL_HOST: "https://backend.fortepan.hu",
+    DRUPAL_HOST: "https://new.fortepan.hu",
     ELASTIC_HOST: "https://elastic.fortepan.hu",
     DRUPAL_HOST_DEV: "https://backend-develop.fortepan.hu",
     ELASTIC_HOST_DEV: "https://elastic-develop.fortepan.hu",
