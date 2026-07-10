@@ -655,7 +655,11 @@
       "name": "Mácsai István festőművész fotóhagyatéka",
       "cover_image": "313740",
       "hu": {
-        "title": "Mácsai István festőművész fotóhagyatéka"
+        "title": "Mácsai István festőművész fotóhagyatéka",
+        "actions": {
+          "best_of": "70 jó kép",
+          "all": "A teljes sorozat"
+        }
       }
     }
   ]
