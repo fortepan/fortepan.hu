@@ -25,6 +25,8 @@ const setLoginStatus = isUserSignedIn => {
 
 const signin = async body => {
   const url = `${appState("is-dev") ? config().DRUPAL_HOST_DEV : config().DRUPAL_HOST}/user/login?_format=json`
+  // https://www.drupal.org/docs/8/core/modules/rest/javascript-and-drupal-8-restful-web-services#s-login
+  body.withCredentials = true
 
   const resp = await fetch(url, {
     method: "POST",
