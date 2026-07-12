@@ -1,6 +1,18 @@
 {
   "uploads": [
     {
+      "name": "Mácsai István festőművész fotóhagyatéka",
+      "date": "2026-07-09T19:51:54.502Z",
+      "cover_image": "313740",
+      "hu": {
+        "title": "Mácsai István festőművész fotóhagyatéka",
+        "actions": {
+          "best_of": "70 jó kép",
+          "all": "A teljes sorozat"
+        }
+      }
+    },
+    {
       "name": "5000 fotó időutazóknak",
       "date": "2026-03-29T12:03:34.142Z",
       "cover_image": "312649",
@@ -648,18 +660,6 @@
         "actions": {
           "best_of": "100 favorites",
           "all": "All Kereki photos"
-        }
-      }
-    },
-    {
-      "name": "Mácsai István festőművész fotóhagyatéka",
-      "date": "2026-07-09T19:51:54.502Z",
-      "cover_image": "313740",
-      "hu": {
-        "title": "Mácsai István festőművész fotóhagyatéka",
-        "actions": {
-          "best_of": "70 jó kép",
-          "all": "A teljes sorozat"
         }
       }
     }
