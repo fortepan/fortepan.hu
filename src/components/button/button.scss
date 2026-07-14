@@ -27,7 +27,7 @@ button,
 
   &:hover,
   &:active {
-    background-color: darken($red, 5);
+    background-color: color.adjust($red, $lightness: -5%);
   }
 }
 
@@ -45,11 +45,11 @@ button,
   &:hover,
   &:active {
     .theme--light & {
-      background-color: darken($light-secondary, 5);
+      background-color: color.adjust($light-secondary, $lightness: -5%);
     }
 
     .theme--dark & {
-      background-color: lighten($dark-tertiary, 5);
+      background-color: color.adjust($dark-tertiary, $lightness: 5%);
     }
   }
 }
