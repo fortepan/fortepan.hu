@@ -5,7 +5,7 @@ layout: base/base.liquid
 <div class="article scrollview" data-controller="article scrollview" data-action="scroll->scrollview#handleScroll">
   <section class="article__content">
   <h1>{{ title }}</h1>
-  {{ content }}
+  {{ content | sanitizeHtml }}
   </section>
   {% include footer/footer.liquid %}
 

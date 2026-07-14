@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
-import { lang, getURLParams, numberWithCommas, getLocale } from "../../../js/utils"
+import { lang, getURLParams, numberWithCommas, getLocale, escapeHTML } from "../../../js/utils"
 import uploadsManager from "../../../js/photo-uploads-manager"
 
 export default class extends Controller {
@@ -44,7 +44,7 @@ export default class extends Controller {
         const collectionData = await uploadsManager.getCollection(q.upload)
         if (collectionData) {
           this.searchExpressionTarget.classList.add("is-visible")
-          this.searchExpressionTarget.innerHTML = `${collectionData[getLocale()]?.actions.best_of}`
+          this.searchExpressionTarget.innerHTML = escapeHTML(collectionData[getLocale()]?.actions.best_of)
         }
       }
     } else if (Object.keys(q).indexOf("advancedSearch") > -1) {
@@ -52,28 +52,28 @@ export default class extends Controller {
       this.searchExpressionTarget.innerHTML = `${lang("advanced_search").label}`
     } else if (Object.keys(q).indexOf("donor") > -1) {
       this.searchExpressionTarget.classList.add("is-visible")
-      this.searchExpressionTarget.innerHTML = `${lang("donor")}: <em>${q.donor}</em>`
+      this.searchExpressionTarget.innerHTML = `${lang("donor")}: <em>${escapeHTML(q.donor)}</em>`
     } else if (Object.keys(q).indexOf("photographer") > -1) {
       this.searchExpressionTarget.classList.add("is-visible")
-      this.searchExpressionTarget.innerHTML = `${lang("photographer")}: <em>${q.photographer}</em>`
+      this.searchExpressionTarget.innerHTML = `${lang("photographer")}: <em>${escapeHTML(q.photographer)}</em>`
     } else if (Object.keys(q).indexOf("year") > -1) {
       this.searchExpressionTarget.classList.add("is-visible")
-      this.searchExpressionTarget.innerHTML = `${lang("year")}: <em>${q.year}</em>`
+      this.searchExpressionTarget.innerHTML = `${lang("year")}: <em>${escapeHTML(q.year)}</em>`
     } else if (Object.keys(q).indexOf("country") > -1) {
       this.searchExpressionTarget.classList.add("is-visible")
-      this.searchExpressionTarget.innerHTML = `${lang("country")}: <em>${q.country}</em>`
+      this.searchExpressionTarget.innerHTML = `${lang("country")}: <em>${escapeHTML(q.country)}</em>`
     } else if (Object.keys(q).indexOf("city") > -1) {
       this.searchExpressionTarget.classList.add("is-visible")
-      this.searchExpressionTarget.innerHTML = `${lang("city")}: <em>${q.city}</em>`
+      this.searchExpressionTarget.innerHTML = `${lang("city")}: <em>${escapeHTML(q.city)}</em>`
     } else if (Object.keys(q).indexOf("place") > -1) {
       this.searchExpressionTarget.classList.add("is-visible")
-      this.searchExpressionTarget.innerHTML = `${lang("place")}: <em>${q.place}</em>`
+      this.searchExpressionTarget.innerHTML = `${lang("place")}: <em>${escapeHTML(q.place)}</em>`
     } else if (Object.keys(q).indexOf("tag") > -1) {
       this.searchExpressionTarget.classList.add("is-visible")
-      this.searchExpressionTarget.innerHTML = `${lang("tag")}: <em>${q.tag}</em>`
+      this.searchExpressionTarget.innerHTML = `${lang("tag")}: <em>${escapeHTML(q.tag)}</em>`
     } else if (Object.keys(q).indexOf("q") > -1) {
       this.searchExpressionTarget.classList.add("is-visible")
-      this.searchExpressionTarget.innerHTML = `${lang("search_phrase")}: <em>${q.q}</em>`
+      this.searchExpressionTarget.innerHTML = `${lang("search_phrase")}: <em>${escapeHTML(q.q)}</em>`
     }
 
     // set photo counter

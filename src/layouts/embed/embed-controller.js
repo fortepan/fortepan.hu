@@ -20,11 +20,6 @@ export default class extends Controller {
 
     this.onScroll = throttle(this.onScroll, 200)
 
-    // allow cookies by default
-    setTimeout(() => {
-      trigger("cookieConsent:cookiesAllowed")
-    }, 100)
-
     this.show()
   }
 
@@ -112,7 +107,7 @@ export default class extends Controller {
 
     this.usernameTarget.textContent = this.listData.username // only exists (and visible) when it's public
 
-    this.titleTarget.innerHTML = `<a href="https://fortepan.hu${this.listData.url}" target="_blank">${escapeHTML(
+    this.titleTarget.innerHTML = `<a href="https://fortepan.hu${this.listData.url}" target="_blank" rel="noopener noreferrer">${escapeHTML(
       this.listData.name
     )}</a>`
     this.subtitleTarget.classList.remove("is-visible")

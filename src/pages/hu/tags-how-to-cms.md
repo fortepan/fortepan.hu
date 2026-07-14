@@ -1,5 +1,5 @@
 ---
-layout: article/article.liquid
+layout: article/cms.liquid
 title: Címkézés útmutató
 permalink: /hu/cimkezes-utmutato/
 hide_search: true

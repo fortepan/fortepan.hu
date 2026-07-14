@@ -1,3 +1,15 @@
 {
-  "liquid.format.enable": false
+  "files.associations": {
+    "*.liquid": "liquid"
+  },
+  "liquid.engine": "11ty",
+  "liquid.files.11ty": {
+    "data": ["src/data"],
+    "includes": ["src/components"],
+    "layouts": ["src/layouts"]
+  },
+  "liquid.format.enable": false,
+  "emmet.includeLanguages": {
+    "liquid": "html"
+  }
 }

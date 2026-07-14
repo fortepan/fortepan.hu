@@ -16,7 +16,13 @@
     "tinacms": "npx tinacms build",
     "tinacms:serve": "npx tinacms dev",
     "build": "ENV=production npm-run-all clean import-autocomplete-data import-rss-data tinacms webpack postcss eleventy",
-    "dev": "ENV=development npm-run-all -l --silent clean import-autocomplete-data import-rss-data webpack postcss --parallel *:serve"
+    "build:preview": "ENV=production npm-run-all clean import-autocomplete-data import-rss-data webpack postcss eleventy",
+    "check:target-blank": "node scripts/check-target-blank-rel.js",
+    "dev": "ENV=development npm-run-all -l --silent clean import-autocomplete-data import-rss-data webpack postcss --parallel *:serve",
+    "postinstall": "simple-git-hooks"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "node scripts/check-target-blank-rel.js --warn --staged"
   },
   "repository": {
     "type": "git",
@@ -30,7 +36,6 @@
   "homepage": "https://github.com/fortepan/fortepan.hu#readme",
   "devDependencies": {
     "@11ty/eleventy": "^3.1.2",
-    "@csstools/postcss-sass": "^5.1.1",
     "@elastic/elasticsearch": "^7.17.14",
     "autoprefixer": "10.4.27",
     "caniuse-lite": "^1.0.30001780",
@@ -54,6 +59,9 @@
     "postcss-minify": "^1.2.0",
     "postcss-scss": "^4.0.9",
     "prettier": "^3.8.1",
+    "sanitize-html": "^2.17.4",
+    "sass": "^1.69.5",
+    "simple-git-hooks": "^2.13.1",
     "stylelint": "^17.4.0",
     "stylelint-no-unsupported-browser-features": "^8.1.1",
     "stylelint-prettier": "^5.0.3",

@@ -1,5 +1,6 @@
 const MarkdownIt = require("markdown-it")
 const inlineSVG = require("./plugins/inlineSVG")
+const sanitizeHtml = require("./plugins/sanitizeHtml")
 const htmlmin = require("html-minifier-terser")
 
 module.exports = eleventyConfig => {
@@ -59,17 +60,18 @@ module.exports = eleventyConfig => {
   })
 
   eleventyConfig.addLiquidFilter("escapeHTML", unsafe => {
-    return unsafe
-      ? unsafe.replace(/[\u00A0-\u9999<>&]/g, i => {
-          return `&#${i.charCodeAt(0)};`
-        })
-      : ""
+    if (unsafe == null) return ""
+    return String(unsafe).replace(/[\u00A0-\u9999<>&]/g, i => {
+      return `&#${i.charCodeAt(0)};`
+    })
   })
 
   eleventyConfig.addLiquidFilter("markdownify", (str, options) => {
     const md = new MarkdownIt(options ? JSON.parse(options) : null)
     return md.render(str)
   })
+
+  eleventyConfig.addLiquidFilter("sanitizeHtml", sanitizeHtml)
 
   // Minify html in production
   if (process.env.ENV === "production") {

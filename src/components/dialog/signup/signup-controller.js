@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
-import { trigger, lang } from "../../../js/utils"
+import { trigger, lang, escapeHTML } from "../../../js/utils"
 import auth from "../../../api/auth"
 
 export default class extends Controller {
@@ -57,7 +57,7 @@ export default class extends Controller {
       return lang("user_signin_error")
     }
 
-    return text
+    return escapeHTML(text).replace(/\n/g, "<br/>")
   }
 
   error(statusText) {

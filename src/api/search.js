@@ -1,6 +1,5 @@
 import { slugify, getLocale, getURLParams } from "../js/utils"
-import config from "../data/siteConfig"
-import { appState } from "../js/app"
+import { elasticRequest } from "./elastic-client"
 
 // simplify and localize the Elastic server response
 const transformResults = resp => {
@@ -72,28 +71,6 @@ const transformResults = resp => {
   }
 
   return r
-}
-
-const elasticRequest = async data => {
-  let url = appState("is-dev")
-    ? `${config().ELASTIC_HOST_DEV}/elasticsearch_index_fortepandrupaldevelop_cwoou_media/_search?pretty`
-    : `${config().ELASTIC_HOST}/elasticsearch_index_fortepandrupalmain_hd64t_media/_search?pretty`
-
-  const q = getURLParams()
-  if (q.esurl && q.esauth) {
-    url = q.esurl
-  }
-
-  const resp = await fetch(url, {
-    method: "POST",
-    headers: {
-      Authorization: `Basic ${btoa(q.esurl && q.esauth ? q.esauth : "reader:r3adm31024read")}`,
-      "Content-Type": "application/json;charset=UTF-8",
-    },
-    body: JSON.stringify(data),
-  })
-
-  return resp.json()
 }
 
 const search = params => {

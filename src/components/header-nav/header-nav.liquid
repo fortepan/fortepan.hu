@@ -81,11 +81,11 @@
     <a class="header-nav__link header-nav__link--top" href="/{{ locale }}/donors/">{{ lang[locale].donors }}</a>
     {% if locale == "hu" %}<a class="header-nav__link header-nav__link--top" href="/{{ locale }}/ado-1-szazalek/">{{ lang[locale].tax1percent.menu_label }}</a>{% endif %}
     <a class="header-nav__link header-nav__link--top" href="/{{ locale }}/donation/">{{ lang[locale].donation }}</a>
-    <a class="header-nav__link header-nav__link--top" href="https://hetifortepan.capacenter.hu{% if locale == "en" %}/{{locale}}{% endif %}" target="_blank">{{ lang[locale].weekly_fortepan }}</a>
-    <a class="header-nav__link header-nav__link--top" href="https://forum.index.hu/Article/showArticle?t=9204653" target="_blank">{{ lang[locale].forum }}</a>
+    <a class="header-nav__link header-nav__link--top" href="https://hetifortepan.capacenter.hu{% if locale == "en" %}/{{locale}}{% endif %}" target="_blank" rel="noopener noreferrer">{{ lang[locale].weekly_fortepan }}</a>
+    <a class="header-nav__link header-nav__link--top" href="https://forum.index.hu/Article/showArticle?t=9204653" target="_blank" rel="noopener noreferrer">{{ lang[locale].forum }}</a>
     <a class="header-nav__link header-nav__link--top" href="/{{ locale }}/projects/">{{ lang[locale].projects }}</a>
-    <a class="header-nav__link header-nav__link--top" href="https://www.facebook.com/FortepanArchivum/" target="_blank">Facebook</a>
-    <a class="header-nav__link header-nav__link--top header-nav__link--separator-after" href="https://www.instagram.com/fortepan/" target="_blank">Instagram</a>
+    <a class="header-nav__link header-nav__link--top" href="https://www.facebook.com/FortepanArchivum/" target="_blank" rel="noopener noreferrer">Facebook</a>
+    <a class="header-nav__link header-nav__link--top header-nav__link--separator-after" href="https://www.instagram.com/fortepan/" target="_blank" rel="noopener noreferrer">Instagram</a>
     <a class="header-nav__link" href="mailto:fortepan@gmail.com">{{ lang[locale].contact_us }}</a>
     <a class="header-nav__link header-nav__link--desktop-only" href="/{{ locale }}/privacy/">{{ lang[locale].privacy_policy }}</a>
     <div class="header-nav__link--hide-on-desktop">
@@ -139,13 +139,13 @@
           data-date="{{ article.isoDate }}"
       >
         <header class="header-nav__notifications__message__header">
-          <h5 class="header-nav__notifications__message__title"><a href="{{ article.link }}" target="_blank">{{ article_title[0] }}</a></h5>
+          <h5 class="header-nav__notifications__message__title"><a href="{{ article.link }}" target="_blank" rel="noopener noreferrer">{{ article_title[0] }}</a></h5>
           <span class="header-nav__notifications__message__date">{% date article.isoDate, locale %}</span>
         </header>
         <div class="header-nav__notifications__message__content">
-          {% if article_title[1] %}<p><a href="{{ article.link }}" target="_blank">{{ article_title[1] }}</a></p>{% endif %}
+          {% if article_title[1] %}<p><a href="{{ article.link }}" target="_blank" rel="noopener noreferrer">{{ article_title[1] }}</a></p>{% endif %}
           <p>{{ article_content[0] }}</p>
-          <p><a href="{{ article.link }}" target="_blank">{{ lang[locale].read_more }} →</a></p>
+          <p><a href="{{ article.link }}" target="_blank" rel="noopener noreferrer">{{ lang[locale].read_more }} →</a></p>
         </div>
       </li>
       {% endif %}

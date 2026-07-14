@@ -136,7 +136,7 @@
   transition: color 0.6s $ease-out-expo;
 
   &:hover {
-    color: darken($red, 10);
+    color: color.adjust($red, $lightness: -10%);
   }
 }
 

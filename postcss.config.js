@@ -6,7 +6,8 @@ module.exports = ctx => ({
   plugins: {
     "postcss-import-ext-glob": {},
     "postcss-import": { root: ctx.file.dirname },
-    "@csstools/postcss-sass": {},
+    // color.adjust() in SCSS: @use is prepended after import flattening (see plugins/postcss-sass-modern.js)
+    "./plugins/postcss-sass-modern.js": {},
     "postcss-inline-svg": {
       paths: ["."],
     },

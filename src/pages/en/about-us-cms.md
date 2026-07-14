@@ -1,5 +1,5 @@
 ---
-layout: article/article.liquid
+layout: article/cms.liquid
 title: About us
 permalink: /en/about-us/
 hide_search: true

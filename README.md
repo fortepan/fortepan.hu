@@ -24,28 +24,34 @@ $ nvm use &
 $ npm install
 ```
 
+#### Elasticsearch credentials (required for build and search)
+
+Credentials are **not** stored in the repository. Copy [`.env.example`](.env.example) to `.env` and set:
+
+- `ELASTIC_HOST` / `ELASTIC_AUTH` — production cluster (build script and live site)
+- `ELASTIC_HOST_DEV` / `ELASTIC_AUTH_DEV` — dev cluster at `elastic-develop.fortepan.hu` (local dev mode via `?dev=1`)
+
+On **Netlify**, set the same variables in Site settings → Environment variables. Deploy the `elastic-proxy` function and frontend together.
+
 #### Running and serving a dev build
 
-```
-$ npm run dev
-
-```
-
-Browse to http://localhost:8080.
-
-or, if you want to take full advantage of Netlify's local dev env (testing redirects and AWS Lambda functions):
+Photo search and lists call `/api/elastic/...`, which is served by a Netlify Function. Use:
 
 ```
 $ netlify dev
 ```
 
-In this case, browse to http://localhost:8888.
+Browse to http://localhost:8888 (with `.env` loaded for the function and build).
+
+`npm run dev` alone (port 8080) does not proxy Elasticsearch; use `netlify dev` when testing search.
 
 #### Running a prod build
 
 ```
 npm run build
 ```
+
+Requires `ELASTIC_HOST` and `ELASTIC_AUTH` (via `.env` or CI env) for the autocomplete import step.
 
 #### Project structure
 

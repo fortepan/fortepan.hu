@@ -24,6 +24,11 @@ const GA4 = {
   },
 }
 
-/** GA tracking is only allowed when users approve it with the cookie consent */
+/** GA tracking is only allowed when users approve it with the cookie consent (not on embed pages). */
 
-document.addEventListener("cookieConsent:cookiesAllowed", GA4.init)
+const isEmbedPage = () => /\/embed(?:\/|$)/.test(window.location.pathname)
+
+document.addEventListener("cookieConsent:cookiesAllowed", () => {
+  if (isEmbedPage()) return
+  GA4.init()
+})

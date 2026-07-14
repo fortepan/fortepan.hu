@@ -3,12 +3,24 @@
   publish = "_dist/"
   functions = "functions/"
 
+[context.deploy-preview]
+  command = "npm run build:preview"
+
+[context.branch-deploy]
+  command = "npm run build:preview"
+
 [dev]
   framework = "#custom"
   command = "npm run dev"
   targetPort = 8080
   publish = "_dist/"
   autoLaunch = false
+
+[[redirects]]
+  from = "/api/elastic/*"
+  to = "/.netlify/functions/elastic-proxy/:splat"
+  status = 200
+  force = true
 
 ## This rule redirects to an external API, signing requests with a secret
 [[redirects]]
