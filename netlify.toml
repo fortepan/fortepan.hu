@@ -3,6 +3,12 @@
   publish = "_dist/"
   functions = "functions/"
 
+[context.deploy-preview]
+  command = "npm run build:preview"
+
+[context.branch-deploy]
+  command = "npm run build:preview"
+
 [dev]
   framework = "#custom"
   command = "npm run dev"

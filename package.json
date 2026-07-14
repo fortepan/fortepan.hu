@@ -16,6 +16,7 @@
     "tinacms": "npx tinacms build",
     "tinacms:serve": "npx tinacms dev",
     "build": "ENV=production npm-run-all clean import-autocomplete-data import-rss-data tinacms webpack postcss eleventy",
+    "build:preview": "ENV=production npm-run-all clean import-autocomplete-data import-rss-data webpack postcss eleventy",
     "check:target-blank": "node scripts/check-target-blank-rel.js",
     "dev": "ENV=development npm-run-all -l --silent clean import-autocomplete-data import-rss-data webpack postcss --parallel *:serve",
     "postinstall": "simple-git-hooks"
