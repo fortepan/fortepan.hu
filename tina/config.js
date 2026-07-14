@@ -38,9 +38,10 @@ export default defineConfig({
             label: "Feltöltések",
             type: "object",
             list: true,
+            addItemBehavior: "prepend",
             ui: {
               component: "group-list",
-              itemProps: item => ({
+              itemProps: (item) => ({
                 label: item.name,
               }),
             },
@@ -164,9 +165,10 @@ export default defineConfig({
             name: "hu",
             label: "Magyar bejegyzések",
             type: "object",
+            addItemBehavior: "prepend",
             ui: {
               component: "group-list",
-              itemProps: item => ({
+              itemProps: (item) => ({
                 label: item.title,
               }),
             },
@@ -211,9 +213,10 @@ export default defineConfig({
             label: "Angol bejegyzések",
             type: "object",
             list: true,
+            addItemBehavior: "prepend",
             ui: {
               component: "group-list",
-              itemProps: item => ({
+              itemProps: (item) => ({
                 label: item.title,
               }),
             },
@@ -282,9 +285,10 @@ export default defineConfig({
             label: "Értesítések",
             type: "object",
             list: true,
+            addItemBehavior: "prepend",
             ui: {
               component: "group-list",
-              itemProps: item => ({
+              itemProps: (item) => ({
                 label: item.title,
               }),
             },

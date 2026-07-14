@@ -5,9 +5,10 @@ export default {
       name: "projects",
       label: "Projects",
       list: true,
+      addItemBehavior: "prepend",
       ui: {
         component: "group-list",
-        itemProps: item => ({
+        itemProps: (item) => ({
           label: item.title,
         }),
       },

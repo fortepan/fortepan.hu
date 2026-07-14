@@ -34,6 +34,7 @@ export default {
           name: "content",
           label: "Content",
           list: true,
+          addItemBehavior: "prepend",
           fields: [
             {
               type: "string",

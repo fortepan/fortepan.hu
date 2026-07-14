@@ -5,6 +5,9 @@
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
   Content-Security-Policy: default-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https: blob:; style-src 'self' 'unsafe-inline' https:; font-src 'self' data: blob: https:; img-src 'self' data: blob: https:; connect-src 'self' https: blob: data:; worker-src blob:; frame-src 'self' https:
 
+/admin/*
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors 'self'; script-src 'self' http://localhost:4001 'unsafe-inline' 'unsafe-eval' https: blob:; style-src 'self' 'unsafe-inline' https:; font-src 'self' data: blob: https:; img-src 'self' data: blob: https:; connect-src 'self' http://localhost:4001 ws://localhost:4001 https: blob: data:; worker-src blob:; frame-src 'self' https:
+
 /hu/embed/*
   Content-Security-Policy: default-src 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; frame-ancestors *; script-src 'self' 'unsafe-inline' 'unsafe-eval' https: blob:; style-src 'self' 'unsafe-inline' https:; font-src 'self' data: blob: https:; img-src 'self' data: blob: https:; connect-src 'self' https: blob: data:; worker-src blob:; frame-src 'self' https:
 
