@@ -11,9 +11,6 @@ import config from "../../data/siteConfig"
 const MAX_CLUSTERER_ZOOM = 22
 const MAX_INDIVIDUAL_MARKERS = 999
 
-const GOOGLE_MAPS_KEY = "AIzaSyAotaPmPmNRqB3HN7JgB8DVjcGKp7ZuJ74"
-const GOOGLE_MAPS_ID = "d6ac709a2949ac5eed859912"
-
 export default class extends Controller {
   static get targets() {
     return ["map"]
@@ -44,7 +41,7 @@ export default class extends Controller {
   async initMap() {
     if (!this.map) {
       setOptions({
-        key: GOOGLE_MAPS_KEY,
+        key: this.element.dataset.googleMapsKey,
         version: "weekly",
         language: getLocale(),
       })
@@ -72,7 +69,7 @@ export default class extends Controller {
           lng: Number(params?.gc?.split(",")[1]) || 19.0402,
         },
         zoom: Number(params?.gz) || 12,
-        mapId: GOOGLE_MAPS_ID,
+        mapId: this.element.dataset.googleMapsId,
         colorScheme: appState("theme--light") ? "LIGHT" : "DARK",
       })
 

@@ -1,6 +1,8 @@
 module.exports = () => {
   return {
     ENV: process.env.ENV,
+    GOOGLE_MAPS_KEY: process.env.GOOGLE_MAPS_KEY,
+    GOOGLE_MAPS_ID: process.env.GOOGLE_MAPS_ID,
     SITE: "https://www.fortepan.hu",
     SITE_DEV: "http://localhost:8888",
     DRUPAL_HOST: "https://backend.fortepan.hu",
