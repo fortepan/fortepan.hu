@@ -161,7 +161,7 @@ export default class extends Controller {
       const markerElement = e?.target?.parentElement
       if (markerElement.isESCluster) {
         // ES cluster marker is clicked
-        this.map.fitBounds(this.geotileToBounds(markerElement.data.key, this.map))
+        this.map.fitBounds(this.geotileToBounds(markerElement.data.key))
       } else if (markerElement.isGroup && markerElement.cluster) {
         // grouped cluster marker clicked
         // call the default cluster click only when the cluster marker is clicked
@@ -170,23 +170,23 @@ export default class extends Controller {
     }
   }
 
-  geotileToBounds(geotileKey, map) {
+  // Convert ES geotile_grid key ("zoom/x/y") to a LatLngBoundsLiteral via Web Mercator.
+  // Avoids google.maps.Point / getProjection (Point is on core, not the maps library import).
+  geotileToBounds(geotileKey) {
     const [zoom, x, y] = geotileKey.split("/").map(Number)
-
-    const TILE_SIZE = 256
     // eslint-disable-next-line no-restricted-properties
-    const scale = Math.pow(2, zoom)
+    const n = Math.pow(2, zoom)
+    const tileToLat = ty => {
+      const rad = Math.PI - (2 * Math.PI * ty) / n
+      return (180 / Math.PI) * Math.atan(Math.sinh(rad))
+    }
 
-    const projection = map.getProjection()
-
-    // World pixel coordinates
-    const nwPoint = new this.googleMaps.Point((x * TILE_SIZE) / scale, (y * TILE_SIZE) / scale)
-    const sePoint = new this.googleMaps.Point(((x + 1) * TILE_SIZE) / scale, ((y + 1) * TILE_SIZE) / scale)
-
-    const nwLatLng = projection.fromPointToLatLng(nwPoint)
-    const seLatLng = projection.fromPointToLatLng(sePoint)
-
-    return new this.googleMaps.LatLngBounds(nwLatLng, seLatLng)
+    return {
+      west: (x / n) * 360 - 180,
+      east: ((x + 1) / n) * 360 - 180,
+      north: tileToLat(y),
+      south: tileToLat(y + 1),
+    }
   }
 
   // Remove click on element and content (ES vs group markers attach on different nodes).
