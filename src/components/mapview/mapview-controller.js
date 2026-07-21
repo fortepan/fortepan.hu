@@ -21,6 +21,8 @@ export default class extends Controller {
     this.groupMarkers = []
 
     this.boundOnClusterClick = this.onClusterClick.bind(this)
+    this.boundOnBoundsChange = this.onBoundsChange.bind(this)
+    this.boundRenderClusterMarker = this.renderClusterMarker.bind(this)
   }
 
   async show() {
@@ -55,6 +57,20 @@ export default class extends Controller {
       this.googleMaps = googleMaps
       this.googleMapsMarker = googleMapsMarker
 
+      this.buildMap()
+
+      if (this.delayedBounds) {
+        this.setBounds({ detail: { bounds: this.delayedBounds } })
+        delete this.delayedBounds
+      }
+    }
+  }
+
+  buildMap({ center, zoom } = {}) {
+    let mapCenter = center
+    let mapZoom = zoom
+
+    if (mapCenter == null || mapZoom == null) {
       const params = getURLParams()
 
       if (!params.gc && params.gb) {
@@ -63,37 +79,35 @@ export default class extends Controller {
         params.gc = `${(Number(gtl[0]) + Number(gbr[0])) / 2},${(Number(gtl[1]) + Number(gbr[1])) / 2}`
       }
 
-      this.map = new this.googleMaps.Map(this.mapTarget, {
-        center: {
+      if (mapCenter == null) {
+        mapCenter = {
           lat: Number(params?.gc?.split(",")[0]) || 47.4979,
           lng: Number(params?.gc?.split(",")[1]) || 19.0402,
-        },
-        zoom: Number(params?.gz) || 12,
-        mapId: this.element.dataset.googleMapsId,
-        colorScheme: appState("theme--light") ? "LIGHT" : "DARK",
-      })
-
-      this.map.addListener("bounds_changed", this.onBoundsChange.bind(this))
-
-      const customRenderer = {
-        render: this.renderClusterMarker.bind(this),
+        }
       }
 
-      this.clusterer = new MarkerClusterer({
-        map: this.map,
-        algorithm: new SuperClusterAlgorithm({ radius: 320, maxZoom: MAX_CLUSTERER_ZOOM }),
-        renderer: customRenderer,
-      })
-
-      this.clusterer.defaultOnClusterClick = this.clusterer.onClusterClick
-      // this.clusterer.onClusterClick = this.boundOnClusterClick
-      this.clusterer.onClusterClick = null
-
-      if (this.delayedBounds) {
-        this.setBounds({ detail: { bounds: this.delayedBounds } })
-        delete this.delayedBounds
+      if (mapZoom == null) {
+        mapZoom = Number(params?.gz) || 12
       }
     }
+
+    this.map = new this.googleMaps.Map(this.mapTarget, {
+      center: mapCenter,
+      zoom: mapZoom,
+      mapId: this.element.dataset.googleMapsId,
+      colorScheme: appState("theme--light") ? "LIGHT" : "DARK",
+    })
+
+    this.boundsChangedListener = this.map.addListener("bounds_changed", this.boundOnBoundsChange)
+
+    this.clusterer = new MarkerClusterer({
+      map: this.map,
+      algorithm: new SuperClusterAlgorithm({ radius: 320, maxZoom: MAX_CLUSTERER_ZOOM }),
+      renderer: { render: this.boundRenderClusterMarker },
+    })
+
+    this.clusterer.defaultOnClusterClick = this.clusterer.onClusterClick
+    this.clusterer.onClusterClick = null
   }
 
   renderClusterMarker(cluster) {
@@ -175,7 +189,41 @@ export default class extends Controller {
   }
 
   toggleMapStyles() {
-    if (this.map) window.location.reload()
+    if (!this.map) return
+    // defer one frame so theme-controller has already updated the app state
+    requestAnimationFrame(() => this.recreateMap())
+  }
+
+  recreateMap() {
+    const c = this.map.getCenter()
+    const center = { lat: c.lat(), lng: c.lng() }
+    const zoom = this.map.getZoom()
+
+    clearTimeout(this.onBoundsChangeTimer)
+    trigger("loader:show", { id: "loaderBase" })
+
+    // Detach markers synchronously (AdvancedMarkerElement.map = null removes content DOM
+    // and disconnects Stimulus mapmarker controllers + their @document listeners).
+    ;[...this.markers, ...this.groupMarkers].forEach(({ element }) => {
+      element.map = null
+    })
+    this.markers.length = 0
+    this.groupMarkers.length = 0
+
+    // clusterer.setMap(null) triggers onRemove() -> idle listener removed + reset().
+    this.clusterer.setMap(null)
+    this.clusterer = null
+
+    // importLibrary("maps") does not expose event; remove the listener we stored instead.
+    if (this.boundsChangedListener) {
+      this.boundsChangedListener.remove()
+      this.boundsChangedListener = null
+    }
+    this.map = null
+    delete this.mapZoom
+
+    this.mapTarget.replaceChildren()
+    this.buildMap({ center, zoom })
   }
 
   clearMarkers() {
