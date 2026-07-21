@@ -21,6 +21,7 @@ export default class extends Controller {
     this.groupMarkers = []
 
     this.boundOnClusterClick = this.onClusterClick.bind(this)
+    this.boundOnBoundsChanged = this.onBoundsChanged.bind(this)
     this.boundOnIdle = this.onBoundsChange.bind(this)
     this.boundRenderClusterMarker = this.renderClusterMarker.bind(this)
   }
@@ -107,6 +108,8 @@ export default class extends Controller {
     this.clusterer.defaultOnClusterClick = this.clusterer.onClusterClick
     this.clusterer.onClusterClick = null
 
+    // Clear on zoom as soon as bounds change; fetch only once the camera settles.
+    this.boundsChangedListener = this.map.addListener("bounds_changed", this.boundOnBoundsChanged)
     // Register after clusterer so the first idle can safely update markers.
     this.idleListener = this.map.addListener("idle", this.boundOnIdle)
   }
@@ -221,6 +224,10 @@ export default class extends Controller {
     this.clusterer.setMap(null)
     this.clusterer = null
 
+    if (this.boundsChangedListener) {
+      this.boundsChangedListener.remove()
+      this.boundsChangedListener = null
+    }
     if (this.idleListener) {
       this.idleListener.remove()
       this.idleListener = null
@@ -344,14 +351,20 @@ export default class extends Controller {
     }
   }
 
+  // Drop markers immediately when zoom changes so they aren't transformed mid-gesture.
+  onBoundsChanged() {
+    if (!this.map || !this.clusterer) return
+
+    const zoom = this.map.getZoom()
+    if (this.mapZoom !== zoom) {
+      this.clearMarkers()
+      this.clearGroupMarkers()
+      this.mapZoom = zoom
+    }
+  }
+
   async onBoundsChange() {
     if (!this.map) return
-
-    // clear markers when zoom is changed
-    if (this.mapZoom !== this.map.getZoom()) {
-      this.clearMarkers()
-      this.mapZoom = this.map.getZoom()
-    }
 
     if (this.mapDataLoading) {
       this.mapLoadPending = true
