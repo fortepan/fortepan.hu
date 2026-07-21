@@ -17,7 +17,7 @@ export default class extends Controller {
   }
 
   connect() {
-    this.markers = []
+    this.markers = new Map()
     this.groupMarkers = []
 
     this.boundOnClusterClick = this.onClusterClick.bind(this)
@@ -189,6 +189,14 @@ export default class extends Controller {
     return new this.googleMaps.LatLngBounds(nwLatLng, seLatLng)
   }
 
+  // Remove click on element and content (ES vs group markers attach on different nodes).
+  detachAdvancedMarker(element) {
+    if (!element) return
+    element.removeEventListener("click", this.boundOnClusterClick)
+    element.content?.removeEventListener?.("click", this.boundOnClusterClick)
+    element.map = null
+  }
+
   toggleMapStyles() {
     if (!this.map) return
     // defer one frame so theme-controller has already updated the app state
@@ -203,12 +211,10 @@ export default class extends Controller {
     delete this.mapLoadPending
     trigger("loader:show", { id: "loaderBase" })
 
-    // Detach markers synchronously (AdvancedMarkerElement.map = null removes content DOM
-    // and disconnects Stimulus mapmarker controllers + their @document listeners).
-    ;[...this.markers, ...this.groupMarkers].forEach(({ element }) => {
-      element.map = null
+    ;[...this.markers.values(), ...this.groupMarkers].forEach(({ element }) => {
+      this.detachAdvancedMarker(element)
     })
-    this.markers.length = 0
+    this.markers.clear()
     this.groupMarkers.length = 0
 
     // clusterer.setMap(null) triggers onRemove() -> idle listener removed + reset().
@@ -229,71 +235,61 @@ export default class extends Controller {
   clearMarkers() {
     delete this.delayedBounds
 
-    if (this.markers.length) {
-      this.markers.forEach(marker => {
-        marker.element.removeEventListener("click", this.onClusterClick)
-      })
-    }
+    this.markers.forEach(marker => {
+      this.detachAdvancedMarker(marker.element)
+    })
 
     this.clusterer.clearMarkers()
-    this.markers.length = 0
+    this.markers.clear()
   }
 
   clearGroupMarkers() {
-    if (this.groupMarkers.length) {
-      this.groupMarkers.forEach(marker => {
-        marker.element.removeEventListener("click", this.onClusterClick)
-      })
-    }
+    this.groupMarkers.forEach(marker => {
+      this.detachAdvancedMarker(marker.element)
+    })
 
     this.groupMarkers.length = 0
   }
 
   updateMarkers(photosData) {
-    // remove the markers that are not in the set
-    this.markers.forEach((marker, index) => {
-      const needed = !!photosData.items.find(photo => photo.mid.toString() === marker.mid.toString())
+    const items = photosData.items || []
+    const neededMids = new Set(items.map(photo => photo.mid.toString()))
 
-      if (!needed) {
-        marker.element.removeEventListener("click", this.onClusterClick)
-        this.markers.splice(index, 1) // Remove the marker from the list of managed markers
+    // ES cluster keys are never in neededMids, so prior clusters are always dropped here.
+    for (const [mid, marker] of this.markers) {
+      if (!neededMids.has(mid)) {
+        this.detachAdvancedMarker(marker.element)
+        this.markers.delete(mid)
       }
-    })
+    }
 
     const markersToAdd = []
 
-    // create new markers
-    photosData.items.forEach(data => {
-      // check if there is a marker already existing for this image
-      const existingMarker = this.markers.find(marker => marker.mid.toString() === data.mid.toString())
-      let markerToAdd
+    items.forEach(data => {
+      const key = data.mid.toString()
+      let markerToAdd = this.markers.get(key)?.element
 
-      // only create the marker if it doesn't exist
-      if (!existingMarker) {
+      if (!markerToAdd) {
         const mapMarker = document.getElementById("mapmarker-template").content.firstElementChild.cloneNode(true)
 
         mapMarker.data = data
         mapMarker.id = `marker-${data.mid}`
 
-        const markerElement = new this.googleMapsMarker.AdvancedMarkerElement({
+        markerToAdd = new this.googleMapsMarker.AdvancedMarkerElement({
           map: this.map,
           position: { lat: data.location.lat, lng: data.location.lon },
           content: mapMarker,
         })
 
-        this.markers.push({ id: mapMarker.id, mid: data.mid, element: markerElement })
-
-        markerToAdd = markerElement
-      } else {
-        markerToAdd = existingMarker.element
+        this.markers.set(key, { element: markerToAdd })
       }
 
       markersToAdd.push(markerToAdd)
     })
 
-    // display cluster markers coming from ES
     if (photosData.clusters) {
       photosData.clusters.forEach(data => {
+        const key = String(data.key)
         const mapMarker = document.getElementById("mapmarker-template").content.firstElementChild.cloneNode(true)
 
         mapMarker.isESCluster = true
@@ -311,15 +307,12 @@ export default class extends Controller {
 
         markerElement.addEventListener("click", this.boundOnClusterClick)
 
-        this.markers.push({ id: mapMarker.id, mid: data.key, element: markerElement })
-
+        this.markers.set(key, { element: markerElement })
         markersToAdd.push(markerElement)
       })
     }
 
     this.clusterer.addMarkers(markersToAdd)
-
-    // this.map.fitBounds(bounds)
   }
 
   setBounds(e) {
