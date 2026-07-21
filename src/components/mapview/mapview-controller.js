@@ -21,7 +21,7 @@ export default class extends Controller {
     this.groupMarkers = []
 
     this.boundOnClusterClick = this.onClusterClick.bind(this)
-    this.boundOnBoundsChange = this.onBoundsChange.bind(this)
+    this.boundOnIdle = this.onBoundsChange.bind(this)
     this.boundRenderClusterMarker = this.renderClusterMarker.bind(this)
   }
 
@@ -36,8 +36,8 @@ export default class extends Controller {
 
   hide() {
     delete this.delayedBounds
+    delete this.mapLoadPending
     this.element.classList.remove("is-visible")
-    clearTimeout(this.onBoundsChangeTimer)
   }
 
   async initMap() {
@@ -98,8 +98,6 @@ export default class extends Controller {
       colorScheme: appState("theme--light") ? "LIGHT" : "DARK",
     })
 
-    this.boundsChangedListener = this.map.addListener("bounds_changed", this.boundOnBoundsChange)
-
     this.clusterer = new MarkerClusterer({
       map: this.map,
       algorithm: new SuperClusterAlgorithm({ radius: 320, maxZoom: MAX_CLUSTERER_ZOOM }),
@@ -108,6 +106,9 @@ export default class extends Controller {
 
     this.clusterer.defaultOnClusterClick = this.clusterer.onClusterClick
     this.clusterer.onClusterClick = null
+
+    // Register after clusterer so the first idle can safely update markers.
+    this.idleListener = this.map.addListener("idle", this.boundOnIdle)
   }
 
   renderClusterMarker(cluster) {
@@ -199,7 +200,7 @@ export default class extends Controller {
     const center = { lat: c.lat(), lng: c.lng() }
     const zoom = this.map.getZoom()
 
-    clearTimeout(this.onBoundsChangeTimer)
+    delete this.mapLoadPending
     trigger("loader:show", { id: "loaderBase" })
 
     // Detach markers synchronously (AdvancedMarkerElement.map = null removes content DOM
@@ -214,10 +215,9 @@ export default class extends Controller {
     this.clusterer.setMap(null)
     this.clusterer = null
 
-    // importLibrary("maps") does not expose event; remove the listener we stored instead.
-    if (this.boundsChangedListener) {
-      this.boundsChangedListener.remove()
-      this.boundsChangedListener = null
+    if (this.idleListener) {
+      this.idleListener.remove()
+      this.idleListener = null
     }
     this.map = null
     delete this.mapZoom
@@ -352,23 +352,32 @@ export default class extends Controller {
   }
 
   async onBoundsChange() {
+    if (!this.map) return
+
     // clear markers when zoom is changed
     if (this.mapZoom !== this.map.getZoom()) {
       this.clearMarkers()
       this.mapZoom = this.map.getZoom()
     }
 
-    clearTimeout(this.onBoundsChangeTimer)
+    if (this.mapDataLoading) {
+      this.mapLoadPending = true
+      return
+    }
 
-    this.onBoundsChangeTimer = setTimeout(async () => {
-      if (!this.mapDataLoading) {
-        this.mapDataLoading = true
+    this.mapDataLoading = true
+    trigger("loader:show", { id: "loaderBase" })
+
+    try {
+      do {
+        this.mapLoadPending = false
+
+        const mb = this.map?.getBounds()
+        if (!mb || !this.clusterer) break
 
         trigger("snackbar:hide")
         trigger("thumbnailbar:hide")
         trigger("photosCarousel:close")
-
-        trigger("loader:show", { id: "loaderBase" })
 
         this.pushHistoryState()
 
@@ -399,7 +408,6 @@ export default class extends Controller {
         // no need to load aggregated years on the map view, it slows the query down
         params.disableAggregatedYears = true
 
-        const mb = this.map.getBounds()
         const b = {
           tl: {
             lat: mb
@@ -434,27 +442,29 @@ export default class extends Controller {
           photoData = await photoManager.loadPhotoData(params)
         }
 
+        if (!this.map || !this.clusterer) break
+
         this.clusterer.clearMarkers()
-        // clear group markers
         this.clearGroupMarkers()
-
         this.updateMarkers(photoData)
-
-        trigger("loader:hide", { id: "loaderBase" })
 
         // handling zero results
         if ((Array.isArray(photoData.clusters) && photoData.clusters.length === 0) || photoData.total === 0) {
-          // ES clusters
           trigger("snackbar:show", {
             message: `${lang("map").no_results}`,
             status: "error",
             autoHide: false,
           })
         }
-
-        delete this.mapDataLoading
+      } while (this.mapLoadPending && this.map)
+    } finally {
+      delete this.mapDataLoading
+      trigger("loader:hide", { id: "loaderBase" })
+      // New idle/search may have queued while we were loading (e.g. during recreateMap).
+      if (this.mapLoadPending && this.map) {
+        this.onBoundsChange()
       }
-    }, 200)
+    }
   }
 
   onMarkerPhotoSelected(e) {
