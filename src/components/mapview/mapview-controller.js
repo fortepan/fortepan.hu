@@ -11,9 +11,6 @@ import config from "../../data/siteConfig"
 const MAX_CLUSTERER_ZOOM = 22
 const MAX_INDIVIDUAL_MARKERS = 999
 
-const GOOGLE_MAPS_KEY = "AIzaSyAotaPmPmNRqB3HN7JgB8DVjcGKp7ZuJ74"
-const GOOGLE_MAPS_ID = "d6ac709a2949ac5eed859912"
-
 export default class extends Controller {
   static get targets() {
     return ["map"]
@@ -24,6 +21,8 @@ export default class extends Controller {
     this.groupMarkers = []
 
     this.boundOnClusterClick = this.onClusterClick.bind(this)
+    this.boundOnIdle = this.onBoundsChange.bind(this)
+    this.boundRenderClusterMarker = this.renderClusterMarker.bind(this)
   }
 
   async show() {
@@ -37,14 +36,14 @@ export default class extends Controller {
 
   hide() {
     delete this.delayedBounds
+    delete this.mapLoadPending
     this.element.classList.remove("is-visible")
-    clearTimeout(this.onBoundsChangeTimer)
   }
 
   async initMap() {
     if (!this.map) {
       setOptions({
-        key: GOOGLE_MAPS_KEY,
+        key: this.element.dataset.googleMapsKey,
         version: "weekly",
         language: getLocale(),
       })
@@ -58,6 +57,20 @@ export default class extends Controller {
       this.googleMaps = googleMaps
       this.googleMapsMarker = googleMapsMarker
 
+      this.buildMap()
+
+      if (this.delayedBounds) {
+        this.setBounds({ detail: { bounds: this.delayedBounds } })
+        delete this.delayedBounds
+      }
+    }
+  }
+
+  buildMap({ center, zoom } = {}) {
+    let mapCenter = center
+    let mapZoom = zoom
+
+    if (mapCenter == null || mapZoom == null) {
       const params = getURLParams()
 
       if (!params.gc && params.gb) {
@@ -66,37 +79,36 @@ export default class extends Controller {
         params.gc = `${(Number(gtl[0]) + Number(gbr[0])) / 2},${(Number(gtl[1]) + Number(gbr[1])) / 2}`
       }
 
-      this.map = new this.googleMaps.Map(this.mapTarget, {
-        center: {
+      if (mapCenter == null) {
+        mapCenter = {
           lat: Number(params?.gc?.split(",")[0]) || 47.4979,
           lng: Number(params?.gc?.split(",")[1]) || 19.0402,
-        },
-        zoom: Number(params?.gz) || 12,
-        mapId: GOOGLE_MAPS_ID,
-        colorScheme: appState("theme--light") ? "LIGHT" : "DARK",
-      })
-
-      this.map.addListener("bounds_changed", this.onBoundsChange.bind(this))
-
-      const customRenderer = {
-        render: this.renderClusterMarker.bind(this),
+        }
       }
 
-      this.clusterer = new MarkerClusterer({
-        map: this.map,
-        algorithm: new SuperClusterAlgorithm({ radius: 320, maxZoom: MAX_CLUSTERER_ZOOM }),
-        renderer: customRenderer,
-      })
-
-      this.clusterer.defaultOnClusterClick = this.clusterer.onClusterClick
-      // this.clusterer.onClusterClick = this.boundOnClusterClick
-      this.clusterer.onClusterClick = null
-
-      if (this.delayedBounds) {
-        this.setBounds({ detail: { bounds: this.delayedBounds } })
-        delete this.delayedBounds
+      if (mapZoom == null) {
+        mapZoom = Number(params?.gz) || 12
       }
     }
+
+    this.map = new this.googleMaps.Map(this.mapTarget, {
+      center: mapCenter,
+      zoom: mapZoom,
+      mapId: this.element.dataset.googleMapsId,
+      colorScheme: appState("theme--light") ? "LIGHT" : "DARK",
+    })
+
+    this.clusterer = new MarkerClusterer({
+      map: this.map,
+      algorithm: new SuperClusterAlgorithm({ radius: 320, maxZoom: MAX_CLUSTERER_ZOOM }),
+      renderer: { render: this.boundRenderClusterMarker },
+    })
+
+    this.clusterer.defaultOnClusterClick = this.clusterer.onClusterClick
+    this.clusterer.onClusterClick = null
+
+    // Register after clusterer so the first idle can safely update markers.
+    this.idleListener = this.map.addListener("idle", this.boundOnIdle)
   }
 
   renderClusterMarker(cluster) {
@@ -178,7 +190,40 @@ export default class extends Controller {
   }
 
   toggleMapStyles() {
-    if (this.map) window.location.reload()
+    if (!this.map) return
+    // defer one frame so theme-controller has already updated the app state
+    requestAnimationFrame(() => this.recreateMap())
+  }
+
+  recreateMap() {
+    const c = this.map.getCenter()
+    const center = { lat: c.lat(), lng: c.lng() }
+    const zoom = this.map.getZoom()
+
+    delete this.mapLoadPending
+    trigger("loader:show", { id: "loaderBase" })
+
+    // Detach markers synchronously (AdvancedMarkerElement.map = null removes content DOM
+    // and disconnects Stimulus mapmarker controllers + their @document listeners).
+    ;[...this.markers, ...this.groupMarkers].forEach(({ element }) => {
+      element.map = null
+    })
+    this.markers.length = 0
+    this.groupMarkers.length = 0
+
+    // clusterer.setMap(null) triggers onRemove() -> idle listener removed + reset().
+    this.clusterer.setMap(null)
+    this.clusterer = null
+
+    if (this.idleListener) {
+      this.idleListener.remove()
+      this.idleListener = null
+    }
+    this.map = null
+    delete this.mapZoom
+
+    this.mapTarget.replaceChildren()
+    this.buildMap({ center, zoom })
   }
 
   clearMarkers() {
@@ -307,23 +352,32 @@ export default class extends Controller {
   }
 
   async onBoundsChange() {
+    if (!this.map) return
+
     // clear markers when zoom is changed
     if (this.mapZoom !== this.map.getZoom()) {
       this.clearMarkers()
       this.mapZoom = this.map.getZoom()
     }
 
-    clearTimeout(this.onBoundsChangeTimer)
+    if (this.mapDataLoading) {
+      this.mapLoadPending = true
+      return
+    }
 
-    this.onBoundsChangeTimer = setTimeout(async () => {
-      if (!this.mapDataLoading) {
-        this.mapDataLoading = true
+    this.mapDataLoading = true
+    trigger("loader:show", { id: "loaderBase" })
+
+    try {
+      do {
+        this.mapLoadPending = false
+
+        const mb = this.map?.getBounds()
+        if (!mb || !this.clusterer) break
 
         trigger("snackbar:hide")
         trigger("thumbnailbar:hide")
         trigger("photosCarousel:close")
-
-        trigger("loader:show", { id: "loaderBase" })
 
         this.pushHistoryState()
 
@@ -354,7 +408,6 @@ export default class extends Controller {
         // no need to load aggregated years on the map view, it slows the query down
         params.disableAggregatedYears = true
 
-        const mb = this.map.getBounds()
         const b = {
           tl: {
             lat: mb
@@ -389,27 +442,29 @@ export default class extends Controller {
           photoData = await photoManager.loadPhotoData(params)
         }
 
+        if (!this.map || !this.clusterer) break
+
         this.clusterer.clearMarkers()
-        // clear group markers
         this.clearGroupMarkers()
-
         this.updateMarkers(photoData)
-
-        trigger("loader:hide", { id: "loaderBase" })
 
         // handling zero results
         if ((Array.isArray(photoData.clusters) && photoData.clusters.length === 0) || photoData.total === 0) {
-          // ES clusters
           trigger("snackbar:show", {
             message: `${lang("map").no_results}`,
             status: "error",
             autoHide: false,
           })
         }
-
-        delete this.mapDataLoading
+      } while (this.mapLoadPending && this.map)
+    } finally {
+      delete this.mapDataLoading
+      trigger("loader:hide", { id: "loaderBase" })
+      // New idle/search may have queued while we were loading (e.g. during recreateMap).
+      if (this.mapLoadPending && this.map) {
+        this.onBoundsChange()
       }
-    }, 200)
+    }
   }
 
   onMarkerPhotoSelected(e) {
