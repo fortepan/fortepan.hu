@@ -191,6 +191,7 @@ module.exports = {
     },
     capa_center_caption: "Capa Központ",
     map: {
+      menu_label: "Térkép",
       no_results: "Nincs találat ezen a területen",
     },
   },
@@ -378,6 +379,7 @@ module.exports = {
     },
     capa_center_caption: "Capa Center",
     map: {
+      menu_label: "Map",
       no_results: "No results found in this area",
     },
   },
