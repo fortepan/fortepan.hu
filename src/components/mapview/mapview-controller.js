@@ -19,6 +19,7 @@ export default class extends Controller {
   connect() {
     this.markers = new Map()
     this.groupMarkers = []
+    this.markerTemplate = document.getElementById("mapmarker-template").content.firstElementChild
 
     this.boundOnClusterClick = this.onClusterClick.bind(this)
     this.boundOnBoundsChanged = this.onBoundsChanged.bind(this)
@@ -120,21 +121,22 @@ export default class extends Controller {
     let containsESCluster = false
 
     cluster.markers.forEach(marker => {
-      if (marker.querySelector(".mapmarker").isESCluster) {
+      const content = marker.querySelector(".mapmarker")
+      if (content.isESCluster) {
         // this will a cluster of ES cluster marker
-        data.push(marker.querySelector(".mapmarker").data)
-        counter += marker.querySelector(".mapmarker").data.doc_count
+        data.push(content.data)
+        counter += content.data.doc_count
         containsESCluster = true
       } else {
         // individual photo marker
-        data.push(photoManager.getPhotoDataByID(marker.querySelector(".mapmarker").data.mid))
+        data.push(photoManager.getPhotoDataByID(content.data.mid))
         counter += 1
       }
     })
 
     if (data[0].year) data.sort((a, b) => a.year - b.year) // sort the photos by year, ascending order
 
-    const mapMarker = document.getElementById("mapmarker-template").content.firstElementChild.cloneNode(true)
+    const mapMarker = this.markerTemplate.cloneNode(true)
 
     mapMarker.isGroup = true
     mapMarker.containsESCluster = containsESCluster
@@ -277,7 +279,7 @@ export default class extends Controller {
       let markerToAdd = this.markers.get(key)?.element
 
       if (!markerToAdd) {
-        const mapMarker = document.getElementById("mapmarker-template").content.firstElementChild.cloneNode(true)
+        const mapMarker = this.markerTemplate.cloneNode(true)
 
         mapMarker.data = data
         mapMarker.id = `marker-${data.mid}`
@@ -297,7 +299,7 @@ export default class extends Controller {
     if (photosData.clusters) {
       photosData.clusters.forEach(data => {
         const key = String(data.key)
-        const mapMarker = document.getElementById("mapmarker-template").content.firstElementChild.cloneNode(true)
+        const mapMarker = this.markerTemplate.cloneNode(true)
 
         mapMarker.isESCluster = true
         mapMarker.classList.add("is-multiple", "is-es-cluster")
