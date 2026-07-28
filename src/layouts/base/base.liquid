@@ -72,6 +72,9 @@
     {% include cookie-consent/cookie-consent.liquid %}
     {% if locale == "hu" and cmsConfig.tax1percent and permalink != "/hu/ado-1-szazalek/" %}
       {% include tax1percent/tax1percent.liquid %}{% endif %}
+    {% assign map_permalink = "/" | append: locale | append: "/map/" %}
+    {% if permalink == map_permalink %}
+      {% include map-info/map-info.liquid %}{% endif %}
 
     {% endif %}
 

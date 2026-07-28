@@ -1,0 +1,18 @@
+<div class="cookie-consent map-info" data-controller="map-info"
+  data-action="cookieConsent:cookiesAllowed@document->map-info#onOtherDialogsSettled
+               cookieConsent:closed@document->map-info#onOtherDialogsSettled
+               tax1percent:closed@document->map-info#onOtherDialogsSettled
+               pointerdown@document->map-info#onDocumentInteraction
+               wheel@document->map-info#onDocumentInteraction"
+>
+  <div class="cookie-consent__wrapper">
+    <div class="button-circular dialog__close" data-action="click->map-info#hide">
+      {% inlineSVG src:"src/static/images/icons/24/icon-close.svg" class:"button-circular__icon" %}
+      <div class="button-circular__label">{{ lang[locale].close }}</div>
+    </div>
+    <div class="cookie-consent__blurb styled-links">
+      <h5>{{ lang[locale].map.info_title }}</h5>
+      <p class="text-medium">{{ lang[locale].map.info_blurb | replace: "$p1", '<a href="#" data-action="map-info#showAdvancedSearch">' | replace: "$p2", "</a>" }}</p>
+    </div>
+  </div>
+</div>

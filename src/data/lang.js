@@ -193,6 +193,8 @@ module.exports = {
     map: {
       menu_label: "Térkép",
       no_results: "Nincs találat ezen a területen",
+      info_title: "Fortepan Térkép",
+      info_blurb: `A Fortepan térképes felületét önkéntes szerkesztők munkájával építettük. Célunk az volt, hogy - elsősorban a budapesti fotóink - ilyen formában is elérhetőek legyenek. Mivel több tízezer fényképről van szó, érdemes erősen belenagyítani a térképbe, hogy a pontos helyszínekre kerüljenek a fotók. Természetesen lehetnek tévedéseink, ezeket igyekszünk javítani. A térképen a Fortepan keresőjével, sőt, az $p1összetett keresővel$p2 is lehet keresni. Ha valaki a teljes gyűjteményt szeretné látni, akkor továbbra is a <a href="/hu/photos/">klasszikus Fortepan felületen</a> érdemes böngésznie.`,
     },
   },
   en: {
@@ -381,6 +383,8 @@ module.exports = {
     map: {
       menu_label: "Map",
       no_results: "No results found in this area",
+      info_title: "Fortepan Map",
+      info_blurb: `We built the Fortepan map interface with the help of volunteer editors. Our goal was to make our photos - primarily the ones taken in Budapest - accessible in this form as well. Since tens of thousands of photographs are involved, it is worth zooming deep into the map so the photos settle at their exact locations. Naturally, we may have made mistakes, and we are working to correct them. The Fortepan search - including the $p1advanced search$p2 - works on the map too. If you would like to see the entire collection, the <a href="/en/photos/">classic Fortepan interface</a> is still the best place to browse.`,
     },
   },
 }
