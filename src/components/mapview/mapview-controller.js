@@ -11,19 +11,20 @@ import config from "../../data/siteConfig"
 const MAX_CLUSTERER_ZOOM = 22
 const MAX_INDIVIDUAL_MARKERS = 999
 
-const GOOGLE_MAPS_KEY = "AIzaSyAotaPmPmNRqB3HN7JgB8DVjcGKp7ZuJ74"
-const GOOGLE_MAPS_ID = "d6ac709a2949ac5eed859912"
-
 export default class extends Controller {
   static get targets() {
     return ["map"]
   }
 
   connect() {
-    this.markers = []
+    this.markers = new Map()
     this.groupMarkers = []
+    this.markerTemplate = document.getElementById("mapmarker-template").content.firstElementChild
 
     this.boundOnClusterClick = this.onClusterClick.bind(this)
+    this.boundOnBoundsChanged = this.onBoundsChanged.bind(this)
+    this.boundOnIdle = this.onBoundsChange.bind(this)
+    this.boundRenderClusterMarker = this.renderClusterMarker.bind(this)
   }
 
   async show() {
@@ -37,14 +38,14 @@ export default class extends Controller {
 
   hide() {
     delete this.delayedBounds
+    delete this.mapLoadPending
     this.element.classList.remove("is-visible")
-    clearTimeout(this.onBoundsChangeTimer)
   }
 
   async initMap() {
     if (!this.map) {
       setOptions({
-        key: GOOGLE_MAPS_KEY,
+        key: this.element.dataset.googleMapsKey,
         version: "weekly",
         language: getLocale(),
       })
@@ -58,39 +59,7 @@ export default class extends Controller {
       this.googleMaps = googleMaps
       this.googleMapsMarker = googleMapsMarker
 
-      const params = getURLParams()
-
-      if (!params.gc && params.gb) {
-        const gtl = params.gb.split(",").slice(0, 2)
-        const gbr = params.gb.split(",").slice(2, 4)
-        params.gc = `${(Number(gtl[0]) + Number(gbr[0])) / 2},${(Number(gtl[1]) + Number(gbr[1])) / 2}`
-      }
-
-      this.map = new this.googleMaps.Map(this.mapTarget, {
-        center: {
-          lat: Number(params?.gc?.split(",")[0]) || 47.4979,
-          lng: Number(params?.gc?.split(",")[1]) || 19.0402,
-        },
-        zoom: Number(params?.gz) || 12,
-        mapId: GOOGLE_MAPS_ID,
-        colorScheme: appState("theme--light") ? "LIGHT" : "DARK",
-      })
-
-      this.map.addListener("bounds_changed", this.onBoundsChange.bind(this))
-
-      const customRenderer = {
-        render: this.renderClusterMarker.bind(this),
-      }
-
-      this.clusterer = new MarkerClusterer({
-        map: this.map,
-        algorithm: new SuperClusterAlgorithm({ radius: 320, maxZoom: MAX_CLUSTERER_ZOOM }),
-        renderer: customRenderer,
-      })
-
-      this.clusterer.defaultOnClusterClick = this.clusterer.onClusterClick
-      // this.clusterer.onClusterClick = this.boundOnClusterClick
-      this.clusterer.onClusterClick = null
+      this.buildMap()
 
       if (this.delayedBounds) {
         this.setBounds({ detail: { bounds: this.delayedBounds } })
@@ -99,27 +68,75 @@ export default class extends Controller {
     }
   }
 
+  buildMap({ center, zoom } = {}) {
+    let mapCenter = center
+    let mapZoom = zoom
+
+    if (mapCenter == null || mapZoom == null) {
+      const params = getURLParams()
+
+      if (!params.gc && params.gb) {
+        const gtl = params.gb.split(",").slice(0, 2)
+        const gbr = params.gb.split(",").slice(2, 4)
+        params.gc = `${(Number(gtl[0]) + Number(gbr[0])) / 2},${(Number(gtl[1]) + Number(gbr[1])) / 2}`
+      }
+
+      if (mapCenter == null) {
+        mapCenter = {
+          lat: Number(params?.gc?.split(",")[0]) || 47.4979,
+          lng: Number(params?.gc?.split(",")[1]) || 19.0402,
+        }
+      }
+
+      if (mapZoom == null) {
+        mapZoom = Number(params?.gz) || 12
+      }
+    }
+
+    this.map = new this.googleMaps.Map(this.mapTarget, {
+      center: mapCenter,
+      zoom: mapZoom,
+      mapId: this.element.dataset.googleMapsId,
+      colorScheme: appState("theme--light") ? "LIGHT" : "DARK",
+    })
+
+    this.clusterer = new MarkerClusterer({
+      map: this.map,
+      algorithm: new SuperClusterAlgorithm({ radius: 320, maxZoom: MAX_CLUSTERER_ZOOM }),
+      renderer: { render: this.boundRenderClusterMarker },
+    })
+
+    this.clusterer.defaultOnClusterClick = this.clusterer.onClusterClick
+    this.clusterer.onClusterClick = null
+
+    // Clear on zoom as soon as bounds change; fetch only once the camera settles.
+    this.boundsChangedListener = this.map.addListener("bounds_changed", this.boundOnBoundsChanged)
+    // Register after clusterer so the first idle can safely update markers.
+    this.idleListener = this.map.addListener("idle", this.boundOnIdle)
+  }
+
   renderClusterMarker(cluster) {
     const data = []
     let counter = 0
     let containsESCluster = false
 
     cluster.markers.forEach(marker => {
-      if (marker.querySelector(".mapmarker").isESCluster) {
+      const content = marker.querySelector(".mapmarker")
+      if (content.isESCluster) {
         // this will a cluster of ES cluster marker
-        data.push(marker.querySelector(".mapmarker").data)
-        counter += marker.querySelector(".mapmarker").data.doc_count
+        data.push(content.data)
+        counter += content.data.doc_count
         containsESCluster = true
       } else {
         // individual photo marker
-        data.push(photoManager.getPhotoDataByID(marker.querySelector(".mapmarker").data.mid))
+        data.push(photoManager.getPhotoDataByID(content.data.mid))
         counter += 1
       }
     })
 
     if (data[0].year) data.sort((a, b) => a.year - b.year) // sort the photos by year, ascending order
 
-    const mapMarker = document.getElementById("mapmarker-template").content.firstElementChild.cloneNode(true)
+    const mapMarker = this.markerTemplate.cloneNode(true)
 
     mapMarker.isGroup = true
     mapMarker.containsESCluster = containsESCluster
@@ -149,7 +166,7 @@ export default class extends Controller {
       const markerElement = e?.target?.parentElement
       if (markerElement.isESCluster) {
         // ES cluster marker is clicked
-        this.map.fitBounds(this.geotileToBounds(markerElement.data.key, this.map))
+        this.map.fitBounds(this.geotileToBounds(markerElement.data.key))
       } else if (markerElement.isGroup && markerElement.cluster) {
         // grouped cluster marker clicked
         // call the default cluster click only when the cluster marker is clicked
@@ -158,98 +175,131 @@ export default class extends Controller {
     }
   }
 
-  geotileToBounds(geotileKey, map) {
+  // Convert ES geotile_grid key ("zoom/x/y") to a LatLngBoundsLiteral via Web Mercator.
+  // Avoids google.maps.Point / getProjection (Point is on core, not the maps library import).
+  geotileToBounds(geotileKey) {
     const [zoom, x, y] = geotileKey.split("/").map(Number)
-
-    const TILE_SIZE = 256
     // eslint-disable-next-line no-restricted-properties
-    const scale = Math.pow(2, zoom)
+    const n = Math.pow(2, zoom)
+    const tileToLat = ty => {
+      const rad = Math.PI - (2 * Math.PI * ty) / n
+      return (180 / Math.PI) * Math.atan(Math.sinh(rad))
+    }
 
-    const projection = map.getProjection()
+    return {
+      west: (x / n) * 360 - 180,
+      east: ((x + 1) / n) * 360 - 180,
+      north: tileToLat(y),
+      south: tileToLat(y + 1),
+    }
+  }
 
-    // World pixel coordinates
-    const nwPoint = new this.googleMaps.Point((x * TILE_SIZE) / scale, (y * TILE_SIZE) / scale)
-    const sePoint = new this.googleMaps.Point(((x + 1) * TILE_SIZE) / scale, ((y + 1) * TILE_SIZE) / scale)
-
-    const nwLatLng = projection.fromPointToLatLng(nwPoint)
-    const seLatLng = projection.fromPointToLatLng(sePoint)
-
-    return new this.googleMaps.LatLngBounds(nwLatLng, seLatLng)
+  // Remove click on element and content (ES vs group markers attach on different nodes).
+  detachAdvancedMarker(element) {
+    if (!element) return
+    element.removeEventListener("click", this.boundOnClusterClick)
+    element.content?.removeEventListener?.("click", this.boundOnClusterClick)
+    element.map = null
   }
 
   toggleMapStyles() {
-    if (this.map) window.location.reload()
+    if (!this.map) return
+    // defer one frame so theme-controller has already updated the app state
+    requestAnimationFrame(() => this.recreateMap())
+  }
+
+  recreateMap() {
+    const c = this.map.getCenter()
+    const center = { lat: c.lat(), lng: c.lng() }
+    const zoom = this.map.getZoom()
+
+    delete this.mapLoadPending
+    trigger("loader:show", { id: "loaderBase" })
+
+    ;[...this.markers.values(), ...this.groupMarkers].forEach(({ element }) => {
+      this.detachAdvancedMarker(element)
+    })
+    this.markers.clear()
+    this.groupMarkers.length = 0
+
+    // clusterer.setMap(null) triggers onRemove() -> idle listener removed + reset().
+    this.clusterer.setMap(null)
+    this.clusterer = null
+
+    if (this.boundsChangedListener) {
+      this.boundsChangedListener.remove()
+      this.boundsChangedListener = null
+    }
+    if (this.idleListener) {
+      this.idleListener.remove()
+      this.idleListener = null
+    }
+    this.map = null
+    delete this.mapZoom
+
+    this.mapTarget.replaceChildren()
+    this.buildMap({ center, zoom })
   }
 
   clearMarkers() {
     delete this.delayedBounds
 
-    if (this.markers.length) {
-      this.markers.forEach(marker => {
-        marker.element.removeEventListener("click", this.onClusterClick)
-      })
-    }
+    this.markers.forEach(marker => {
+      this.detachAdvancedMarker(marker.element)
+    })
 
     this.clusterer.clearMarkers()
-    this.markers.length = 0
+    this.markers.clear()
   }
 
   clearGroupMarkers() {
-    if (this.groupMarkers.length) {
-      this.groupMarkers.forEach(marker => {
-        marker.element.removeEventListener("click", this.onClusterClick)
-      })
-    }
+    this.groupMarkers.forEach(marker => {
+      this.detachAdvancedMarker(marker.element)
+    })
 
     this.groupMarkers.length = 0
   }
 
   updateMarkers(photosData) {
-    // remove the markers that are not in the set
-    this.markers.forEach((marker, index) => {
-      const needed = !!photosData.items.find(photo => photo.mid.toString() === marker.mid.toString())
+    const items = photosData.items || []
+    const neededMids = new Set(items.map(photo => photo.mid.toString()))
 
-      if (!needed) {
-        marker.element.removeEventListener("click", this.onClusterClick)
-        this.markers.splice(index, 1) // Remove the marker from the list of managed markers
+    // ES cluster keys are never in neededMids, so prior clusters are always dropped here.
+    for (const [mid, marker] of this.markers) {
+      if (!neededMids.has(mid)) {
+        this.detachAdvancedMarker(marker.element)
+        this.markers.delete(mid)
       }
-    })
+    }
 
     const markersToAdd = []
 
-    // create new markers
-    photosData.items.forEach(data => {
-      // check if there is a marker already existing for this image
-      const existingMarker = this.markers.find(marker => marker.mid.toString() === data.mid.toString())
-      let markerToAdd
+    items.forEach(data => {
+      const key = data.mid.toString()
+      let markerToAdd = this.markers.get(key)?.element
 
-      // only create the marker if it doesn't exist
-      if (!existingMarker) {
-        const mapMarker = document.getElementById("mapmarker-template").content.firstElementChild.cloneNode(true)
+      if (!markerToAdd) {
+        const mapMarker = this.markerTemplate.cloneNode(true)
 
         mapMarker.data = data
         mapMarker.id = `marker-${data.mid}`
 
-        const markerElement = new this.googleMapsMarker.AdvancedMarkerElement({
+        markerToAdd = new this.googleMapsMarker.AdvancedMarkerElement({
           map: this.map,
           position: { lat: data.location.lat, lng: data.location.lon },
           content: mapMarker,
         })
 
-        this.markers.push({ id: mapMarker.id, mid: data.mid, element: markerElement })
-
-        markerToAdd = markerElement
-      } else {
-        markerToAdd = existingMarker.element
+        this.markers.set(key, { element: markerToAdd })
       }
 
       markersToAdd.push(markerToAdd)
     })
 
-    // display cluster markers coming from ES
     if (photosData.clusters) {
       photosData.clusters.forEach(data => {
-        const mapMarker = document.getElementById("mapmarker-template").content.firstElementChild.cloneNode(true)
+        const key = String(data.key)
+        const mapMarker = this.markerTemplate.cloneNode(true)
 
         mapMarker.isESCluster = true
         mapMarker.classList.add("is-multiple", "is-es-cluster")
@@ -266,15 +316,12 @@ export default class extends Controller {
 
         markerElement.addEventListener("click", this.boundOnClusterClick)
 
-        this.markers.push({ id: mapMarker.id, mid: data.key, element: markerElement })
-
+        this.markers.set(key, { element: markerElement })
         markersToAdd.push(markerElement)
       })
     }
 
     this.clusterer.addMarkers(markersToAdd)
-
-    // this.map.fitBounds(bounds)
   }
 
   setBounds(e) {
@@ -306,24 +353,39 @@ export default class extends Controller {
     }
   }
 
-  async onBoundsChange() {
-    // clear markers when zoom is changed
-    if (this.mapZoom !== this.map.getZoom()) {
+  // Drop markers immediately when zoom changes so they aren't transformed mid-gesture.
+  onBoundsChanged() {
+    if (!this.map || !this.clusterer) return
+
+    const zoom = this.map.getZoom()
+    if (this.mapZoom !== zoom) {
       this.clearMarkers()
-      this.mapZoom = this.map.getZoom()
+      this.clearGroupMarkers()
+      this.mapZoom = zoom
+    }
+  }
+
+  async onBoundsChange() {
+    if (!this.map) return
+
+    if (this.mapDataLoading) {
+      this.mapLoadPending = true
+      return
     }
 
-    clearTimeout(this.onBoundsChangeTimer)
+    this.mapDataLoading = true
+    trigger("loader:show", { id: "loaderBase" })
 
-    this.onBoundsChangeTimer = setTimeout(async () => {
-      if (!this.mapDataLoading) {
-        this.mapDataLoading = true
+    try {
+      do {
+        this.mapLoadPending = false
+
+        const mb = this.map?.getBounds()
+        if (!mb || !this.clusterer) break
 
         trigger("snackbar:hide")
         trigger("thumbnailbar:hide")
         trigger("photosCarousel:close")
-
-        trigger("loader:show", { id: "loaderBase" })
 
         this.pushHistoryState()
 
@@ -354,7 +416,6 @@ export default class extends Controller {
         // no need to load aggregated years on the map view, it slows the query down
         params.disableAggregatedYears = true
 
-        const mb = this.map.getBounds()
         const b = {
           tl: {
             lat: mb
@@ -389,27 +450,29 @@ export default class extends Controller {
           photoData = await photoManager.loadPhotoData(params)
         }
 
+        if (!this.map || !this.clusterer) break
+
         this.clusterer.clearMarkers()
-        // clear group markers
         this.clearGroupMarkers()
-
         this.updateMarkers(photoData)
-
-        trigger("loader:hide", { id: "loaderBase" })
 
         // handling zero results
         if ((Array.isArray(photoData.clusters) && photoData.clusters.length === 0) || photoData.total === 0) {
-          // ES clusters
           trigger("snackbar:show", {
             message: `${lang("map").no_results}`,
             status: "error",
             autoHide: false,
           })
         }
-
-        delete this.mapDataLoading
+      } while (this.mapLoadPending && this.map)
+    } finally {
+      delete this.mapDataLoading
+      trigger("loader:hide", { id: "loaderBase" })
+      // New idle/search may have queued while we were loading (e.g. during recreateMap).
+      if (this.mapLoadPending && this.map) {
+        this.onBoundsChange()
       }
-    }, 200)
+    }
   }
 
   onMarkerPhotoSelected(e) {

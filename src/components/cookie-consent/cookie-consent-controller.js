@@ -72,6 +72,8 @@ export default class CookieConsent extends Controller {
   /** Show / hide component */
   hide() {
     this.element.classList.remove("is-visible")
+    // let queued dialogs (e.g. map-info) know the consent banner is resolved
+    trigger("cookieConsent:closed")
   }
 
   show() {

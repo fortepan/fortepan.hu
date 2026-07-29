@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import { trigger } from "../../js/utils"
 
 export default class CookieConsent extends Controller {
   setValue() {
@@ -20,6 +21,8 @@ export default class CookieConsent extends Controller {
   hide() {
     this.setValue()
     this.element.classList.remove("is-visible")
+    // let queued dialogs (e.g. map-info) know the banner is closed
+    trigger("tax1percent:closed")
   }
 
   show() {

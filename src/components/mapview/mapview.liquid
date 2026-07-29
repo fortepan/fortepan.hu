@@ -1,4 +1,6 @@
 <div class="mapview" data-controller="mapview"
+  data-google-maps-key="{{ siteConfig.GOOGLE_MAPS_KEY }}"
+  data-google-maps-id="{{ siteConfig.GOOGLE_MAPS_ID }}"
   data-action="mapview:show@document->mapview#show
                mapview:hide@document->mapview#hide
                mapview:setbounds@document->mapview#setBounds

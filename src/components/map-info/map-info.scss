@@ -1,0 +1,14 @@
+.map-info {
+  .cookie-consent__wrapper {
+    position: relative;
+  }
+
+  .cookie-consent__blurb {
+    padding-right: torem(32px);
+
+    h5,
+    p {
+      margin: 0;
+    }
+  }
+}
