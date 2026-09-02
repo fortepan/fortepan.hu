@@ -59,7 +59,7 @@
     "postcss-minify": "^1.2.0",
     "postcss-scss": "^4.0.9",
     "prettier": "^3.8.1",
-    "sanitize-html": "^2.17.4",
+    "sanitize-html": "^2.17.7",
     "sass": "^1.69.5",
     "simple-git-hooks": "^2.13.1",
     "stylelint": "^17.4.0",
