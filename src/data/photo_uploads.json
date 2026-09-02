@@ -4,7 +4,11 @@
       "name": "Könyvesboltok, sportpályák, iskolák - a Fortepan őszi kiadása",
       "cover_image": "316047",
       "hu": {
-        "title": "Könyvesboltok, sportpályák, iskolák - a Fortepan őszi kiadása"
+        "title": "Könyvesboltok, sportpályák, iskolák - a Fortepan őszi kiadása",
+        "actions": {
+          "best_of": "140 jó kép",
+          "all": "A teljes gyűjtemény"
+        }
       }
     },
     {
