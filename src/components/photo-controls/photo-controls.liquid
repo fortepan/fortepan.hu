@@ -1,0 +1,24 @@
+<div class="photo-controls theme--dark">
+  <div class="button-circular" data-action="click->{{ controller }}#onCloseClicked">
+    {% inlineSVG src:"src/static/images/icons/24/icon-close.svg" class:"button-circular__icon" %}
+    <div class="button-circular__label">{{ lang[locale].close }}</div>
+  </div>
+  <div class="photo-controls__group">
+    <div class="button-circular" data-action="click->{{ controller }}#downloadImage">
+      {% inlineSVG src:"src/static/images/icons/24/icon-download.svg" class:"button-circular__icon" %}
+      <div class="button-circular__label">{{ lang[locale].download }}</div>
+    </div>
+    <div class="button-circular" data-action="click->{{ controller }}#addToList">
+      {% inlineSVG src:"src/static/images/icons/24/icon-add-to-list.svg" class:"button-circular__icon" %}
+      <div class="button-circular__label">{{ lang[locale].list_add_to }}</div>
+    </div>
+    <div class="button-circular" data-action="click->{{ controller }}#shareImage">
+      {% inlineSVG src:"src/static/images/icons/24/icon-share.svg" class:"button-circular__icon" %}
+      <div class="button-circular__label">{{ lang[locale].share }}</div>
+    </div>
+    <div class="button-circular" data-action="click->{{ controller }}#openCarousel">
+      {% inlineSVG src:"src/static/images/icons/24/icon-fullscreen.svg" class:"button-circular__icon" %}
+      <div class="button-circular__label">{{ lang[locale].fullscreen }}</div>
+    </div>
+  </div>
+</div>

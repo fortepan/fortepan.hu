@@ -1,0 +1,99 @@
+$thumbnail-zoom-duration-in: 0.2s;
+$thumbnail-zoom-duration-out: 0.1s;
+$thumbnail-zoom-min-size: torem(320px);
+$thumbnail-zoom-default-ratio: 1.5;
+
+.thumbnail-zoom {
+  position: absolute;
+  top: var(--zoom-top, 50%);
+  left: var(--zoom-left, 50%);
+  z-index: 1;
+  // ~2x the thumbnail's longer side (--zoom-size), preserving the photo's real aspect ratio:
+  // min(ratio, 1) picks out the longer axis — at ratio 1 both terms below are equal — so
+  // width = --zoom-size on the longer axis when it's width, and shrinks with the ratio when it's height.
+  // clamped by 60vw / 50vh (converted to an equivalent width) as a viewport safety net.
+  // floored at $thumbnail-zoom-min-size on both axes: max(1, ratio) picks whichever axis is
+  // "longer" the same way min(ratio, 1) does above, so a single floor*max(1,ratio) term covers
+  // both a direct width floor (ratio <= 1) and its height-floor-converted-to-width form (ratio > 1)
+  // — a plain min-height alongside aspect-ratio can't do this: once min-height wins, the browser
+  // won't grow width back to match the ratio
+  width: max(
+    min(
+      calc(var(--zoom-size, $thumbnail-zoom-min-size) * min(var(--zoom-ratio, $thumbnail-zoom-default-ratio), 1)),
+      60vw,
+      calc(50vh * var(--zoom-ratio, $thumbnail-zoom-default-ratio))
+    ),
+    calc($thumbnail-zoom-min-size * max(1, var(--zoom-ratio, $thumbnail-zoom-default-ratio)))
+  );
+  aspect-ratio: var(--zoom-ratio, $thumbnail-zoom-default-ratio);
+  box-sizing: border-box;
+  // same radius as the grid thumbnails (thumbnail.scss .photos-thumbnail__image)
+  border-radius: torem(4px);
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%) translate(var(--zoom-shift-x, 0px), var(--zoom-shift-y, 0px)) scale(0.85);
+  // closing (back to this resting state) — quick
+  transition:
+    transform $thumbnail-zoom-duration-out $ease-out-cubic,
+    opacity $thumbnail-zoom-duration-out $ease-out-cubic;
+
+  .theme--light & {
+    box-shadow:
+      0 0 0 1px rgba($dark-base, 0.04),
+      0 torem(12px) torem(36px) rgba($dark-base, 0.12);
+  }
+
+  .theme--dark & {
+    box-shadow:
+      0 0 0 1px rgba($light-base, 0.04) inset,
+      0 torem(8px) torem(24px) rgba($dark-base, 0.12);
+  }
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+  }
+}
+
+.thumbnail-zoom__info {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1rem;
+  box-sizing: border-box;
+  color: $light-base;
+  pointer-events: none;
+
+  &:before {
+    display: block;
+    content: "";
+    position: absolute;
+    top: torem(-40px);
+    right: 0;
+    bottom: 0;
+    left: 0;
+    pointer-events: none;
+
+    // same scrim as .photo-controls (photo-controls.scss), reversed — dark from the bottom
+    @include scrim-gradient(180deg);
+  }
+}
+
+.photos-thumbnail.is-zoomed .thumbnail-zoom {
+  // topmost, same tier as dialogs/snackbar (dialog.scss, snackbar.scss) — none of its
+  // ancestors set their own z-index, so this competes directly against header-nav (100)
+  // and dialogs (1000) at the root stacking context, no DOM move required
+  z-index: 1000;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translate(-50%, -50%) translate(var(--zoom-shift-x, 0px), var(--zoom-shift-y, 0px)) scale(1);
+  // opening — unchanged, slower/gentler
+  transition:
+    transform $thumbnail-zoom-duration-in $ease-out-expo,
+    opacity $thumbnail-zoom-duration-in $ease-out-expo;
+}

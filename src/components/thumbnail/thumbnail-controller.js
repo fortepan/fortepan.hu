@@ -20,7 +20,7 @@ export default class extends Controller {
     // add stimulus class reference to node
     this.element.photosThumbnail = this
 
-    this.linkTarget.addEventListener("click", e => {
+    this.linkTarget.addEventListener("click", (e) => {
       if (e) e.preventDefault()
     })
 
@@ -52,18 +52,31 @@ export default class extends Controller {
     let selectedPhotoData = this.element.photoData
 
     if (!selectedPhotoData) {
-      if (this.role === "lists") {
-        selectedPhotoData = listManager.selectPhotoById(listManager.getSelectedListId(), this.element.photoId)
+      selectedPhotoData = this.selectPhoto()
 
-        if (!selectedPhotoData.isDataLoaded) {
-          return
-        }
-      } else {
-        selectedPhotoData = photoManager.selectPhotoById(this.element.photoId).data
+      if (this.role === "lists" && !selectedPhotoData.isDataLoaded) {
+        return
       }
     }
 
     trigger("thumbnail:click", { data: selectedPhotoData })
+  }
+
+  // marks this thumbnail's photo as the current one in photoManager/listManager
+  // and returns it — the selection step of clicked(), reusable without also
+  // triggering thumbnail:click (which opens the carousel)
+  selectPhoto() {
+    return this.role === "lists"
+      ? listManager.selectPhotoById(listManager.getSelectedListId(), this.element.photoId)
+      : photoManager.selectPhotoById(this.element.photoId).data
+  }
+
+  // whether this thumbnail is showing a real, clickable photo right now.
+  // "no-image" always covers "age-restricted" (never set without it, see initThumbnail),
+  // and "is-failed-loading" is never set alongside "is-loaded" (mutually exclusive
+  // outcomes of the same image load, see initThumbnail's load/error listeners)
+  get isReady() {
+    return this.element.classList.contains("is-loaded") && !this.element.classList.contains("no-image")
   }
 
   // resize thumbnail when the browser window gets resized

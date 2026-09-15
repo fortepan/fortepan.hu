@@ -1,0 +1,31 @@
+.photo-controls {
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  left: 0;
+  top: 0;
+  right: 0;
+  height: torem(56px);
+  box-sizing: border-box;
+  padding: 0 torem(4px);
+  z-index: 1;
+
+  &:before {
+    display: block;
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: torem(-40px);
+    left: 0;
+    pointer-events: none;
+
+    // same scrim as the carousel controls (carousel.scss .carousel__photos__actions:before)
+    @include scrim-gradient(0deg);
+  }
+}
+
+.photo-controls__group {
+  display: flex;
+}

@@ -1,15 +1,18 @@
 <div class="list-photos photos scrollview"
-     data-controller="lists--photos"
+     data-controller="lists--photos thumbnail-zoom"
      data-action="scroll->lists--photos#onScroll
                   resize@window->lists--photos#onScroll
+                  resize@window->thumbnail-zoom#close
                   lists:showListPhotos@document->lists--photos#show
                   lists:hideListPhotos@document->lists--photos#hide
                   photos:selectThumbnail@document->lists--photos#selectThumbnail
                   photosCarousel:photoSelected@document->lists--photos#onPhotoSelected
                   photosCarousel:hide@document->lists--photos#onCarouselClosed
+                  photosCarousel:show@document->thumbnail-zoom#close
                   dialogLists:listsChanged@document->lists--photos#onListsChanged
                   dialogLists:photoRemoved@document->lists--photos#reloadPhotos
-                  thumbnail:loaded@document->lists--photos#loadThumbnails"
+                  thumbnail:loaded@document->lists--photos#loadThumbnails
+                  thumbnail:click@document->thumbnail-zoom#close"
 >
   <div class="list-title photos-title is-visible">
     <a href="/{{ locale }}/lists/" class="photos-title__list-link hidden-when-public" data-action="click->lists--photos#backToLists">
@@ -31,6 +34,7 @@
     <p class="list-description" data-lists--photos-target="description"></p>
   </div>
   <div class="photos__grid is-hidden" data-lists--photos-target="grid"></div>
+  {% include thumbnail-zoom/thumbnail-zoom.liquid %}
   <div class="lists__placeholder is-hidden hidden-when-public" data-lists--photos-target="placeholder">
     <h3>{{ lang[locale].list_photos_empty_header }}</h3>
     <p>{{ lang[locale].list_photos_empty_text }}</p>
