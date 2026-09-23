@@ -35,6 +35,30 @@ export default class extends Controller {
     this.hoverTimer = window.setTimeout(() => this.open(thumbnail), HOVER_DELAY)
   }
 
+  // the list-owner-only context menu (context-menu.liquid, role: "thumbnail") sits on
+  // top of the thumbnail — entering it should cancel/close the preview outright so it
+  // never covers the menu while the owner is using it, not just get bridged like the
+  // card itself does. Moving within the same thumbnail is common (the icon sits in a
+  // corner of it), so leaving the icon resumes the normal hover-to-open behavior —
+  // but only if the pointer is still over the thumbnail, not actually leaving it
+  onContextMenuEnter() {
+    if (this.disabled) return
+
+    window.clearTimeout(this.hoverTimer)
+    this.hoverTimer = null
+    if (this.activeThumbnail) this.close()
+  }
+
+  onContextMenuLeave(e) {
+    if (this.disabled) return
+
+    const thumbnail = e.currentTarget.closest(".photos-thumbnail")
+    if (!thumbnail || !thumbnail.contains(e.relatedTarget) || !this.isEligible(thumbnail)) return
+
+    this.activeThumbnail = thumbnail
+    this.hoverTimer = window.setTimeout(() => this.open(thumbnail), HOVER_DELAY)
+  }
+
   onThumbnailLeave(e) {
     if (this.disabled || e.currentTarget !== this.activeThumbnail) return
     // the card is a sibling, not a descendant, of the thumbnail (so it can escape

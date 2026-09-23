@@ -1,4 +1,10 @@
-<div class="context-menu context-menu--lists hidden-when-public" data-action="mouseleave->{{ controller }}#hideAllContextMenu">
+<div class="context-menu context-menu--lists hidden-when-public"
+     data-action="mouseleave->{{ controller }}#hideAllContextMenu
+                  {% if role == "thumbnail" %}
+                  mouseenter->thumbnail-zoom#onContextMenuEnter
+                  mouseleave->thumbnail-zoom#onContextMenuLeave
+                  {% endif %}"
+>
 {% if role == "list-photos-edit" %}
   <a href="#" class="context-menu--lists__link"
     data-action="click->{{ controller }}#showContextMenu"
