@@ -18,7 +18,7 @@
     </div>
     <div class="button-circular" data-action="click->{{ controller }}#openCarousel">
       {% inlineSVG src:"src/static/images/icons/24/icon-fullscreen.svg" class:"button-circular__icon" %}
-      <div class="button-circular__label">{{ lang[locale].fullscreen }}</div>
+      <div class="button-circular__label">{% if controller == "thumbnail-zoom" %}{{ lang[locale].open }}{% else %}{{ lang[locale].fullscreen }}{% endif %}</div>
     </div>
   </div>
 </div>

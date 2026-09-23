@@ -16,14 +16,23 @@ $thumbnail-zoom-default-ratio: 1.5;
   // "longer" the same way min(ratio, 1) does above, so a single floor*max(1,ratio) term covers
   // both a direct width floor (ratio <= 1) and its height-floor-converted-to-width form (ratio > 1)
   // — a plain min-height alongside aspect-ratio can't do this: once min-height wins, the browser
-  // won't grow width back to match the ratio
-  width: max(
-    min(
-      calc(var(--zoom-size, $thumbnail-zoom-min-size) * min(var(--zoom-ratio, $thumbnail-zoom-default-ratio), 1)),
-      60vw,
-      calc(50vh * var(--zoom-ratio, $thumbnail-zoom-default-ratio))
+  // won't grow width back to match the ratio.
+  // the whole thing is wrapped in an outer min() against that same 60vw/50vh viewport safety net
+  // so it also bounds the floor — without it, the floor (480px by default) wins outright on any
+  // viewport under ~800px wide, which is every phone: since this card is always in the DOM (just
+  // invisible/inert while closed), that oversized resting width alone creates a permanent
+  // horizontal scroll on mobile, regardless of whether the preview ever actually opens
+  width: min(
+    max(
+      min(
+        calc(var(--zoom-size, $thumbnail-zoom-min-size) * min(var(--zoom-ratio, $thumbnail-zoom-default-ratio), 1)),
+        60vw,
+        calc(50vh * var(--zoom-ratio, $thumbnail-zoom-default-ratio))
+      ),
+      calc($thumbnail-zoom-min-size * max(1, var(--zoom-ratio, $thumbnail-zoom-default-ratio)))
     ),
-    calc($thumbnail-zoom-min-size * max(1, var(--zoom-ratio, $thumbnail-zoom-default-ratio)))
+    60vw,
+    calc(50vh * var(--zoom-ratio, $thumbnail-zoom-default-ratio))
   );
   aspect-ratio: var(--zoom-ratio, $thumbnail-zoom-default-ratio);
   border-radius: torem(4px);
