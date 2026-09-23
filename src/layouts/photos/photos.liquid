@@ -3,24 +3,28 @@ layout: base/base.liquid
 ---
 
 <div class="photos scrollview"
-     data-controller="photos"
+     data-controller="photos thumbnail-zoom"
      data-action="scroll->photos#onScroll
                   resize@window->photos#onScroll
                   resize@window->photos#resizeThumbnails
+                  resize@window->thumbnail-zoom#close
                   popstate@window->photos#onPopState
                   photos:historyPushState@document->photos#historyPushState
                   photos:selectThumbnail@document->photos#selectThumbnail
                   photosCarousel:hide@document->photos#onCarouselClosed
+                  photosCarousel:show@document->thumbnail-zoom#close
                   photoManager:nextSelected@document->photos#selectThumbnail
                   photoManager:prevSelected@document->photos#selectThumbnail
                   photoManager:load@document->photos#onPhotoDataLoaded
                   photoManager:cacheCleared@document->photos#onPhotoCacheCleared
                   photoManager:photoSelected@document->photos#selectThumbnail
                   timeline:yearSelected@document->photos#onYearSelected
-                  thumbnail:loaded@document->photos#loadThumbnails"
+                  thumbnail:loaded@document->photos#loadThumbnails
+                  thumbnail:click@document->thumbnail-zoom#close"
 >
   {% include ./title/title %}
   <div class="photos__grid" data-photos-target="grid"></div>
+  {% include thumbnail-zoom/thumbnail-zoom.liquid %}
 </div>
 
 {% include thumbnail/thumbnail-template.liquid %}

@@ -25,6 +25,9 @@ src/data/rss.json
 # Local Netlify folder
 .netlify
 
+# Deno lockfile (tinacms dependency, not needed for repo consumers)
+deno.lock
+
 # Code editor related
 .nova
 

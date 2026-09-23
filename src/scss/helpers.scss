@@ -17,3 +17,22 @@
   overflow: auto;
   -webkit-overflow-scrolling: touch;
 }
+
+// smooth dark scrim (based on ease-out-quad) used behind floating controls/info sitting
+// over a photo — e.g. carousel.scss .carousel__photos__actions, photo-controls.scss
+@mixin scrim-gradient($direction: 0deg) {
+  background: linear-gradient(
+    $direction,
+    rgba($dark-base, 0) 0%,
+    rgba($dark-base, calc(0.8 * 0.01)) 10%,
+    rgba($dark-base, calc(0.8 * 0.05)) 20%,
+    rgba($dark-base, calc(0.8 * 0.09)) 30%,
+    rgba($dark-base, calc(0.8 * 0.17)) 40%,
+    rgba($dark-base, calc(0.8 * 0.26)) 50%,
+    rgba($dark-base, calc(0.8 * 0.37)) 60%,
+    rgba($dark-base, calc(0.8 * 0.5)) 70%,
+    rgba($dark-base, calc(0.8 * 0.66)) 80%,
+    rgba($dark-base, calc(0.8 * 0.82)) 90%,
+    rgba($dark-base, 0.8) 100%
+  );
+}
