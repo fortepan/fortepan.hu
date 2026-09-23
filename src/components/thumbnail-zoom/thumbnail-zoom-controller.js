@@ -37,6 +37,20 @@ export default class extends Controller {
 
   onThumbnailLeave(e) {
     if (this.disabled || e.currentTarget !== this.activeThumbnail) return
+    // the card is a sibling, not a descendant, of the thumbnail (so it can escape
+    // ancestors that clip overflow, e.g. home__thumbnails-wrapper) — it visually
+    // occludes the thumbnail once open, which fires this leave the instant it does.
+    // Moving onto the card itself isn't really leaving, so let onCardLeave decide instead
+    if (this.cardTarget.contains(e.relatedTarget)) return
+    this.close()
+  }
+
+  // mirrors onThumbnailLeave's relatedTarget check — moving back onto the (occluded)
+  // thumbnail isn't a real leave either, though pointer-events make that unreachable
+  // in practice; this is what actually closes the preview once the card has occluded it
+  onCardLeave(e) {
+    if (this.disabled || !this.activeThumbnail) return
+    if (this.activeThumbnail.contains(e.relatedTarget)) return
     this.close()
   }
 
@@ -103,9 +117,6 @@ export default class extends Controller {
       this.cardTarget.style.removeProperty("--zoom-ratio")
     }
 
-    // move the single shared card into the hovered thumbnail: it scrolls with the
-    // grid for free and never leaves stray nodes behind for other thumbnails
-    thumbnail.appendChild(this.cardTarget)
     this.positionOverImage(thumbnail)
 
     this.reveal(thumbnail)
@@ -164,7 +175,7 @@ export default class extends Controller {
         this.revealFrame = requestAnimationFrame(() => {
           this.revealFrame = requestAnimationFrame(() => {
             if (this.activeThumbnail !== thumbnail) return
-            thumbnail.classList.add("is-zoomed")
+            this.cardTarget.classList.add("is-zoomed")
           })
         })
       })
@@ -177,15 +188,24 @@ export default class extends Controller {
 
   positionOverImage(thumbnail) {
     // the card is centered on the thumbnail's image, not the whole thumbnail
-    // (which also carries the location/description meta below the image)
+    // (which also carries the location/description meta below the image). It stays
+    // parked on this.element (see connect()/close()) rather than moving into the
+    // thumbnail, so its --zoom-left/--zoom-top offsets are relative to that element's
+    // own box, not the thumbnail's — this keeps the card from being clipped by an
+    // overflow:hidden ancestor closer to the thumbnail (e.g. home__thumbnails-wrapper).
+    // this.element is itself the scrolling element (.scrollview), so its
+    // getBoundingClientRect() stays put as it's scrolled — top/left of an absolutely
+    // positioned child are relative to its unscrolled content origin, so the current
+    // scrollTop/scrollLeft has to be added back in to land on the right spot
+    const anchorRect = this.element.getBoundingClientRect()
     const thumbnailRect = thumbnail.getBoundingClientRect()
     const imageRect = thumbnail.photosThumbnail.containerTarget.getBoundingClientRect()
 
     const centerX = imageRect.left + imageRect.width / 2
     const centerY = imageRect.top + imageRect.height / 2
 
-    this.cardTarget.style.setProperty("--zoom-left", `${centerX - thumbnailRect.left}px`)
-    this.cardTarget.style.setProperty("--zoom-top", `${centerY - thumbnailRect.top}px`)
+    this.cardTarget.style.setProperty("--zoom-left", `${centerX - anchorRect.left + this.element.scrollLeft}px`)
+    this.cardTarget.style.setProperty("--zoom-top", `${centerY - anchorRect.top + this.element.scrollTop}px`)
     // ~2x the thumbnail's own longer side, before the aspect ratio shapes width vs. height
     this.cardTarget.style.setProperty("--zoom-size", `${Math.max(imageRect.width, imageRect.height) * 2}px`)
     this.clampToBounds(imageRect.top, thumbnailRect.bottom, centerX, centerY)
@@ -227,14 +247,7 @@ export default class extends Controller {
     this.cancelReveal()
     this.cancelLargeImage()
 
-    if (this.activeThumbnail) {
-      this.activeThumbnail.classList.remove("is-zoomed")
-    }
+    this.cardTarget.classList.remove("is-zoomed")
     this.activeThumbnail = null
-
-    // park the shared card back on the controller's own (stable) element — leaving it
-    // inside the last-hovered thumbnail would destroy it the next time the grid reloads
-    // (e.g. a new search), since .photos__grid's contents get cleared and rebuilt
-    this.element.appendChild(this.cardTarget)
   }
 }

@@ -26,10 +26,7 @@ $thumbnail-zoom-default-ratio: 1.5;
     calc($thumbnail-zoom-min-size * max(1, var(--zoom-ratio, $thumbnail-zoom-default-ratio)))
   );
   aspect-ratio: var(--zoom-ratio, $thumbnail-zoom-default-ratio);
-  box-sizing: border-box;
-  // same radius as the grid thumbnails (thumbnail.scss .photos-thumbnail__image)
   border-radius: torem(4px);
-  overflow: hidden;
   opacity: 0;
   pointer-events: none;
   transform: translate(-50%, -50%) translate(var(--zoom-shift-x, 0px), var(--zoom-shift-y, 0px)) scale(0.85);
@@ -56,6 +53,15 @@ $thumbnail-zoom-default-ratio: 1.5;
     height: 100%;
     object-fit: cover;
     cursor: pointer;
+    border-radius: torem(4px);
+    overflow: hidden;
+  }
+
+  // .thumbnail-zoom has no overflow:hidden of its own (it would clip the button-circular
+  // tooltip labels, which intentionally escape past the top edge) — so the photo-controls
+  // scrim, opaque right at this edge, has to be rounded itself to match the image beneath it
+  .photo-controls:before {
+    border-radius: torem(4px) torem(4px) 0 0;
   }
 }
 
@@ -78,13 +84,16 @@ $thumbnail-zoom-default-ratio: 1.5;
     bottom: 0;
     left: 0;
     pointer-events: none;
+    // same reasoning as .photo-controls:before above — this scrim is opaque right at the
+    // bottom edge, so it needs its own matching radius instead of relying on a clipping parent
+    border-radius: 0 0 torem(4px) torem(4px);
 
     // same scrim as .photo-controls (photo-controls.scss), reversed — dark from the bottom
     @include scrim-gradient(180deg);
   }
 }
 
-.photos-thumbnail.is-zoomed .thumbnail-zoom {
+.thumbnail-zoom.is-zoomed {
   // topmost, same tier as dialogs/snackbar (dialog.scss, snackbar.scss) — none of its
   // ancestors set their own z-index, so this competes directly against header-nav (100)
   // and dialogs (1000) at the root stacking context, no DOM move required

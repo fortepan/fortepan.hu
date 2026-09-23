@@ -4,14 +4,16 @@ layout: base/base.liquid
 
 {% include header-nav/header-nav.liquid hide_search:true header_class:"header-nav--transparent" %}
 
-<div class="home scrollview" data-controller="home"
+<div class="home scrollview" data-controller="home thumbnail-zoom"
   data-action="timeline:yearSelected@document->home#onYearSelected
                timeline:stopDrag@document->home#onYearSelected
                scroll->home#onScroll
                resize@window->home#onScroll
                resize@window->home#resizeThumbnails
+               resize@window->thumbnail-zoom#close
                thumbnail:loaded@document->home#centerSelectedThumbnail
-               thumbnail:click@document->home#onThumbnailClicked"
+               thumbnail:click@document->home#onThumbnailClicked
+               thumbnail:click@document->thumbnail-zoom#close"
 >
   <section class="home__hero">
     <div class="home__announcement">
@@ -45,6 +47,7 @@ layout: base/base.liquid
   <section class="home__photos">
     {% include timeline/timeline.liquid %}
     <div class="home__thumbnails-wrapper"><div class="home__thumbnails" data-home-target="thumbnails"></div></div>
+    {% include thumbnail-zoom/thumbnail-zoom.liquid %}
   </section>
 
 
