@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 import { appState } from "../../../js/app"
-import { trigger, getURLParams, getLocale } from "../../../js/utils"
+import { trigger, getURLParams, getLocale, searchValuesToQueryParams } from "../../../js/utils"
 import config from "../../../data/siteConfig"
 
 export default class extends Controller {
@@ -15,25 +15,7 @@ export default class extends Controller {
   submit(e) {
     if (e) e.preventDefault()
 
-    const queryValues = []
-    const params = []
-
-    this.inputTarget.selectizeControl.value.forEach(value => {
-      if (value.includes(":")) {
-        const key = value.split(":")[0].trim()
-
-        if (config().ADVANCED_SEARCH_KEYS.includes(key)) {
-          params.push(`${key}=${value.split(":")[1].trim()}`)
-        } else {
-          queryValues.push(value)
-        }
-      } else {
-        queryValues.push(value)
-      }
-    })
-
-    if (params.length > 0) params.push(`advancedSearch=1`)
-    if (queryValues.length > 0) params.push(`q=${queryValues.join(", ")}`)
+    const params = searchValuesToQueryParams(this.inputTarget.selectizeControl.value)
 
     let query = params.length > 0 ? `?${params.join("&")}` : `?q`
 

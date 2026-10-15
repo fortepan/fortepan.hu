@@ -1,4 +1,5 @@
 import langData from "../data/lang"
+import config from "../data/siteConfig"
 
 export const getLocale = () => {
   return document.querySelector("body").dataset.lang
@@ -33,6 +34,32 @@ export const click = () => {
 export const getURLParams = () => {
   const s = window.location.search.split("+").join(encodeURIComponent("+"))
   return Object.fromEntries(new URLSearchParams(s))
+}
+
+// parses an advanced search term (e.g. "location:Budapest") into { key, value }, returns null for any other search value
+export const parseAdvancedSearchTerm = term => {
+  const [key, value] = term.split(":").map(s => s.trim())
+  return value !== undefined && config().ADVANCED_SEARCH_KEYS.includes(key) ? { key, value } : null
+}
+
+// converts search input values into query params (advanced search terms become their own params, the rest goes to q)
+export const searchValuesToQueryParams = values => {
+  const params = []
+  const queryValues = []
+
+  values.forEach(value => {
+    const term = parseAdvancedSearchTerm(value)
+    if (term) {
+      params.push(`${term.key}=${term.value}`)
+    } else {
+      queryValues.push(value)
+    }
+  })
+
+  if (params.length > 0) params.push(`advancedSearch=1`)
+  if (queryValues.length > 0) params.push(`q=${queryValues.join(", ")}`)
+
+  return params
 }
 
 export const urlToArray = path => {
