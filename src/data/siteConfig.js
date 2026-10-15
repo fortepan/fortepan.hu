@@ -39,5 +39,7 @@ module.exports = () => {
       "year_from",
       "year_to",
     ],
+    // locations offered as a group (e.g. "Budapest" + "Budapest I.", "Budapest II.", …) in the advanced search autosuggest
+    GROUPED_LOCATIONS: ["Budapest"],
   }
 }

@@ -1,5 +1,6 @@
 import { slugify, getLocale, getURLParams } from "../js/utils"
 import { elasticRequest } from "./elastic-client"
+import { parseGroupValue } from "./autosuggest"
 
 // simplify and localize the Elastic server response
 const transformResults = resp => {
@@ -218,18 +219,18 @@ const search = params => {
 
     // location is combining the city and place queries (advanced search)
     if (params.location) {
-      buildCustomFieldQuery(
-        slugify(params.location),
+      // a group value (e.g. "Budapest (összes)") also matches the sub-entries (e.g. "Budapest I.")
+      const groupName = parseGroupValue(params.location)
+      const location = slugify(groupName || params.location)
+      const fields = [
         getLocale() === "hu" ? "varos_search" : "varos_en_search",
-        "should",
-        true
-      )
-      buildCustomFieldQuery(
-        slugify(params.location),
         getLocale() === "hu" ? "helyszin_search" : "helyszin_en_search",
-        "should",
-        true
-      )
+      ]
+
+      fields.forEach(field => {
+        buildCustomFieldQuery(location, field, "should", true)
+        if (groupName) query.bool.should.push({ prefix: { [field]: `${location} ` } })
+      })
 
       // add a minimum should match parameter to the query in order to match at least one of the terms in the should clause
       if (params.advancedSearch && params.location !== "null") {

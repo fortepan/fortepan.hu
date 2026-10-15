@@ -12,7 +12,7 @@ export default class extends Controller {
     this.keyup = throttle(this.keyup.bind(this), 200)
 
     // hide the autosuggest panel on clicking outside
-    document.addEventListener("click", e => {
+    document.addEventListener("click", (e) => {
       if (
         this.autosuggestTarget.classList.contains("is-visible") &&
         e.target &&
@@ -64,7 +64,7 @@ export default class extends Controller {
     const itemNode = document.createElement("div")
     itemNode.className = "autosuggest__item"
     itemNode.textContent = label
-    itemNode.addEventListener("click", e => {
+    itemNode.addEventListener("click", (e) => {
       const selectedNode = this.autosuggestTarget.querySelector(".autosuggest__item.is-selected")
       if (selectedNode) {
         selectedNode.classList.remove("is-selected")
@@ -86,7 +86,7 @@ export default class extends Controller {
     if (this.inputTarget.value.length > 0) {
       // get filtered results based on the autosuggest data attribute of the input field
       autoSuggest(this.inputTarget.value, this.inputTarget.dataset.autosuggest)
-        .then(res => {
+        .then((res) => {
           // show autosuggest result container and clear it's content
           this.autosuggestTarget.innerHTML = ""
           this.autosuggestTarget.classList.add("is-visible")
@@ -96,7 +96,7 @@ export default class extends Controller {
 
           // add items from the autosuggest filter results
           if (res.length > 0) {
-            res.forEach(r => {
+            res.forEach((r) => {
               if (r !== this.inputTarget.value) this.autosuggestTarget.appendChild(this.createAutoSuggestItem(r))
             })
           }

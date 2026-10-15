@@ -189,6 +189,7 @@ module.exports = {
     advanced_search: {
       label: "Összetett keresés",
       empty: "Üres",
+      group: "összes",
     },
     capa_center_caption: "Capa Központ",
     map: {
@@ -380,6 +381,7 @@ module.exports = {
     advanced_search: {
       label: "Advanced search",
       empty: "Empty",
+      group: "all",
     },
     capa_center_caption: "Capa Center",
     map: {

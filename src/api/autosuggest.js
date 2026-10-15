@@ -1,4 +1,22 @@
-import { slugify, getLocale } from "../js/utils"
+import { slugify, getLocale, lang } from "../js/utils"
+import langData from "../data/lang"
+import config from "../data/siteConfig"
+
+// grouped locations get an extra autosuggest value (e.g. "Budapest (összes)") that searches for the location
+// and all its sub-locations (e.g. "Budapest I.")
+const { GROUPED_LOCATIONS } = config()
+
+const toGroupValue = (name, groupLabel = lang("advanced_search").group) => `${name} (${groupLabel})`
+
+// group values of every locale mapped to their location, e.g. { "Budapest (összes)": "Budapest", "Budapest (all)": "Budapest" }
+const groupValues = Object.fromEntries(
+  GROUPED_LOCATIONS.flatMap((name) =>
+    Object.values(langData).map((l) => [toGroupValue(name, l.advanced_search.group), name])
+  )
+)
+
+// returns the location of a group value (e.g. "Budapest"), or null if the value is not a group value
+export const parseGroupValue = (value) => groupValues[value] || null
 
 // this is a cache that contains all previously entered autosuggest name / value pairs
 const autocompleteData = {}
@@ -39,8 +57,9 @@ export default async (prefix, filter = false) => {
         return false
       })
 
-      // flattening down the results (filtered items can be a list of strings or arrays with list of strings)
-      res = res.concat(items.toString().split(","))
+      // flattening down the results (filtered items can be a list of strings or arrays with list of strings),
+      // dropping the empty string an empty item list would leave behind
+      res = res.concat(items.toString().split(",").filter(Boolean))
     }
   })
 
@@ -53,6 +72,17 @@ export default async (prefix, filter = false) => {
   const filterDuplicates = keywords => keywords.filter((v, i) => keywords.indexOf(v) === i)
   const resFiltered = filterDuplicates(resSorted)
   // resFiltered.length = resFiltered.length > 10 ? limit : resFiltered.length
+
+  // when searching cities, offer matching group values before their location (or its first sub-location)
+  if (filterArray && filterArray.some((key) => key.startsWith("varos_"))) {
+    GROUPED_LOCATIONS.forEach((name) => {
+      const groupValue = toGroupValue(name)
+      if (slugify(groupValue).indexOf(slugify(prefix)) !== 0) return
+
+      const index = resFiltered.findIndex((r) => r === name || r.startsWith(`${name} `))
+      resFiltered.splice(Math.max(index, 0), 0, groupValue)
+    })
+  }
 
   // save the filtered result to cache
   if (filter) {
