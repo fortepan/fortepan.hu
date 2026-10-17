@@ -18,7 +18,8 @@ layout: article/article.liquid
       {% if upload[locale].actions.best_of or upload[locale].actions.all %}
       <div class="collection-item__actions">
         {% if upload[locale].actions.best_of %}
-        <a href="/{{ locale }}/photos/?tag=best%20of&{{ query_url }}" class="button button--medium button--secondary button--inline">
+        {% capture best_of_href %}/{{ locale }}/photos/?tag=best%20of&{{ query_url }}{% endcapture %}
+        <a href="{{ upload[locale].actions | action_href: 'best_of', best_of_href | escape }}" class="button button--medium button--secondary button--inline">
           <span>{{ upload[locale].actions.best_of }}</span>
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="10" viewBox="0 0 14 10">
             <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2,6 L6,10 L10,6 M6,-2 L6,9" transform="rotate(-90 7 4)"/>
@@ -26,7 +27,8 @@ layout: article/article.liquid
         </a>
         {% endif %}
         {% if upload[locale].actions.all %}
-        <a href="/{{ locale }}/photos/?{{ query_url }}" class="button button--medium button--secondary button--inline">
+        {% capture all_href %}/{{ locale }}/photos/?{{ query_url }}{% endcapture %}
+        <a href="{{ upload[locale].actions | action_href: 'all', all_href | escape }}" class="button button--medium button--secondary button--inline">
           <span>{{ upload[locale].actions.all }}</span>
           <svg xmlns="http://www.w3.org/2000/svg" width="14" height="10" viewBox="0 0 14 10">
             <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2,6 L6,10 L10,6 M6,-2 L6,9" transform="rotate(-90 7 4)"/>

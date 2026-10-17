@@ -4,6 +4,7 @@ import projects from "./templates/projects"
 import home from "./templates/home"
 import article from "./templates/article"
 import defaultTemplate from "./templates/default"
+import { customLinkFields } from "./fields/custom-link"
 
 // Your hosting provider likely exposes this as an environment variable
 const branch = process.env.BRANCH || process.env.HEAD || "master"
@@ -95,11 +96,13 @@ export default defineConfig({
                         label: "Best of gomb szövege",
                         type: "string",
                       },
+                      ...customLinkFields("best_of", "Best of gomb egyedi link"),
                       {
                         name: "all",
                         label: "Teljes kollekció gomb szövege",
                         type: "string",
                       },
+                      ...customLinkFields("all", "Teljes kollekció gomb egyedi link"),
                     ],
                   },
                 ],
@@ -132,11 +135,13 @@ export default defineConfig({
                         label: "Best of gomb szövege",
                         type: "string",
                       },
+                      ...customLinkFields("best_of", "Best of gomb egyedi link"),
                       {
                         name: "all",
                         label: "Teljes kollekció gomb szövege",
                         type: "string",
                       },
+                      ...customLinkFields("all", "Teljes kollekció gomb egyedi link"),
                     ],
                   },
                 ],

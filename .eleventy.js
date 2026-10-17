@@ -73,6 +73,12 @@ module.exports = eleventyConfig => {
 
   eleventyConfig.addLiquidFilter("sanitizeHtml", sanitizeHtml)
 
+  // Photo upload action buttons: use the custom link from the CMS if it's switched on and filled in
+  eleventyConfig.addLiquidFilter("action_href", (actions, key, defaultHref) => {
+    const customLink = String(actions[`${key}_custom_link`] || "").trim()
+    return actions[`${key}_custom_link_enabled`] && customLink ? customLink : defaultHref
+  })
+
   // Minify html in production
   if (process.env.ENV === "production") {
     eleventyConfig.addTransform("htmlmin", (content, outputPath) => {
