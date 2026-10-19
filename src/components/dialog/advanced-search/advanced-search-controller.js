@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 // import { appState } from "../../../js/app"
-import { trigger, getURLParams, getLocale } from "../../../js/utils"
+import { trigger, getURLParams, getLocale, getSearchTermKeys } from "../../../js/utils"
 import { appState } from "../../../js/app"
 
 export default class extends Controller {
@@ -79,21 +79,22 @@ export default class extends Controller {
 
     const params = getURLParams()
 
-    if (params.advancedSearch) {
-      Object.keys(params).forEach(key => {
-        if (params[key] === "null") {
-          this.formTarget.querySelector(`.dialog-advanced-search__checkbox input[name=${key}-empty]`).checked = true
-        } else {
-          const input =
-            this.formTarget.querySelector(`.dialog-advanced-search__input input[name=${key}]`) ||
-            this.formTarget.querySelector(`.dialog-advanced-search__input select[name=${key}]`)
+    // prefill the advanced search values, or the search term values of a non advanced search (e.g. ?donor=...)
+    const keys = params.advancedSearch ? Object.keys(params) : getSearchTermKeys(params)
 
-          if (input) {
-            input.value = params[key]
-          }
+    keys.forEach(key => {
+      if (params[key] === "null") {
+        this.formTarget.querySelector(`.dialog-advanced-search__checkbox input[name=${key}-empty]`).checked = true
+      } else {
+        const input =
+          this.formTarget.querySelector(`.dialog-advanced-search__input input[name=${key}]`) ||
+          this.formTarget.querySelector(`.dialog-advanced-search__input select[name=${key}]`)
+
+        if (input) {
+          input.value = params[key]
         }
-      })
-    }
+      }
+    })
   }
 
   hide() {

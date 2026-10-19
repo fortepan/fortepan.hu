@@ -62,12 +62,19 @@ export const searchValuesToQueryParams = values => {
   return params
 }
 
+// returns the advanced search term keys of the url params (also set without the advancedSearch flag by sidebar links,
+// e.g. ?donor=...), except "id" which only opens a photo unless it's part of an advanced search
+export const getSearchTermKeys = params =>
+  Object.keys(params).filter(
+    key => config().ADVANCED_SEARCH_KEYS.includes(key) && (key !== "id" || params.advancedSearch)
+  )
+
 // converts url params into search input values (the reverse of searchValuesToQueryParams)
 export const urlParamsToSearchValues = params => {
-  const advancedKeys = params.advancedSearch ? config().ADVANCED_SEARCH_KEYS : []
+  const termKeys = getSearchTermKeys(params)
 
   return Object.keys(params)
-    .filter(key => key === "q" || advancedKeys.includes(key))
+    .filter(key => key === "q" || termKeys.includes(key))
     .map(key => (key === "q" ? `${params[key]}` : `${key}:${params[key]}`))
 }
 
