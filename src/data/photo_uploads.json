@@ -19,7 +19,9 @@
         "blurb": "András Szebeni would have turned 80 this year. It is a great pleasure that part of his estate is now available on Fortepan. This allows us to marvel together at the significance of his early works—his photo essays, portraits, and more ambitious series. András Szebeni’s body of work is an indispensable part of Hungarian photographic history. Now, at last, we can show why.",
         "actions": {
           "best_of": "60 best of",
-          "all": "all collection"
+          "all": "all collection",
+          "all_custom_link_enabled": true,
+          "all_custom_link": "https://fortepan.hu/hu/photos/?donor=Szebeni%20Andr%C3%A1s"
         }
       }
     },
