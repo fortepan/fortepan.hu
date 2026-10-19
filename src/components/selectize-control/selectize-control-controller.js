@@ -1,5 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
+import { trigger } from "../../js/utils"
+
 export default class extends Controller {
   static get targets() {
     return ["input", "tag", "fakeInput"]
@@ -33,6 +35,8 @@ export default class extends Controller {
         this.togglePlaceholder()
       })
       tagNode.appendChild(close)
+
+      trigger("selectizeControl:tagAdded", { tag: tagNode }, this.element, true)
     }
 
     // initialize input

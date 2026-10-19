@@ -1,8 +1,11 @@
 <div class="dialog dialog-search"
-     data-controller="dialog--search"
+     data-controller="dialog--search advanced-search-tags"
      data-action="dialogs:hide@document->dialog--search#hide
                    dialogSearch:show@document->dialog--search#show
-                   dialogSearch:hide@document->dialog--search#hide"
+                   dialogSearch:hide@document->dialog--search#hide
+                   dialogAdvancedSearch:show@document->dialog--search#hide
+                   selectizeControl:tagAdded->advanced-search-tags#onTagAdded
+                   click->advanced-search-tags#onTagClick"
 >
   <div class="dialog__wrapper">
       <div class="button-circular dialog__close"
@@ -20,7 +23,7 @@
           >{{ lang[locale].search }}</button>
 
           <a href="#" class="dialog__link dialog__link--small"
-             data-action="click->dialog--search#hide click->dialog--search#showAdvancedSearchDialog"
+             data-action="click->dialog--search#showAdvancedSearchDialog"
           >{{ lang[locale].advanced_search.label }}</a>
         </div>
 

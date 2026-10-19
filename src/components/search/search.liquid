@@ -1,7 +1,8 @@
 <div class="search {{ class }}"
-  data-controller="search"
-  data-action="search:setValue@document->search#setValue
-               search:clear@document->search#clear"
+  data-controller="search advanced-search-tags"
+  data-action="search:syncWithURL@document->search#syncWithURL
+               selectizeControl:tagAdded->advanced-search-tags#onTagAdded
+               click->advanced-search-tags#onTagClick"
 >
     <form class="search__form" data-search-target="form">
         {% capture subclass %}selectize-control--search{% if type=="large" %} selectize-control--large{% endif %} search__selectize-control{% endcapture %}

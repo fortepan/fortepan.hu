@@ -6,7 +6,6 @@ import { MarkerClusterer, SuperClusterAlgorithm } from "@googlemaps/markercluste
 import { getLocale, getURLParams, trigger, lang } from "../../js/utils"
 import photoManager from "../../js/photo-manager"
 import { appState } from "../../js/app"
-import config from "../../data/siteConfig"
 
 const MAX_CLUSTERER_ZOOM = 22
 const MAX_INDIVIDUAL_MARKERS = 999
@@ -391,23 +390,8 @@ export default class extends Controller {
 
         const params = getURLParams()
 
-        // fill in the search field if there's regular search params in the url
-        const values = []
-
-        Object.keys(params).forEach(key => {
-          if (key === "q") {
-            values.push(`${params[key]}`)
-          } else if (config().ADVANCED_SEARCH_KEYS.includes(key) && params.advancedSearch) {
-            values.push(`${key}:${params[key]}`)
-          }
-        })
-
-        if (values.length > 0) {
-          trigger("search:clear")
-          setTimeout(() => {
-            trigger("search:setValue", { value: values.join(",") })
-          }, 20)
-        }
+        // set up the search field
+        setTimeout(() => trigger("search:syncWithURL"), 20)
 
         // set up params for the API call
         params.size = 0

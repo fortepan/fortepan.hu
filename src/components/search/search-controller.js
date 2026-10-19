@@ -1,8 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
-import { trigger, getLocale, getURLParams } from "../../js/utils"
+import { trigger, getLocale, getURLParams, searchValuesToQueryParams, urlParamsToSearchValues } from "../../js/utils"
 import { appState } from "../../js/app"
-import config from "../../data/siteConfig"
 
 export default class extends Controller {
   static get targets() {
@@ -17,25 +16,7 @@ export default class extends Controller {
   submit(e) {
     if (e) e.preventDefault()
 
-    const queryValues = []
-    const params = []
-
-    this.inputTarget.selectizeControl.value.forEach(value => {
-      if (value.includes(":")) {
-        const key = value.split(":")[0].trim()
-
-        if (config().ADVANCED_SEARCH_KEYS.includes(key)) {
-          params.push(`${key}=${value.split(":")[1].trim()}`)
-        } else {
-          queryValues.push(value)
-        }
-      } else {
-        queryValues.push(value)
-      }
-    })
-
-    if (params.length > 0) params.push(`advancedSearch=1`)
-    if (queryValues.length > 0) params.push(`q=${queryValues.join(", ")}`)
+    const params = searchValuesToQueryParams(this.inputTarget.selectizeControl.value)
 
     let query = params.length > 0 ? `?${params.join("&")}` : `?q`
 
@@ -69,12 +50,9 @@ export default class extends Controller {
     }
   }
 
-  clear() {
-    this.inputTarget.selectizeControl.value = ""
-  }
-
-  setValue(e) {
-    this.inputTarget.selectizeControl.value = e.detail.value
+  // replaces the tags with the search values of the current url (no values clear the field, e.g. ?donor=... searches)
+  syncWithURL() {
+    this.inputTarget.selectizeControl.value = urlParamsToSearchValues(getURLParams()).join(",")
   }
 
   showAdvancedSearchDialog(e) {

@@ -1,7 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 import { appState } from "../../../js/app"
-import { trigger, getURLParams, getLocale } from "../../../js/utils"
-import config from "../../../data/siteConfig"
+import { trigger, getURLParams, getLocale, searchValuesToQueryParams, urlParamsToSearchValues } from "../../../js/utils"
 
 export default class extends Controller {
   static get targets() {
@@ -15,25 +14,7 @@ export default class extends Controller {
   submit(e) {
     if (e) e.preventDefault()
 
-    const queryValues = []
-    const params = []
-
-    this.inputTarget.selectizeControl.value.forEach(value => {
-      if (value.includes(":")) {
-        const key = value.split(":")[0].trim()
-
-        if (config().ADVANCED_SEARCH_KEYS.includes(key)) {
-          params.push(`${key}=${value.split(":")[1].trim()}`)
-        } else {
-          queryValues.push(value)
-        }
-      } else {
-        queryValues.push(value)
-      }
-    })
-
-    if (params.length > 0) params.push(`advancedSearch=1`)
-    if (queryValues.length > 0) params.push(`q=${queryValues.join(", ")}`)
+    const params = searchValuesToQueryParams(this.inputTarget.selectizeControl.value)
 
     let query = params.length > 0 ? `?${params.join("&")}` : `?q`
 
@@ -70,18 +51,7 @@ export default class extends Controller {
     this.inputTarget.selectizeControl.reset()
     this.inputTarget.selectizeControl.focus()
 
-    const urlParams = getURLParams()
-    const values = []
-
-    Object.keys(urlParams).forEach(key => {
-      if (key === "q") {
-        values.push(`${urlParams[key]}`)
-      } else if (config().ADVANCED_SEARCH_KEYS.includes(key) && urlParams.advancedSearch) {
-        values.push(`${key}:${urlParams[key]}`)
-      }
-    })
-
-    this.inputTarget.selectizeControl.value = values.join(",")
+    this.inputTarget.selectizeControl.value = urlParamsToSearchValues(getURLParams()).join(",")
   }
 
   hide() {

@@ -121,6 +121,15 @@
   }
 }
 
+.selectize-control__tag--link {
+  cursor: pointer;
+  transition: opacity 0.2s $ease-out-cubic;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
 .selectize-control--large .selectize-control__tag {
   font-size: torem(16px);
   line-height: 1.25rem;
