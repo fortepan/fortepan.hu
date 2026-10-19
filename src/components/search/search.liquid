@@ -1,7 +1,6 @@
 <div class="search {{ class }}"
   data-controller="search advanced-search-tags"
-  data-action="search:setValue@document->search#setValue
-               search:clear@document->search#clear
+  data-action="search:syncWithURL@document->search#syncWithURL
                selectizeControl:tagAdded->advanced-search-tags#onTagAdded
                click->advanced-search-tags#onTagClick"
 >

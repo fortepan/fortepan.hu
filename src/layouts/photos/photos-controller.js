@@ -204,25 +204,9 @@ export default class extends Controller {
       delete params.id
     } else {
       params.from = 0
-    }
 
-    // set up the search field
-    const urlParams = getURLParams()
-    const values = []
-
-    Object.keys(urlParams).forEach(key => {
-      if (key === "q") {
-        values.push(`${urlParams[key]}`)
-      } else if (config().ADVANCED_SEARCH_KEYS.includes(key) && urlParams.advancedSearch) {
-        values.push(`${key}:${urlParams[key]}`)
-      }
-    })
-
-    if (values.length > 0) {
-      trigger("search:clear")
-      setTimeout(() => {
-        trigger("search:setValue", { value: values.join(",") })
-      }, 20)
+      // set up the search field on the first load of a search (not on infinite scroll loads)
+      setTimeout(() => trigger("search:syncWithURL"), 20)
     }
 
     // show loading indicator

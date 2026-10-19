@@ -62,6 +62,15 @@ export const searchValuesToQueryParams = values => {
   return params
 }
 
+// converts url params into search input values (the reverse of searchValuesToQueryParams)
+export const urlParamsToSearchValues = params => {
+  const advancedKeys = params.advancedSearch ? config().ADVANCED_SEARCH_KEYS : []
+
+  return Object.keys(params)
+    .filter(key => key === "q" || advancedKeys.includes(key))
+    .map(key => (key === "q" ? `${params[key]}` : `${key}:${params[key]}`))
+}
+
 export const urlToArray = path => {
   const valuesArray = (path || window.location.pathname).split("/")
   while (valuesArray[0] === "") valuesArray.shift()

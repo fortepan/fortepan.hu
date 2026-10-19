@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 
-import { trigger, getLocale, getURLParams, searchValuesToQueryParams } from "../../js/utils"
+import { trigger, getLocale, getURLParams, searchValuesToQueryParams, urlParamsToSearchValues } from "../../js/utils"
 import { appState } from "../../js/app"
 
 export default class extends Controller {
@@ -50,12 +50,9 @@ export default class extends Controller {
     }
   }
 
-  clear() {
-    this.inputTarget.selectizeControl.value = ""
-  }
-
-  setValue(e) {
-    this.inputTarget.selectizeControl.value = e.detail.value
+  // replaces the tags with the search values of the current url (no values clear the field, e.g. ?donor=... searches)
+  syncWithURL() {
+    this.inputTarget.selectizeControl.value = urlParamsToSearchValues(getURLParams()).join(",")
   }
 
   showAdvancedSearchDialog(e) {
