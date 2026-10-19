@@ -10,7 +10,7 @@
         "actions": {
           "best_of": "60 jó kép",
           "all": "A teljes gyűjtemény",
-          "all_custom_link_enabled": true,
+          "all_custom_link_enabled": false,
           "all_custom_link": "https://fortepan.hu/hu/photos/?donor=Szebeni%20Andr%C3%A1s"
         }
       },
