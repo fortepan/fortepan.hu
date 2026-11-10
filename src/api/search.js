@@ -77,7 +77,7 @@ const transformResults = resp => {
 const elasticRequest = async data => {
   let url = appState("is-dev")
     ? `${config().ELASTIC_HOST_DEV}/elasticsearch_index_fortepandrupaldevelop_cwoou_media/_search?pretty`
-    : `${config().ELASTIC_HOST}/elasticsearch_index_fortepandrupalmain_hd64t_media/_search?pretty`
+    : `${config().ELASTIC_HOST}/media/_search?pretty`
 
   const q = getURLParams()
   if (q.esurl && q.esauth) {

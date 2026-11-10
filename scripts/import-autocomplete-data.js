@@ -13,7 +13,7 @@ const client = new Client({
 const getKeywords = (key, callback, error) => {
   client.search(
     {
-      index: "elasticsearch_index_fortepandrupalmain_hd64t_media",
+      index: "media",
       body: {
         size: 0,
         aggs: {
@@ -45,7 +45,7 @@ const getKeywords = (key, callback, error) => {
 const getSynonyms = (lang, callback, error) => {
   client.search(
     {
-      index: "elasticsearch_index_fortepandrupalmain_hd64t_cimke",
+      index: "cimke",
       body: {
         size: 9999,
         query: {
