@@ -245,7 +245,7 @@ const selectNextPhoto = async () => {
 
 const getFirstPhotoDataInContext = () => {
   if (hasData() && photoData.result.years) {
-    console.log('contect', photoData.context)
+    // console.log('contect', photoData.context)
     const firstYear =
       photoData.context && photoData.context.year > 0
         ? photoData.result.years.find(item => parseInt(item.year, 10) === parseInt(photoData.context.year, 10))

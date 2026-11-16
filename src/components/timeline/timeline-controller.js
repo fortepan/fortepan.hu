@@ -31,6 +31,7 @@ export default class extends Controller {
     this.yearStart = 0
     this.yearEnd = 0
     this.timelineOver = false
+    this.url = window.location.href
 
     // init component
     this.resetSlider(null, false)
@@ -80,7 +81,7 @@ export default class extends Controller {
 
   setTimelineLabels() {
     this.sliderYearLabelTarget.textContent = this.year
-    console.log('Year is ' + this.year)
+    // console.log('Year is ' + this.year)
     // check if selected year (this.year) has photos at all (not already loaded)
     // and if not, grey out the slider
     if (photoManager.getYearsInContext().find(item => item.year === this.year)) {
@@ -149,7 +150,16 @@ export default class extends Controller {
   }
 
   resetSlider(e, enable = true) {
+    const year = window.location.href === this.url ? this.year : null
+    this.url = window.location.href
     this.setSlider()
+
+    if (year && year >= this.yearStart && year <= this.yearEnd) {
+      this.year = year
+      this.fixSlider()
+      this.setTimelineLabels()
+    }
+
     if (enable) this.enable()
   }
 
