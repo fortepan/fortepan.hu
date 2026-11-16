@@ -31,7 +31,6 @@ export default class extends Controller {
     this.yearStart = 0
     this.yearEnd = 0
     this.timelineOver = false
-    this.url = window.location.href
 
     // init component
     this.resetSlider(null, false)
@@ -150,16 +149,7 @@ export default class extends Controller {
   }
 
   resetSlider(e, enable = true) {
-    const year = window.location.href === this.url ? this.year : null
-    this.url = window.location.href
     this.setSlider()
-
-    if (year && year >= this.yearStart && year <= this.yearEnd) {
-      this.year = year
-      this.fixSlider()
-      this.setTimelineLabels()
-    }
-
     if (enable) this.enable()
   }
 
