@@ -169,7 +169,10 @@ const search = params => {
       multi: []
     }
     
-    const sort = { field: "Media.year", order: "asc" }
+    const sort = [
+      { field: "Media.year", order: "asc" },
+      { field: "Media.id", order: "asc" },
+    ]
 
     // returns all records when query field is empty
     if (!params || (params && params.q === "")) {
