@@ -1,60 +1,27 @@
 import { slugify, getLocale, getOrg } from "../js/utils"
 import config from "../data/siteConfig"
 
-let autosuggestList = []
-let autosuggestListLoaded = false
-
-// this is a cache that contains all previously entered autosuggest name / value pairs
+// Cache suggestions by locale and normalized search word.
 const autosuggestCache = {}
 
-const loadAutosuggestList = async (lang) => {
-  // const respJson = await fetch(`${config.BACKEND}/api/search/list`)
-  const org = { org: getOrg() }
-  const language = { lang: getLocale()} 
-  const respJson = await fetch(`${config.BACKEND}/api/search/list`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json;charset=UTF-8",
-      Accept: "application/json",
-    },
-    body: JSON.stringify({ ...org, ...language }),
-  })
-  const resp = await respJson.json()
-
-  // filter items by language
-  autosuggestList = resp.filter((item) => {
-    return item.locale === lang
-  })
-  return true
-}
-
-export default async (prefix, categories, limit) => {
-  let resp = null
-
+export default async prefix => {
   const lang = getLocale()
-  const expression = slugify(prefix)
+  const cacheKey = `${lang}:${slugify(prefix)}`
 
-  // check autosuggest cache
-  if (autosuggestCache[expression]) {
-    resp = autosuggestCache[expression]
-  } else {
-    if (!autosuggestListLoaded) autosuggestListLoaded = await loadAutosuggestList(lang)
-
-    let count = 0
-
-    resp = autosuggestList.filter((item) => {
-      if (count >= limit) {
-        return false
-      }
-      if (item.word.indexOf(expression) >= 0) {
-        count += 1
-        return true
-      }
-      return false
-    })
-    autosuggestCache[expression] = resp
-    return resp
+  if (autosuggestCache[cacheKey]) {
+    return autosuggestCache[cacheKey]
   }
 
-  return resp
+  const params = new URLSearchParams({ locale: lang, word: prefix })
+  const org = getOrg()
+  if (org) params.set("org", org)
+
+  const respJson = await fetch(`${config.BACKEND}/api/search/autocomplete?${params.toString()}`, {
+    headers: { Accept: "application/json" },
+  })
+  const resp = await respJson.json()
+  const suggestions = resp && Array.isArray(resp.words) ? resp.words : []
+
+  autosuggestCache[cacheKey] = suggestions
+  return suggestions
 }

@@ -52,7 +52,7 @@ export default class extends Controller {
   createAutoSuggestItem(label) {
     const itemNode = document.createElement("div")
     itemNode.className = "autosuggest__item"
-    itemNode.textContent = label.word
+    itemNode.textContent = label
     itemNode.addEventListener("click", e => {
       const selectedNode = this.autosuggestTarget.querySelector(".autosuggest__item.is-selected")
       if (selectedNode) {
@@ -74,7 +74,7 @@ export default class extends Controller {
   showAutosuggestPanel() {
     if (this.inputTarget.value.length > 0) {
       // get filtered results based on the autosuggest data attribute of the input field
-      autoSuggest(this.inputTarget.value, this.inputTarget.dataset.autosuggest)
+      autoSuggest(this.inputTarget.value)
         .then(res => {
           // show autosuggest result container and clear it's content
           this.autosuggestTarget.innerHTML = ""

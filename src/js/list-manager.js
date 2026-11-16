@@ -32,7 +32,6 @@ const loadListData = async () => {
           photo.uuid = h.uuid
           photo.created = h.created
           photo.description = h.description
-          photo.search_after = hit.sort
           photo.donor = h.adomanyozo_name
           photo.author = hit.author
           photo.tags = h.tags

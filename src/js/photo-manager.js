@@ -29,12 +29,8 @@ const loadPhotoData = async (params, silent, lockContext) => {
 
   if (photoData.result.items) {
     if (params && params.reverseOrder) {
-      // prepend the results one by one as they are in reverse order
-      resp.items.forEach(item => {
-        photoData.result.items.unshift(item)
-      })
-      // then reverse the order back to store later as a normal set
-      resp.items.reverse()
+      // prepend the earlier page while preserving its result order
+      photoData.result.items = resp.items.concat(photoData.result.items)
     } else {
       // add the new results to the end
       photoData.result.items = photoData.result.items.concat(resp.items)
@@ -166,10 +162,12 @@ const loadMorePhotoDataInContext = async (insertBefore = false) => {
   Object.assign(params, photoData.context)
 
   if (insertBefore) {
-    params.search_after = getFirstPhotoData().search_after
+    const firstPhoto = getFirstPhotoData()
+    params.offset = Math.max(0, firstPhoto.order - params.size)
+    if (params.offset === 0) params.size = firstPhoto.order
     params.reverseOrder = true
   } else {
-    params.search_after = getLastPhotoData().search_after
+    params.offset = getLastPhotoData().order + 1
   }
 
   // remove the id if it was present
@@ -470,15 +468,15 @@ const getFirstPhotoOfYear = async (y, selectAfterLoad = true) => {
     1. load the first image of the given year...
   */
   const params = {
-    from: 0,
+    offset: 0,
     year: y,
   }
   Object.assign(params, photoData.context)
 
   // remove the id if it was present
   if (params.id > 0) delete params.id
-  // delete the search after param if it was copied over from the default context
-  if (params.search_after) delete params.search_after
+  // start at the beginning of the selected year rather than inheriting a prior page offset
+  params.offset = 0
 
   params.size = config.THUMBNAILS_QUERY_LIMIT
 
@@ -490,15 +488,20 @@ const getFirstPhotoOfYear = async (y, selectAfterLoad = true) => {
   // load the photos in silent mode (no event dispatched)
   let resp = await loadPhotoData(params, silent, lockContext)
   let latestItems = [].concat(resp.items)
+  const yearOffset = (photoData.result.years || []).reduce((offset, year) => {
+    return parseInt(year.year, 10) < parseInt(y, 10) ? offset + year.count : offset
+  }, 0)
+  latestItems.forEach((item, index) => {
+    item.order = yearOffset + index
+  })
 
   /*
     2. then, based on the first image data load the rest of the set according to the default query limit
   */
   if (latestItems.length !== -1 && latestItems.length < config.THUMBNAILS_QUERY_LIMIT) {
-    delete params.from
     delete params.year
+    params.offset = yearOffset + latestItems.length
     params.size = config.THUMBNAILS_QUERY_LIMIT - latestItems.length
-    params.search_after = latestItems[latestItems.length - 1].search_after
 
     // load the remaining photos in silent mode (no event dispatched)
     resp = await loadPhotoData(params, silent, lockContext)

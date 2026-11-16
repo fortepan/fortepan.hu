@@ -10,8 +10,8 @@
     "eleventy:serve": "npx eleventy --serve",
     "webpack": "webpack",
     "webpack:watch": "webpack --watch",
-    "build": "ENV=production npm-run-all clean import-autocomplete-data webpack eleventy",
-    "dev": "ENV=development npm-run-all -l --silent clean import-autocomplete-data webpack --parallel webpack:watch eleventy:serve"
+    "build": "ENV=production npm-run-all clean webpack eleventy",
+    "dev": "ENV=development npm-run-all -l --silent clean webpack --parallel webpack:watch eleventy:serve"
   },
   "repository": {
     "type": "git",
