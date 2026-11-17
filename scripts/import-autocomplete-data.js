@@ -8,12 +8,16 @@ const KEYS = {
   EN: ["orszag_en", "varos_en", "helyszin_en", "adomanyozo_name", "szerzo_en", "cimke_en"],
 }
 
-const host = process.env.ELASTIC_HOST
-const auth = process.env.ELASTIC_AUTH
-if (!host || !auth) {
-  console.error("Missing ELASTIC_HOST or ELASTIC_AUTH (see .env.example)")
+const REQUIRED_ENV_VARS = ["ELASTIC_HOST", "ELASTIC_AUTH", "ELASTIC_INDEX_MEDIA", "ELASTIC_INDEX_CIMKE"]
+const missingEnvVars = REQUIRED_ENV_VARS.filter(name => !process.env[name])
+if (missingEnvVars.length) {
+  console.error(`Missing ${missingEnvVars.join(", ")} (see .env.example)`)
   process.exit(1)
 }
+const host = process.env.ELASTIC_HOST
+const auth = process.env.ELASTIC_AUTH
+const mediaIndex = process.env.ELASTIC_INDEX_MEDIA
+const cimkeIndex = process.env.ELASTIC_INDEX_CIMKE
 const node = new URL(host)
 const i = auth.indexOf(":")
 if (i === -1) {
@@ -28,7 +32,7 @@ const client = new Client({ nodes: [node.toString()] })
 const getKeywords = (key, callback, error) => {
   client.search(
     {
-      index: "elasticsearch_index_fortepandrupalmain_hd64t_media",
+      index: mediaIndex,
       body: {
         size: 0,
         aggs: {
@@ -60,7 +64,7 @@ const getKeywords = (key, callback, error) => {
 const getSynonyms = (lang, callback, error) => {
   client.search(
     {
-      index: "elasticsearch_index_fortepandrupalmain_hd64t_cimke",
+      index: cimkeIndex,
       body: {
         size: 9999,
         query: {
