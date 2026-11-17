@@ -24,12 +24,20 @@ $ nvm use &
 $ npm install
 ```
 
-#### Elasticsearch credentials (required for build and search)
+#### Backend configuration (required for build and search)
 
-Credentials are **not** stored in the repository. Copy [`.env.example`](.env.example) to `.env` and set:
+Backend hosts, Elasticsearch index names and credentials are **not** stored in the repository — the
+environment is the single source of truth. Copy [`.env.example`](.env.example) to `.env` and set:
 
-- `ELASTIC_HOST` / `ELASTIC_AUTH` — production cluster (build script and live site)
-- `ELASTIC_HOST_DEV` / `ELASTIC_AUTH_DEV` — dev cluster at `elastic-develop.fortepan.hu` (local dev mode via `?dev=1`)
+- `DRUPAL_HOST` / `DRUPAL_HOST_DEV` — Drupal backend for the live site and for dev mode (`?dev=1`)
+- `ELASTIC_HOST` / `ELASTIC_AUTH` — production Elasticsearch cluster (build script and live site)
+- `ELASTIC_INDEX_MEDIA`, `ELASTIC_INDEX_LISTS`, `ELASTIC_INDEX_LIST_CONTENT`, `ELASTIC_INDEX_CIMKE` — production index
+  names (`CIMKE` is only used by the autocomplete import script)
+- `ELASTIC_HOST_DEV` / `ELASTIC_AUTH_DEV` and `ELASTIC_INDEX_MEDIA_DEV`, `ELASTIC_INDEX_LISTS_DEV`,
+  `ELASTIC_INDEX_LIST_CONTENT_DEV` — dev cluster (dev mode via `?dev=1`)
+
+Moving to a different backend is a change of these values only, no code change. On Netlify, values can be set per
+deploy context or per branch to test another backend on a branch deploy.
 
 On **Netlify**, set the same variables in Site settings → Environment variables. Deploy the `elastic-proxy` function and frontend together.
 

@@ -1,3 +1,6 @@
+require("dotenv").config()
+
+const { EnvironmentPlugin } = require("webpack")
 const { WebpackManifestPlugin } = require("webpack-manifest-plugin")
 const path = require("path")
 
@@ -26,6 +29,8 @@ module.exports = {
         : [],
   },
   plugins: [
+    // Inline the backend hosts into the bundle; no defaults, so the build fails if one is missing (see .env.example)
+    new EnvironmentPlugin(["DRUPAL_HOST", "DRUPAL_HOST_DEV"]),
     new WebpackManifestPlugin({
       publicPath: "js/",
       fileName: path.resolve(__dirname, "src/data", "manifest-js.json"),

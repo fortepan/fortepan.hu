@@ -1,15 +1,16 @@
 const fetch = require("node-fetch")
 
-const INDEX_PATHS = {
+// Index names come from the environment (see .env.example), read per request
+const INDEX_ENV_VARS = {
   prod: {
-    media: "elasticsearch_index_fortepandrupalmain_hd64t_media/_search",
-    lists: "elasticsearch_index_fortepandrupalmain_hd64t_lists/_search",
-    list_content: "elasticsearch_index_fortepandrupalmain_hd64t_list_content/_search",
+    media: "ELASTIC_INDEX_MEDIA",
+    lists: "ELASTIC_INDEX_LISTS",
+    list_content: "ELASTIC_INDEX_LIST_CONTENT",
   },
   dev: {
-    media: "elasticsearch_index_fortepandrupaldevelop_cwoou_media/_search",
-    lists: "elasticsearch_index_fortepandrupaldevelop_cwoou_lists/_search",
-    list_content: "elasticsearch_index_fortepandrupaldevelop_cwoou_list_content/_search",
+    media: "ELASTIC_INDEX_MEDIA_DEV",
+    lists: "ELASTIC_INDEX_LISTS_DEV",
+    list_content: "ELASTIC_INDEX_LIST_CONTENT_DEV",
   },
 }
 
@@ -28,11 +29,11 @@ const parseRoute = path => {
   }
 
   const [env, index] = parts
-  if (!INDEX_PATHS[env]?.[index]) {
+  if (!INDEX_ENV_VARS[env]?.[index]) {
     return null
   }
 
-  return { env, index, esPath: INDEX_PATHS[env][index] }
+  return { env, indexName: process.env[INDEX_ENV_VARS[env][index]] }
 }
 
 exports.handler = async event => {
@@ -49,7 +50,7 @@ exports.handler = async event => {
   const host = isDev ? process.env.ELASTIC_HOST_DEV : process.env.ELASTIC_HOST
   const auth = isDev ? process.env.ELASTIC_AUTH_DEV : process.env.ELASTIC_AUTH
 
-  if (!host || !auth) {
+  if (!host || !auth || !route.indexName) {
     return { statusCode: 500, headers: JSON_HEADERS, body: '{"error":"Misconfigured"}' }
   }
 
@@ -63,7 +64,7 @@ exports.handler = async event => {
     return { statusCode: 413, headers: JSON_HEADERS, body: '{"error":"Too large"}' }
   }
 
-  const url = `${host.replace(/\/$/, "")}/${route.esPath}?pretty`
+  const url = `${host.replace(/\/$/, "")}/${encodeURIComponent(route.indexName)}/_search?pretty`
 
   try {
     const response = await fetch(url, {
